@@ -100,21 +100,21 @@ public class Answer3 {
     public static void main(String[] args){
         if(null==args||args.length!=1){
             System.out.println("输入参数有误");
-        }
-
-        int length=Integer.valueOf(args[0]);
-        if(length<=0){
-            System.out.println("请输入大于0的参数");
-        }else if(length==1){
-            System.out.println("当前一人被杀死，无人数保留");
         }else {
-            Answer3 answer3 = new Answer3();
-            answer3.setLen(Integer.valueOf(length));
-            answer3.createLink();
-            answer3.setStart(0);
-            answer3.setStep(3);
-            answer3.show();
-            answer3.play();
+            int length=Integer.valueOf(args[0]);
+            if(length<=0){
+                System.out.println("请输入大于0的参数");
+            }else if(length==1){
+                System.out.println("当前一人被杀死，无人数保留");
+            }else {
+                Answer3 answer3 = new Answer3();
+                answer3.setLen(Integer.valueOf(length));
+                answer3.createLink();
+                answer3.setStart(0);
+                answer3.setStep(3);
+                answer3.show();
+                answer3.play();
+            }
         }
     }
 }

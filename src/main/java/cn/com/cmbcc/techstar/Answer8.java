@@ -14,8 +14,10 @@ public class Answer8 {
 
         if(null==args||args.length!=1){
             System.out.println("请输入一个参数");
+        }else {
+            getCertExpired(args[0]);
         }
-        getCertExpired(args[0]);
+
     }
 
     public static void getCertExpired(String httpsUrl) {
