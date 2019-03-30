@@ -13,10 +13,11 @@ public class Answer8 {
     public static void main(String[] args) {
 
         if(null==args||args.length!=1){
-            System.out.print("param error,please input one param");
-            System.exit(1);
+            System.out.println("请输入一个参数");
+        }else {
+            getCertExpired(args[0]);
         }
-        getCertExpired(args[0]);
+
     }
 
     public static void getCertExpired(String httpsUrl) {
@@ -51,17 +52,21 @@ public class Answer8 {
     }
 
     static TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+        @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
 
+        @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
 
+        @Override
         public X509Certificate[] getAcceptedIssuers() {
             return null;
         }
     } };
     public class NullHostNameVerifier implements HostnameVerifier {
+        @Override
         public boolean verify(String arg0, SSLSession arg1) {
             return true;
         }
