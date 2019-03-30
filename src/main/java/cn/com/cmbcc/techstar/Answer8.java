@@ -50,17 +50,21 @@ public class Answer8 {
     }
 
     static TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+        @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
 
+        @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
 
+        @Override
         public X509Certificate[] getAcceptedIssuers() {
             return null;
         }
     } };
     public class NullHostNameVerifier implements HostnameVerifier {
+        @Override
         public boolean verify(String arg0, SSLSession arg1) {
             return true;
         }
