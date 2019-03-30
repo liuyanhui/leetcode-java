@@ -18,9 +18,6 @@ public class Answer {
                 case 3:
                     Answer3.main(array);
                     break;
-                case 6:
-                    Answer6.main(array);
-                    break;
                 case 8:
                     Answer8.main(array);
             }
