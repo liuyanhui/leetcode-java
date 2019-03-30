@@ -14,6 +14,10 @@ public class Answer {
             switch (topic) {
                 case 2:
                     Answer2.main(array);
+                    break;
+                case 3:
+                    Answer3.main(array);
+                    break;
                 case 6:
                     Answer6.main(array);
             }
