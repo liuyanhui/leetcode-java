@@ -111,14 +111,23 @@ class Child{
             System.out.print("param error,please input one param");
             System.exit(1);
         }
-        String length=args[0];
-        Answer3 answer3 = new Answer3();
-        answer3.setLen(Integer.valueOf(length));
-        answer3.createLink();
-        answer3.setStart(0);
-        answer3.setStep(3);
-        answer3.show();
-        answer3.play();
+
+        int length=Integer.valueOf(args[0]);
+        if(length<=0){
+            System.out.print("param error");
+            System.exit(1);
+        }else if(length==1){
+            System.out.println("无人数保留");
+        }else {
+            Answer3 answer3 = new Answer3();
+            answer3.setLen(Integer.valueOf(length));
+            answer3.createLink();
+            answer3.setStart(0);
+            answer3.setStep(3);
+            answer3.show();
+            answer3.play();
+        }
+
 
     }
 }
