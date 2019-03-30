@@ -13,8 +13,7 @@ public class Answer8 {
     public static void main(String[] args) {
 
         if(null==args||args.length!=1){
-            System.out.print("param error,please input one param");
-            System.exit(1);
+            System.out.println("请输入一个参数");
         }
         getCertExpired(args[0]);
     }

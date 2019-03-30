@@ -20,6 +20,9 @@ public class Answer {
                     break;
                 case 6:
                     Answer6.main(array);
+                    break;
+                case 8:
+                    Answer8.main(array);
             }
         }
     }
