@@ -16,16 +16,22 @@ public class Answer9 {
     static String DIC_FILENAME = "simu-chinese.txt";
 
     public static void main(String[] args) {
-        if(args==null || args.length==1){
-            return ;
+        if (args == null || args.length == 1) {
+            return;
         }
+
+        String words = "时间倒是肯定就是";
+        for (char c : words.toCharArray()) {
+            System.out.println(c);
+        }
+
+
         //分词
         //你好
         //你X
         //X好
         initial(DIC_FILENAME);
         //根据分词
-
 
 
         System.out.println("end");
