@@ -27,7 +27,7 @@ import java.util.Arrays;
  * <p>
  * matrix.length == n matrix[i].length == n 1 <= n <= 20 -1000 <= matrix[i][j] <= 1000
  */
-public class RotateImage48 {
+public class Rotate_Image_48 {
     public static void rotate(int[][] matrix) {
         rotate_2(matrix);
     }
