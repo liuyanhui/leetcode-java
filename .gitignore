@@ -3,6 +3,7 @@
 .settings
 .idea
 .idea/
+.DS_Store
 *.iml
 target/
 catalina.base_IS_UNDEFINED/
