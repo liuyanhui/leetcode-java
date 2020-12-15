@@ -57,14 +57,14 @@ public class Spiral_Matrix_54 {
                 ret.add(matrix[j][c1]);
             }
             c1--;
-            if (r0 < r1) {
+            if (r0 <= r1) {
                 //向左
                 for (int j = c1; j >= c0; j--) {
                     ret.add(matrix[r1][j]);
                 }
             }
             r1--;
-            if (c0 < c1) {
+            if (c0 <= c1) {
                 //向上
                 for (int j = r1; j >= r0; j--) {
                     ret.add(matrix[j][c0]);
