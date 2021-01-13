@@ -2,23 +2,23 @@ package leetcode;
 
 //Definition for singly-linked list.
 class ListNode {
-    int val;
-    ListNode next;
+    public int val;
+    public ListNode next;
 
-    ListNode() {
+    public ListNode() {
     }
 
-    ListNode(int val) {
+    public ListNode(int val) {
         this.val = val;
     }
 
-    ListNode(int val, ListNode next) {
+    public ListNode(int val, ListNode next) {
         this.val = val;
         this.next = next;
     }
 
-    static ListNode fromArray(int[] input) {
-        if (input == null) return null;
+    public static ListNode fromArray(int[] input) {
+        if (input == null || input.length == 0) return null;
         ListNode head = new ListNode();
         ListNode node = head;
         for (int i = 0; i < input.length; i++) {
@@ -28,7 +28,7 @@ class ListNode {
         return head.next;
     }
 
-    boolean equalsTo(ListNode input) {
+    public boolean equalsTo(ListNode input) {
         if (this == null || input == null) {
             return false;
         }
@@ -47,5 +47,18 @@ class ListNode {
         } else {
             return false;
         }
+    }
+
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        ListNode t = this;
+        while (t != null) {
+            ret.append(t.val);
+            t = t.next;
+            if (t != null) {
+                ret.append("->");
+            }
+        }
+        return ret.toString();
     }
 }
