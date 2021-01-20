@@ -177,13 +177,7 @@ public class Merge_k_Sorted_Lists_23 {
         }
         ListNode ret = mergeKLists(listNodeArray);
         System.out.println(ret);
-        if (ret != null) {
-            System.out.println(ret.toString().equals(ListNode.fromArray(expected).toString()));
-        } else if (ret == null && expected.length == 0) {
-            System.out.println(true);
-        } else {
-            System.out.println(false);
-        }
+        System.out.println(ListNode.isSame(ret, expected));
         System.out.println("--------------");
     }
 }

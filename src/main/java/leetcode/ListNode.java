@@ -49,6 +49,16 @@ class ListNode {
         }
     }
 
+    public static boolean isSame(ListNode node, int[] expected) {
+        if (node != null) {
+            return node.toString().equals(ListNode.fromArray(expected).toString());
+        } else if (node == null && expected.length == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String toString() {
         StringBuilder ret = new StringBuilder();
         ListNode t = this;
