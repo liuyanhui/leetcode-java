@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.stream.Stream;
+
 public class ArrayUtils {
     public static void printIntArray(int[] nums) {
         if (nums == null) return;
@@ -31,5 +33,32 @@ public class ArrayUtils {
 
     public static void isSameThenPrintln(int[] nums, int[] expected) {
         System.out.println(isSame(nums, expected));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Integer.bitCount(15));
+        System.out.println(Integer.toBinaryString(15));
+        System.out.println(Integer.toBinaryString(4));
+        System.out.print("-------");
+        Stream.of(Integer.toBinaryString(4).toCharArray()).forEach(s -> System.out.print(s));
+        System.out.println("-------");
+        System.out.println(Integer.toBinaryString(4).toCharArray()[0]);
+        System.out.println(Integer.toBinaryString(4).toCharArray()[1]);
+        System.out.println("======");
+        System.out.println(Integer.toBinaryString(0));
+        System.out.println("^^^^^^^^^");
+        String str = "fghjk";
+        Stream.of(str.toCharArray()).forEach(s -> System.out.print(s));
+        System.out.println("");
+        char[] ttt = str.toCharArray();
+        System.out.print("[");
+        for(int i=0;i<ttt.length;i++){
+            System.out.print(ttt[i]);
+        }
+        System.out.println("]");
+        System.out.println("ttt[0]=" + ttt[0]);
+        System.out.println("str.substring(0,1)=" + str.substring(0, 1));
+        System.out.println("ttt[1]=" + ttt[1]);
+        System.out.println("ttt[2]=" + ttt[2]);
     }
 }
