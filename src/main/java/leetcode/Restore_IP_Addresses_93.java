@@ -164,7 +164,7 @@ public class Restore_IP_Addresses_93 {
     }
 
     public static void main(String[] args) {
-//        do_func("25525511135", new String[]{"255.255.11.135", "255.255.111.35"});
+        do_func("25525511135", new String[]{"255.255.11.135", "255.255.111.35"});
         do_func("0000", new String[]{"0.0.0.0"});
         do_func("1111", new String[]{"1.1.1.1"});
         do_func("010010", new String[]{"0.10.0.10", "0.100.1.0"});
