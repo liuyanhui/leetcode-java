@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 这里有金矿
  * 169. Majority Element
  * Easy
  * ---------------------
@@ -32,6 +33,7 @@ public class Majority_Element_169 {
     }
 
     /**
+     * 金矿
      * 两个元素不同，删除两个元素；两个元素相等，删除一个元素。
      * 参考思路：
      * https://leetcode.com/problems/majority-element/solution/ 之Approach 6: Boyer-Moore Voting Algorithm
