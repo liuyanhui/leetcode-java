@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,4 +37,30 @@ public class ArrayListUtils {
         return true;
     }
 
+    public static List<List<Integer>> arrayToList(Integer[][] input) {
+        if (input == null) return null;
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < input.length; i++) {
+            ret.add(Arrays.asList(input[i]));
+        }
+        return ret;
+    }
+
+    public static List<List<Integer>> arrayToList(int[][] input) {
+        if (input == null) return null;
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < input.length; i++) {
+            List<Integer> t = new ArrayList<>();
+            for (int j = 0; j < input[i].length; j++) {
+                t.add(input[i][j]);
+            }
+            ret.add(t);
+        }
+        return ret;
+    }
+
+    public static void main(String args[]) {
+        Integer[][] input = new Integer[][]{{2}, {3, 4}, {6, 5, 7}, {4, 1, 8, 3}};
+        List<List<Integer>> r1 = arrayToList(input);
+    }
 }
