@@ -31,9 +31,30 @@ public class ArrayUtils {
         return same;
     }
 
+    public static boolean isSame(String[] nums, String[] expected) {
+        if (nums == null || expected == null) return false;
+        boolean same = true;
+        if (nums.length == expected.length) {
+            for (int i = 0; i < nums.length; i++) {
+                if (!nums[i].equals(expected[i])) {
+                    same = false;
+                    break;
+                }
+            }
+        } else {
+            same = false;
+        }
+        return same;
+    }
+
     public static void isSameThenPrintln(int[] nums, int[] expected) {
         System.out.println(isSame(nums, expected));
     }
+
+    public static void isSameThenPrintln(String[] nums, String[] expected) {
+        System.out.println(isSame(nums, expected));
+    }
+
 
     public static void main(String[] args) {
         System.out.println(Integer.bitCount(15));
@@ -52,7 +73,7 @@ public class ArrayUtils {
         System.out.println("");
         char[] ttt = str.toCharArray();
         System.out.print("[");
-        for(int i=0;i<ttt.length;i++){
+        for (int i = 0; i < ttt.length; i++) {
             System.out.print(ttt[i]);
         }
         System.out.println("]");
