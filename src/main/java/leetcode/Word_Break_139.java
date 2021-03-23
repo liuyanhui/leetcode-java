@@ -44,7 +44,7 @@ public class Word_Break_139 {
     /**
      * DP 思路，公式如下：
      * 1.DP[i]表示从0到i是否满足wordBreak条件，则DP[s.length()-1]为所求
-     * 2.DP[i]的计算可以分割为两部分，[0:j)和[j:i+1)，如果两部分都为true那么DP[i]=true
+     * 2.DP[i]的计算可以分割为两部分，[0:j)和[j:i+1)，如果两部分都为true那么DP[i]=true。其中[0:j)的值是dp[j]，是已经计算过的。所以每个dp[i]可以分为已计算和未计算两个部分。
      * 3.DP[i] = { 遍历 j 从 0 到 i-1，只要存在 j 使得 DP[j] && dict.contains(s.substring(j,i)) 为true,则DP[i]==true }
      * 4.返回DP[s.length()-1]
      *
