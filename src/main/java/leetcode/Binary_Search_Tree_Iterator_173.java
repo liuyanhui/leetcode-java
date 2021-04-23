@@ -79,7 +79,7 @@ public class Binary_Search_Tree_Iterator_173 {
 
     /**
      * 这里有金矿
-     * 很巧妙的利用了stack，对tree遍历：（这里是先序遍历思路）
+     * 很巧妙的利用了stack，对tree遍历：（这里是先序遍历思路，本质上是用stack实现了递归过程）
      * 1.初始化stack，n和n.left入栈。
      * 2.next()方法，循环操作stack直到stack为空
      * 2.1. n=pop()，操作n 。注：这里的隐含条件是n.left为空或者已经被操作过了，所以无需考虑n.left，只需操作n即可。
