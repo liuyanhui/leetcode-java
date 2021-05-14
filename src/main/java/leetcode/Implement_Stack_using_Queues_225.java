@@ -102,7 +102,6 @@ public class Implement_Stack_using_Queues_225 {
         /** Push element x onto stack. */
         public void push(int x) {
             list.add(x);
-            queue
         }
 
         /** Removes the element on top of the stack and returns that element. */
