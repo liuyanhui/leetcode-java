@@ -58,6 +58,7 @@ public class Majority_Element_II_229 {
                 n2 = n;
                 count2++;
             } else {
+                //当n1,n2和n 三个数不同时，同时去掉这三个数。跟majority element的同时去掉两个数的思路时一致的。
                 count1--;
                 count2--;
             }
