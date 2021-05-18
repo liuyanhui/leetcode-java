@@ -75,7 +75,7 @@ public class Summary_Ranges_228 {
         int beg;
         for (int i = 0; i < nums.length; i++) {
             beg = nums[i];
-            //这里即考虑了最后一个数字，有考虑了题目逻辑。2合一
+            //金矿：这里即考虑了最后一个数字(有效防止后面的nums[i + 1]数组溢出)，又考虑了题目逻辑。2合一
             while (i < nums.length - 1 && nums[i] + 1 == nums[i + 1]) {
                 i++;
             }
@@ -100,7 +100,7 @@ public class Summary_Ranges_228 {
         List<String> ret = new ArrayList<>();
         if (nums == null || nums.length == 0) return ret;
         int beg = nums[0], lastEnd = nums[0];
-        int count = 0;//多余遍历，可用lastEnd++替换
+        int count = 0;
         for (int i = 0; i < nums.length; i++) {
             if (beg + count != nums[i]) {
                 if (beg < lastEnd) {
