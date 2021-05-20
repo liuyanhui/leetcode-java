@@ -26,12 +26,13 @@ public class Ugly_Number_II_264 {
     }
 
     /**
+     * 问题转换为：min(2^i * 3^j * 5^k), i+j+k<n。每次计算后i,j,k有条件的加1
+     *
      * DP思路：
      *  We have an array k of first n ugly number. We only know, at the beginning, the first one, which is 1. Then
      * k[1] = min( k[0]x2, k[0]x3, k[0]x5). The answer is k[0]x2. So we move 2's pointer to 1. Then we test:
      * k[2] = min( k[1]x2, k[0]x3, k[0]x5). And so on.
      * Be careful about the cases such as 6, in which we need to forward both pointers of 2 and 3.
-     *
      * x here is multiplication.
      *
      * 参考思路：
