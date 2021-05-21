@@ -27,7 +27,7 @@ import java.util.Arrays;
  * 1 <= n <= 5000
  * 0 <= citations[i] <= 1000
  */
-public class H_Index_247 {
+public class H_Index_274 {
     public static int hIndex(int[] citations) {
         return hIndex_2(citations);
     }
