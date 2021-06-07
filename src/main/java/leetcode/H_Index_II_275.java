@@ -47,7 +47,7 @@ public class H_Index_II_275 {
     public static int hIndex_2(int[] citations) {
         int l = 0, r = citations.length - 1;
         int n = citations.length;
-        while (l <= r) {
+        while (l <= r) {//"<="很关键,而不是"<"
             int mid = (l + r) / 2;
             if (citations[mid] < n - mid) {
                 l = mid + 1;
