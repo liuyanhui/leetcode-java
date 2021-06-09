@@ -52,6 +52,7 @@ public class Bulls_and_Cows_299 {
     }
 
     /**
+     * 有点套路
      * 参考思路：
      * https://leetcode.com/problems/bulls-and-cows/discuss/74621/One-pass-Java-solution
      *
