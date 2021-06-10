@@ -34,6 +34,12 @@ public class Range_Sum_Query_Immutable_303 {
      * 参考思路：
      * https://leetcode.com/problems/range-sum-query-immutable/solution/ 之 Approach3
      *
+     * sums数组中的元素是[0,i)，左闭右开的区间范围的数字之和，公式为：sums[i]=sums[i-1]+nums[i-1]
+     * 所求公式为：sums[right+1]-sums[left]
+     *
+     * Time Complexity:O(1)
+     * Space Complexity:O(n)
+     *
      * 验证通过：
      * Runtime: 6 ms, faster than 100.00% of Java online submissions for Range Sum Query - Immutable.
      * Memory Usage: 41.7 MB, less than 67.53% of Java online submissions for Range Sum Query - Immutable.
@@ -56,6 +62,9 @@ public class Range_Sum_Query_Immutable_303 {
     }
 
     /**
+     * Time Complexity:O(n)
+     * Space Complexity:O(n)
+     *
      * 验证通过：
      * Runtime: 105 ms, faster than 5.02% of Java online submissions for Range Sum Query - Immutable.
      * Memory Usage: 46.1 MB, less than 8.38% of Java online submissions for Range Sum Query - Immutable.
