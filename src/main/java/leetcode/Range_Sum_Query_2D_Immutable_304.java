@@ -36,6 +36,7 @@ package leetcode;
 public class Range_Sum_Query_2D_Immutable_304 {
 
     /**
+     * 有点套路
      * 参考思路
      * https://leetcode.com/problems/range-sum-query-2d-immutable/solution/ 之 Approach 4
      *
