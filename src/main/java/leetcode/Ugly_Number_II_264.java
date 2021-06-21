@@ -37,6 +37,8 @@ public class Ugly_Number_II_264 {
      *
      * 参考思路：
      * https://leetcode.com/problems/ugly-number-ii/discuss/69364/My-16ms-C%2B%2B-DP-solution-with-short-explanation
+     * 详细解释见，是一个k sorted list 问题：
+     * https://leetcode.com/problems/super-ugly-number/discuss/277313/My-view-of-this-question-hope-it-can-help-you-understand!!!
      *
      * 验证通过：
      * Runtime: 3 ms, faster than 53.95% of Java online submissions for Ugly Number II.
