@@ -40,7 +40,7 @@ public class Bulb_Switcher_319 {
 
     /**
      * 参考思路：https://leetcode.com/problems/bulb-switcher/discuss/77104/Math-solution..
-     * 
+     *
      * @param n
      * @return
      */
