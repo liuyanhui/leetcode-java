@@ -31,7 +31,7 @@ package leetcode;
 public class Power_of_Three_326 {
 
     public static boolean isPowerOfThree(int n) {
-        return isPowerOfThree_1(n);
+        return isPowerOfThree_3(n);
     }
 
     /**
@@ -41,7 +41,18 @@ public class Power_of_Three_326 {
      * @return
      */
     public static boolean isPowerOfThree_2(int n) {
-        return false;
+        // 1162261467 is 3^19,  3^20 is bigger than int
+        return (n > 0 && 1162261467 % n == 0);
+    }
+
+    /**
+     * https://leetcode.com/problems/power-of-three/discuss/77876/**-A-summary-of-all-solutions-(new-method-included-at-15%3A30pm-Jan-8th)
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isPowerOfThree_3(int n) {
+        return n == 0 ? false : n == Math.pow(3, Math.round(Math.log(n) / Math.log(3)));
     }
 
     /**
