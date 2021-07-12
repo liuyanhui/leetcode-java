@@ -37,9 +37,18 @@ public class ArrayListUtils {
         return true;
     }
 
-    public static List<List<Integer>> arrayToList(Integer[][] input) {
+//    public static List<List<Integer>> arrayToList(Integer[][] input) {
+//        if (input == null) return null;
+//        List<List<Integer>> ret = new ArrayList<>();
+//        for (int i = 0; i < input.length; i++) {
+//            ret.add(Arrays.asList(input[i]));
+//        }
+//        return ret;
+//    }
+
+    public static <T> List<List<T>> arrayToList(T[][] input) {
         if (input == null) return null;
-        List<List<Integer>> ret = new ArrayList<>();
+        List<List<T>> ret = new ArrayList<>();
         for (int i = 0; i < input.length; i++) {
             ret.add(Arrays.asList(input[i]));
         }
