@@ -33,10 +33,11 @@ import java.util.*;
 public class Reconstruct_Itinerary_332 {
 
     public static List<String> findItinerary(List<List<String>> tickets) {
-        return findItinerary_3(tickets);
+        return findItinerary_4(tickets);
     }
 
     /**
+     * 金矿
      * 欧拉通路问题，一笔画问题
      * 参考思路：
      * https://leetcode-cn.com/problems/reconstruct-itinerary/solution/zhong-xin-an-pai-xing-cheng-by-leetcode-solution/
@@ -70,6 +71,68 @@ public class Reconstruct_Itinerary_332 {
         path.push(cur);
     }
 
+    /**
+     * findItinerary_2的改进版
+     * 没有使用PriorityQueue；而是直接使用List，并自己实现排序算法。
+     *
+     * 验证通过：
+     * Runtime: 10 ms, faster than 22.07% of Java online submissions for Reconstruct Itinerary.
+     * Memory Usage: 46.7 MB, less than 16.85% of Java online submissions for Reconstruct Itinerary.
+     *
+     * @param tickets
+     * @return
+     */
+    public static List<String> findItinerary_4(List<List<String>> tickets) {
+        //用邻接表保存图，并按字母序排序
+        Map<String, List<String>> adjacentMap = new HashMap<>();
+        //initial the adjacent list
+        for (List<String> t : tickets) {
+            List<String> tmp = adjacentMap.computeIfAbsent(t.get(0), v -> new ArrayList<>());
+            insertSortedList_4(tmp, t.get(1));
+        }
+        List<String> ret = new ArrayList<>();
+        ret.add("JFK");
+        int tc = tickets.size();
+        do_find_recursive_4(adjacentMap, tc, ret);
+        return ret;
+    }
+
+    private static boolean do_find_recursive_4(Map<String, List<String>> map, int tc, List<String> path) {
+        if (path.size() == tc + 1) return true;
+        String curNode = path.get(path.size() - 1);
+        List<String> list = map.get(curNode);
+        if (list == null || list.size() == 0) return false;
+        for (int i = 0; i < list.size(); i++) {
+            String t = list.get(i);
+            path.add(t);
+            list.remove(i);
+            if (do_find_recursive_4(map, tc, path)) {
+                return true;
+            }
+            path.remove(path.size() - 1);
+            list.add(i, t);
+        }
+        return false;
+    }
+
+    //从小到大排序
+    private static void insertSortedList_4(List<String> list, String s) {
+        if (list.isEmpty()) {
+            list.add(s);
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                int t = compare(list.get(i), s);
+                if (t >= 0) {
+                    list.add(i, s);
+                    break;
+                }
+                if (i == list.size() - 1) {
+                    list.add(s);
+                    break;
+                }
+            }
+        }
+    }
 
     /**
      * 正确的思路：
@@ -80,6 +143,7 @@ public class Reconstruct_Itinerary_332 {
      * 4.当路径中节点数<tc+1且遍历未结束时，递归调用
      *
      * 验证失败，有用例未通过。26 / 80 test cases passed.
+     * 问题出现在递归方法中PriorityQueue遍历的部分。具体原因见代码注释。findItinerary_4的方法通过了验证。
      *
      * */
     public static List<String> findItinerary_2(List<List<String>> tickets) {
@@ -111,19 +175,21 @@ public class Reconstruct_Itinerary_332 {
     private static boolean do_find_recursive(Map<String, PriorityQueue<String>> map, int tc, List<String> path) {
         if (path.size() == tc + 1) return true;
         String curNode = path.get(path.size() - 1);
-        if (map.get(curNode) == null) return false;
-        String[] nodeArr = new String[map.get(curNode).size()];
-        map.get(curNode).toArray(nodeArr);
+        PriorityQueue<String> queue = map.get(curNode);
+        if (queue == null || queue.isEmpty()) return false;
+        String[] nodeArr = new String[queue.size()];
+        queue.toArray(nodeArr);
         for (int i = 0; i < nodeArr.length; i++) {
-            String nextNode = nodeArr[i];
-            path.add(nextNode);
-            map.get(curNode).remove(nextNode);
+            path.add(nodeArr[i]);
+            //金矿
+            //TODO 这里是问题所在，可能remove了错误的元素。可能存在重复的元素。如果是被remove的元素在之前存在重复的值，这个remove会错误的删除前面的哪个相等的值，从而导致计算结果错误。
+            queue.remove(nodeArr[i]);
             if (do_find_recursive(map, tc, path)) {
                 return true;
-            } else {
-                path.remove(nextNode);
-                map.get(curNode).offer(nextNode);
             }
+            //TODO 这里是问题所在，可能remove了错误的元素。可能存在重复的元素
+            path.remove(nodeArr[i]);
+            queue.offer(nodeArr[i]);
         }
         return false;
     }
@@ -175,15 +241,19 @@ public class Reconstruct_Itinerary_332 {
 
     //逆序排序(从大到小)，优化集合List的删除性能
     private static void insertSortedList(List<String> list, String s) {
-        for (int i = 0; i < list.size(); i++) {
-            int t = compare(list.get(i), s);
-            if (t < 0) {
-                list.add(i, s);
-                break;
-            }
-            if (i == list.size() - 1) {
-                list.add(s);
-                break;
+        if (list.isEmpty()) {
+            list.add(s);
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                int t = compare(list.get(i), s);
+                if (t < 0) {
+                    list.add(i, s);
+                    break;
+                }
+                if (i == list.size() - 1) {
+                    list.add(s);
+                    break;
+                }
             }
         }
     }
