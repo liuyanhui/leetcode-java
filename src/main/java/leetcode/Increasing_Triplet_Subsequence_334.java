@@ -33,6 +33,7 @@ public class Increasing_Triplet_Subsequence_334 {
     }
 
     /**
+     * 金矿。运用数学推导思路，减少影响因素，降低复杂度
      * 参考思路：
      * https://leetcode.com/problems/increasing-triplet-subsequence/discuss/79004/Concise-Java-solution-with-comments.
      *
@@ -70,7 +71,7 @@ public class Increasing_Triplet_Subsequence_334 {
      * 		if n[i']<n[x] then i=i',j=x
      * 		else i'=x
      *
-     * 验证失败，大概思路对路，细节有问题
+     * 验证失败，大概思路对路，实现细节有问题
      *
      * @param nums
      * @return
