@@ -33,6 +33,8 @@ public class Top_K_Frequent_Elements_347 {
      * 参考思路：
      * https://leetcode.com/problems/top-k-frequent-elements/discuss/81602/Java-O(n)-Solution-Bucket-Sort
      *
+     * 金矿：Map中根据value排序时，可以使用bucket排序，bucket的下标就是value的值，形如：bucket[value]=key
+     *
      * 验证通过：
      * Runtime: 7 ms, faster than 98.79% of Java online submissions for Top K Frequent Elements.
      * Memory Usage: 41.3 MB, less than 87.95% of Java online submissions for Top K Frequent Elements.
