@@ -170,7 +170,7 @@ public class Water_and_Jug_Problem_365 {
     }
 
     /**
-     * 数学问题思路
+     * 数学问题思路，贝祖定理
      *
      * 参考思路：
      * https://leetcode.com/problems/water-and-jug-problem/discuss/83715/Math-solution-Java-solution
