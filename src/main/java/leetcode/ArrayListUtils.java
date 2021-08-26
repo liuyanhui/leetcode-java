@@ -16,6 +16,28 @@ public class ArrayListUtils {
         return true;
     }
 
+    public static boolean isSame(List<List<Integer>> list, int[][] arr) {
+        boolean same = true;
+        if (list.size() == arr.length) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).size() != arr[i].length) {
+                    same = false;
+                    break;
+                }
+                for (int j = 0; j < list.get(i).size(); j++) {
+                    if (list.get(i).get(j) != arr[i][j]) {
+                        same = false;
+                        break;
+                    }
+                }
+                if (!same) break;
+            }
+        } else {
+            same = false;
+        }
+        return same;
+    }
+
     public static boolean sortedThenCompare(List<Integer> list1, List<Integer> list2) {
         if (list1 == null && list2 == null) return false;
         if (list1 == null || list2 == null) return false;

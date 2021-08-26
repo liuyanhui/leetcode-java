@@ -100,25 +100,7 @@ public class Subsets_II_90 {
     private static void do_func(int[] nums, int[][] expected) {
         List<List<Integer>> ret = subsetsWithDup(nums);
         System.out.println(ret);
-        boolean same = true;
-        if (ret.size() == expected.length) {
-            for (int i = 0; i < ret.size(); i++) {
-                if (ret.get(i).size() != expected[i].length) {
-                    same = false;
-                    break;
-                }
-                for (int j = 0; j < ret.get(i).size(); j++) {
-                    if (ret.get(i).get(j) != expected[i][j]) {
-                        same = false;
-                        break;
-                    }
-                }
-                if (!same) break;
-            }
-        } else {
-            same = false;
-        }
-        System.out.println(same);
+        System.out.println(ArrayListUtils.isSame(ret, expected));
         System.out.println("--------------");
     }
 }
