@@ -54,7 +54,7 @@ package leetcode;
 public class Guess_Number_Higher_or_Lower_II_375 {
 
     public static int getMoneyAmount(int n) {
-        return getMoneyAmount_1(n);
+        return getMoneyAmount_2(n);
     }
 
     /**
