@@ -15,6 +15,15 @@ public class ArrayUtils {
         System.out.println("]");
     }
 
+    public static void printIntArray(int[][] nums) {
+        if (nums == null) return;
+        System.out.print("[");
+        for (int i = 0; i < nums.length; i++) {
+            printIntArray(nums[i]);
+        }
+        System.out.println("]");
+    }
+
     public static void printIntArray(char[] nums) {
         if (nums == null) return;
         System.out.print("[");
