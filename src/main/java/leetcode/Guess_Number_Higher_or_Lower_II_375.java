@@ -90,7 +90,7 @@ public class Guess_Number_Higher_or_Lower_II_375 {
                 dp[j][i + j] = t;
             }
         }
-        ArrayUtils.printIntArray(dp);
+//        ArrayUtils.printIntArray(dp);
         return dp[1][n];
     }
 
