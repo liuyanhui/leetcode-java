@@ -36,20 +36,65 @@ package leetcode;
  */
 public class Wiggle_Subsequence_376 {
     public static int wiggleMaxLength(int[] nums) {
-        return wiggleMaxLength_2(nums);
+        return wiggleMaxLength_3(nums);
+    }
+
+    /**
+     * wiggleMaxLength_2的空间复杂度优化版，但是没有wiggleMaxLength_2直观
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Wiggle Subsequence.
+     * Memory Usage: 36.5 MB, less than 71.73% of Java online submissions for Wiggle Subsequence.
+     *
+     * @param nums
+     * @return
+     */
+    public static int wiggleMaxLength_3(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+
+        int up = 0, down = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] < nums[i]) {
+                up = down + 1;
+            } else if (nums[i - 1] > nums[i]) {
+                down = up + 1;
+            }
+        }
+        return 1 + Math.max(down, up);
     }
 
     /**
      * DP思路
+     * 参考思路：
+     * https://leetcode.com/problems/wiggle-subsequence/discuss/84843/Easy-understanding-DP-solution-with-O(n)-Java-version
+     * https://leetcode.com/problems/wiggle-subsequence/solution/ 之Approach 2 和 3
      *
      * @param nums
      * @return
      */
     public static int wiggleMaxLength_2(int[] nums) {
-        return 0;
+        if (nums == null || nums.length == 0) return 0;
+
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] < nums[i]) {
+                up[i] = down[i - 1] + 1;
+                down[i] = down[i - 1];
+            } else if (nums[i - 1] > nums[i]) {
+                up[i] = up[i - 1];
+                down[i] = up[i - 1] + 1;
+            } else {
+                up[i] = up[i - 1];
+                down[i] = down[i - 1];
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 
     /**
+     * 贪心法 Greedy Approach
+     *
      * 从前向后依次遍历，根据两个数字的趋势(direct)和当前两个数字的趋势判断，如果趋势改变结果加1。
      * direct>0表示单调增，direct<0表示单调减，direct==0表示趋势不变
      *
