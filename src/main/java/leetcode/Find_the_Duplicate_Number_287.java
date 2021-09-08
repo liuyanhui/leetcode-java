@@ -62,8 +62,6 @@ public class Find_the_Duplicate_Number_287 {
         while (low <= high) {
             int mid = low + (high - low) / 2;
             long count = Arrays.stream(nums).filter(v -> v <= mid).count();
-            // 不可能存在count<mid的情况，只有count==mid或者count==mid+1两种情况。
-            // 因为nums是不变的，每次计算都要遍历整个nums。
             if (count <= mid) {
                 low = mid + 1;
             } else {
