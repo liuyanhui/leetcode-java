@@ -1,5 +1,6 @@
 package leetcode;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +40,37 @@ import java.util.Set;
  */
 public class Find_the_Duplicate_Number_287 {
     public static int findDuplicate(int[] nums) {
-        return findDuplicate_3(nums);
+        return findDuplicate_4(nums);
+    }
+
+    /**
+     * 金矿：在未排序的集合中查找某个数，采用数字binary search；在已排序的集合中查找某个数，采用下标binary search
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/find-the-duplicate-number/solution/
+     *
+     * 验证通过：
+     * Runtime: 68 ms, faster than 5.42% of Java
+     * Memory Usage: 57 MB, less than 30.84% of Java
+     *
+     * @param nums
+     * @return
+     */
+    public static int findDuplicate_4(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int low = 1, high = nums.length - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            long count = Arrays.stream(nums).filter(v -> v <= mid).count();
+            // 不可能存在count<mid的情况，只有count==mid或者count==mid+1两种情况。
+            // 因为nums是不变的，每次计算都要遍历整个nums。
+            if (count <= mid) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return low;
     }
 
     /**
@@ -127,6 +158,7 @@ public class Find_the_Duplicate_Number_287 {
         do_func(new int[]{1, 1}, 1);
         do_func(new int[]{1, 1, 2}, 1);
         do_func(new int[]{1, 3, 2, 2, 2}, 2);
+        do_func(new int[]{2, 2, 2, 2, 2}, 2);
     }
 
     private static void do_func(int[] nums, int expected) {
