@@ -44,10 +44,12 @@ public class Find_the_Duplicate_Number_287 {
     }
 
     /**
-     * 金矿：在未排序的集合中查找某个数，采用数字binary search；在已排序的集合中查找某个数，采用下标binary search
+     * 金矿：在未排序的集合中查找某个数，采用基于数字的binary search；在已排序的集合中查找某个数，采用基于下标的binary search
+     * 与Find_Minimum_in_Rotated_Sorted_Array_153和Kth_Smallest_Element_in_a_Sorted_Matrix_378可以组成一个系列
      *
      * 参考思路：
      * https://leetcode.com/problems/find-the-duplicate-number/solution/
+     * https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code
      *
      * 验证通过：
      * Runtime: 68 ms, faster than 5.42% of Java
@@ -59,6 +61,7 @@ public class Find_the_Duplicate_Number_287 {
     public static int findDuplicate_4(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         int low = 1, high = nums.length - 1;
+        //注意：这里是数字比较而不是下标，可能存在[1,1,1,2,1,1,1]这样的用例，初始时low==high
         while (low <= high) {
             int mid = low + (high - low) / 2;
             long count = Arrays.stream(nums).filter(v -> v <= mid).count();
@@ -157,6 +160,7 @@ public class Find_the_Duplicate_Number_287 {
         do_func(new int[]{1, 1, 2}, 1);
         do_func(new int[]{1, 3, 2, 2, 2}, 2);
         do_func(new int[]{2, 2, 2, 2, 2}, 2);
+        do_func(new int[]{1, 1, 1, 2, 1, 1, 1}, 1);
     }
 
     private static void do_func(int[] nums, int expected) {
