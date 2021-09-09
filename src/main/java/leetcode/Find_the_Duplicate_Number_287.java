@@ -64,6 +64,7 @@ public class Find_the_Duplicate_Number_287 {
         //注意：这里是数字比较而不是下标，可能存在[1,1,1,2,1,1,1]这样的用例，初始时low==high
         while (low <= high) {
             int mid = low + (high - low) / 2;
+            //关键点：每次都需要遍历整个数组
             long count = Arrays.stream(nums).filter(v -> v <= mid).count();
             if (count <= mid) {
                 low = mid + 1;
