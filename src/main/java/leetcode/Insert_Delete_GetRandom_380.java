@@ -40,6 +40,14 @@ public class Insert_Delete_GetRandom_380 {
     /**
      * The List is used to store numbers and serve the getRandom() method. The Map contains the mapping between the value and its index in the ArrayList. The Map helps to check whether a value is already inserted or not. The main trick is when you remove a value. ArrayList's remove method is O(n) if you remove from random location. To overcome that, we swap the values between (randomIndex, lastIndex) and always remove the entry from the end of the list. After the swap, you need to update the new index of the swapped value (which was previously at the end of the list) in the map.
      *
+     * 思路描述：
+     * insert()很容易保证O(1)的复杂度使用hashtable即可；
+     * remove()使用hashtable也可以保证O(1)；
+     * getRandom()无法通过hashtable保证O(1)，但是使用array可以保证O(1)；
+     * 所以需要通过hashtable和array组合实现；
+     * insert()和remove()都会修改hashtable和array，getRandom()只会读取array，所以只能在insert()和remove()中处理array；
+     * insert()可以顺序或随机操作array，而remove()是必然随机操作；
+     *
      * 参考思路：
      * https://leetcode.com/problems/insert-delete-getrandom-o1/discuss/85401/Java-solution-using-a-HashMap-and-an-ArrayList-along-with-a-follow-up.-(131-ms)
      * https://leetcode.com/problems/insert-delete-getrandom-o1/discuss/85425/Java-Solution-(Beats-99.20)-Using-HashMap-and-ArrayList-with-Explanation
