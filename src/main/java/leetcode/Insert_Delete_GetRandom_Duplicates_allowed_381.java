@@ -109,8 +109,6 @@ public class Insert_Delete_GetRandom_Duplicates_allowed_381 {
 //        System.out.println(randomizedSet.remove(1));
 //        System.out.println(randomizedSet.insert(1));
 
-        //["RandomizedCollection","insert","insert","insert","insert","insert","insert","remove","remove","remove","remove","remove","insert","remove","remove","getRandom","getRandom","getRandom","getRandom","getRandom","getRandom","getRandom","getRandom","getRandom","getRandom"]
-        //[[],[10],[10],[20],[20],[30],[30],[10],[20],[20],[10],[30],[40],[30],[30],[],[],[],[],[],[],[],[],[],[]]
         System.out.println("------------------");
         randomizedSet = new RandomizedCollection();
         System.out.println(randomizedSet.insert(10));
