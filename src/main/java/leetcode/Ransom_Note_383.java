@@ -29,7 +29,7 @@ public class Ransom_Note_383 {
      * 验证通过：
      * Runtime: 3 ms, faster than 83.11% of Java online submissions for Ransom Note.
      * Memory Usage: 38.9 MB, less than 93.16% of Java online submissions for Ransom Note.
-     * 
+     *
      * @param ransomNote
      * @param magazine
      * @return
