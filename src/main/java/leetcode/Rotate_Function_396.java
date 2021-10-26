@@ -40,7 +40,7 @@ public class Rotate_Function_396 {
 
     /**
      * 套路
-     * 
+     *
      * 参考思路：
      * https://leetcode.com/problems/rotate-function/discuss/87853/Java-O(n)-solution-with-explanation
      * https://leetcode.com/problems/rotate-function/discuss/1243652/DP-Code-Explained-in-Detail-or-O-(N)-time-or-O-(N)-space
