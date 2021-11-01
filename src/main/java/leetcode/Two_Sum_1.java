@@ -38,7 +38,7 @@ public class Two_Sum_1 {
      * 验证通过：
      * Runtime: 1 ms, faster than 99.68% of Java online submissions for Two Sum.
      * Memory Usage: 39.1 MB, less than 75.95% of Java online submissions for Two Sum.
-     * 
+     *
      * @param nums
      * @param target
      * @return
