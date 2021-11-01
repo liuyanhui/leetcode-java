@@ -129,12 +129,12 @@ public class Nth_Digit_400 {
     }
 
     public static void main(String[] args) {
-//        do_func(3, 3);
-//        do_func(11, 0);
-//        do_func(30, 2);
-//        do_func(2345, 1);
+        do_func(3, 3);
+        do_func(11, 0);
+        do_func(30, 2);
+        do_func(2345, 1);
         do_func(Integer.MAX_VALUE, 2);
-//        do_func(1111111111, 1);
+        do_func(1111111111, 1);
     }
 
     private static void do_func(int n, int expected) {
