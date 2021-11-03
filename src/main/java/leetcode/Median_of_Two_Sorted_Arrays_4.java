@@ -36,17 +36,84 @@ package leetcode;
  * 0 <= m <= 1000
  * 0 <= n <= 1000
  * 1 <= m + n <= 2000
- * -106 <= nums1[i], nums2[i] <= 106
+ * -10^6 <= nums1[i], nums2[i] <= 10^6
  */
 public class Median_of_Two_Sorted_Arrays_4 {
     /**
-     * 未完成
+     *
      * @param nums1
      * @param nums2
      * @return
      */
     public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        return findMedianSortedArrays_2(nums1,nums2);
+        return findMedianSortedArrays_3(nums1, nums2);
+    }
+
+    /**
+     * 递归法，
+     * 问题转化为寻找第k小的数，
+     * 假设nums1.length=m，nums2.length=n
+     * 1.k=(m+n)/2
+     * 2.k=n/2，当nums1[(m+n)/2]<nums2[(m+n)/2]时，去掉nums1中的[0:k/2]区间的数
+     * 3.k=(n-m)/2，当nums1[n/2]<nums2[n/2]时，去掉nums1中的[0:k/2]区间的数
+     *
+     * round2 ：2021.11.3
+     * 验证通过：
+     * Runtime: 2 ms, faster than 99.90% of Java.
+     * Memory Usage: 40.1 MB, less than 86.17% of Java
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public static double findMedianSortedArrays_3(int[] nums1, int[] nums2) {
+        if ((nums1.length + nums2.length) % 2 == 0) {//偶数个数字
+            double d1 = findKthNumber(nums1, 0, nums2, 0, (nums1.length + nums2.length) / 2 - 1);
+            double d2 = findKthNumber(nums1, 0, nums2, 0, (nums1.length + nums2.length) / 2);
+            return (d1 + d2) / 2;
+        } else {//奇数个数字
+            return findKthNumber(nums1, 0, nums2, 0, (nums1.length + nums2.length) / 2);
+        }
+    }
+
+    /**
+     *
+     * @param nums1
+     * @param beg1
+     * @param nums2
+     * @param beg2
+     * @param k k从0开始
+     * @return
+     */
+    private static double findKthNumber(int[] nums1, int beg1, int[] nums2, int beg2, int k) {
+        //某个数组已经耗尽时
+        if (beg1 >= nums1.length) {
+            return nums2[beg2 + k];
+        }
+        if (beg2 >= nums2.length) {
+            return nums1[beg1 + k];
+        }
+        //k==0时，直接比较两个数组第0个数字
+        if (k == 0) {
+            return Math.min(nums1[beg1], nums2[beg2]);
+        }
+        //两个数组较长的放后面
+        if (nums1.length - beg1 > nums2.length - beg2) {
+            int[] t = nums1;
+            nums1 = nums2;
+            nums2 = t;
+            int bt = beg1;
+            beg1 = beg2;
+            beg2 = bt;
+        }
+        //防止较短的数组溢出
+        int idx1 = ((k / 2 + beg1 < nums1.length) ? k / 2 + beg1 : nums1.length - 1);
+        int idx2 = k - (idx1 - beg1) + beg2 - 1;
+        if (nums1[idx1] < nums2[idx2]) {
+            return findKthNumber(nums1, idx1 + 1, nums2, beg2, k - (idx1 - beg1 + 1));
+        } else {
+            return findKthNumber(nums1, beg1, nums2, idx2 + 1, k - (idx2 - beg2 + 1));
+        }
     }
 
     /**
@@ -79,14 +146,15 @@ public class Median_of_Two_Sorted_Arrays_4 {
         if (k == 1) return Math.min(A[aStart], B[bStart]);
 
         int aMid = Integer.MAX_VALUE, bMid = Integer.MAX_VALUE;
-        if (aStart + k/2 - 1 < A.length) aMid = A[aStart + k/2 - 1];
-        if (bStart + k/2 - 1 < B.length) bMid = B[bStart + k/2 - 1];
+        if (aStart + k / 2 - 1 < A.length) aMid = A[aStart + k / 2 - 1];
+        if (bStart + k / 2 - 1 < B.length) bMid = B[bStart + k / 2 - 1];
 
         if (aMid < bMid)
-            return getkth(A, aStart + k/2, B, bStart,       k - k/2);// Check: aRight + bLeft
+            return getkth(A, aStart + k / 2, B, bStart, k - k / 2);// Check: aRight + bLeft
         else
-            return getkth(A, aStart,       B, bStart + k/2, k - k/2);// Check: bRight + aLeft
+            return getkth(A, aStart, B, bStart + k / 2, k - k / 2);// Check: bRight + aLeft
     }
+
     /**
      * 参考思路：
      * https://leetcode.com/problems/median-of-two-sorted-arrays/solution/
@@ -101,30 +169,42 @@ public class Median_of_Two_Sorted_Arrays_4 {
         int m = A.length;
         int n = B.length;
         if (m > n) { // to ensure m<=n
-            int[] temp = A; A = B; B = temp;
-            int tmp = m; m = n; n = tmp;
+            int[] temp = A;
+            A = B;
+            B = temp;
+            int tmp = m;
+            m = n;
+            n = tmp;
         }
         int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
         while (iMin <= iMax) {
             int i = (iMin + iMax) / 2;
             int j = halfLen - i;
-            if (i < iMax && B[j-1] > A[i]){
+            if (i < iMax && B[j - 1] > A[i]) {
                 iMin = i + 1; // i is too small
-            }
-            else if (i > iMin && A[i-1] > B[j]) {
+            } else if (i > iMin && A[i - 1] > B[j]) {
                 iMax = i - 1; // i is too big
-            }
-            else { // i is perfect
+            } else { // i is perfect
                 int maxLeft = 0;
-                if (i == 0) { maxLeft = B[j-1]; }
-                else if (j == 0) { maxLeft = A[i-1]; }
-                else { maxLeft = Math.max(A[i-1], B[j-1]); }
-                if ( (m + n) % 2 == 1 ) { return maxLeft; }
+                if (i == 0) {
+                    maxLeft = B[j - 1];
+                } else if (j == 0) {
+                    maxLeft = A[i - 1];
+                } else {
+                    maxLeft = Math.max(A[i - 1], B[j - 1]);
+                }
+                if ((m + n) % 2 == 1) {
+                    return maxLeft;
+                }
 
                 int minRight = 0;
-                if (i == m) { minRight = B[j]; }
-                else if (j == n) { minRight = A[i]; }
-                else { minRight = Math.min(B[j], A[i]); }
+                if (i == m) {
+                    minRight = B[j];
+                } else if (j == n) {
+                    minRight = A[i];
+                } else {
+                    minRight = Math.min(B[j], A[i]);
+                }
 
                 return (maxLeft + minRight) / 2.0;
             }
@@ -140,6 +220,10 @@ public class Median_of_Two_Sorted_Arrays_4 {
         do_func(new int[]{0, 0}, new int[]{0, 0}, 0.00000);
         do_func(new int[]{}, new int[]{1}, 1.00000);
         do_func(new int[]{2}, new int[]{}, 2.00000);
+        do_func(new int[]{1, 3, 4, 5, 6, 7, 8, 9}, new int[]{2}, 5.00000);
+        do_func(new int[]{2, 3, 4, 5, 6, 7, 8, 9}, new int[]{1}, 5.00000);
+        do_func(new int[]{1, 3}, new int[]{2, 7}, 2.50000);
+        do_func(new int[]{0, 0, 0, 0, 0}, new int[]{-1, 0, 0, 0, 0, 0, 1}, 0.00000);
     }
 
     private static void do_func(int[] nums1, int[] nums2, double expected) {
