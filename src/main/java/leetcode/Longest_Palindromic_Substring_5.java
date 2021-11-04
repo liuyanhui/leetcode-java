@@ -28,6 +28,43 @@ package leetcode;
  * s consist of only digits and English letters.
  */
 public class Longest_Palindromic_Substring_5 {
+
+    public static String longestPalindrome(String s) {
+        return longestPalindrome_1(s);
+    }
+
+    /**
+     * 代码优化版本，
+     * 参考思路:
+     * https://leetcode.com/problems/longest-palindromic-substring/solution/ 之 Approach 4
+     *
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome_2(String s) {
+        if (s == null || s.length() < 1) return "";
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    private static int expandAroundCenter(String s, int left, int right) {
+        int L = left, R = right;
+        while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
+            L--;
+            R++;
+        }
+        return R - L - 1;
+    }
+
     /**
      * 直观思路：
      * 从当前字符向两边扩散，需要考虑单数字符和双数字符的情况。
@@ -39,7 +76,7 @@ public class Longest_Palindromic_Substring_5 {
      * @param s
      * @return
      */
-    public static String longestPalindrome(String s) {
+    public static String longestPalindrome_1(String s) {
         String lp = "";
         for (int i = 0; i < s.length(); i++) {
             int j = 0;
