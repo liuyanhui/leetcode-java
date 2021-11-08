@@ -53,7 +53,61 @@ package leetcode;
  */
 public class String_to_Integer_atoi_8 {
     public static int myAtoi(String s) {
-        return myAtoi_2(s);
+        return myAtoi_3(s);
+    }
+
+    /**
+     * Round 2 : 2021.11.8
+     * 0.初始化ret=0
+     * 1.遇到字母或.：跳出循环，返回ret。
+     * 2.遇到+或-：第一次遇到，计算sign；非第一次遇到，跳出循环，返回ret。
+     * 3.遇到数字：计算ret
+     * 4.遇到空格：如果+、-、数字已经出现过，跳出循环，返回ret。
+     *
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 100.00% of Java
+     * Memory Usage: 39.3 MB, less than 51.45% of Java
+     * @param s
+     * @return
+     */
+    public static int myAtoi_3(String s) {
+        int ret = 0;
+        int sign = 1;
+        boolean signAppeared = false;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                signAppeared = true;
+                //判断是否越界
+                int tmp = ret * 10 + c - '0';
+                if (ret == tmp / 10) {
+                    ret = tmp;
+                } else {
+                    if (sign == 1) {
+                        ret = Integer.MAX_VALUE;
+                    } else {
+                        ret = Integer.MIN_VALUE;
+                    }
+                    sign = 1;
+                    break;
+                }
+            } else if (c == ' ') {
+                if (signAppeared) {
+                    break;
+                }
+            } else if (c == '+' || c == '-') {
+                if (!signAppeared) {
+                    sign = c == '+' ? 1 : -1;
+                } else {
+                    break;
+                }
+                signAppeared = true;
+            } else {
+                break;
+            }
+        }
+        return sign * ret;
     }
 
     /**
