@@ -27,7 +27,7 @@ package leetcode;
  * Output: false
  *
  * Constraints:
- * -231 <= x <= 231 - 1
+ * -2^31 <= x <= 2^31 - 1
  */
 public class Palindrome_Number_9 {
     /**
