@@ -25,7 +25,32 @@ package leetcode;
 public class Longest_Common_Prefix_14 {
 
     public static String longestCommonPrefix(String[] strs) {
-        return longestCommonPrefix_2(strs);
+        return longestCommonPrefix_3(strs);
+    }
+
+    /**
+     * round 2
+     * 1.初始时把第0个字符串作为最长公共子串lcp
+     * 2.遍历数组，lcp依次跟每个字符串比较，得到最新的lcp
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 68.45% of Java
+     * Memory Usage: 36.9 MB, less than 87.04% of Java
+     * @param strs
+     * @return
+     */
+    public static String longestCommonPrefix_3(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        String lcp = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            int j = 0;
+            while (j < lcp.length() && j < strs[i].length()
+                    && lcp.charAt(j) == strs[i].charAt(j)) {
+                j++;
+            }
+            lcp = lcp.substring(0, j);
+        }
+        return lcp;
     }
 
     /**
@@ -41,7 +66,7 @@ public class Longest_Common_Prefix_14 {
         int index = 0;
         while (index < strs[0].length()) {
             for (int i = 0; i < strs.length; i++) {
-                if(index==strs[i].length() || strs[0].charAt(index) != strs[i].charAt(index)){
+                if (index == strs[i].length() || strs[0].charAt(index) != strs[i].charAt(index)) {
                     return strs[0].substring(0, index);
                 }
             }
