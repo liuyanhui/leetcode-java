@@ -57,7 +57,7 @@ public class Median_of_Two_Sorted_Arrays_4 {
      * 2.k=n/2，当nums1[(m+n)/2]<nums2[(m+n)/2]时，去掉nums1中的[0:k/2]区间的数
      * 3.k=(n-m)/2，当nums1[n/2]<nums2[n/2]时，去掉nums1中的[0:k/2]区间的数
      *
-     * round2 ：2021.11.3
+     * round 2 ：2021.11.3
      * 验证通过：
      * Runtime: 2 ms, faster than 99.90% of Java.
      * Memory Usage: 40.1 MB, less than 86.17% of Java
