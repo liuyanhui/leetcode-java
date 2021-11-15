@@ -36,7 +36,7 @@ public class ThreeSum_15 {
      * 参考思路：
      * https://leetcode.com/problems/3sum/discuss/7380/Concise-O(N2)-Java-solution
      *
-     * 先排序，转化成2Sum问题，采用夹逼法。
+     * 套路：先排序，转化成2Sum问题，采用夹逼法。
      *
      * 验证通过：
      * Runtime: 24 ms, faster than 60.62% of Java online submissions for 3Sum.
