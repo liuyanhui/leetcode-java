@@ -28,6 +28,7 @@ public class ThreeSum_Closest_16 {
     /**
      * round 2
      * 采用类似15.ThreeSum问题中的夹逼法，把问题从三个变量降为两个变量。Time Complexity:O(N*N)
+     * 夹逼法的优势在于：排序后的数组可以在O(N)时间复杂度下，实现两个维度的遍历。但是前提是数组是有序的。TwoSum也可以采用这种方法，然而需要先对数组排序，这样一来就不如使用HashTable的方法了。
      *
      * 验证通过：
      * Runtime: 4 ms, faster than 86.46% of Java online submissions for 3Sum Closest.
