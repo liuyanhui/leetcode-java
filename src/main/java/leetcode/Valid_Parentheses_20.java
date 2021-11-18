@@ -35,12 +35,43 @@ import java.util.Stack;
  * Output: true
  *
  *  Constraints:
- * 1 <= s.length <= 104
+ * 1 <= s.length <= 10^4
  * s consists of parentheses only '()[]{}'.
  */
 public class Valid_Parentheses_20 {
     public static boolean isValid(String s) {
-        return isValid_2(s);
+        return isValid_3(s);
+    }
+
+    /**
+     * 验证通过：
+     * Runtime: 1 ms, faster than 98.96% of Java online submissions for Valid Parentheses.
+     * Memory Usage: 37.3 MB, less than 46.95% of Java online submissions for Valid Parentheses.
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isValid_3(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else if (c == ')') {
+                if (stack.empty() || stack.pop() != '(') {
+                    return false;
+                }
+            } else if (c == '}') {
+                if (stack.empty() || stack.pop() != '{') {
+                    return false;
+                }
+            } else if (c == ']') {
+                if (stack.empty() || stack.pop() != '[') {
+                    return false;
+                }
+            }
+        }
+        return stack.empty();
     }
 
     /**
