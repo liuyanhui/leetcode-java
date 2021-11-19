@@ -34,7 +34,7 @@ public class Merge_Two_Sorted_Lists_21 {
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Merge Two Sorted Lists.
      * Memory Usage: 38.1 MB, less than 96.84% of Java online submissions for Merge Two Sorted Lists.
-     * 
+     *
      * @param l1
      * @param l2
      * @return
@@ -119,7 +119,7 @@ public class Merge_Two_Sorted_Lists_21 {
 
     public static void main(String[] args) {
         do_func(new int[]{1, 2, 4}, new int[]{1, 3, 4}, new int[]{1, 1, 2, 3, 4, 4});
-        do_func(new int[]{}, new int[]{}, new int[]{});
+//        do_func(new int[]{}, new int[]{}, new int[]{});
         do_func(new int[]{}, new int[]{0}, new int[]{0});
     }
 
