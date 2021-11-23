@@ -41,7 +41,47 @@ import java.util.PriorityQueue;
  */
 public class Merge_k_Sorted_Lists_23 {
     public static ListNode mergeKLists(ListNode[] lists) {
-        return mergeKLists_3(lists);
+        return mergeKLists_4(lists);
+    }
+
+    /**
+     * round2
+     * 没有想到使用PriorityQueue的方案
+     *
+     * 验证通过：
+     * Runtime: 107 ms, faster than 15.30% of Java
+     * Memory Usage: 40.5 MB, less than 83.76% of Java
+     * @param lists
+     * @return
+     */
+    public static ListNode mergeKLists_4(ListNode[] lists) {
+        ListNode ret = new ListNode();
+        for (int i = 0; i < lists.length; i++) {
+            ret = sortThenMerge(ret.next, lists[i]);
+        }
+        return ret.next;
+    }
+
+    private static ListNode sortThenMerge(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode();
+        ListNode cur = head;
+        while (l1 != null && l2 != null) {
+            if (l1.val > l2.val) {
+                cur.next = l2;
+                l2 = l2.next;
+            } else {
+                cur.next = l1;
+                l1 = l1.next;
+            }
+            cur = cur.next;
+        }
+        if (l1 != null) {
+            cur.next = l1;
+        }
+        if (l2 != null) {
+            cur.next = l2;
+        }
+        return head;
     }
 
     /**
