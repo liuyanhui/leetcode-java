@@ -38,7 +38,95 @@ package leetcode;
  */
 public class Reverse_Nodes_in_k_Group_25 {
     public static ListNode reverseKGroup(ListNode head, int k) {
-        return reverseKGroup_2(head, k);
+        return reverseKGroup_4(head, k);
+    }
+
+    /**
+     * round2
+     * //迭代思路：
+     * 1.提取k个节点，并记录第k+1个节点为下一次的头节点
+     * 2.reverse这k个节点的列表
+     * 3.将reversed列表合并到总列表中，并记录尾节点
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 35.40%.
+     * Memory Usage: 42.6 MB, less than 25.91%.
+     *
+     * @param head
+     * @param k
+     * @return
+     */
+    public static ListNode reverseKGroup_4(ListNode head, int k) {
+        ListNode ret = new ListNode(0, head);
+        ListNode newTail = ret;
+        int i = 1;
+        ListNode beg = head, end = head, n = null;
+        while (end != null) {
+            //提取beg和end
+            while (i < k && end != null) {
+                end = end.next;
+                i++;
+            }
+            if (i == k && end != null) {
+                n = end.next;
+                //反转
+                ListNode c = beg, h = null;
+                while (c != n) {
+                    ListNode tmp = c.next;
+                    c.next = h;
+                    h = c;
+                    c = tmp;
+                }
+                //合并
+                newTail.next = end;
+                newTail = beg;
+                beg.next = n;
+            }
+            //重置下一次初始条件
+            beg = n;
+            end = n;
+            n = null;
+            i = 1;
+        }
+
+        return ret.next;
+    }
+
+    /**
+     * round2
+     * 递归法：每次递归都reverse列表中的前k个节点
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00%.
+     * Memory Usage: 42.6 MB, less than 22.32%
+     * @param head
+     * @param k
+     * @return
+     */
+    public static ListNode reverseKGroup_3(ListNode head, int k) {
+        ListNode ret = new ListNode(0, head);
+        int i = 0;
+        ListNode tail = ret;
+        //提取k个节点
+        while (i < k && tail != null) {
+            tail = tail.next;
+            i++;
+        }
+        if (tail != null) {
+            ListNode nextHead = tail.next;
+            //reverse
+            ListNode h = null, c = head;
+            while (c != nextHead) {
+                ListNode t = c.next;
+                c.next = h;
+                h = c;
+                c = t;
+            }
+            ret.next = tail;
+            //recursive
+            head.next = reverseKGroup(nextHead, k);
+        }
+        return ret.next;
     }
 
     /**
@@ -143,6 +231,7 @@ public class Reverse_Nodes_in_k_Group_25 {
     public static void main(String[] args) {
         do_func(new int[]{1, 2, 3, 4, 5}, 2, new int[]{2, 1, 4, 3, 5});
         do_func(new int[]{1, 2, 3, 4, 5}, 3, new int[]{3, 2, 1, 4, 5});
+        do_func(new int[]{1, 2, 3, 4, 5}, 9, new int[]{1, 2, 3, 4, 5});
         do_func(new int[]{1, 2, 3, 4, 5}, 1, new int[]{1, 2, 3, 4, 5});
         do_func(new int[]{1}, 1, new int[]{1});
         do_func(new int[]{1, 2, 3, 4, 5, 6, 7, 8}, 3, new int[]{3, 2, 1, 6, 5, 4, 7, 8});
