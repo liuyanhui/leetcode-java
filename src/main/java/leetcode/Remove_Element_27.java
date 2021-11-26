@@ -46,7 +46,28 @@ package leetcode;
  */
 public class Remove_Element_27 {
     public static int removeElement(int[] nums, int val) {
-        return removeElement_2(nums, val);
+        return removeElement_3(nums, val);
+    }
+
+    /**
+     * round2
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00%.
+     * Memory Usage: 39.1 MB, less than 26.01%
+     *
+     * @param nums
+     * @param val
+     * @return
+     */
+    public static int removeElement_3(int[] nums, int val) {
+        if (nums == null || nums.length == 0) return 0;
+        int cur = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != val) {
+                nums[cur++] = nums[i];
+            }
+        }
+        return cur;
     }
 
     /**
