@@ -43,7 +43,27 @@ package leetcode;
  */
 public class Remove_Duplicates_from_Sorted_Array_26 {
     public static int removeDuplicates(int[] nums) {
-        return removeDuplicates_2(nums);
+        return removeDuplicates_3(nums);
+    }
+
+    /**
+     * round2
+     * 验证通过：
+     * Runtime: 1 ms, faster than 83.04%
+     * Memory Usage: 45.1 MB, less than 7.79%
+     *
+     * @param nums
+     * @return
+     */
+    public static int removeDuplicates_3(int[] nums) {
+        if (nums.length == 0) return 0;
+        int i = 0, j = 1;
+        for (; j < nums.length; j++) {
+            if (nums[i] != nums[j]) {
+                nums[++i] = nums[j];
+            }
+        }
+        return i + 1;
     }
 
     /**
