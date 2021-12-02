@@ -117,6 +117,7 @@ public class Remove_Element_27 {
     public static void main(String[] args) {
         do_func(new int[]{3, 2, 2, 3}, 3, 2);
         do_func(new int[]{0, 1, 2, 2, 3, 0, 4, 2}, 2, 5);
+        do_func(new int[]{2, 2, 2, 2}, 2, 0);
     }
 
     private static void do_func(int[] nums, int val, int expected) {
