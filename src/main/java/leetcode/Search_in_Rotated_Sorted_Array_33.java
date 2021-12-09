@@ -33,13 +33,97 @@ package leetcode;
  */
 public class Search_in_Rotated_Sorted_Array_33 {
     public static int search(int[] nums, int target) {
-        return 0;
+        return search_2(nums, target);
+    }
+
+    /**
+     * round2
+     * search_1 的代码优化版
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int search_2(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[l] <= target) {//表示target落在左半部分
+                if (nums[l] <= nums[mid] && nums[mid] < target) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            } else if (target <= nums[r]) {//表示target落在右半部分
+                if (target < nums[mid] && nums[mid] <= nums[r]) {
+                    r = mid - 1;
+                } else {//表示mid落在左半部分
+                    l = mid + 1;
+                }
+            } else {//target不在数组内
+                break;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * round2
+     * 在数组中找到某个数的套路：
+     * 1.已排序数组，通过下标
+     * 2.未排序数组，通过值而不是下标
+     * 本题是二者的结合
+     *
+     * 夹逼法
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java
+     * Memory Usage: 38.1 MB, less than 96.16%
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int search_1(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            if (nums[l] <= target) {//表示target落在左半部分
+                if (nums[l] <= nums[mid]) {//表示mid落在左半部分
+                    if (nums[mid] < target) {
+                        l = mid + 1;
+                    } else if (nums[mid] > target) {
+                        r = mid - 1;
+                    } else {
+                        return mid;
+                    }
+                } else if (nums[mid] <= nums[r]) {//表示mid落在右半部分
+                    r = mid - 1;
+                }
+            } else if (target <= nums[r]) {//表示target落在右半部分
+                if (nums[l] <= nums[mid]) {//表示mid落在左半部分
+                    l = mid + 1;
+                } else if (nums[mid] <= nums[r]) {//表示mid落在右半部分
+                    if (nums[mid] < target) {
+                        l = mid + 1;
+                    } else if (nums[mid] > target) {
+                        r = mid - 1;
+                    } else {
+                        return mid;
+                    }
+                }
+            } else {//target不在数组内
+                break;
+            }
+        }
+        return -1;
     }
 
     public static void main(String[] args) {
         do_func(new int[]{4, 5, 6, 7, 0, 1, 2}, 0, 4);
         do_func(new int[]{4, 5, 6, 7, 0, 1, 2}, 3, -1);
         do_func(new int[]{1}, 0, -1);
+        do_func(new int[]{0, 1, 2, 4, 5, 6, 7}, 0, 0);
+        do_func(new int[]{0, 1, 2, 4, 5, 6, 7}, 2, 2);
     }
 
     private static void do_func(int[] nums, int target, int expected) {
