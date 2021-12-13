@@ -6,6 +6,7 @@ package leetcode;
  * Easy
  * ------------
  * Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+ * You must write an algorithm with O(log n) runtime complexity.
  *
  * Example 1:
  * Input: nums = [1,3,5,6], target = 5
@@ -28,14 +29,44 @@ package leetcode;
  * Output: 0
  *
  * Constraints:
- * 1 <= nums.length <= 104
- * -104 <= nums[i] <= 104
+ * 1 <= nums.length <= 10^4
+ * -10^4 <= nums[i] <= 10^4
  * nums contains distinct values sorted in ascending order.
- * -104 <= target <= 104
+ * -10^4 <= target <= 10^4
  */
 public class Search_Insert_Position_35 {
     public static int searchInsert(int[] nums, int target) {
-        return searchInsert_4(nums, target);
+        return searchInsert_5(nums, target);
+    }
+
+    /**
+     * round2，采用思路2
+     * 思路1：遍历，if nums[i]<target then i++
+     *           if nums[i]>=target then return i;
+     * 思路2：binary search ，数组有序使用下标，数组无序使用数字
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00%
+     * Memory Usage: 38.3 MB, less than 98.19% o
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int searchInsert_5(int[] nums, int target) {
+        //这里 r=nums.length的原因：因为是插入一个元素，数组中的元素数量会增加一个。
+        int l = 0, r = nums.length;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            //下面的代码可以防止整数超过最大值导致的溢出
+            //int mid = l + (r-l)/2;
+            if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
     }
 
     /**
@@ -124,6 +155,7 @@ public class Search_Insert_Position_35 {
         do_func(new int[]{1, 3, 5, 6}, 0, 0);
         do_func(new int[]{1}, 0, 0);
         do_func(new int[]{1}, 1, 0);
+        do_func(new int[]{1}, 4, 1);
     }
 
     private static void do_func(int[] nums, int target, int expected) {
