@@ -4,6 +4,7 @@ package leetcode;
  * https://leetcode.com/problems/count-and-say/
  * 38. Count and Say
  * Easy
+ * round2 升级为Medium 20211214
  * -----------------
  * The count-and-say sequence is a sequence of digit strings defined by the recursive formula:
  * countAndSay(1) = "1"
