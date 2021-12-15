@@ -41,7 +41,7 @@ public class Count_and_Say_38 {
      * 验证通过：
      * Runtime: 47 ms, faster than 5.04% of Java online submissions for Count and Say.
      * Memory Usage: 60.2 MB, less than 5.40% of Java online submissions for Count and Say.
-     * 
+     *
      * @param n
      * @return
      */
