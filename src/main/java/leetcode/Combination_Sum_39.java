@@ -65,6 +65,7 @@ public class Combination_Sum_39 {
         else if (target == 0) {
             ret.add(new ArrayList<>(existed));
         } else {
+            //这里是关键
             for (int i = beg; i < candidates.length; i++) {
                 existed.add(candidates[i]);
                 backtrack(candidates, target - candidates[i], i, existed, ret);
