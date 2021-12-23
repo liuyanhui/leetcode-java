@@ -35,6 +35,8 @@ public class Permutations_II_47 {
      * 3.在某个子树的（亲）兄弟节点间去重，如果一个子树的（亲）兄弟节点已经出现过该数字，那么跳过。主意是判重的范围是同一子树，不能把范围扩大化。
      * 4.利用已排序数组的特性，可以方便在兄弟节点间去重
      *
+     * 另一种思路：先计算permutation，再去重
+     *
      * 验证通过：
      * Runtime: 2 ms, faster than 66.57% of Java online submissions for Permutations II.
      * Memory Usage: 39.2 MB, less than 99.49% of Java online submissions for Permutations II.

@@ -30,7 +30,40 @@ import java.util.Arrays;
  */
 public class Rotate_Image_48 {
     public static void rotate(int[][] matrix) {
-        rotate_2(matrix);
+        rotate_3(matrix);
+    }
+
+    /**
+     * round2
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Rotate Image.
+     * Memory Usage: 38.8 MB, less than 90.83% of Java online submissions for Rotate Image.
+     *
+     * @param matrix
+     */
+    public static void rotate_3(int[][] matrix) {
+        //水平对称反转
+        int beg = 0, end = matrix.length - 1;
+        while (beg < end) {
+            for (int i = 0; i < matrix[beg].length; i++) {
+                swap(matrix, beg, i, end, i);
+            }
+            beg++;
+            end--;
+        }
+        //对角线对称反转
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = i + 1; j < matrix[i].length; j++) {
+                swap(matrix, i, j, j, i);
+            }
+        }
+    }
+
+    private static void swap(int[][] matrix, int i1, int j1, int i2, int j2) {
+        int t = matrix[i1][j1];
+        matrix[i1][j1] = matrix[i2][j2];
+        matrix[i2][j2] = t;
     }
 
     /**
