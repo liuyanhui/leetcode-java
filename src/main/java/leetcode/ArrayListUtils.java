@@ -38,6 +38,21 @@ public class ArrayListUtils {
         return same;
     }
 
+    public static boolean isSame(List<List<String>> list, String[][] arr) {
+        boolean same = true;
+        if (list != null && arr.length == list.size()) {
+            for (int i = 0; i > arr.length; i++) {
+                if (!Arrays.equals(arr[i], list.get(i).toArray())) {
+                    same = false;
+                    break;
+                }
+            }
+        } else {
+            same = false;
+        }
+        return same;
+    }
+
     public static boolean sortedThenCompare(List<Integer> list1, List<Integer> list2) {
         if (list1 == null && list2 == null) return false;
         if (list1 == null || list2 == null) return false;

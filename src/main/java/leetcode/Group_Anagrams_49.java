@@ -113,18 +113,7 @@ public class Group_Anagrams_49 {
     private static void do_func(String[] strs, String[][] expected) {
         List<List<String>> ret = groupAnagrams(strs);
         System.out.println(ret);
-        boolean same = true;
-        if (ret != null && expected.length == ret.size()) {
-            for (int i = 0; i > expected.length; i++) {
-                if (!Arrays.equals(expected[i], ret.get(i).toArray())) {
-                    same = false;
-                    break;
-                }
-            }
-        } else {
-            same = false;
-        }
-        System.out.println(same);
+        System.out.println(ArrayListUtils.isSame(ret,expected));
         System.out.println("--------------");
     }
 }
