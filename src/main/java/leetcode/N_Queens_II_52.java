@@ -40,7 +40,7 @@ public class N_Queens_II_52 {
         int count = 0;
         for (int i = 0; i < board[row].length; i++) {
             if (!valid(board, row, i)) continue;
-            if (row < board[row].length - 1) {
+            if (row < board.length - 1) {
                 board[row][i] = 1;
                 count += dfs(board, row + 1);
                 board[row][i] = 0;
