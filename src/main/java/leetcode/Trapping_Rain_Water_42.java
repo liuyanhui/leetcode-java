@@ -29,6 +29,7 @@ public class Trapping_Rain_Water_42 {
 
     /**
      * Stack法
+     * 遍历数组，递减时入栈，递增时出栈并计算面积
      *
      * 参考思路：
      * https://leetcode.com/problems/trapping-rain-water/solution/
