@@ -33,7 +33,7 @@ public class Maximum_Subarray_53 {
 
     /**
      * 和maxSubArray_1相似，但是理解起来更简单
-     * 
+     *
      * 参考思路：
      * https://leetcode.com/problems/maximum-subarray/discuss/1595097/JAVA-or-Kadane's-Algorithm-or-Explanation-Using-Image
      *
