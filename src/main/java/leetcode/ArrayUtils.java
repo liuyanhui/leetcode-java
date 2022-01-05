@@ -17,7 +17,7 @@ public class ArrayUtils {
 
     public static void printIntArray(int[][] nums) {
         if (nums == null) return;
-        System.out.print("[");
+        System.out.println("[");
         for (int i = 0; i < nums.length; i++) {
             printIntArray(nums[i]);
         }
@@ -42,6 +42,22 @@ public class ArrayUtils {
         if (nums.length == expected.length) {
             for (int i = 0; i < nums.length; i++) {
                 if (nums[i] != expected[i]) {
+                    same = false;
+                    break;
+                }
+            }
+        } else {
+            same = false;
+        }
+        return same;
+    }
+
+    public static boolean isSame(int[][] nums, int[][] expected) {
+        if (nums == null || expected == null) return false;
+        boolean same = true;
+        if (nums.length == expected.length) {
+            for (int i = 0; i < nums.length; i++) {
+                if (!isSame(nums[i], expected[i])) {
                     same = false;
                     break;
                 }
