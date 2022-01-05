@@ -8,9 +8,11 @@ import java.util.List;
  * 57. Insert Interval
  * Medium
  * -----------------------
- * Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+ * You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
  *
- * You may assume that the intervals were initially sorted according to their start times.
+ * Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
+ *
+ * Return intervals after the insertion.
  *
  * Example 1:
  * Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
@@ -34,17 +36,56 @@ import java.util.List;
  * Output: [[1,7]]
  *
  * Constraints:
- * 0 <= intervals.length <= 104
+ * 0 <= intervals.length <= 10^4
  * intervals[i].length == 2
- * 0 <= intervals[i][0] <= intervals[i][1] <= 105
- * intervals is sorted by intervals[i][0] in ascending order.
+ * 0 <= starti <= endi <= 10^5
+ * intervals is sorted by starti in ascending order.
  * newInterval.length == 2
- * 0 <= newInterval[0] <= newInterval[1] <= 105
+ * 0 <= start <= end <= 10^5
  */
 public class Insert_Interval_57 {
 
     public static int[][] insert(int[][] intervals, int[] newInterval) {
-        return insert_1(intervals, newInterval);
+        return insert_3(intervals, newInterval);
+    }
+
+    /**
+     * round 2
+     *
+     * 两个inteval([s1,e1],[s2,e2])合并分为两种情况：有交集、无交集
+     * 如果有交集，合并[min(s1,s2),max(e1,e2)]
+     * 如果无交集，插入排序，分为左侧和右侧两种情况
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 98.75% of Java online submissions for Insert Interval.
+     * Memory Usage: 44.6 MB, less than 16.57% of Java online submissions for Insert Interval.
+     *
+     * @param intervals
+     * @param newInterval
+     * @return
+     */
+    public static int[][] insert_3(int[][] intervals, int[] newInterval) {
+        List<int[]> list = new ArrayList();
+        int i = 0;
+        boolean inserted = false;
+        while (i < intervals.length) {
+            if (newInterval[1] < intervals[i][0]) {//无交集，且newInterval在左侧
+                if (!inserted) list.add(newInterval);
+                list.add(intervals[i]);
+                inserted = true;
+            } else if (intervals[i][1] < newInterval[0]) {//无交集，且newInterval在右侧
+                list.add(intervals[i]);
+            } else {//有交集，合并到newInterval中。继续下一个interval的比较
+                newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+                newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            }
+            i++;
+        }
+        if (!inserted) {
+            list.add(newInterval);
+        }
+
+        return list.toArray(new int[list.size()][2]);
     }
 
     /**
@@ -243,24 +284,13 @@ public class Insert_Interval_57 {
         do_func(new int[][]{{1, 5}}, new int[]{2, 7}, new int[][]{{1, 7}});
         do_func(new int[][]{}, new int[]{2, 7}, new int[][]{{2, 7}});
         do_func(new int[][]{{1, 5}}, new int[]{5, 7}, new int[][]{{1, 7}});
+        do_func(new int[][]{{2, 5}, {6, 7}, {8, 9}}, new int[]{0, 1}, new int[][]{{0, 1}, {2, 5}, {6, 7}, {8, 9}});
     }
 
     private static void do_func(int[][] intervals, int[] newInterval, int[][] expected) {
         int[][] ret = insert(intervals, newInterval);
-        boolean same = true;
-        if (ret.length == expected.length) {
-            for (int i = 0; i < ret.length; i++) {
-                for (int j = 0; j < ret[0].length; j++) {
-                    if (ret[i][j] != expected[i][j]) {
-                        same = false;
-                        break;
-                    }
-                }
-            }
-        } else {
-            same = false;
-        }
-        System.out.println(same);
+        ArrayUtils.printIntArray(ret);
+        System.out.println(ArrayUtils.isSame(ret, expected));
         System.out.println("-----------");
     }
 }

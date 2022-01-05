@@ -12,12 +12,12 @@ public class ArrayUtils {
                 System.out.print(",");
             }
         }
-        System.out.println("]");
+        System.out.print("]");
     }
 
     public static void printIntArray(int[][] nums) {
         if (nums == null) return;
-        System.out.println("[");
+        System.out.print("[");
         for (int i = 0; i < nums.length; i++) {
             printIntArray(nums[i]);
         }
