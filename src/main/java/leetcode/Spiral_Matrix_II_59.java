@@ -31,7 +31,7 @@ public class Spiral_Matrix_II_59 {
      * 3.共(n+1)/2个环。每环的边长为n-cricle*2，circle表示环编号从0开始计数。
      * 4.当n-cricle*2<=0时，表示计算结束
      * 5.当n-cricle*2==1时，为由一个点组成的环。
-     * 
+     *
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Spiral Matrix II.
      * Memory Usage: 38.8 MB, less than 14.02% of Java online submissions for Spiral Matrix II.
