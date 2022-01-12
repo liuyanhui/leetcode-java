@@ -30,7 +30,40 @@ package leetcode;
  */
 public class Unique_Paths_II_63 {
     public static int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        return uniquePathsWithObstacles_2(obstacleGrid);
+        return uniquePathsWithObstacles_3(obstacleGrid);
+    }
+
+    /**
+     * round 2
+     * DP思路
+     *
+     * 验证通过:
+     * Runtime: 1 ms, faster than 34.80% of Java online submissions for Unique Paths II.
+     * Memory Usage: 38.8 MB, less than 32.97% of Java online submissions for Unique Paths II.
+     *
+     * 有性能更优的办法是，直接使用obstacleGrid作为dp[][]进行计算。
+     *
+     * @param obstacleGrid
+     * @return
+     */
+    public static int uniquePathsWithObstacles_3(int[][] obstacleGrid) {
+        if (obstacleGrid.length <= 0 || obstacleGrid[0].length <= 0
+                || obstacleGrid[0][0] == 1
+                || obstacleGrid[obstacleGrid.length - 1][obstacleGrid[0].length - 1] == 1)
+            return 0;
+        int[] dp = new int[obstacleGrid[0].length + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 0; i < obstacleGrid.length; i++) {
+            for (int j = 0; j < obstacleGrid[i].length; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[j + 1] = 0;
+                } else {
+                    dp[j + 1] = dp[j] + dp[j + 1];
+                }
+            }
+        }
+        return dp[obstacleGrid[0].length];
     }
 
     /**
@@ -104,6 +137,8 @@ public class Unique_Paths_II_63 {
         do_func(new int[][]{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}}, 2);
         do_func(new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, 6);
         do_func(new int[][]{{0, 1}, {0, 0}}, 1);
+        do_func(new int[][]{{0}, {1}}, 0);
+        do_func(new int[][]{{0, 0}, {1, 0}}, 1);
     }
 
     private static void do_func(int[][] obstacleGrid, int expected) {
