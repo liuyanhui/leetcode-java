@@ -31,13 +31,45 @@ import java.util.Arrays;
  */
 public class Plus_One_66 {
     public static int[] plusOne(int[] digits) {
-        return plusOne_2(digits);
+        return plusOne_3(digits);
 
+    }
+
+    /**
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Plus One.
+     * Memory Usage: 39.7 MB, less than 6.14% of Java online submissions for Plus One.
+     *
+     * @param digits
+     * @return
+     */
+    public static int[] plusOne_3(int[] digits) {
+        int[] ret = null;
+        int carry = 1;
+        for (int i = digits.length - 1; i >= 0; i--) {
+            int t = digits[i] + carry;
+            digits[i] = t % 10;
+            carry = t / 10;
+        }
+        if (carry == 1) {
+            ret = new int[digits.length + 1];
+            ret[0] = 1;
+            for (int i = 0; i < digits.length; i++) {
+                ret[i + 1] = digits[i];
+            }
+        } else {
+            ret = digits;
+        }
+        return ret;
     }
 
     /**
      * 巧妙的方法，参考思路：
      * https://leetcode.com/problems/plus-one/discuss/24082/My-Simple-Java-Solution
+     *
+     * 遇到第一个非9的数字，该数字+1，返回原数组。
+     * 遍历数组。如果数字是9，改为0，计算下一个数字；如果数字小于9，当前数字+1，返回原数组。
+     *
      * @param digits
      * @return
      */
@@ -46,7 +78,7 @@ public class Plus_One_66 {
         for (int i = n - 1; i >= 0; i--) {
             if (digits[i] < 9) {
                 digits[i]++;
-                return digits;
+                return digits;//出现非9的数字，+1操作后直接返回原数组
             }
             digits[i] = 0;
         }
@@ -93,7 +125,8 @@ public class Plus_One_66 {
 
     private static void do_func(int[] digits, int[] expected) {
         int[] ret = plusOne(digits);
-        System.out.println(ret);
+        ArrayUtils.printIntArray(ret);
+        System.out.println("");
         System.out.println(Arrays.equals(ret, expected));
         System.out.println("--------------");
     }
