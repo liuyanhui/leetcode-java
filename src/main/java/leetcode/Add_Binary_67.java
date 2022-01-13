@@ -22,7 +22,37 @@ package leetcode;
  */
 public class Add_Binary_67 {
     public static String addBinary(String a, String b) {
-        return addBinary_2(a, b);
+        return addBinary_3(a, b);
+    }
+
+    /**
+     * round2
+     * 
+     * 验证通过：
+     * Runtime: 6 ms, faster than 22.80% of Java online submissions for Add Binary.
+     * Memory Usage: 39.8 MB, less than 19.76% of Java online submissions for Add Binary.
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static String addBinary_3(String a, String b) {
+        int carry = 0;
+        StringBuilder ret = new StringBuilder();
+        int i = 0;
+        while (i < a.length() || i < b.length()) {
+            int ta = 0, tb = 0;
+            if (i < a.length()) ta = a.charAt(a.length() - 1 - i) - '0';
+            if (i < b.length()) tb = b.charAt(b.length() - 1 - i) - '0';
+            int sum = ta + tb + carry;
+            ret.insert(0, String.valueOf(sum % 2));
+            carry = sum / 2;
+            i++;
+        }
+        if (carry == 1) {
+            ret.insert(0, "1");
+        }
+        return ret.toString();
     }
 
     /**
