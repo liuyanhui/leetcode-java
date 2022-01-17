@@ -27,7 +27,7 @@ public class Add_Binary_67 {
 
     /**
      * round2
-     * 
+     *
      * 验证通过：
      * Runtime: 6 ms, faster than 22.80% of Java online submissions for Add Binary.
      * Memory Usage: 39.8 MB, less than 19.76% of Java online submissions for Add Binary.

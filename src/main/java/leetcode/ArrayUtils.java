@@ -35,6 +35,17 @@ public class ArrayUtils {
         }
         System.out.println("]");
     }
+    public static void printIntArray(String[] arr) {
+        if (arr == null) return;
+        System.out.print("[");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i]);
+            if (i < arr.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+    }
 
     public static boolean isSame(int[] nums, int[] expected) {
         if (nums == null || expected == null) return false;
