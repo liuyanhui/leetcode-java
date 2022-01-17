@@ -35,7 +35,11 @@ public class Sqrt_x_69 {
     }
 
     /**
+     * [binary search]
      * 采用binary search思路
+     * round 2 : 这是二分查找中少有的返回right的题目，一般来说都是返回left
+     * round 2 : 这是binary search中查找小于某个数的最大值的情况，不是查找等于某个数的情况。
+     *
      * 验证通过。
      * @param x
      * @return
@@ -53,7 +57,7 @@ public class Sqrt_x_69 {
             else return mid;
         }
 
-        return right;
+        return right;//round2,review，一般都是返回left。
     }
 
     /**
