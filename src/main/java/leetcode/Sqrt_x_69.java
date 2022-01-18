@@ -37,8 +37,9 @@ public class Sqrt_x_69 {
     /**
      * [binary search]
      * 采用binary search思路
+     * review
      * round 2 : 这是二分查找中少有的返回right的题目，一般来说都是返回left
-     * round 2 : 这是binary search中查找小于某个数的最大值的情况，不是查找等于某个数的情况。
+     * round 2 : 这是binary search中，查找 x 使得 f(x)<Y 的情况。不是查找等于某个数的情况，而是f(x)。具体返回left还是right还要看f()的特性，单调增或单调减。
      *
      * 验证通过。
      * @param x

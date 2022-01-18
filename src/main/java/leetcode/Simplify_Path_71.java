@@ -1,13 +1,23 @@
 package leetcode;
 
+import java.util.Stack;
+
 /**
  * https://leetcode.com/problems/simplify-path/
  * 71. Simplify Path
  * Medium
  * --------------------
- * Given an absolute path for a file (Unix-style), simplify it. Or in other words, convert it to the canonical path.
- * In a UNIX-style file system, a period '.' refers to the current directory. Furthermore, a double period '..' moves the directory up a level.
- * Note that the returned canonical path must always begin with a slash '/', and there must be only a single slash '/' between two directory names. The last directory name (if it exists) must not end with a trailing '/'. Also, the canonical path must be the shortest string representing the absolute path.
+ * Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
+ *
+ * In a Unix-style file system, a period '.' refers to the current directory, a double period '..' refers to the directory up a level, and any multiple consecutive slashes (i.e. '//') are treated as a single slash '/'. For this problem, any other format of periods such as '...' are treated as file/directory names.
+ *
+ * The canonical path should have the following format:
+ * The path starts with a single slash '/'.
+ * Any two directories are separated by a single slash '/'.
+ * The path does not end with a trailing '/'.
+ * The path only contains the directories on the path from the root directory to the target file or directory (i.e., no period '.' or double period '..')
+ *
+ * Return the simplified canonical path.
  *
  * Example 1:
  * Input: path = "/home/"
@@ -35,7 +45,49 @@ package leetcode;
  */
 public class Simplify_Path_71 {
     public static String simplifyPath(String path) {
-        return simplifyPath_2(path);
+        return simplifyPath_3(path);
+    }
+
+    /**
+     * round 2
+     *
+     * 1.如果path为空，或不是以/开头，返回null
+     * 2.将path根据/分割成数组。并遍历数组
+     * 3.IF directory=="." or directory=="" THEN ignore
+     *   ELSE IF directory==".." THEN delete last directory from return list
+     *   ELSE directory add to the return list
+     *
+     * 验证通过：
+     * Runtime: 9 ms, faster than 33.76% of Java online submissions for Simplify Path.
+     * Memory Usage: 40.9 MB, less than 24.83% of Java online submissions for Simplify Path.
+     *
+     * @param path
+     * @return
+     */
+    public static String simplifyPath_3(String path) {
+        if (path.indexOf("/") > 0) return null;
+        String[] arr = path.split("/");
+        Stack<String> stack = new Stack<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals("") || arr[i].equals(".")) {
+                continue;
+            } else if (arr[i].equals("..")) {
+                if (!stack.empty()) {
+                    stack.pop();
+                }
+            } else {
+                stack.push(arr[i]);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.empty()) {
+            sb.insert(0, stack.pop());
+            sb.insert(0, "/");
+        }
+        if (sb.length() == 0) {
+            sb.append("/");
+        }
+        return sb.toString();
     }
 
     /**
