@@ -10,6 +10,7 @@ import java.util.Arrays;
  * -------------------------
  * Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
  * We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+ * You must solve this problem without using the library's sort function.
  *
  *  Example 1:
  * Input: nums = [2,0,2,1,1,0]
@@ -31,14 +32,43 @@ import java.util.Arrays;
  * n == nums.length
  * 1 <= n <= 300
  * nums[i] is 0, 1, or 2.
- *
- * Follow up:
- * Could you solve this problem without using the library's sort function?
- * Could you come up with a one-pass algorithm using only O(1) constant space?
  */
 public class Sort_Colors_75 {
     public static void sortColors(int[] nums) {
-        sortColors_2(nums);
+        sortColors_3(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * 荷兰三色旗法
+     * 设[:i)为red区间，[i:k)为white区间，[k,j]为未知区间，(j:]为blue区间
+     * 初始时：i=0,k=0,j=len(nums)-1
+     * 遍历nums
+     * IF nums[k]==0 THEN swap(i,k);i++;k++;
+     * ELSE IF nums[k]==1 THEN k++;
+     * ELSE IF nums[k]==2 THEN swap(k,j);j--;//此时通过swap后k是未知状态，所以k不变
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 26.45% of Java online submissions for Sort Colors.
+     * Memory Usage: 39.5 MB, less than 9.82% of Java online submissions for Sort Colors.
+     *
+     * @param nums
+     */
+    public static void sortColors_3(int[] nums) {
+        int i = 0, k = 0, j = nums.length - 1;
+        while (k <= j) {
+            if (nums[k] == 0) {
+                swap(nums, i, k);
+                i++;
+                k++;
+            } else if (nums[k] == 1) {
+                k++;
+            } else if (nums[k] == 2) {
+                swap(nums, k, j);
+                j--;
+            }
+        }
     }
 
     /**
@@ -129,6 +159,8 @@ public class Sort_Colors_75 {
 
     private static void do_func(int[] nums, int[] expected) {
         sortColors(nums);
+        ArrayUtils.printIntArray(nums);
+        System.out.println("");
         System.out.println(Arrays.equals(nums, expected));
         System.out.println("--------------");
     }
