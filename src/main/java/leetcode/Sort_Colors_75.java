@@ -73,6 +73,8 @@ public class Sort_Colors_75 {
 
     /**
      * two pass 方案
+     * 问题转化为只有三个数字的数组的排序问题
+     * first pass先统计每个数字出现次数；second pass根据出现次数重写数组
      *
      * 参考思路：
      * https://leetcode.com/problems/sort-colors/discuss/26500/Four-different-solutions
