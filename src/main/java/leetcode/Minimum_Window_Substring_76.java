@@ -139,7 +139,7 @@ public class Minimum_Window_Substring_76 {
         do_func("a", "aa", "");
         do_func("zxcv", "zxcv", "zxcv");
         do_func("a", "b", "");
-        do_func("AAAAAAADOBECODEBANC", "AAABC", "BANC");
+        do_func("AAAAAAADOBECODEBANC", "AAABC", "AAADOBEC");
     }
 
     private static void do_func(String a, String b, String expected) {
