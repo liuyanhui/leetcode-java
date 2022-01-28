@@ -28,7 +28,43 @@ import java.util.List;
 public class Subsets_78 {
 
     public static List<List<Integer>> subsets(int[] nums) {
-        return subsets_4(nums);
+        return subsets_5(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * 思路：每个元素一次加入集合，即先计算第一个元素，然后每轮都加入一个元素。
+     *
+     * 公式如下：x 表示笛卡尔积
+     * f([])={[]}
+     * f([1])=f([])x{[],[1]}={[]}x{[],[1]}={[],[1]}
+     * f([2])=f([1])x{[],[2]}={[],[1]}x{[],[2]}={[],[1],[2],[1,2]}
+     * f([n])=f([n-1])x{[],[n]}
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Subsets.
+     * Memory Usage: 42.6 MB, less than 7.09% of Java online submissions for Subsets.
+     *
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> subsets_5(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        ret.add(new ArrayList<>());
+        for (int i = 0; i < nums.length; i++) {
+            //深度cloneList，注意不能用tmp = new ArrayList<>(ret)，因为子List是浅复制。
+            List<List<Integer>> tmp = new ArrayList<>();
+            for (List<Integer> t : ret) {
+                tmp.add(new ArrayList<>(t));
+            }
+            for (List<Integer> t : tmp) {
+                t.add(nums[i]);
+            }
+            ret.addAll(tmp);
+        }
+
+        return ret;
     }
 
     /**

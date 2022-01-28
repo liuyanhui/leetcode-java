@@ -42,7 +42,7 @@ public class Combinations_77 {
      * 验证通过：
      * Runtime: 30 ms, faster than 40.91% of Java online submissions for Combinations.
      * Memory Usage: 55.1 MB, less than 13.92% of Java online submissions for Combinations.
-     * 
+     *
      * @param n
      * @param k
      * @return
