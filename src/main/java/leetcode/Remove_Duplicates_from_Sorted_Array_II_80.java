@@ -5,50 +5,78 @@ package leetcode;
  * 80. Remove Duplicates from Sorted Array II
  * Medium
  * --------------------
- *Given a sorted array nums, remove the duplicates in-place such that duplicates appeared at most twice and return the new length.
+ * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
  *
- * Do not allocate extra space for another array; you must do this by modifying the input array in-place with O(1) extra memory.
+ * Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
  *
- * Clarification:
- * Confused why the returned value is an integer, but your answer is an array?
+ * Return k after placing the final result in the first k slots of nums.
  *
- * Note that the input array is passed in by reference, which means a modification to the input array will be known to the caller.
+ * Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
  *
- * Internally you can think of this:
- *
- * // nums is passed in by reference. (i.e., without making a copy)
- * int len = removeDuplicates(nums);
- *
- * // any modification to nums in your function would be known by the caller.
- * // using the length returned by your function, it prints the first len elements.
- * for (int i = 0; i < len; i++) {
- *     print(nums[i]);
+ * Custom Judge:
+ * The judge will test your solution with the following code:
+ * int[] nums = [...]; // Input array
+ * int[] expectedNums = [...]; // The expected answer with correct length
+ * int k = removeDuplicates(nums); // Calls your implementation
+ * assert k == expectedNums.length;
+ * for (int i = 0; i < k; i++) {
+ *     assert nums[i] == expectedNums[i];
  * }
- *
+ * If all assertions pass, then your solution will be accepted.
  *
  * Example 1:
- *
  * Input: nums = [1,1,1,2,2,3]
- * Output: 5, nums = [1,1,2,2,3]
- * Explanation: Your function should return length = 5, with the first five elements of nums being 1, 1, 2, 2 and 3 respectively. It doesn't matter what you leave beyond the returned length.
+ * Output: 5, nums = [1,1,2,2,3,_]
+ * Explanation: Your function should return k = 5, with the first five elements of nums being 1, 1, 2, 2 and 3 respectively.
+ * It does not matter what you leave beyond the returned k (hence they are underscores).
+ *
  * Example 2:
- *
  * Input: nums = [0,0,1,1,1,1,2,3,3]
- * Output: 7, nums = [0,0,1,1,2,3,3]
- * Explanation: Your function should return length = 7, with the first seven elements of nums being modified to 0, 0, 1, 1, 2, 3 and 3 respectively. It doesn't matter what values are set beyond the returned length.
- *
+ * Output: 7, nums = [0,0,1,1,2,3,3,_,_]
+ * Explanation: Your function should return k = 7, with the first seven elements of nums being 0, 0, 1, 1, 2, 3 and 3 respectively.
+ * It does not matter what you leave beyond the returned k (hence they are underscores).
  *
  * Constraints:
- *
- * 1 <= nums.length <= 3 * 104
- * -104 <= nums[i] <= 104
+ * 1 <= nums.length <= 3 * 10^4
+ * -10^4 <= nums[i] <= 10^4
  * nums is sorted in ascending order.
- *
  */
 public class Remove_Duplicates_from_Sorted_Array_II_80 {
 
     public static int removeDuplicates(int[] nums) {
-        return removeDuplicates_3(nums);
+        return removeDuplicates_4(nums);
+    }
+
+    /**
+     * round2
+     * 双指针+计数器法。
+     * [0:i]表示已经符合条件的部分
+     * (i:j)表示已经删除的部分
+     * [j:~]表示未计算部分
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 65.08% of Java online submissions for Remove Duplicates from Sorted Array II.
+     * Memory Usage: 44.8 MB, less than 6.58% of Java online submissions for Remove Duplicates from Sorted Array II.
+     *
+     * @param nums
+     * @return
+     */
+    public static int removeDuplicates_4(int[] nums) {
+        int max = 2;
+        int cnt = max - 1;
+        int i = 0, j = 1;
+        for (; j < nums.length; j++) {
+            if (nums[i] == nums[j]) {
+                if (cnt > 0) {
+                    cnt--;
+                    nums[++i] = nums[j];//这里需要进行计算，否在会导致错误
+                }
+            } else {
+                nums[++i] = nums[j];
+                cnt = max - 1;
+            }
+        }
+        return i + 1;
     }
 
     /**
