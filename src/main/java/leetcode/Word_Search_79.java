@@ -24,11 +24,52 @@ package leetcode;
  * Constraints:
  * m == board.length
  * n = board[i].length
- * 1 <= m, n <= 200
- * 1 <= word.length <= 103
- * board and word consists only of lowercase and uppercase English letters.
+ * 1 <= m, n <= 6
+ * 1 <= word.length <= 15
+ * board and word consists of only lowercase and uppercase English letters.
  */
 public class Word_Search_79 {
+    public static boolean exist(char[][] board, String word) {
+        return exist_2(board, word);
+    }
+
+    /**
+     * round 2
+     * 验证失败，与exist_1的写法类似，但是结果却完全不同。循环放在递归方法中，会导致错误的结果。
+     * @param board
+     * @param word
+     * @return
+     */
+    public static boolean exist_2(char[][] board, String word) {
+        int[][] track = new int[board.length][board[0].length];
+        return dfs(board, 0, 0, word, 0, track);
+    }
+
+    private static boolean dfs(char[][] board, int r, int c, String word, int beg, int[][] track) {
+        if (r < 0 || board.length < r || c < 0 || board[0].length < c) {
+            return false;
+        }
+        if (beg == word.length()) return true;
+        //在递归中循环会导致错误的结果。因为在递归中循环，当前字符验证失败后，会循环执行下一个字符，而不是跳出本次递归。
+        for (int i = r; i < board.length; i++) {
+            for (int j = c; j < board[i].length; j++) {
+                if (board[i][j] != word.charAt(beg) || track[i][j] == 1) continue;
+                System.out.println("+" + board[i][j]);
+                track[i][j] = 1;
+                if (dfs(board, i - 1, j, word, beg + 1, track)
+                        || dfs(board, i, j + 1, word, beg + 1, track)
+                        || dfs(board, i + 1, j, word, beg + 1, track)
+                        || dfs(board, i, j - 1, word, beg + 1, track))
+                    return true;
+                System.out.println("-" + board[i][j]);
+                track[i][j] = 0;
+
+            }
+        }
+
+        return false;
+    }
+
     /**
      * 递归思路
      *
@@ -39,7 +80,7 @@ public class Word_Search_79 {
      * @param word
      * @return
      */
-    public static boolean exist(char[][] board, String word) {
+    public static boolean exist_1(char[][] board, String word) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 if (do_recursive(board, i, j, word, 0)) return true;
@@ -72,9 +113,11 @@ public class Word_Search_79 {
     }
 
     public static void main(String[] args) {
-        do_func(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED", true);
-        do_func(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "SEE", true);
-        do_func(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCB", false);
+//        do_func(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED", true);
+//        do_func(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "SEE", true);
+//        do_func(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCB", false);
+        do_func(new char[][]{{'A', 'B'}, {'C', 'D'}}, "ABCD", false);
+
     }
 
     private static void do_func(char[][] board, String word, boolean expected) {
