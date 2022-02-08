@@ -30,7 +30,50 @@ package leetcode;
  */
 public class Search_in_Rotated_Sorted_Array_II_81 {
     public static boolean search(int[] nums, int target) {
-        return search_1(nums, target);
+        return search_2(nums, target);
+    }
+
+    /**
+     * 非递归，迭代思路
+     * 参考文档：https://leetcode.com/problems/search-in-rotated-sorted-array-ii/discuss/28218/My-8ms-C%2B%2B-solution-(o(logn)-on-average-o(n)-worst-case)
+     *
+     * 使用binary search时，需要确定何种情况下left=mid+1，何种情况下right=mid-1。
+     * 本题中不能简单使用nums[mid]和target进行比较，需要增加判断条件。
+     * 但是本质上都是在确定left=mid+1 或 right=mid-1 。（金矿：这句是binary search的本质）
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Search in Rotated Sorted Array II.
+     * Memory Usage: 42 MB, less than 17.57% of Java online submissions for Search in Rotated Sorted Array II.
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static boolean search_2(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[left] == target || nums[right] == target || nums[mid] == target) return true;
+            if ((nums[left] == nums[mid]) && (nums[right] == nums[mid])) {//这里很重要，没有则会错误
+                //只能步进一个数字，否则在极端用例下回跳过某个数字导致错误。不能直接使用left=mid+1或right=mid-1;
+                //如用例：do_func(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1}, 2, true);
+                ++left;
+                --right;
+            } else if (nums[left] <= nums[mid]) {
+                if (nums[left] < target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else {
+                if (nums[mid] < target && target < nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -74,6 +117,7 @@ public class Search_in_Rotated_Sorted_Array_II_81 {
         do_func(new int[]{2, 5, 6, 0, 0, 1, 2}, 3, false);
         do_func(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 3, false);
         do_func(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 0, true);
+        do_func(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1}, 2, true);
     }
 
     private static void do_func(int[] nums, int target, boolean expected) {
