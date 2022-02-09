@@ -24,13 +24,79 @@ package leetcode;
 public class Remove_Duplicates_from_Sorted_List_II_82 {
 
     public static ListNode deleteDuplicates(ListNode head) {
-        return deleteDuplicates_2(head);
+        return deleteDuplicates_4(head);
+    }
+
+    /**
+     * round 2
+     * deleteDuplicates_2
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 64.56% of Java online submissions for Remove Duplicates from Sorted List II.
+     * Memory Usage: 44.7 MB, less than 6.25% of Java online submissions for Remove Duplicates from Sorted List II.
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode deleteDuplicates_4(ListNode head) {
+        ListNode ret = new ListNode(0, head);
+        ListNode pre = ret;
+        ListNode tail = pre.next;
+        while (tail != null) {
+            if (tail.next != null && tail.val == tail.next.val) {
+                while (tail.next != null && tail.val == tail.next.val) {
+                    tail.next = tail.next.next;
+                }
+                pre.next = tail.next;
+            } else {
+                pre = pre.next;
+            }
+            tail = tail.next;
+        }
+        return ret.next;
+    }
+
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 64.56%.
+     * Memory Usage: 42.6 MB, less than 15.54%.
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode deleteDuplicates_3(ListNode head) {
+        if (head == null) return null;
+        ListNode dumb = new ListNode(0, head);
+        ListNode pre = dumb;
+        pre.next = head;
+        ListNode cur = head.next;
+        boolean delSignal = false;
+        while (cur != null) {
+            if (pre.next.val == cur.val) {
+                delSignal = true;
+            } else {
+                if (delSignal) {
+                    pre.next = cur;
+                    delSignal = false;
+                } else {
+                    pre = pre.next;
+                }
+            }
+            cur = cur.next;
+        }
+        if (delSignal) pre.next = null;
+        return dumb.next;
     }
 
     /**
      * 非三色旗思路。
      * deleteDuplicates_1的简化版，每次tail.next.val == current.val时就删除current。
-     * 这样可以解决末尾连续元素相等的特殊情况的问题，是代码更优雅。
+     * 这样可以解决末尾连续元素相等的特殊情况的问题，代码更优雅。
+     *
+     * 金矿：类似的，在有序列表中删除重复元素（完全删除而不是去重），都可以使用该思路解决。
      *
      * 参考资料：https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/solution/
      *
@@ -43,9 +109,12 @@ public class Remove_Duplicates_from_Sorted_List_II_82 {
         ListNode tail = ret;
         while (head != null) {
             if (head.next != null && head.val == head.next.val) {
+                // 金矿：这里很精妙。
+                // step1.先去重
                 while (head.next != null && head.val == head.next.val) {
                     head = head.next;
                 }
+                // step2.再把自己删除。
                 tail.next = head.next;
             } else {
                 tail = tail.next;
@@ -106,7 +175,8 @@ public class Remove_Duplicates_from_Sorted_List_II_82 {
     private static void do_func(int[] l1, int[] expected) {
         ListNode ret = deleteDuplicates(ListNode.fromArray(l1));
         System.out.println(ret);
-        System.out.println(ret.equalsTo(ListNode.fromArray(expected)));
+//        System.out.println(ret.equalsTo(ListNode.fromArray(expected)));
+        System.out.println(ListNode.isSame(ret, expected));
         System.out.println("--------------");
     }
 }
