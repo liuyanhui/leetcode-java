@@ -22,7 +22,28 @@ package leetcode;
  */
 public class RemoveDuplicates_from_Sorted_List_83 {
     public static ListNode deleteDuplicates(ListNode head) {
-        return deleteDuplicates_2(head);
+        return deleteDuplicates_3(head);
+    }
+
+    /**
+     * round 2
+     * 
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Remove Duplicates from Sorted List.
+     * Memory Usage: 41.5 MB, less than 21.19% of Java online submissions for Remove Duplicates from Sorted List.
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode deleteDuplicates_3(ListNode head) {
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (cur.val == cur.next.val)
+                cur.next = cur.next.next;
+            else
+                cur = cur.next;
+        }
+        return head;
     }
 
     /**
@@ -68,6 +89,7 @@ public class RemoveDuplicates_from_Sorted_List_83 {
         do_func(new int[]{}, new int[]{});
         do_func(new int[]{1, 1, 2}, new int[]{1, 2});
         do_func(new int[]{1, 1, 2, 3, 3}, new int[]{1, 2, 3});
+        do_func(new int[]{1, 1, 1, 1, 1}, new int[]{1});
     }
 
     private static void do_func(int[] intput, int[] expected) {
