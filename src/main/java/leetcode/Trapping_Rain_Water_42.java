@@ -28,6 +28,7 @@ public class Trapping_Rain_Water_42 {
     }
 
     /**
+     * 【单调栈】【Monotone Priority Stack】
      * Stack法
      * 遍历数组，递减时入栈，递增时出栈并计算面积
      *

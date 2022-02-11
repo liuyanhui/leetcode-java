@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Stack;
+
 /**
  * 84. Largest Rectangle in Histogram
  * Hard
@@ -22,7 +24,57 @@ package leetcode;
  */
 public class Largest_Rectangle_in_Histogram_84 {
     public static int largestRectangleArea(int[] heights) {
-        return largestRectangleArea_1(heights);
+        return largestRectangleArea_2(heights);
+    }
+
+    /**
+     * 金矿
+     * 【单调栈】【Monotone Priority Stack】
+     *
+     * 思路如下：
+     * 1.单调栈分为单调递增栈和单调递减栈
+     * 11. 单调递增栈即栈内元素保持单调递增的栈
+     * 12. 同理单调递减栈即栈内元素保持单调递减的栈
+     *
+     * 2.操作规则（下面都以单调递增栈为例）
+     * 21. 如果新的元素比栈顶元素大，就入栈
+     * 22. 如果新的元素较小，那就一直把栈内元素弹出来，直到栈顶比新元素小
+     *
+     * 3.加入这样一个规则之后，会有什么效果
+     * 31. 栈内的元素是递增的
+     * 32. 当元素出栈时，说明这个新元素是出栈元素向后找第一个比其小的元素
+     *     以“Example 1”为例，当索引在 6 时，栈里是 1 5 6 。
+     *     接下来新元素是 2 ，那么 6 需要出栈。
+     *     当 6 出栈时，右边 2 代表是 6 右边第一个比 6 小的元素。
+     * 33.当元素出栈后，说明新栈顶元素是出栈元素向前找第一个比其小的元素
+     *     当 6 出栈时，5 成为新的栈顶，那么 5 就是 6 左边第一个比 6 小的元素。
+     *
+     * 4.每当元素出栈时，根据上面的规则可以计算包含该元素的最大面积。
+     *
+     * 验证通过：
+     * Runtime: 191 ms, faster than 18.04% of Java online submissions for Largest Rectangle in Histogram.
+     * Memory Usage: 90.4 MB, less than 11.99% of Java online submissions for Largest Rectangle in Histogram.
+     *
+     * @param heights
+     * @return
+     */
+    public static int largestRectangleArea_2(int[] heights) {
+        if (heights == null || heights.length == 0) {
+            return 0;
+        }
+        Stack<Integer> stack = new Stack<>();
+
+        int maxArea = 0;
+        for (int i = 0; i <= heights.length; i++) {
+            while (!stack.empty() && (i == heights.length || heights[stack.peek()] > heights[i])) {
+                int t = stack.pop();
+                int leftIdx = stack.empty() ? -1 : stack.peek();
+                maxArea = Math.max(maxArea, heights[t] * (i - leftIdx - 1));
+            }
+            stack.push(i);
+        }
+
+        return maxArea;
     }
 
     /**
@@ -33,6 +85,7 @@ public class Largest_Rectangle_in_Histogram_84 {
      *
      * brute force 思路，时间复杂度O(N*N)，大概率不符合条件。
      * 思路很重要
+     * 0.max_area[i]表示包括i的最大面积。
      * 1.max_area[i] = heights[i]*(right-left+1)。right为向右离i最远的满足heights[right]>heights[i]的数字下标；left为向左离i最远的满足heights[left]>heights[i]的数字下标。分别用dp_right[]和dp_left[]保存这些下标。
      * 2.max_area[]的最大值为所求
      * 3.本质上就是brute force的思路，只是在查找左右边界（dp_right[]和dp_left[]）的时候使用了trick。使用了DP思路。
@@ -81,6 +134,7 @@ public class Largest_Rectangle_in_Histogram_84 {
     public static void main(String[] args) {
         do_func(new int[]{2, 1, 5, 6, 2, 3}, 10);
         do_func(new int[]{2, 4}, 4);
+        do_func(new int[]{20}, 20);
     }
 
     private static void do_func(int[] heights, int expected) {
