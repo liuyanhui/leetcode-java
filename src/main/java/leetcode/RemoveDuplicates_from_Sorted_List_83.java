@@ -27,7 +27,7 @@ public class RemoveDuplicates_from_Sorted_List_83 {
 
     /**
      * round 2
-     * 
+     *
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Remove Duplicates from Sorted List.
      * Memory Usage: 41.5 MB, less than 21.19% of Java online submissions for Remove Duplicates from Sorted List.
