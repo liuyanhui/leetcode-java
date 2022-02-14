@@ -24,8 +24,38 @@ import java.util.Stack;
  */
 public class Trapping_Rain_Water_42 {
     public static int trap(int[] height) {
-        return trap_3(height);
+        return trap_4(height);
     }
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     * Runtime: 13 ms, faster than 8.30% of Java online submissions for Trapping Rain Water.
+     * Memory Usage: 48 MB, less than 5.16% of Java online submissions for Trapping Rain Water.
+     *
+     * @param height
+     * @return
+     */
+    public static int trap_4(int[] height) {
+        int ret = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < height.length; i++) {
+            while (!stack.empty() && height[stack.peek()] <= height[i]) {
+                int bottom = height[stack.pop()];
+                if (stack.empty()) break;
+                ret += (Math.min(height[stack.peek()], height[i]) - bottom) * (i - stack.peek() - 1);
+            }
+            stack.push(i);
+        }
+        return ret;
+    }
+
+    /**
+     * 还有一种DP思路，
+     *
+     * https://leetcode.com/problems/trapping-rain-water/solution/ Approach 3
+     */
 
     /**
      * 【单调栈】【Monotone Priority Stack】
@@ -62,7 +92,7 @@ public class Trapping_Rain_Water_42 {
      *
      * two point method，夹逼法
      * 思路如下：
-     * 一般的单方向遍历思路，无法解决U型数组(两边大中间小)场景中，末尾比开头数字小的情况。所以在夹逼过程中应该是收尾的数字比较，而不是依次遍历比较。
+     * 一般的单方向遍历思路，无法解决U型数组(两边大中间小)场景中，末尾比开头数字小的情况。所以在夹逼过程中应该跟对应的最大值比较，而不是跟相邻的数字比较。
      * 夹逼遍历数组
      * if(leftMax<rightMax) 先从左侧计算
      *     if(leftMax<h[l])
@@ -94,6 +124,7 @@ public class Trapping_Rain_Water_42 {
         int rightMax = height[height.length - 1];
         int l = 0, r = height.length - 1;
         while (l <= r) {
+            //每轮循环都从最大值较小的一侧开始
             if (leftMax <= rightMax) {
                 if (leftMax < height[l]) {
                     leftMax = height[l];
@@ -163,6 +194,7 @@ public class Trapping_Rain_Water_42 {
         do_func(new int[]{4, 3, 3, 2, 1}, 0);
         do_func(new int[]{1, 2, 3, 4, 5}, 0);
         do_func(new int[]{5, 5, 1, 7, 1, 1, 5, 2, 7, 6}, 23);
+        do_func(new int[]{5, 5, 1, 7, 1, 1, 5, 2, 700, 6}, 23);
     }
 
     private static void do_func(int[] nums, int expected) {
