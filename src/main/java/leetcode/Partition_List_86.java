@@ -15,10 +15,48 @@ package leetcode;
  * Example 2:
  * Input: head = [2,1], x = 2
  * Output: [1,2]
+ *
+ * Constraints:
+ * The number of nodes in the list is in the range [0, 200].
+ * -100 <= Node.val <= 100
+ * -200 <= x <= 200
  */
 public class Partition_List_86 {
     public static ListNode partition(ListNode head, int x) {
-        return partition_2(head, x);
+        return partition_3(head, x);
+    }
+
+    /**
+     * round 2
+     * 思路：
+     *  0.遍历输入的list
+     *  1.用两个list分别保存小于x的节点和大于等于x的节点。
+     *  2.合并两个list。
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Partition List.
+     * Memory Usage: 42.4 MB, less than 22.60% of Java online submissions for Partition List.
+     *
+     * @param head
+     * @param x
+     * @return
+     */
+    public static ListNode partition_3(ListNode head, int x) {
+        ListNode head1 = new ListNode(), tail1 = head1;
+        ListNode head2 = new ListNode(), tail2 = head2;
+        while (head != null) {
+            if (head.val < x) {
+                tail1.next = head;
+                tail1 = tail1.next;
+            } else {
+                tail2.next = head;
+                tail2 = tail2.next;
+            }
+            head = head.next;
+        }
+        tail1.next = head2.next;
+        tail2.next = null;
+        return head1.next;
     }
 
     /**
@@ -103,6 +141,10 @@ public class Partition_List_86 {
     public static void main(String[] args) {
         do_func(new int[]{1, 4, 3, 2, 5, 2}, 3, new int[]{1, 2, 2, 4, 3, 5});
         do_func(new int[]{2, 1}, 2, new int[]{1, 2});
+        do_func(new int[]{1, 4, 3, 2, 5, 2}, -13, new int[]{1, 4, 3, 2, 5, 2});
+        do_func(new int[]{1, 4, 3, 2, 5, 2}, 13, new int[]{1, 4, 3, 2, 5, 2});
+        do_func(new int[]{1, 4, 3, 2, 5, 2}, 1, new int[]{1, 4, 3, 2, 5, 2});
+        do_func(new int[]{1, 4, 6, 2, 5, 2}, 3, new int[]{1, 2, 2, 4, 6, 5});
     }
 
     private static void do_func(int[] l1, int x, int[] expected) {
