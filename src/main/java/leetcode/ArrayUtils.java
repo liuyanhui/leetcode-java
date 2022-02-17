@@ -15,6 +15,11 @@ public class ArrayUtils {
         System.out.print("]");
     }
 
+    public static void printlnIntArray(int[] nums) {
+        printIntArray(nums);
+        System.out.println("");
+    }
+
     public static void printIntArray(int[][] nums) {
         if (nums == null) return;
         System.out.print("[");
@@ -35,6 +40,7 @@ public class ArrayUtils {
         }
         System.out.println("]");
     }
+
     public static void printIntArray(String[] arr) {
         if (arr == null) return;
         System.out.print("[");
