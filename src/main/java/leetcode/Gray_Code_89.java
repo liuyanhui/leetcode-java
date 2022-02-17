@@ -9,9 +9,14 @@ import java.util.List;
  * 89. Gray Code
  * Medium
  * -----------------
- * The gray code is a binary numeral system where two successive values differ in only one bit.
- * Given an integer n representing the total number of bits in the code, return any sequence of gray code.
- * A gray code sequence must begin with 0.
+ * An n-bit gray code sequence is a sequence of 2^n integers where:
+ * Every integer is in the inclusive range [0, 2^n - 1],
+ * The first integer is 0,
+ * An integer appears no more than once in the sequence,
+ * The binary representation of every pair of adjacent integers differs by exactly one bit, and
+ * The binary representation of the first and last integers differs by exactly one bit.
+ *
+ * Given an integer n, return any valid n-bit gray code sequence.
  *
  * Example 1:
  * Input: n = 2
@@ -36,7 +41,54 @@ import java.util.List;
  */
 public class Gray_Code_89 {
     public static List<Integer> grayCode(int n) {
-        return grayCode_2(n);
+        return grayCode_3(n);
+    }
+
+    /**
+     * n=1
+     * 000000
+     * 000001
+     * n=2
+     * 000011
+     * 000010
+     * n=3
+     * 000110
+     * 000111
+     * 000101
+     * 000100
+     * n=4
+     * 001100
+     * 001101
+     * 001111
+     * 001110
+     * 001010
+     * 001011
+     * 001001
+     * 001000
+     *
+     * 思路:
+     * 从低位开始计数第i位,第i-1位..第1位
+     * n=i时，第i位设为1，从第i-1位到第1位是n=i-1时的结果列表的倒序
+     *
+     * 验证通过：
+     * Runtime: 12 ms, faster than 47.28% of Java online submissions for Gray Code.
+     * Memory Usage: 55.3 MB, less than 32.01% of Java online submissions for Gray Code.
+     *
+     * @param n
+     * @return
+     */
+    public static List<Integer> grayCode_3(int n) {
+        List<Integer> ret = new ArrayList<>();
+        if (n < 1) return ret;
+        ret.add(0);
+        for (int i = 1; i <= n; i++) {
+            int t = 1 << (i - 1);
+            int len = ret.size();
+            for (int j = len - 1; j >= 0; j--) {
+                ret.add(ret.get(j) | t);
+            }
+        }
+        return ret;
     }
 
     /**
@@ -80,7 +132,7 @@ public class Gray_Code_89 {
             ret.add(0);
             return ret;
         }
-        ret.addAll(grayCode(n - 1));
+        ret.addAll(grayCode_1(n - 1));
         int base = (int) Math.pow(2, n - 1);
         for (int i = ret.size() - 1; i >= 0; i--) {
             ret.add(base + ret.get(i));
