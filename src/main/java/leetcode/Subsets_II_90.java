@@ -24,7 +24,47 @@ import java.util.*;
  */
 public class Subsets_II_90 {
     public static List<List<Integer>> subsetsWithDup(int[] nums) {
-        return subsetsWithDup_2(nums);
+        return subsetsWithDup_3(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * 1.排序数组
+     * 2.迭代法+笛卡尔积+去重，思路如下：
+     * [1,2,2] (× 表示笛卡尔积)
+     * 第一步初始化 {[]}
+     * 第二步{[]}×{[],[1]}={[],[1]}
+     * 第三步{[],[1]}×{[],[2]}={[],[1],[2],[1,2]}
+     * 第四步{[],[1],[2],[1,2]}×{[],[2]}={[],[1],[2],[1,2],[2,2][1,2,2]}
+     *
+     * 验证通过：
+     * Runtime: 7 ms, faster than 12.59% of Java online submissions for Subsets II.
+     * Memory Usage: 45.3 MB, less than 5.97% of Java online submissions for Subsets II.
+     *
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> subsetsWithDup_3(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        if (nums == null || nums.length == 0) return ret;
+        Arrays.sort(nums);
+        Set<String> existed = new HashSet<String>();
+        ret.add(new ArrayList<>());
+        for (int i = 0; i < nums.length; i++) {
+            List<List<Integer>> curList = new ArrayList<>();
+            for (List<Integer> t : ret) {
+                List<Integer> itemList = new ArrayList<>(t);
+                itemList.add(nums[i]);
+                String key = itemList.toString();
+                if (!existed.contains(key)) {
+                    curList.add(new ArrayList<>(itemList));
+                    existed.add(key);
+                }
+            }
+            ret.addAll(curList);
+        }
+        return ret;
     }
 
     /**
