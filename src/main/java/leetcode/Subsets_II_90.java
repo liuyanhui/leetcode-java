@@ -28,6 +28,30 @@ public class Subsets_II_90 {
     }
 
     /**
+     * dfs思路
+     * 来源：提交方案中的0 ms submission
+     * 非常巧妙，无需使用缓存判重
+     *
+     */
+    public static List<List<Integer>> subsetsWithDup_4(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        backTrack(0, nums, new ArrayList<Integer>(), result);
+        return result;
+    }
+
+    public static void backTrack(int start, int[] nums, List<Integer> tempList, List<List<Integer>> result) {
+        result.add(new ArrayList<Integer>(tempList));
+
+        for (int i = start; i < nums.length; i++) {
+            if (i > start && (nums[i] == nums[i - 1])) continue;//这里很关键，用于排重
+            tempList.add(nums[i]);
+            backTrack(i + 1, nums, tempList, result);
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+
+    /**
      * round 2
      *
      * 1.排序数组
