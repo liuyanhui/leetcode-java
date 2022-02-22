@@ -12,8 +12,8 @@ import java.util.Map;
  * 'B' -> "2"
  * ...
  * 'Z' -> "26"
- * To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, "11106" can be mapped into:
  *
+ * To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, "11106" can be mapped into:
  * "AAJF" with the grouping (1 1 10 6)
  * "KJF" with the grouping (11 10 6)
  * Note that the grouping (1 11 06) is invalid because "06" cannot be mapped into 'F' since "6" is different from "06".
@@ -51,7 +51,38 @@ import java.util.Map;
 public class Decode_Ways_91 {
 
     public static int numDecodings(String s) {
-        return numDecodings_3(s);
+        return numDecodings_4(s);
+    }
+
+    /**
+     * round 2
+     *
+     * DP思路，公式为
+     * dp[i]=dp[i-1]+dp[i-2]。dp[i]为从0开始到i的组合数
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 95.46% of Java online submissions for Decode Ways.
+     * Memory Usage: 42.8 MB, less than 11.09% of Java online submissions for Decode Ways.
+     *
+     * @param s
+     * @return
+     */
+    public static int numDecodings_4(String s) {
+        int[] dp = new int[s.length() + 1];
+        dp[0] = 1;
+        for (int i = 0; i < s.length(); i++) {
+            int c = s.charAt(i) - '0';
+            if (c > 0) {
+                dp[i + 1] = dp[i];
+            }
+            if (i > 0) {
+                int t = (s.charAt(i - 1) - '0') * 10 + c;
+                if (10 <= t && t <= 26)
+                    dp[i + 1] += dp[i - 1];
+            }
+            if (dp[i + 1] == 0) return 0;
+        }
+        return dp[dp.length - 1];
     }
 
     /**
