@@ -5,16 +5,76 @@ package leetcode;
  * 92. Reverse Linked List II
  * Medium
  * ----------------
- * Reverse a linked list from position m to n. Do it in one-pass.
+ * Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
  *
- * Note: 1 ≤ m ≤ n ≤ length of list.
- * Example:
- * Input: 1->2->3->4->5->NULL, m = 2, n = 4
- * Output: 1->4->3->2->5->NULL
+ * Example 1:
+ * Input: head = [1,2,3,4,5], left = 2, right = 4
+ * Output: [1,4,3,2,5]
+ *
+ * Example 2:
+ * Input: head = [5], left = 1, right = 1
+ * Output: [5]
+ *
+ * Constraints:
+ * The number of nodes in the list is n.
+ * 1 <= n <= 500
+ * -500 <= Node.val <= 500
+ * 1 <= left <= right <= n
+ *
+ * Follow up: Could you do it in one pass?
  */
 public class Reverse_Linked_List_II_92 {
     public static ListNode reverseBetween(ListNode head, int m, int n) {
-        return reverseBetween_2(head, m, n);
+        return reverseBetween_3(head, m, n);
+    }
+
+    /**
+     * round 2
+     * one pass
+     *
+     * 1.list分割为三部分，[0:left)，[left,right]，(right:~]
+     * 2.先找到left节点的父节点记为tail1
+     * 3.从left节点开始reverse，直到right节点；并记录right节点的子节点为head3
+     * 4.left节点记为tail2，right节点记为head2
+     * 5.把三部分重新连接[head:tail1]，[head2,tail2]，[head3:~]
+     *
+     * 金矿：链表操作切记要使用dumb作为头结点。
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Linked List II.
+     * Memory Usage: 41.9 MB, less than 22.04% of Java online submissions for Reverse Linked List II.
+     *
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
+    public static ListNode reverseBetween_3(ListNode head, int m, int n) {
+        ListNode dumb = new ListNode(0, head);
+        ListNode tail1 = dumb, head2 = null, tail2, head3;
+        ListNode cur = head;
+        // find node[left] and node[tail1]
+        while (m > 1 && cur != null) {
+            cur = cur.next;
+            tail1 = tail1.next;
+            m--;
+            n--;
+        }
+        tail1.next = null;
+        tail2 = cur;
+        //reverse
+        while (n > 0 && cur != null) {
+            ListNode t = cur.next;
+            cur.next = head2;
+            head2 = cur;
+            cur = t;
+            n--;
+        }
+        head3 = cur;
+        //combine
+        tail1.next = head2;
+        tail2.next = head3;
+        return dumb.next;
     }
 
     /**
@@ -116,6 +176,7 @@ public class Reverse_Linked_List_II_92 {
         do_func(new int[]{1, 2, 3, 4, 5}, 1, 5, new int[]{5, 4, 3, 2, 1});
         do_func(new int[]{1, 2, 3, 4, 5}, 1, 1, new int[]{1, 2, 3, 4, 5});
         do_func(new int[]{1, 2, 3, 4, 5}, 5, 5, new int[]{1, 2, 3, 4, 5});
+        do_func(new int[]{5}, 1, 1, new int[]{5});
     }
 
     private static void do_func(int[] l1, int m, int n, int[] expected) {
