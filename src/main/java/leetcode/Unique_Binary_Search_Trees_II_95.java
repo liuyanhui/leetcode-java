@@ -27,6 +27,72 @@ public class Unique_Binary_Search_Trees_II_95 {
     }
 
     /**
+     * 还有一种解法，参考
+     * https://leetcode.wang/leetCode-95-Unique-Binary-Search-TreesII.html#%E8%A7%A3%E6%B3%95%E5%9B%9B-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-2
+     *
+     * DP思路
+     * 通过规律可以发现[1:i-1]确定的情况下，数字i在[1:i-1]结果的基础上出现的位置是有规律的。即，要么[1:i-1]结果集作为i的左子树；要么i作为[1:i-1]结果集的最右右子树
+     */
+
+    /**
+     * round 2
+     * 递归法
+     * 节点为[1:n]
+     * 如果i为根节点，那么左子树就是f([1:i-1])，右子树为f([i+1,n])
+     * i从1~n依次计算，然后合并
+     *
+     * 不够优雅，需要参考generateTrees_2()
+     *
+     * 验证通过：
+     * Runtime: 2 ms, faster than 70.36% of Java online submissions for Unique Binary Search Trees II.
+     * Memory Usage: 45.8 MB, less than 27.02% of Java online submissions for Unique Binary Search Trees II.
+     *
+     * @param n
+     * @return
+     */
+    public static List<TreeNode> generateTrees_4(int n) {
+        List<TreeNode> ret = do_recursive_4(1, n);
+        return ret;
+    }
+
+    private static List<TreeNode> do_recursive_4(int beg, int end) {
+        List<TreeNode> ret = new ArrayList<>();
+        if (beg > end) return ret;
+        if (beg == end) {
+            TreeNode t = new TreeNode(beg);
+            ret.add(t);
+            return ret;
+        }
+        for (int i = beg; i <= end; i++) {
+            List<TreeNode> lefts = do_recursive_4(beg, i - 1);
+            List<TreeNode> rights = do_recursive_4(i + 1, end);
+            if (lefts.size() == 0) {
+                for (TreeNode r : rights) {
+                    TreeNode t = new TreeNode(i);
+                    t.right = r;
+                    ret.add(t);
+                }
+            } else if (rights.size() == 0) {
+                for (TreeNode l : lefts) {
+                    TreeNode t = new TreeNode(i);
+                    t.left = l;
+                    ret.add(t);
+                }
+            } else {
+                for (TreeNode l : lefts) {
+                    for (TreeNode r : rights) {
+                        TreeNode t = new TreeNode(i);
+                        t.left = l;
+                        t.right = r;
+                        ret.add(t);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
      * DP思路，一个很厉害的思路
      * 参考文档：
      * https://leetcode.com/problems/unique-binary-search-trees-ii/discuss/31493/Java-Solution-with-DP
