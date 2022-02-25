@@ -19,7 +19,35 @@ package leetcode;
  */
 public class Unique_Binary_Search_Trees_96 {
     public static int numTrees(int n) {
-        return numTrees_2(n);
+        return numTrees_3(n);
+    }
+
+    /**
+     * round 2
+     *
+     * DP思路
+     * F[0]=1
+     * F[1]=F[0]=1
+     * F[2]=F[0]*F[1]+F[1]*F[0]=2
+     * F[3]=F[0]*F[2]+F[1]*F[1]+F[2]*F[0]=5
+     * F[n]=F[0]*F[n-1]+F[1]*F[n-2]+...+F[n-2]*F[1]+F[n-1]*F[0]
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Unique Binary Search Trees.
+     * Memory Usage: 38.9 MB, less than 40.27% of Java online submissions for Unique Binary Search Trees.
+     *
+     * @param n
+     * @return
+     */
+    public static int numTrees_3(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                dp[i] += dp[j] * dp[i - j - 1];
+            }
+        }
+        return dp[n];
     }
 
     /**
