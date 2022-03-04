@@ -33,8 +33,8 @@ public class Recover_Binary_Search_Tree_99 {
      * 本题是Validate_Binary_Search_Tree_98的延伸，参考了它的isValidBST_2()方法
      *
      * 思路如下：
-     * 0.BST在pre-order过程中就是有序的
-     * 1.pre-order过程中，不满足条件时，必然会识别出错误节点。因为正确的顺序是从小到大的，如果出错必然是较大节点先出现。所以第一次记录较大节点为node1，第二次记录较小节点node2。
+     * 0.BST在in-order过程中就是有序的
+     * 1.in-order过程中，不满足条件时，必然会识别出错误节点。因为正确的顺序是从小到大的，如果出错必然是较大节点先出现。所以第一次记录较大节点为node1，第二次记录较小节点node2。
      * 2.特殊情况：当两个节点是父子关系。
      * 3.swap(node1,node2)。
      * 4.第一步中，首次发现异常时，设置node1=较大节点，node2=较小节点。后续再发现异常，只更新node2即可。

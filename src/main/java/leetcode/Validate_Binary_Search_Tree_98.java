@@ -50,7 +50,7 @@ public class Validate_Binary_Search_Tree_98 {
      * 3.右子树的最左节点大于父节点
      *
      * 思路1：
-     * pre-order递归时把父节点作为参数传入。
+     * in-order递归时把父节点作为参数传入。
      *这个思路中父节点会承担两中角色，左子树的最大值边界和右子树的最小值边界。这种方式会使一个变量承担两种职能，并且还需要一个变量left_or_right说明是左子树还是右子树，增加了实现的复杂度。
      *
      * 思路2：在思路1的基础上进行优化。
@@ -77,12 +77,12 @@ public class Validate_Binary_Search_Tree_98 {
     }
 
     /**
-     * pre-order 迭代遍历法
+     * in-order 迭代遍历法
      * 参考思路：
      * https://leetcode.com/problems/validate-binary-search-tree/discuss/32112/Learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-(Java-Solution)
      *
      * 说明：
-     * BST如果使用pre-order遍历的过程就是把整个树序列化成有序数组的过程。那么在pre-order遍历的过程就可以用来判断tree是否为BST
+     * BST如果使用in-order遍历的过程就是把整个树序列化成有序数组的过程。那么在in-order遍历的过程就可以用来判断tree是否为BST
      *
      * 验证通过：
      * Runtime: 2 ms, faster than 21.91% of Java online submissions for Validate Binary Search Tree.
