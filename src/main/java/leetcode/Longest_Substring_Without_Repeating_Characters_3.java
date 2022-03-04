@@ -1,5 +1,6 @@
 package leetcode;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,100 @@ import java.util.Set;
  * s consists of English letters, digits, symbols and spaces.
  */
 public class Longest_Substring_Without_Repeating_Characters_3 {
+    public static int lengthOfLongestSubstring(String s) {
+        return lengthOfLongestSubstring_4(s);
+    }
+
+    /**
+     * 参考材料：
+     * https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1729/11-line-simple-Java-solution-O(n)-with-explanation
+     *
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring_4(String s) {
+        int len = 0;
+        int left = 0;
+        HashMap<Character, Integer> cached = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (cached.containsKey(c)) {
+                left = Math.max(left, cached.get(c) + 1);
+            }
+            len = Math.max(len, i - left + 1);
+            cached.put(c, i);
+        }
+        return len;
+    }
+
+    /**
+     * lengthOfLongestSubstring_2类似思路，但是是另一个实现版本。
+     * 缓存中key是字符，value是key出现的下标（lengthOfLongestSubstring_2中value是出现次数）
+     *
+     * 思路如下：
+     * 1.滑动窗口。双指针+缓存，缓存存储字符的下标。
+     * 2.如果当前字符c出现过，计算最大长度，清理缓存，l跳转到缓存c小标的下一个位置，c加入缓存，r++
+     * 3.如果当前字符c为出现过，c加入缓存，r++
+     *
+     * 验证通过：
+     * Runtime: 14 ms, faster than 44.71%.
+     * Memory Usage: 46 MB, less than 26.72%.
+     *
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring_3(String s) {
+        int max = 0;
+        if (s == null || s.length() == 0) return max;
+        int l = 0, r = 0;
+        HashMap<Character, Integer> cached = new HashMap<>();
+        while (r < s.length()) {
+            char c = s.charAt(r);
+            if (cached.containsKey(c)) {
+                int t = cached.get(c);
+                while (l <= t) {
+                    cached.remove(s.charAt(l++));
+                }
+            }
+            cached.put(c, r);
+            max = Math.max(max, r - l + 1);
+            r++;
+        }
+        return max;
+    }
+
+    /**
+     * round 2
+     * 思路：
+     * 1.滑动窗口。双指针+缓存，缓存存储在滑动窗口内字符的出现次数
+     * 2.如果当前字符c未出现过，缓存中出现次数加1，计算长度，r++
+     * 3.如果当前字符c已出现过，l左移直到缓存中字符c出现次数为0（l左移过程中每个字符出现次数-1），c的出现次数加1，r++
+     *
+     * 验证通过：
+     * Runtime: 14 ms, faster than 44.69% of Java online submissions for Longest Substring Without Repeating Characters.
+     * Memory Usage: 44.3 MB, less than 44.62% of Java online submissions for Longest Substring Without Repeating Characters.
+     *
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring_2(String s) {
+        int max = 0;
+        if (s == null || s.length() == 0) return max;
+        int l = 0, r = 0;
+        HashMap<Character, Integer> cached = new HashMap<>();
+        while (r < s.length()) {
+            char c = s.charAt(r);
+            cached.computeIfAbsent(c, v -> 0);
+            while (cached.get(c) > 0) {
+                cached.put(s.charAt(l), cached.get(s.charAt(l)) - 1);
+                l++;
+            }
+            cached.put(c, cached.get(c) + 1);
+            max = max > r - l + 1 ? max : r - l + 1;
+            r++;
+        }
+        return max;
+    }
 
     /**
      * 双指针法，两个指针i,j把s分割成三部分，[0,i)是已经遍历过的，[i,j)是当前的substring,[j,s.length)是未遍历的部分。
@@ -47,7 +142,7 @@ public class Longest_Substring_Without_Repeating_Characters_3 {
      * @param s
      * @return
      */
-    public static int lengthOfLongestSubstring(String s) {
+    public static int lengthOfLongestSubstring_1(String s) {
         if (s == null || s.length() == 0) {
             return 0;
         }
