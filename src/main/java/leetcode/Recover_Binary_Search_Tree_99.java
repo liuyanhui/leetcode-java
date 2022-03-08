@@ -25,8 +25,79 @@ import java.util.Stack;
  * Follow up: A solution using O(n) space is pretty straight-forward. Could you devise a constant O(1) space solution?
  */
 public class Recover_Binary_Search_Tree_99 {
-    public void recoverTree(TreeNode root) {
-        recoverTree_1(root);
+    public static void recoverTree(TreeNode root) {
+        recoverTree_2(root);
+    }
+
+    /**
+     * 金矿
+     * Threaded Binary Tree，or Morris Traversal
+     *
+     * 参考资料：
+     * https://www.cnblogs.com/AnnieKim/archive/2013/06/15/morristraversal.html
+     * https://leetcode.com/problems/recover-binary-search-tree/discuss/32559/Detail-Explain-about-How-Morris-Traversal-Finds-two-Incorrect-Pointer
+     *
+     * 在O(1)空间复杂度下，实现BST的遍历。
+     * Morris Traversal的核心思想是：遍历前，查找当前节点的前驱结点；遍历后，删除前驱节点，恢复BST。
+     * in-order遍历的算法如下：
+     * 1.如果当前节点cur的左子树为空，输出当前节点cur，cur=cur.right
+     * 2.如果当前节点cur的左子树不为空，在左子树中查找当前节点cur的前驱节点。
+     *  2.1.如果前驱节点pre的右子树为空，那么，前驱节点pre.right=cur，cur=cur.left
+     *  2.2.如果前驱节点pre的右子树等于cur，那么，pre.right=null，输出cur，cur=cur.right
+     * 3.重复步骤1,2，知道cur为空
+     *
+     * 以上是Morris Traversal的算法。
+     * 本题再次基础上新增逻辑见recoverTree_1()
+     *
+     * 验证通过：
+     * Runtime: 4 ms, faster than 47.64% of Java online submissions for Recover Binary Search Tree.
+     * Memory Usage: 47.3 MB, less than 33.58% of Java online submissions for Recover Binary Search Tree.
+     *
+     * @param root
+     */
+    public static void recoverTree_2(TreeNode root) {
+        TreeNode cur = root;
+        TreeNode pre = null;
+        TreeNode first = null, second = null;
+        TreeNode tmp;
+        while (cur != null) {
+            if (cur.left == null) {
+                //查找错误的节点
+                if (pre != null && pre.val > cur.val) {
+                    if (first == null) first = pre;
+                    second = cur;
+                }
+                pre = cur;
+                cur = cur.right;
+            } else {
+                //查找前驱节点
+                tmp = cur.left;
+                while (tmp.right != null && tmp.right != cur) {
+                    tmp = tmp.right;
+                }
+                //判断前驱节点是否为空
+                if (tmp.right == null) {
+                    tmp.right = cur;
+                    cur = cur.left;
+                } else {
+                    pre.right = null;
+                    //查找错误的节点
+                    if (pre != null && pre.val > cur.val) {
+                        if (first == null) first = pre;
+                        second = cur;
+                    }
+                    pre = cur;
+                    cur = cur.right;
+                }
+
+            }
+        }
+        if (first != null && second != null) {
+            //重置错误的节点恢复BST，swap节点的值
+            int t = first.val;
+            first.val = second.val;
+            second.val = t;
+        }
     }
 
     /**
@@ -40,7 +111,10 @@ public class Recover_Binary_Search_Tree_99 {
      * 4.第一步中，首次发现异常时，设置node1=较大节点，node2=较小节点。后续再发现异常，只更新node2即可。
      *
      * Time Complexity:O(n)
-     * Space Complexity:O(n)
+     * Space Complexity:O(logN)
+     *
+     * 还有一种递归解法：（需要借助递归函数之外的外部变量）
+     * https://leetcode.com/problems/recover-binary-search-tree/discuss/32535/No-Fancy-Algorithm-just-Simple-and-Powerful-In-Order-Traversal
      *
      * 验证通过：
      * Runtime: 6 ms, faster than 19.24% of Java online submissions for Recover Binary Search Tree.
@@ -48,7 +122,7 @@ public class Recover_Binary_Search_Tree_99 {
      *
      * @param root
      */
-    public void recoverTree_1(TreeNode root) {
+    public static void recoverTree_1(TreeNode root) {
         TreeNode node1 = null, node2 = null;
         Stack<TreeNode> stack = new Stack<>();
         TreeNode pre = null;
@@ -71,4 +145,22 @@ public class Recover_Binary_Search_Tree_99 {
             node2.val = t;
         }
     }
+
+    public static void main(String[] args) {
+        //[1,3,null,null,2]
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(3);
+        root.left.right = new TreeNode(2);
+        recoverTree(root);
+        System.out.println("----------------");
+        //[1,3,null,null,2]
+        TreeNode root2 = new TreeNode(1);
+        root2.left = new TreeNode(3);
+        root2.left.right = new TreeNode(2);
+        recoverTree(root2);
+        System.out.println("----------------");
+    }
+
+
+
 }
