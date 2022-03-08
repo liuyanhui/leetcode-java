@@ -22,11 +22,26 @@ package leetcode;
  *
  * Constraints:
  * The number of nodes in both trees is in the range [0, 100].
- * -104 <= Node.val <= 104
+ * -10^4 <= Node.val <= 10^4
  */
 public class Same_Tree_100 {
     public static boolean isSameTree(TreeNode p, TreeNode q) {
         return isSameTree_1(p, q);
+    }
+
+    /**
+     * round 2
+     * 递归法
+     *
+     * @param p
+     * @param q
+     * @return
+     */
+    public static boolean isSameTree_2(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        if (p == null && q != null) return false;
+        if (p != null && q == null) return false;
+        return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 
     /**
