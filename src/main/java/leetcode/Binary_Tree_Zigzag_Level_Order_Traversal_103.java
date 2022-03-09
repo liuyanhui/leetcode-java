@@ -29,6 +29,15 @@ public class Binary_Tree_Zigzag_Level_Order_Traversal_103 {
     public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         return zigzagLevelOrder_2(root);
     }
+    /**
+     * round 2，
+     * DFS发
+     * "102. Binary Tree Level Order Traversal"问题的变种，在102基础上修改偶数行的插入方式即可
+     * 验证通过
+     *
+     * BFS也是如此，注意插入方向和遍历方向是相反的。
+     */
+
 
     /**
      * 深度搜索DFS思路。
