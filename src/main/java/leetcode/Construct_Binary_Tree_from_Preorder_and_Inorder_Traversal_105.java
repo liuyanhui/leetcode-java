@@ -24,6 +24,10 @@ package leetcode;
  * inorder is guaranteed to be the inorder traversal of the tree.
  */
 public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return buildTree_1(preorder, inorder);
+    }
+
     /**
      * 递归思路：
      * 1.preorder的第一个元素是root节点，inorder中root节点是第count个元素。
@@ -32,14 +36,14 @@ public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
      * 4.递归上面的步骤即可。
      *
      * 验证通过：
-     * Runtime: 3 ms, faster than 56.03% .
-     * Memory Usage: 38.9 MB, less than 69.15% .
+     * Runtime: 3 ms, faster than 84.34% of Java 
+     * Memory Usage: 41.8 MB, less than 79.41% of Java
      *
      * @param preorder
      * @param inorder
      * @return
      */
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    public TreeNode buildTree_1(int[] preorder, int[] inorder) {
         return do_recursive(preorder, 0, preorder.length - 1,
                 inorder, 0, inorder.length - 1);
     }
@@ -50,6 +54,7 @@ public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
         if (begPre == endPre) return new TreeNode(pre[begPre]);
         TreeNode root = new TreeNode(pre[begPre]);
         //获取inorder中的root位置
+        //round 2:count是相对位置，而不是绝对位置（下标）
         int count = 0;
         for (int i = begIn; i <= endIn; i++) {
             if (in[i] == pre[begPre]) {
