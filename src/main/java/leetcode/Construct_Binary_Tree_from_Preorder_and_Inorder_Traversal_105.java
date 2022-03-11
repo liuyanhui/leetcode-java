@@ -36,7 +36,7 @@ public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
      * 4.递归上面的步骤即可。
      *
      * 验证通过：
-     * Runtime: 3 ms, faster than 84.34% of Java 
+     * Runtime: 3 ms, faster than 84.34% of Java
      * Memory Usage: 41.8 MB, less than 79.41% of Java
      *
      * @param preorder
