@@ -55,6 +55,7 @@ public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
         TreeNode root = new TreeNode(pre[begPre]);
         //获取inorder中的root位置
         //round 2:count是相对位置，而不是绝对位置（下标）
+        //todo 可以使用Map<Integer,Integer>优化一下代码，key:preorder[i];value=i
         int count = 0;
         for (int i = begIn; i <= endIn; i++) {
             if (in[i] == pre[begPre]) {

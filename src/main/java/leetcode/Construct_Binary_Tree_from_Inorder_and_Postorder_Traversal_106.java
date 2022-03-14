@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 106. Construct Binary Tree from Inorder and Postorder Traversal
  * Medium
@@ -24,6 +27,49 @@ package leetcode;
  * postorder is guaranteed to be the postorder traversal of the tree.
  */
 public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        return buildTree_2(inorder, postorder);
+    }
+
+    /**
+     * round 2 :
+     *
+     * postorder的倒序类似于preorder（区别是：先右子树后左子树）
+     * 0.假设postorder.length=inorder.length=len
+     * 1.postorder[len-1]是根节点root。根据postorder[len-1]=inorder[i]找到i
+     * 2.根据i，inorder被分割成两部分，i边的是左子树[0:i-1]，i右边的有子树[i+1:~]，
+     * 3.根据i，postorder也被分割成两部分。[0:i-1]是左子树，[i:len-2]是右子树
+     * 4.递归 1,2,3
+     * 5.需要注意上面的下标的用法。postorder的下标不能直接用，左右子树的区间是相对值，不是绝对值。inorder的下标可以直接用。
+     *
+     * 验证通过：
+     * Runtime: 3 ms, faster than 83.28% of Java
+     * Memory Usage: 45.2 MB, less than 12.06% of Java
+     *
+     * @param inorder
+     * @param postorder
+     * @return
+     */
+    public TreeNode buildTree_2(int[] inorder, int[] postorder) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
+        }
+        return helper(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1, map);
+    }
+
+    private TreeNode helper(int[] inorder, int begi, int endi, int[] postorder, int begp, int endp, Map<Integer, Integer> map) {
+        if (begi > endi) return null;
+        TreeNode root = new TreeNode(postorder[endp]);
+        if (begi == endi) return root;
+        //find root index in the array "inorder"
+        int idx = map.get(postorder[endp]);
+
+        root.left = helper(inorder, begi, idx - 1, postorder, begp, begp + idx - begi - 1, map);
+        root.right = helper(inorder, idx + 1, endi, postorder, begp + idx - begi, endp - 1, map);
+        return root;
+    }
+
     /**
      * 与105的思路一样。
      * 1.postorder的末尾元素是root；在inorder中root左边的是左子树，root右边的右子树
@@ -37,7 +83,7 @@ public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
      * @param postorder
      * @return
      */
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
+    public TreeNode buildTree_1(int[] inorder, int[] postorder) {
         return do_recursive(postorder, 0, postorder.length - 1, inorder, 0, inorder.length - 1);
     }
 
