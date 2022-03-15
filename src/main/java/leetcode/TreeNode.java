@@ -23,7 +23,6 @@ public class TreeNode {
         return null;
     }
 
-
     public static boolean isSame(TreeNode node, int[] expected) {
         return false;
     }
