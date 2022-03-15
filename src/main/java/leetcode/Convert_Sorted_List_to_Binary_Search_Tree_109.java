@@ -29,13 +29,76 @@ import java.util.List;
  * Output: [3,1]
  *
  * Constraints:
- * The number of nodes in head is in the range [0, 2 * 104].
+ * The number of nodes in head is in the range [0, 2 * 10^4].
  * -10^5 <= Node.val <= 10^5
  */
 public class Convert_Sorted_List_to_Binary_Search_Tree_109 {
 
     public TreeNode sortedListToBST(ListNode head) {
         return sortedListToBST_1(head);
+    }
+
+    /**
+     * 套路
+     * 一个更巧妙的方案，性能更好，更简洁
+     * 巧妙的使用了左闭右开的方式作为递归时的输入参数。免去了边界值和中间遍历的使用。
+     * 跟sortedListToBST_3()是一个很好的比较。
+     *
+     * @param head
+     * @return
+     */
+    public TreeNode sortedListToBST_4(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        return sort(head, null);//左闭右开
+    }
+
+    //输入参数是左闭右开，节省了其他中间变量的使用。
+    public TreeNode sort(ListNode head, ListNode tail) {
+        ListNode slow = head;
+        ListNode fast = head;
+        //这里fast跟tail比较，无需跟null比较
+        while (fast != tail && fast.next != tail) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        if (head == tail) return null;
+        TreeNode newNode = new TreeNode(slow.val);
+        newNode.left = sort(head, slow);//左闭右开
+        newNode.right = sort(slow.next, tail);//左闭右开
+        return newNode;
+    }
+
+    /**
+     * 跟sortedListToBST_2类似的思路，只不过没有采用把链表转换成数组的方式。而是每次递归直接在链表中查找根节点，并分割左右子树。
+     * 验证通过：
+     *
+     * @param head
+     * @return
+     */
+    public TreeNode sortedListToBST_3(ListNode head) {
+        if (head == null) return null;
+        ListNode dumb = new ListNode(Integer.MIN_VALUE, head);
+        ListNode fast = dumb;
+        ListNode slow = dumb;
+        ListNode leftTail = null;
+        //先找到中间节点作为根节点
+        while (fast.next != null) {
+            fast = fast.next;
+            if (fast.next != null) fast = fast.next;
+            leftTail = slow;
+            slow = slow.next;
+        }
+        //截断链表，防止递归时重复计算右子树
+        leftTail.next = null;
+        ListNode rightHead = slow.next;
+        slow.next = null;
+        //构造BST
+        TreeNode root = new TreeNode(slow.val);
+        root.left = sortedListToBST(dumb.next);
+        root.right = sortedListToBST(rightHead);
+        return root;
     }
 
     /**
