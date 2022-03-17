@@ -8,7 +8,6 @@ import java.util.List;
  * Medium
  * -----------------
  * Given the root of a binary tree, flatten the tree into a "linked list":
- *
  * The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
  * The "linked list" should be in the same order as a pre-order traversal of the binary tree.
  *
@@ -33,6 +32,65 @@ import java.util.List;
 public class Flatten_Binary_Tree_to_Linked_List_114 {
     public static void flatten(TreeNode root) {
         flatten_2(root);
+    }
+
+    /**
+     * round 2
+     * Space Complexity:O(1)
+     *
+     * 验证通过：
+     * 与flatten_3()相同
+     *
+     * @param root
+     */
+    public static void flatten_4(TreeNode root) {
+        if (root == null) return;
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.left != null) {
+                //右子树作为左子树的最右子孙
+                TreeNode r = cur.left;
+                while (r.right != null) {
+                    r = r.right;
+                }
+                //原右子树改成原左子树的最子孙的右子树
+                r.right = cur.right;
+                //原左子树改成右子树
+                cur.right = cur.left;
+                cur.left = null;
+            }
+            cur = cur.right;
+        }
+    }
+
+    /**
+     * round 2
+     *
+     * preorder
+     * 1.左子树不为空，原右子树改成原左子树的最子孙的右子树，原左子树改成右子树。
+     * 2.左子树为空，跳过左子树，处理右子树
+     * 3.递归1,2
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 73.42% of Java.
+     * Memory Usage: 42.1 MB, less than 62.83% of Java
+     * @param root
+     */
+    public static void flatten_3(TreeNode root) {
+        if (root == null) return;
+        if (root.left != null) {
+            //右子树作为左子树的最右子孙
+            TreeNode r = root.left;
+            while (r.right != null) {
+                r = r.right;
+            }
+            //原右子树改成原左子树的最子孙的右子树
+            r.right = root.right;
+            //原左子树改成右子树
+            root.right = root.left;
+            root.left = null;
+        }
+        flatten(root.right);
     }
 
     /**
