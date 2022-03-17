@@ -28,13 +28,16 @@ package leetcode;
  */
 public class Path_Sum_112 {
     public static boolean hasPathSum(TreeNode root, int targetSum) {
-        return hasPathSum_1(root, targetSum);
+        return hasPathSum_2(root, targetSum);
     }
 
     /**
-     * hasPathSum_1的精简版代码
-     * 参考思路:
-     * https://leetcode.com/problems/path-sum/discuss/36378/AcceptedMy-recursive-solution-in-Java
+     * round 2 ,
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 53.49% of Java online submissions for Path Sum.
+     * Memory Usage: 43.3 MB, less than 58.17% of Java online submissions for Path Sum.
+     *
      * @param root
      * @param sum
      * @return
@@ -42,9 +45,14 @@ public class Path_Sum_112 {
     public static boolean hasPathSum_2(TreeNode root, int sum) {
         if (root == null) return false;
 
-        if (root.left == null && root.right == null && sum - root.val == 0) return true;
+        //TODO 这里可以优化时间复杂度。因为这一步有部分情况是可以直接返回false的。如下面这段代码所示。
+//        sum -= root.val;
+//        if (root.left == null && root.right == null) {
+//            return sum == 0;
+//        }
+        if (root.left == null && root.right == null && sum == root.val) return true;
 
-        return hasPathSum_2(root.left, sum - root.val) || hasPathSum_2(root.right, sum - root.val);
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
     }
 
     /**

@@ -30,6 +30,8 @@ public class Minimum_Depth_of_Binary_Tree_111 {
 
     /**
      * 一种非常简洁的代码
+     * dfs是不需要把leve也作为参数输入，类似于minDepth_1()就是把level也输入了。
+     *
      * 参考文档：
      * https://leetcode.com/problems/minimum-depth-of-binary-tree/discuss/36045/My-4-Line-java-solution
      *
