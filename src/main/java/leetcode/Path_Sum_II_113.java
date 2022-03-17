@@ -7,8 +7,9 @@ import java.util.List;
  * 113. Path Sum II
  * Medium
  * -----------------
- * Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where each path's sum equals targetSum.
- * A leaf is a node with no children.
+ * Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. Each path should be returned as a list of the node values, not node references.
+ *
+ * A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
  *
  * Example 1:
  * Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
@@ -28,6 +29,41 @@ import java.util.List;
  * -1000 <= targetSum <= 1000
  */
 public class Path_Sum_II_113 {
+
+    /**
+     * round 2
+     * dfs+preorder
+     *
+     * 验证通过：
+     * Runtime: 2 ms, faster than 77.51% of Java online submissions for Path Sum II.
+     * Memory Usage: 44.9 MB, less than 29.20% of Java online submissions for Path Sum II.
+     *
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public List<List<Integer>> pathSum_2(TreeNode root, int targetSum) {
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> appeared = new ArrayList<>();
+        helper(root, targetSum, appeared, ret);
+        return ret;
+    }
+
+    private void helper(TreeNode node, int target, List<Integer> appeared, List<List<Integer>> ret) {
+        if (node == null) return;
+        target -= node.val;
+        appeared.add(node.val);
+        //下面这段代码可以优化，详见"112. Path Sum"
+        if (node.left == null && node.right == null && target == 0) {
+            ret.add(new ArrayList<>(appeared));
+            appeared.remove(appeared.size() - 1);
+            return;
+        }
+        helper(node.left, target, appeared, ret);
+        helper(node.right, target, appeared, ret);
+        appeared.remove(appeared.size() - 1);
+    }
+
     /**
      * 递归思路，比较简单
      *
@@ -39,7 +75,7 @@ public class Path_Sum_II_113 {
      * @param targetSum
      * @return
      */
-    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    public List<List<Integer>> pathSum_1(TreeNode root, int targetSum) {
         List<List<Integer>> ret = new ArrayList<>();
         List<Integer> cached = new ArrayList<>();
         do_recursive(root, targetSum, 0, ret, cached);

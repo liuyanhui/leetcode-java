@@ -32,7 +32,8 @@ public class Path_Sum_112 {
     }
 
     /**
-     * round 2 ,
+     * round 2
+     * dfs+preorder
      *
      * 验证通过：
      * Runtime: 1 ms, faster than 53.49% of Java online submissions for Path Sum.
