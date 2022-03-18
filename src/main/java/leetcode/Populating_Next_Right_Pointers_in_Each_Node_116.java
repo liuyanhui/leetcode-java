@@ -18,22 +18,63 @@ import java.util.List;
  *
  * Initially, all next pointers are set to NULL.
  *
- * Follow up:
- * You may only use constant extra space.
- * Recursive approach is fine, you may assume implicit stack space does not count as extra space for this problem.
- *
  * Example 1:
  * Input: root = [1,2,3,4,5,6,7]
  * Output: [1,#,2,3,#,4,5,6,7,#]
  * Explanation: Given the above perfect binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level.
  *
+ * Example 2:
+ * Input: root = []
+ * Output: []
+ *
  * Constraints:
- * The number of nodes in the given tree is less than 4096.
- * -1000 <= node.val <= 1000
+ * The number of nodes in the tree is in the range [0, 2^12 - 1].
+ * -1000 <= Node.val <= 1000
+ *
+ * Follow-up:
+ * You may only use constant extra space.
+ * The recursive approach is fine. You may assume implicit stack space does not count as extra space for this problem.
  */
 public class Populating_Next_Right_Pointers_in_Each_Node_116 {
     public static Node connect(Node root) {
-        return connect_dfs2(root);
+        return connect_3(root);
+    }
+
+    /**
+     * connect_dfs2()和connect_bfs2()都是非常精妙的方案
+     *
+     * 前者巧妙利用了父节点的next属性。
+     * 后者用两个Node替代了一般场景下使用BFS时用的两个队列。
+     */
+
+    /**
+     * round 2
+     *
+     * preorder
+     * 按照深度创建链表数组,每个节点根据深度依次追加到对应链表后
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 67.57% of Java
+     * Memory Usage: 47.1 MB, less than 50.85% of Java
+     *
+     * @param root
+     * @return
+     */
+    public static Node connect_3(Node root) {
+        helper(root, new ArrayList<>(), 0);
+        return root;
+    }
+
+    private static void helper(Node node, List<Node> list, int level) {
+        if (node == null) return;
+        //节点加入链表或追加到链表后
+        if (level >= list.size()) list.add(node);
+        else list.get(level).next = node;
+        //修改list的元素为最后加入的节点
+        list.set(level, node);
+        //遍历树
+        helper(node.left, list, level + 1);
+        helper(node.right, list, level + 1);
     }
 
     /**

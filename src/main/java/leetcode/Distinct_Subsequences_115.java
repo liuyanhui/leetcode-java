@@ -158,10 +158,10 @@ public class Distinct_Subsequences_115 {
 
     public static void main(String[] args) {
         do_func("rabbbit", "rabbit", 3);
-//        do_func("babgbag", "bag", 5);
-//        do_func("b", "b", 1);
-//        do_func("bbb", "b", 3);
-//        do_func("zxc", "ujm", 0);
+        do_func("babgbag", "bag", 5);
+        do_func("b", "b", 1);
+        do_func("bbb", "b", 3);
+        do_func("zxc", "ujm", 0);
     }
 
     private static void do_func(String word1, String word2, int expected) {
