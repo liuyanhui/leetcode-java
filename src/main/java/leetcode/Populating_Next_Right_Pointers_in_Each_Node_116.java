@@ -41,9 +41,10 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
     }
 
     /**
+     *
      * connect_dfs2()和connect_bfs2()都是非常精妙的方案
      *
-     * 前者巧妙利用了父节点的next属性。
+     * 前者巧妙利用了父节点的next属性。充分利用了类似数学中的推导法。
      * 后者用两个Node替代了一般场景下使用BFS时用的两个队列。
      */
 
@@ -78,6 +79,8 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
     }
 
     /**
+     * 套路
+     *
      * 完美的，简介的方案
      * 充分利用.next这个属性
      *
@@ -106,6 +109,7 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
     }
 
     /**
+     * 套路
      * 代码精简版，利用node.next属性，不需要list进行缓存数据，直接使用node即可。
      *
      * 参考思路：
