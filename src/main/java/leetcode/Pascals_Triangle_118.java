@@ -8,21 +8,57 @@ import java.util.List;
  *118. Pascal's Triangle
  * Easy
  * ----------------------
- * Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
- * In Pascal's triangle, each number is the sum of the two numbers directly above it.
+ * Given an integer numRows, return the first numRows of Pascal's triangle.
+ * In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
  *
- * Example:
- * Input: 5
- * Output:
- * [
- *      [1],
- *     [1,1],
- *    [1,2,1],
- *   [1,3,3,1],
- *  [1,4,6,4,1]
- * ]
+ * Example 1:
+ * Input: numRows = 5
+ * Output: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+ *
+ * Example 2:
+ * Input: numRows = 1
+ * Output: [[1]]
+ *
+ * Constraints:
+ * 1 <= numRows <= 30
  */
 public class Pascals_Triangle_118 {
+
+    public static List<List<Integer>> generate(int numRows) {
+        return generate_2(numRows);
+    }
+
+    /**
+     * round 2
+     *
+     * 公式为：
+     * cur[i]=pre[i-1]+pre[i]
+     * 需要注意边界值
+     *
+     * generate_1()的方法更直观，简介，易理解
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 65.53% of Java online submissions for Pascal's Triangle.
+     * Memory Usage: 42.3 MB, less than 13.82% of Java online submissions for Pascal's Triangle.
+     *
+     * @param numRows
+     * @return
+     */
+    public static List<List<Integer>> generate_2(int numRows) {
+        if (numRows == 0) return new ArrayList<>();
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            ret.add(new ArrayList<>());
+            ret.get(i).add(1);//第一列都是1
+            for (int j = 1; j <= i; j++) {
+                int t = 0;
+                if (j < i) t = ret.get(i - 1).get(j);//最后一列在上一行中没有对应的列
+                ret.get(i).add(ret.get(i - 1).get(j - 1) + t);
+            }
+        }
+        return ret;
+    }
+
     /**
      * r[i][j]=r[i-1][j-1]+r[i-1][j] ,if i>=1 and j>=1
      * r[i][j]=1 ,if j==0 or j==i
@@ -32,7 +68,7 @@ public class Pascals_Triangle_118 {
      * @param numRows
      * @return
      */
-    public static List<List<Integer>> generate(int numRows) {
+    public static List<List<Integer>> generate_1(int numRows) {
         List<List<Integer>> ret = new ArrayList<>();
         if (numRows <= 0) return ret;
         for (int i = 0; i < numRows; i++) {
