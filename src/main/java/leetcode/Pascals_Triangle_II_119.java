@@ -32,7 +32,35 @@ import java.util.List;
  */
 public class Pascals_Triangle_II_119 {
     public static List<Integer> getRow(int rowIndex) {
-        return getRow_2(rowIndex);
+        return getRow_3(rowIndex);
+    }
+
+    /**
+     * round 2
+     *
+     * r[i]=1 if i==1 or i==n
+     * r[i]=r[i]+r[i-1] if r>1 and r<n
+     *
+     * 参考"118. Pascal's Triangle"
+     *
+     * 验证通过:
+     * Runtime: 1 ms, faster than 88.42% of Java online submissions for Pascal's Triangle II.
+     * Memory Usage: 39.7 MB, less than 82.36% of Java online submissions for Pascal's Triangle II.
+     *
+     * @param rowIndex
+     * @return
+     */
+    public static List<Integer> getRow_3(int rowIndex) {
+        List<Integer> ret = new ArrayList<>();
+        for (int i = 0; i <= rowIndex; i++) {
+            ret.add(1);//初始化
+            //从后向前计算
+            for (int j = i; j >= 0; j--) {
+                if (j == 0 || j == i) ret.set(j, 1);
+                else ret.set(j, ret.get(j) + ret.get(j - 1));
+            }
+        }
+        return ret;
     }
 
     /**

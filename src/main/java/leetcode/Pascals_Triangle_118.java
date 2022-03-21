@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * https://leetcode.com/problems/pascals-triangle/
- *118. Pascal's Triangle
+ * 118. Pascal's Triangle
  * Easy
  * ----------------------
  * Given an integer numRows, return the first numRows of Pascal's triangle.
