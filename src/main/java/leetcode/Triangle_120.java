@@ -27,13 +27,40 @@ import java.util.List;
  * 1 <= triangle.length <= 200
  * triangle[0].length == 1
  * triangle[i].length == triangle[i - 1].length + 1
- * -104 <= triangle[i][j] <= 104
+ * -10^4 <= triangle[i][j] <= 10^4
  *
  * Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the triangle?
  */
 public class Triangle_120 {
     public static int minimumTotal(List<List<Integer>> triangle) {
-        return minimumTotal_3(triangle);
+        return minimumTotal_4(triangle);
+    }
+
+    /**
+     * round 2
+     *
+     * 如果按照从上到下的方式，采用暴力法，那么时间复杂度是O(2^(n-1))。显然不可取，因为解空间是发散的而不是收敛的。
+     * 如果按照从下到上的方式，解空间会最终收敛到顶部。时间复杂度是O(n*m)
+     * 公式如下：
+     * ret[i][j]是以[i,j]为起点的从下到上路径和(path sum)的最小值
+     * ret[i][j]=triangle[i][j]+min(ret[i+1][j],+ret[i+1][j+1])
+     * 返回结果为ret[0][0]
+     *
+     * 验证通过：
+     * Runtime: 5 ms, faster than 51.43% of Java online submissions for Triangle.
+     * Memory Usage: 44 MB, less than 46.23% of Java online submissions for Triangle.
+     *
+     * @param triangle
+     * @return
+     */
+    public static int minimumTotal_4(List<List<Integer>> triangle) {
+        int[] ret = new int[triangle.size() + 1];
+        for (int i = triangle.size() - 1; i >= 0; i--) {
+            for (int j = 0; j < triangle.get(i).size(); j++) {
+                ret[j] = triangle.get(i).get(j) + Math.min(ret[j], ret[j + 1]);
+            }
+        }
+        return ret[0];
     }
 
     /**
