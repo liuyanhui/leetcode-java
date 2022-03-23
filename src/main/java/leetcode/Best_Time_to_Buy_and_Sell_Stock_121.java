@@ -29,7 +29,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_121 {
     }
 
     /**
-     * 暴力法
+     * 不可取的暴力法
      * profile[i]表示第i天买入能获得的最大利润，那么max(profile[])为所求。
      * profile[i] = max(price[j]-price[i])，其中i<j<len(price)
      * 时间复杂度O(N*N)
