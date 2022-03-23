@@ -29,6 +29,38 @@ public class Best_Time_to_Buy_and_Sell_Stock_121 {
     }
 
     /**
+     * 已提交Accepted中耗时最短的解
+     *
+     * 参考思路：
+     * https://leetcode.com/submissions/detail/664765170/ 中的耗时最短的解
+     * https://leetcode.com/submissions/api/detail/121/java/1/
+     *
+     * 遍历数组
+     * 直接跟最小价格minPrice比较：
+     * 大于minPrice，更新收益；
+     * 小于minPrice，更新minPrice。
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit_2(int[] prices) {
+        int answer = 0;
+        int length = prices.length;
+        int minPrice = Integer.MAX_VALUE;
+        for (int i = 0; i < length; i++) {
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];
+            }else {
+                int i1 = prices[i] - minPrice;
+                if (i1 > answer){
+                    answer = i1;
+                }
+            }
+        }
+        return answer;
+    }
+
+    /**
      * 不可取的暴力法
      * profile[i]表示第i天买入能获得的最大利润，那么max(profile[])为所求。
      * profile[i] = max(price[j]-price[i])，其中i<j<len(price)
