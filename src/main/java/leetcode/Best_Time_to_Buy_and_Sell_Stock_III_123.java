@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Arrays;
+
 /**
  * 123. Best Time to Buy and Sell Stock III
  * Hard
@@ -30,8 +32,160 @@ package leetcode;
  * 0 <= prices[i] <= 10^5
  */
 public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
+    /**
+     * 1.maxProfit_1()是一个单独的思路。
+     *
+     * 2.套路
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
+     * 从maxProfit_2()到maxProfit_6()是一个演变过程。
+     *
+     *
+     * @param prices
+     * @return
+     */
     public static int maxProfit(int[] prices) {
-        return maxProfit_1(prices);
+        return maxProfit_6(prices);
+    }
+
+    /**
+     * 终极优化版，基于maxProfit_5()
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 100.00% of Java
+     * Memory Usage: 58.6 MB, less than 83.70% of Java
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_6(int[] prices) {
+        int buy1 = prices[0], buy2 = prices[0];
+        int sell1 = 0, sell2 = 0;
+        for (int i = 1; i < prices.length; i++) {
+            buy1 = Math.min(buy1, prices[i]);
+            sell1 = Math.max(sell1, prices[i] - buy1);
+            //这里是关键的地方
+            //prices[i] - sell1表示把第一次获得的收益合并到第2次买入的价格中。
+            buy2 = Math.min(buy2, prices[i] - sell1);
+            sell2 = Math.max(sell2, prices[i] - buy2);
+        }
+        return sell2;
+    }
+
+    /**
+     * maxProfit_4()的优化版。
+     * 把DP数据从二维优化成一维。
+     * 从new int[k][prices.length]改为new int[k]。
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
+     *
+     * 验证通过：
+     * Runtime: 5 ms, faster than 69.36% of Java online submissions for Best Time to Buy and Sell Stock III.
+     * Memory Usage: 76.3 MB, less than 75.06% of Java online submissions for Best Time to Buy and Sell Stock III.
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_5(int[] prices) {
+        int[] dp = new int[3];
+        int[] min = new int[3];
+        Arrays.fill(min, prices[0]);
+        for (int i = 1; i < prices.length; i++) {
+            for (int k = 1; k <= 2; k++) {
+                min[k] = Math.min(min[k], prices[i] - dp[k - 1]);
+                dp[k] = Math.max(dp[k], prices[i] - min[k]);
+            }
+        }
+        return dp[2];
+    }
+
+    /**
+     * maxProfit_3()的一个变种。交换两层循环。
+     * 也是maxProfit_5()的基础，通过观察dp数组的使用情况，可以把dp优化成一维k长的数组
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
+     *
+     * 验证通过：
+     * Runtime: 4 ms, faster than 79.77% of Java online submissions for Best Time to Buy and Sell Stock III.
+     * Memory Usage: 57.8 MB, less than 89.23% of Java online submissions for Best Time to Buy and Sell Stock III.
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_4(int[] prices) {
+        int[][] dp = new int[3][prices.length];
+        int[] min = new int[3];
+        Arrays.fill(min, prices[0]);
+        for (int i = 1; i < prices.length; i++) {
+            for (int k = 1; k <= 2; k++) {
+                min[k] = Math.min(min[k], prices[i] - dp[k - 1][i - 1]);
+                dp[k][i] = Math.max(dp[k][i - 1], prices[i] - min[k]);
+            }
+        }
+        return dp[2][prices.length - 1];
+    }
+
+    /**
+     * maxProfit_2()的优化版
+     * Time Complexity:O(K*N)
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
+     *
+     * 验证通过：
+     * Runtime: 6 ms, faster than 59.78% of Java .
+     * Memory Usage: 80 MB, less than 41.37% of Java .
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_3(int[] prices) {
+        int[][] dp = new int[3][prices.length];
+        for (int k = 1; k <= 2; k++) {
+            int min = prices[0];
+            for (int i = 1; i < prices.length; i++) {
+                min = Math.min(min, prices[i] - dp[k - 1][i - 1]);
+                dp[k][i] = Math.max(dp[k][i - 1], prices[i] - min);
+            }
+        }
+        return dp[2][prices.length - 1];
+    }
+
+    /**
+     * 参考思路：
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
+     *
+     * DP思路
+     * dp[k][i]表示第i天交易k次的最大收益。
+     * dp[k][i]分为两种情况：第i天不交易；第i天交易。
+     * dp[k][i]=max(dp[k][i-1],prices[i]-prices[j]+dp[k-1][j-1])，其中0<=j<i
+     *
+     * Time Complexity:O(k*N*N)
+     *
+     * 验证失败：Time Limit Exceeded.
+     * 207 / 214 test cases passed.
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_2(int[] prices) {
+        int[][] dp = new int[3][prices.length];
+        for (int k = 1; k <= 2; k++) {
+            for (int i = 1; i < prices.length; i++) {
+                //FIXME 下面的max循环重复计算了，可以优化。
+                //FIXME "prices[j] + dp[k - 1][j - 1]"这部分与i无关，并且是重复计算的。详见maxProfit_3()
+                int max = prices[i] - prices[0];
+                for (int j = 1; j < i; j++) {
+                    max = Math.max(max, prices[i] - prices[j] + dp[k - 1][j - 1]);
+                }
+                dp[k][i] = Math.max(dp[k][i - 1], max);
+            }
+        }
+        return dp[2][prices.length - 1];
     }
 
     /**
@@ -59,6 +213,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
      * 时间复杂度O(N)
      *
      * 思路3是可行的方案
+     * 但是只能解决交易次数小于等于2次的情况。无法解决大于允许交易大于2次的情况。
      *
      * 验证通过：
      * Runtime: 5 ms, faster than 69.34% of Java
