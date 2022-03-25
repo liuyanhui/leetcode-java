@@ -5,23 +5,67 @@ package leetcode;
  * 125. Valid Palindrome
  * Easy
  * ---------------------
- * Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
- * Note: For the purpose of this problem, we define empty string as valid palindrome.
+ * A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+ *
+ * Given a string s, return true if it is a palindrome, or false otherwise.
  *
  * Example 1:
- * Input: "A man, a plan, a canal: Panama"
+ * Input: s = "A man, a plan, a canal: Panama"
  * Output: true
+ * Explanation: "amanaplanacanalpanama" is a palindrome.
  *
  * Example 2:
- * Input: "race a car"
+ * Input: s = "race a car"
  * Output: false
+ * Explanation: "raceacar" is not a palindrome.
+ *
+ * Example 3:
+ * Input: s = " "
+ * Output: true
+ * Explanation: s is an empty string "" after removing non-alphanumeric characters.
+ * Since an empty string reads the same forward and backward, it is a palindrome.
  *
  * Constraints:
+ * 1 <= s.length <= 2 * 10^5
  * s consists only of printable ASCII characters.
  */
 public class Valid_Palindrome_125 {
     public static boolean isPalindrome(String s) {
-        return isPalindrome_2(s);
+        return isPalindrome_3(s);
+    }
+
+    /**
+     * round 2
+     * 左右指针法
+     * 1.i是左边字符下标，j是右边字符的下标
+     * 2.需要过滤非字母和数字的字符，需要把大写字母转换成小写，注意数字不需要转换
+     * 3.采用夹逼法
+     *
+     * TODO【Attention】过滤非数字和字符时的下标累加或递减的逻辑需要注意，容易引发bug
+     *
+     * 验证通过：
+     * Runtime: 4 ms, faster than 83.48% of Java online submissions for Valid Palindrome.
+     * Memory Usage: 44.1 MB, less than 40.92% of Java online submissions for Valid Palindrome.
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isPalindrome_3(String s) {
+        if (s == null) return false;
+        if (s.length() == 0) return true;
+        int i = 0, j = s.length() - 1;
+        while (i < j) {
+            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
+                i++;
+            }
+            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
+                j--;
+            }
+            if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j))) return false;
+            i++;
+            j--;
+        }
+        return true;
     }
 
     /**
@@ -90,6 +134,8 @@ public class Valid_Palindrome_125 {
         do_func("     ", true);
         do_func("", true);
         do_func(null, false);
+        do_func("zxcxz", true);
+        do_func("1221", true);
 
     }
 

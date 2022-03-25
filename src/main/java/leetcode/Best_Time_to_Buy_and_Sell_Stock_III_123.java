@@ -38,6 +38,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
      * 2.套路
      * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
      * 从maxProfit_2()到maxProfit_6()是一个演变过程。
+     * 最关键的是maxProfit_2()中的dp公式
      *
      *
      * @param prices
@@ -68,6 +69,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
             sell1 = Math.max(sell1, prices[i] - buy1);
             //这里是关键的地方
             //prices[i] - sell1表示把第一次获得的收益合并到第2次买入的价格中。
+            //对应maxProfit_5()中的第7行代码："min[k] = Math.min(min[k], prices[i] - dp[k - 1]);"
             buy2 = Math.min(buy2, prices[i] - sell1);
             sell2 = Math.max(sell2, prices[i] - buy2);
         }
