@@ -33,6 +33,65 @@ import java.util.*;
  * All the words in wordList are unique.
  */
 public class Word_Ladder_127 {
+    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        return ladderLength_2(beginWord, endWord, wordList);
+    }
+
+    /**
+     * ladderLength_1()的优化版
+     * 参考文档：
+     * https://leetcode.com/problems/word-ladder/discuss/40711/Two-end-BFS-in-Java-31ms.
+     * https://leetcode.com/problems/word-ladder/discuss/40707/C%2B%2B-BFS
+     *
+     * bfs思路
+     * 1.从beginWord开始，从wordList中查找相邻的word。（相邻：只有一个字母不同）
+     * 2.如果遍历完整个wordList都没找到endWord，返回0
+     * 3.如果找到endWord，返回长度
+     *
+     * 验证通过：
+     * Runtime: 901 ms, faster than 15.15% of Java online submissions for Word Ladder.
+     * Memory Usage: 44.8 MB, less than 87.30% of Java online submissions for Word Ladder.
+     *
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public static int ladderLength_2(String beginWord, String endWord, List<String> wordList) {
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        int ladder = 0;
+        while (!queue.isEmpty()) {
+            ladder++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String word = queue.poll();
+                if (word.equals(endWord))
+                    return ladder;
+                for (int j = 0; j < wordList.size(); j++) {
+                    if (wordList.get(j).length() == 0) continue;
+                    if (isNeighbour(wordList.get(j), word)) {
+                        queue.offer(wordList.get(j));
+                        wordList.set(j, "");
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static boolean isNeighbour(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+        int diffCnt = 1;
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i)) {
+                diffCnt--;
+                if (diffCnt < 0) return false;
+            }
+        }
+        return diffCnt == 0;
+    }
+
     /**
      * 思考过程：最终采用思路3
      *
@@ -74,7 +133,7 @@ public class Word_Ladder_127 {
      * @param wordList
      * @return
      */
-    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public static int ladderLength_1(String beginWord, String endWord, List<String> wordList) {
         Map<String, List<String>> map = new HashMap<>();
         map.put(beginWord, new ArrayList<>());//beginWord加入邻接表中
         //去重
@@ -118,6 +177,7 @@ public class Word_Ladder_127 {
         }
         return 0;
     }
+
     //计算两个字符串是否只有一个字母不同，其他字母顺序一样
     private static boolean isOneStep(String s1, String s2) {
         if (s1.length() != s2.length()) return false;
