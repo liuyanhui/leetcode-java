@@ -9,10 +9,8 @@ import java.util.Queue;
  * ----------------
  * You are given the root of a binary tree containing digits from 0 to 9 only.
  * Each root-to-leaf path in the tree represents a number.
- *
  * For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
- * Return the total sum of all root-to-leaf numbers.
- *
+ * Return the total sum of all root-to-leaf numbers. Test cases are generated so that the answer will fit in a 32-bit integer.
  * A leaf node is a node with no children.
  *
  * Example 1:
@@ -38,8 +36,75 @@ import java.util.Queue;
  * The depth of the tree will not exceed 10.
  */
 public class Sum_Root_to_Leaf_Numbers_129 {
-    public int sumNumbers(TreeNode root) {
-        return sumNumbers_dfs_1(root);
+    public static int sumNumbers(TreeNode root) {
+        return sumNumbers_bfs_2(root);
+    }
+
+    /**
+     * round 2
+     * bfs方案
+     * 1.上一层的遍历时计算下一层的数值，把结果保存在子节点的val中，公式为left.val=parent.val*10+left.val，并把left/rihgt加入队列中
+     * 2.当节点为叶子节点时，累加到返回结果sum中
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 36.83% of Java online submissions for Sum Root to Leaf Numbers.
+     * Memory Usage: 42.1 MB, less than 22.77% of Java online submissions for Sum Root to Leaf Numbers.
+     * @param root
+     * @return
+     */
+    public static int sumNumbers_bfs_2(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int sum = 0;
+        while (queue.size() > 0) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    sum += node.val;
+                }
+                if (node.left != null) {
+                    node.left.val += node.val * 10;
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    node.right.val += node.val * 10;
+                    queue.offer(node.right);
+                }
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * round 2
+     * dfs+preorder
+     * 1.先计算当前节点作为个位数的值，n=n*10+root.val
+     * 2.当前节点为叶子节点时，ret=ret+n，n=n-root.val
+     * 3.分别递归计算左子树和右子树
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Sum Root to Leaf Numbers.
+     * Memory Usage: 41.1 MB, less than 78.12% of Java online submissions for Sum Root to Leaf Numbers.
+     *
+     * @param root
+     * @return
+     */
+    public static int sumNumbers_dfs_3(TreeNode root) {
+        int[] arr = new int[2];
+        helper(root, arr);
+        return arr[0];
+    }
+
+    private static void helper(TreeNode node, int[] arr) {
+        if (node == null) return;
+        arr[1] = arr[1] * 10 + node.val;
+        if (node.left == null && node.right == null) {
+            arr[0] += arr[1];
+        }
+        helper(node.left, arr);
+        helper(node.right, arr);
+        arr[1] /= 10;
     }
 
     /**
@@ -55,7 +120,7 @@ public class Sum_Root_to_Leaf_Numbers_129 {
      * @param root
      * @return
      */
-    public int sumNumbers_bfs(TreeNode root) {
+    public static int sumNumbers_bfs(TreeNode root) {
         if (root == null) return 0;
         int sum = 0;
         Queue queue = new LinkedList<>();
@@ -85,7 +150,7 @@ public class Sum_Root_to_Leaf_Numbers_129 {
      * @param root
      * @return
      */
-    public int sumNumbers_dfs_2(TreeNode root) {
+    public static int sumNumbers_dfs_2(TreeNode root) {
         return sum(root, 0);
     }
 
@@ -95,7 +160,7 @@ public class Sum_Root_to_Leaf_Numbers_129 {
      * @param s
      * @return
      */
-    public int sum(TreeNode n, int s) {
+    public static int sum(TreeNode n, int s) {
         if (n == null) return 0;
         if (n.right == null && n.left == null) return s * 10 + n.val;
         return sum(n.left, s * 10 + n.val) + sum(n.right, s * 10 + n.val);
@@ -111,11 +176,11 @@ public class Sum_Root_to_Leaf_Numbers_129 {
      * @param root
      * @return
      */
-    public int sumNumbers_dfs_1(TreeNode root) {
+    public static int sumNumbers_dfs_1(TreeNode root) {
         return do_recursive(root, 0);
     }
 
-    private int do_recursive(TreeNode node, int curSum) {
+    private static int do_recursive(TreeNode node, int curSum) {
         if (node == null) return 0;
         int s = curSum * 10 + node.val;
         int sl = 0, sr = 0;
@@ -129,5 +194,14 @@ public class Sum_Root_to_Leaf_Numbers_129 {
         return sl + sr;
     }
 
-
+    public static void main(String[] args) {
+        //[1,2,5,3,4,null,6]
+        TreeNode t = new TreeNode(4);
+        t.left = new TreeNode(9);
+        t.right = new TreeNode(0);
+        t.left.left = new TreeNode(5);
+        t.left.right = new TreeNode(1);
+        int ret = sumNumbers(t);
+        System.out.println("ret=" + ret);
+    }
 }
