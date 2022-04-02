@@ -6,8 +6,7 @@ import java.util.Arrays;
  * 130. Surrounded Regions
  * Medium
  * --------------
- * Given an m x n matrix board containing 'X' and 'O', capture all regions surrounded by 'X'.
- *
+ * Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'.
  * A region is captured by flipping all 'O's into 'X's in that surrounded region.
  *
  * Example 1:
@@ -27,10 +26,20 @@ import java.util.Arrays;
  */
 public class Surrounded_Regions_130 {
     /**
+     * review 20220402
+     */
+    public static void solve(char[][] board) {
+        solve_1(board);
+    }
+
+    /**
      * DFS思路，
-     * 1.分别遍历第0行、第0列、最后行、最后列
+     * 1.分别遍历第0行、第0列、最后行、最后列。TIP：只需要遍历四个边，不需要遍历内部元素。
      * 2.每个元素用顺时针（上、右、下、左）的方向进行递归调用，将需要保留的元素修改为'Y'
      * 3.遍历完成后，将board中所有的'O'修改为'X'，所有的'Y'修改为'0'
+     *
+     * 传染着色法，跟Y相邻的O要变成Y。
+     * 这个思路是只计算最外面的边，从最外面的边开始递归，无需单独递归非边缘的元素。
      *
      * Time Complexity: O(m*n)
      * Space Complexity:O(m*n)
@@ -41,7 +50,7 @@ public class Surrounded_Regions_130 {
      *
      * @param board
      */
-    public static void solve(char[][] board) {
+    public static void solve_1(char[][] board) {
         //第0行和最后一行
         for (int i = 0; i < board[0].length; i++) {
             do_recursive(board, 0, i);
@@ -89,6 +98,8 @@ public class Surrounded_Regions_130 {
         do_func(new char[][]{{'X'}}, new char[][]{{'X'}});
         do_func(new char[][]{{'O', 'O', 'O', 'O'}, {'O', 'O', 'O', 'O'}, {'O', 'O', 'O', 'O'}, {'O', 'O', 'O', 'O'}}, new char[][]{{'O', 'O', 'O', 'O'}, {'O', 'O', 'O', 'O'}, {'O', 'O', 'O', 'O'}, {'O', 'O', 'O', 'O'}});
         do_func(new char[][]{{'X', 'O', 'X', 'O', 'X', 'O'}, {'O', 'X', 'O', 'X', 'O', 'X'}, {'X', 'O', 'X', 'O', 'X', 'O'}, {'O', 'X', 'O', 'X', 'O', 'X'}}, new char[][]{{'X', 'O', 'X', 'O', 'X', 'O'}, {'O', 'X', 'X', 'X', 'X', 'X'}, {'X', 'X', 'X', 'X', 'X', 'O'}, {'O', 'X', 'O', 'X', 'O', 'X'}});
+        do_func(new char[][]{{'X', 'X', 'X', 'X'}, {'X', 'O', 'O', 'X'}, {'X', 'X', 'O', 'X'}, {'X', 'O', 'O', 'X'}}, new char[][]{{'X', 'X', 'X', 'X'}, {'X', 'O', 'O', 'X'}, {'X', 'X', 'O', 'X'}, {'X', 'O', 'O', 'X'}});
+        do_func(new char[][]{{'X', 'O', 'X', 'O', 'X', 'O', 'O', 'O', 'X', 'O'}, {'X', 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'X'}, {'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X'}, {'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'X'}, {'O', 'O', 'X', 'X', 'O', 'X', 'X', 'O', 'O', 'O'}, {'X', 'O', 'O', 'X', 'X', 'X', 'O', 'X', 'X', 'O'}, {'X', 'O', 'X', 'O', 'O', 'X', 'X', 'O', 'X', 'O'}, {'X', 'X', 'O', 'X', 'X', 'O', 'X', 'O', 'O', 'X'}, {'O', 'O', 'O', 'O', 'X', 'O', 'X', 'O', 'X', 'O'}, {'X', 'X', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'O'}}, new char[][]{{'X', 'O', 'X', 'O', 'X', 'O', 'O', 'O', 'X', 'O'}, {'X', 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'X'}, {'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X'}, {'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'X'}, {'O', 'O', 'X', 'X', 'O', 'X', 'X', 'O', 'O', 'O'}, {'X', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'O'}, {'X', 'O', 'X', 'X', 'X', 'X', 'X', 'O', 'X', 'O'}, {'X', 'X', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'X'}, {'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'X', 'O'}, {'X', 'X', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'O'}});
     }
 
     private static void do_func(char[][] board, char[][] expected) {
