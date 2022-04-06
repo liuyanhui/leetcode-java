@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class Jump_Game_55 {
     /**
-     * review round 2
+     * review R2
      *
      * @param nums
      * @return

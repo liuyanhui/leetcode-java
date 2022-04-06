@@ -28,7 +28,7 @@ public class Longest_Consecutive_Sequence_128 {
     }
 
     /**
-     * review 20220328
+     * review R2 20220328
      * 思考过程：
      * 思路1：
      * 排序法。

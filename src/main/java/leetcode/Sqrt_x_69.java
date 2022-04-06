@@ -26,7 +26,7 @@ public class Sqrt_x_69 {
 
     /**
      * round 2
-     * review 20220117
+     * review R2 20220117
      * @param x
      * @return
      */
