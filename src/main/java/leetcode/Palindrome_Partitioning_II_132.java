@@ -26,18 +26,51 @@ package leetcode;
  */
 public class Palindrome_Partitioning_II_132 {
     public static int minCut(String s) {
-        return minCut_2(s);
+        return minCut_3(s);
+    }
+
+    /**
+     * 参考思路：
+     * https://leetcode.com/problems/palindrome-partitioning-ii/discuss/42198/My-solution-does-not-need-a-table-for-palindrome-is-it-right-It-uses-only-O(n)-space.
+     *
+     * 很难理解
+     *
+     * @param s
+     * @return
+     */
+    public static int minCut_3(String s) {
+        int[] dp = new int[s.length() + 1];
+        for (int i = 0; i <= s.length(); i++) {
+            dp[i] = i - 1;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            //奇数palindrome
+            for (int j = 0; 0 <= i - j && i + j < s.length() && s.charAt(i - j) == s.charAt(i + j); j++) {
+                //只能更新palindrome最右端的dp元素，因为最左侧的元素的值已经确定，如果更新会发生错误。
+                //每次j的循环都会重新计算右端的满足条件的dp中的值。因为随着参加计算的字符增加dp的值是变化的。
+                dp[i + j + 1] = Math.min(dp[i + j + 1], dp[i - j] + 1);
+            }
+            //偶数palindrome
+            for (int j = 1; 0 <= i - j + 1 && i + j < s.length() && s.charAt(i - j + 1) == s.charAt(i + j); j++) {
+                //只能更新palindrome最右端的dp元素，因为最左侧的元素的值已经确定，如果更新会发生错误。
+                dp[i + j + 1] = Math.min(dp[i + j + 1], dp[i - j + 1] + 1);
+            }
+        }
+        return dp[s.length()];
     }
 
     /**
      * 参考思路：
      * https://leetcode.com/problems/palindrome-partitioning-ii/discuss/42213/Easiest-Java-DP-Solution-(97.36)
+     * https://leetcode.com/problems/palindrome-partitioning-ii/discuss/42199/My-DP-Solution-(-explanation-and-code)
      *
      * 思路如下：
      * dp[i] is the minCut for s[0:i]
      * This can be solved by two points:
-     * dp[i] is the minimum of dp[j - 1] + 1 (j <= i), if s[j, i] is palindrome.
-     * If s[j:i] is palindrome, Then s[j + 1:i - 1] is palindrome, and s[j] == s[i].
+     * 1.dp[i] is the minimum of dp[j - 1] + 1 (j <= i), if s[j, i] is palindrome.
+     * 2.If s[j:i] is palindrome, Then s[j + 1:i - 1] is palindrome, and s[j] == s[i].
+     *
+     * ME:论思路清晰的重要性。
      *
      * 验证通过：
      * Runtime: 38 ms, faster than 66.49% of Java online submissions for Palindrome Partitioning II.
@@ -53,10 +86,12 @@ public class Palindrome_Partitioning_II_132 {
             dp[i] = i;
             int min = i;
             for (int j = 0; j <= i; j++) {
+                //下面的if语句和第一行语句是注释思路中的第1步
                 //下面的"j + 1 > i - 1"是为了限制后面的pal[j + 1][i - 1]，防止出现j+1>i-1的情况。
                 if (s.charAt(j) == s.charAt(i) && (j + 1 > i - 1 || pal[j + 1][i - 1])) {
                     //计算子串是否为palindrome
                     pal[j][i] = true;
+                    //下面是注释思路中的第2步
                     //j=0时，j-1小于0，需要单独判断
                     min = j == 0 ? 0 : Math.min(min, dp[j - 1] + 1);
                 }
