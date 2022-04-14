@@ -34,6 +34,10 @@ public class Palindrome_Partitioning_II_132 {
      * https://leetcode.com/problems/palindrome-partitioning-ii/discuss/42198/My-solution-does-not-need-a-table-for-palindrome-is-it-right-It-uses-only-O(n)-space.
      *
      * 很难理解
+     * DP思路：
+     * 1.dp[i]为s[0:i]的最优解
+     * 2.奇数字符的palindrome情况。以s[i]为中心的palindrome为s[i-j:i+j]，那么dp[i]=dp[i-j-1]+1，dp[i+j+1]=dp[i-j-1]+1
+     * 3.偶数字符的palindrome情况。以s[i]和s[i+1]为中心的palindrome为s[i-j:i+1+j]，那么dp[i]=dp[i-j-1]+1
      *
      * @param s
      * @return

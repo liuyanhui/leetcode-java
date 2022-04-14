@@ -57,6 +57,88 @@ public class Clone_Graph_133 {
     }
 
     /**
+     * round 2
+     *
+     * bfs方案：
+     * 1.出队queue，得到当前节点为old，其clone节点为new
+     * 2.如果new已经在cached中，跳过节点new。
+     * 3.如果new不在cached中，创建new，new加入cached。
+     * 3.1.old的neigbhor list对应的clone节点全部加入到新节点new的neigbhor list中，并全部入队queue
+     *
+     * 验证通过：
+     * Runtime: 27 ms, faster than 82.09% of Java online submissions for Clone Graph.
+     * Memory Usage: 42.6 MB, less than 80.75% of Java online submissions for Clone Graph.
+     *
+     * @param node
+     * @return
+     */
+    public Node cloneGraph_3(Node node) {
+        if (node == null) return null;
+        Set<Integer> set = new HashSet<>();//已经处理过的节点
+        Map<Integer, Node> cached = new HashMap<>();//缓存所有已创建的节点
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(node);
+        while (queue.size() > 0) {
+            Node old = queue.poll();
+            if (set.contains(old.val)) continue;
+            cached.putIfAbsent(old.val, new Node(old.val));
+            Node clone = cached.get(old.val);
+            for (Node o : old.neighbors) {
+                cached.putIfAbsent(o.val, new Node(o.val));
+                clone.neighbors.add(cached.get(o.val));
+                queue.offer(o);
+            }
+            set.add(old.val);
+        }
+        return cached.get(node.val);
+    }
+
+    /**
+     * round 2
+     *
+     * 要点：
+     * 1.主要是防止节点重复创建，通过hashmap可以解决
+     * 2.节点都是有编号的
+     * 3.如何终止计算
+     * 4.图的遍历无非是两种方式：dfs和bfs
+     *
+     * 分两步：1.clone node和neigbhor list ;2.递归neigbhor list
+     *
+     * dfs方案：
+     * 1.遍历node的neighbor list，加入都新node的neighbor list中（如果在cache中，直接加入；如果不在cache中，新建node并加入cached，再加入）
+     * 2.遍历时，如果已经出现的node，只加入到neighbor list中，不递归该node
+     *
+     * 验证通过：
+     * Runtime: 25 ms, faster than 82.34% of Java online submissions for Clone Graph.
+     * Memory Usage: 42.5 MB, less than 82.57% of Java online submissions for Clone Graph.
+     *
+     * @param node
+     * @return
+     */
+    public Node cloneGraph_2(Node node) {
+        if (node == null) return null;
+        Map<Integer, Node> cached = new HashMap<>();
+        dfs_2(node, cached);
+        return cached.get(node.val);
+    }
+
+    private void dfs_2(Node node, Map<Integer, Node> cached) {
+        if (node == null) return;
+        cached.putIfAbsent(node.val, new Node(node.val));
+        Node cp = cached.get(node.val);
+        for (Node n : node.neighbors) {
+            if (cached.containsKey(n.val)) {//如果node已经处理过，直接加入的neighbor list中
+                cp.neighbors.add(cached.get(n.val));
+            } else {//如果node没有被处理过，创建node，并递归该node对应的原neighbor list，并递归该node
+                Node t = new Node(n.val);
+                cached.put(t.val, t);
+                cp.neighbors.add(t);
+                dfs(n, cached);
+            }
+        }
+    }
+
+    /**
      * cloneGraph_bfs()的优化版本，去掉一个queue，使用map
      *
      * 验证通过：
