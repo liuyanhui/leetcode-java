@@ -34,15 +34,78 @@ package leetcode;
  * Therefore, you can't travel around the circuit once no matter where you start.
  *
  * Constraints:
- * gas.length == n
- * cost.length == n
- * 1 <= n <= 104
- * 0 <= gas[i], cost[i] <= 104
+ * n == gas.length == cost.length
+ * 1 <= n <= 10^5
+ * 0 <= gas[i], cost[i] <= 10^4
  */
 public class Gas_Station_134 {
 
     public static int canCompleteCircuit(int[] gas, int[] cost) {
-        return canCompleteCircuit_2(gas, cost);
+        return canCompleteCircuit_3(gas, cost);
+    }
+
+    /**
+     * review
+     * round 2
+     *
+     * 思考过程：
+     * 思路1：
+     * 穷举法：从0~n依次计算，如果第i站满足条件，那么直接返回i。每次都要从i到i-1一次累加计算，如果最终sum>=0，那么返回i。
+     * 穷举法中存在的问题：
+     * 重复计算：每一个站都重新计算gas的变化，可以提前计算好。防止重复计算。公式为：gas[i]-cost[i]。大于0表示gas盈余，小于0表示gas不足。
+     * 如下所示：
+     * 例 1
+     * gas  = [1,2,3,4,5]
+     * cost = [3,4,5,1,2]
+     * left = [-2,-2,-2,3,3]
+     * 例 2
+     * gas  = [2,3,4]
+     * cost = [3,4,3]
+     * left = [-1,-1,1]
+     *
+     * 可以看出sum(left[])<0时，无解，直接返回-1；
+     * 问题转化为在一维数组中寻找某个满足条件的数字的问题。
+     * 转化后的问题描述：在一个收尾连接的一维数组中，找到一个数，从这个数开始沿顺时针方向向前累加，当再次抵达这个数时，和大于等于0。
+     *
+     * 算法：
+     * 1.数组为num[],双指针为slow，fast
+     * 2.遍历数组
+     * 3.sum+=num[fast]，fast++
+     * 4.如果sum>0，continue
+     * 5.循环执行：如果sum<0，sum-=num[slow]，slow++
+     * 6.当fast到达末尾时，终止遍历
+     * 7.返回值为sum>=0?slow:-1
+     *
+     * 比较清晰的思路：
+     * 参考资料：
+     * https://leetcode.com/problems/gas-station/discuss/42568/Share-some-of-my-ideas.
+     * 如下：
+     * I have thought for a long time and got two ideas:
+     * 1.If car starts at A and can not reach B. Any station between A and B can not reach B.(B is the first station that A can not reach.)
+     * 2.If the total number of gas is bigger than the total number of cost. There must be a solution.
+     *
+     * 验证通过：
+     * Runtime: 2 ms, faster than 88.54% of Java online submissions for Gas Station.
+     * Memory Usage: 62.3 MB, less than 87.92% of Java online submissions for Gas Station.
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public static int canCompleteCircuit_3(int[] gas, int[] cost) {
+        int origin = 0;
+        int sum = 0;
+        int rightSum = 0;
+        int[] remain = new int[gas.length];
+        for (int i = 0; i < gas.length; i++) {
+            remain[i] = gas[i] - cost[i];//TODO 其实不需要remain数组，因为下标是已知的，所以实时计算即可无需保存在数组中。
+            sum += remain[i];
+            rightSum += remain[i];
+            while (rightSum < 0) {//TODO 这里可以把while循环优化为if语句: if (rightSum<0) origin=i+1;rightSum=0;
+                rightSum -= remain[origin];//TODO 其实不需要remain数组，因为下标是已知的，所以实时计算即可无需保存在数组中。
+                origin++;
+            }
+        }
+        return sum >= 0 ? origin : -1;
     }
 
     /**
