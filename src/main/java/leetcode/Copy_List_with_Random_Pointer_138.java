@@ -43,15 +43,47 @@ public class Copy_List_with_Random_Pointer_138 {
      * 参考思路：
      * https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43491/A-solution-with-constant-space-complexity-O(1)-and-linear-time-complexity-O(N)
      *
-     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Copy List with Random Pointer.
+     * Memory Usage: 45.6 MB, less than 42.46% of Java online submissions for Copy List with Random Pointer.
      *
      * @param head
      * @return
      */
     public Node copyRandomList_2(Node head) {
-        Map<Node, Node> map = new HashMap<>();
-        return null;
+        if (head == null) return null;
+        Node old = head;
+        //新的被复制的node链接到旧old的后面
+        while (old != null) {
+            Node t = old.next;
+            old.next = new Node(old.val);
+            old.next.next = t;
+            old = t;
+        }
+        //计算random
+        old = head;
+        while (old != null) {
+            //计算random
+            old.next.random = old.random == null ? null : old.random.next;
+            old = old.next.next;
+        }
+        //根据old1->new1->old2->new2的链表结构，生成待返回的链表
+        old = head;
+        Node ret = new Node(0);
+        Node newn = ret;
+        while (old != null) {
+            Node t = old.next;
+
+            old.next = old.next.next;
+            old = old.next;
+
+            newn.next = t;
+            newn = newn.next;
+        }
+
+        return ret.next;
     }
+
     /**
      * 要点在于新复制的node不会指向被复制的node
      * 用map缓存已经复制过的node。如果不存在，那么新建node并加入map。
@@ -64,7 +96,8 @@ public class Copy_List_with_Random_Pointer_138 {
      * 4.oldnode=oldnode.next，newnode=newnode.next
      * 5.函数"复制"中使用Map判断是新建newnode还是从map中返回newnode
      *
-     * 要点：next和random是不同的，要分开计算。还可以通过两次遍历的思路，第一次只处理next和缓存，第二次只处理random。
+     * 要点：next和random是不同的，要分开计算。
+     * 还可以通过两次遍历的思路，第一次只计算next和并加入缓存，第二次只计算random。
      *
      * 验证通过：
      * Runtime: 3 ms, faster than 34.55% of Java online submissions for Copy List with Random Pointer.
