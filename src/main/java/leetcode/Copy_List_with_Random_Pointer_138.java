@@ -43,6 +43,11 @@ public class Copy_List_with_Random_Pointer_138 {
      * 参考思路：
      * https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43491/A-solution-with-constant-space-complexity-O(1)-and-linear-time-complexity-O(N)
      *
+     * 三次遍历法：
+     * 1.第一次遍历，把new节点作为old节点的next节点。此时链表长度为原来的2倍。
+     * 2.第二次遍历，计算new节点的random属性
+     * 3.第三次遍历，拆分链表。恢复就链表，生成新链表。
+     *
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Copy List with Random Pointer.
      * Memory Usage: 45.6 MB, less than 42.46% of Java online submissions for Copy List with Random Pointer.
