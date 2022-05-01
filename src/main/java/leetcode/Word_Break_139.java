@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 139. Word Break
@@ -38,7 +35,79 @@ import java.util.Set;
 public class Word_Break_139 {
 
     public static boolean wordBreak(String s, List<String> wordDict) {
-        return wordBreak_3(s, wordDict);
+        return wordBreak_5(s, wordDict);
+    }
+
+    static Map<String, Boolean> map = new HashMap<>();
+
+    /**
+     * round 2
+     * wordBreak_4()的优化版，增加了缓存防止重复计算
+     *
+     * 验证通过：
+     * Runtime: 10 ms, faster than 54.52% of Java online submissions for Word Break.
+     * Memory Usage: 44.7 MB, less than 51.36% of Java online submissions for Word Break.
+     *
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public static boolean wordBreak_5(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0) return true;
+        if (map.containsKey(s)) return map.get(s);
+        List<String> candidate = new ArrayList<>(wordDict);
+        for (int i = 0; i < s.length(); i++) {
+            Iterator<String> it = candidate.iterator();
+            while (it.hasNext()) {
+                String c = it.next();
+                if (i < c.length() && s.charAt(i) != c.charAt(i)) {
+                    it.remove();
+                    continue;
+                }
+                if (i + 1 == c.length()) {
+                    map.put(s, true);
+                    if(wordBreak(s.substring(i + 1), wordDict)){
+                        return true;
+                    }
+                }
+            }
+        }
+        map.put(s, false);
+        return false;
+    }
+
+    /**
+     * round 2
+     *
+     * 递归思路：
+     * 1.s中根据字符依次匹配dict。前缀匹配dict中的元素，如果匹配加入list，不满足匹配的移出list（或跳过list的该数据项）。
+     * 2.当dict中的单词完全匹配时，递归执行1。
+     * 3.s到达末尾时，终止计算
+     *
+     * 验证失败：逻辑无误
+     * Time Limit Exceeded
+     *
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public static boolean wordBreak_4(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0) return true;
+        List<String> candidate = new ArrayList<>(wordDict);
+        for (int i = 0; i < s.length(); i++) {
+            Iterator<String> it = candidate.iterator();
+            while (it.hasNext()) {
+                String c = it.next();
+                if (i < c.length() && s.charAt(i) != c.charAt(i)) {
+                    it.remove();
+                    continue;
+                }
+                if (i + 1 == c.length() && wordBreak(s.substring(i + 1), wordDict)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -139,6 +208,7 @@ public class Word_Break_139 {
         do_func("applepenapple", new String[]{"apple", "pen"}, true);
         do_func("catsandog", new String[]{"cats", "dog", "sand", "and", "cat"}, false);
         do_func("aaaaaaa", new String[]{"aaaa", "aaa"}, true);
+        do_func("a", new String[]{"b"}, false);
         do_func("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", new String[]{"a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa"}, false);
 
     }
