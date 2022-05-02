@@ -33,6 +33,30 @@ package leetcode;
  * Follow up: Can you solve it using O(1) (i.e. constant) memory?
  */
 public class Linked_List_Cycle_141 {
+
+    /**
+     * round 2
+     * 快慢指针法，需要注意head节点在环上的情况
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Linked List Cycle.
+     * Memory Usage: 45.6 MB, less than 60.65% of Java online submissions for Linked List Cycle.
+     *
+     * @param head
+     * @return
+     */
+    public boolean hasCycle_2(ListNode head) {
+        ListNode fast = head, slow = head;
+        boolean virgin = true;
+        while (fast != null && fast.next != null) {
+            if (fast == slow && !virgin) return true;
+            virgin = false;
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return false;
+    }
+
     /**
      * 快慢指正法，fast每次前进2步，slow每次前进一步。当fast==slow时，表示右环；当fast为空，表示无环。
      * 验证通过：

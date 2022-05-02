@@ -43,6 +43,7 @@ public class Word_Break_139 {
     /**
      * round 2
      * wordBreak_4()的优化版，增加了缓存防止重复计算
+     * 还有更优的解法，但是思路大体相同。也有DP解法，但是思路类似。
      *
      * 验证通过：
      * Runtime: 10 ms, faster than 54.52% of Java online submissions for Word Break.
