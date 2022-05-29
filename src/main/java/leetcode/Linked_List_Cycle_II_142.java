@@ -4,11 +4,11 @@ package leetcode;
  * 142. Linked List Cycle II
  * Medium
  * -------------
- * Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+ * Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
  *
- * There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+ * There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
  *
- *  Notice that you should not modify the linked list.
+ * Do not modify the linked list.
  *
  * Example 1:
  * Input: head = [3,2,0,-4], pos = 1
@@ -26,13 +26,54 @@ package leetcode;
  * Explanation: There is no cycle in the linked list.
  *
  * Constraints:
- * The number of the nodes in the list is in the range [0, 104].
- * -105 <= Node.val <= 105
+ * The number of the nodes in the list is in the range [0, 10^4].
+ * -10^5 <= Node.val <= 10^5
  * pos is -1 or a valid index in the linked-list.
  *
- * Follow up: Can you solve it using O(1) (i.e. constant) memory?
+ * //已被删除。Follow up: Can you solve it using O(1) (i.e. constant) memory?
  */
 public class Linked_List_Cycle_II_142 {
+
+    /**
+     * round 2:review
+     * FIXME：相遇的条件是，每轮slow和fast都移动后才能进行比较。类似一个时间片都执行完毕之后再进行比较。
+     * FIXME：fast移动第一步或fast移动2步但slow未移动时，不可以进行比较。
+     *
+     * 思路：
+     * slow和fast相遇时满足一下条件：
+     * 1.slow移动的步数为a1+a2，a1为head到环起点joint的步数
+     * 2.fast移动的步数为a1+a2+c，c为环的步数
+     * 3.存在等式(a1+a2)*2=a1+a2+c，那么a1+a2=c
+     * 4.相遇是fast已经从环起点joint移动了a2步了，那么只需要在继续移动a1步就可以抵达环起点joint了。
+     *
+     * 算法：
+     * 1.先证明存在环
+     * 2.再找到环的起点
+     *
+     * @param head
+     * @return
+     */
+    public ListNode detectCycle_3(ListNode head) {
+        ListNode ret = null;
+        ListNode fast = head, slow = head;
+        boolean hasCircle = false;
+        //round 1 : check if there has a circle
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                slow = head;
+                hasCircle = true;
+                break;
+            }
+        }
+        //round 2 : find begin node
+        while (hasCircle && fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return hasCircle ? slow : null;
+    }
 
     /**
      * detectCycle_1()的另一种写法，优化了isStarted变量
