@@ -50,6 +50,10 @@ public class Linked_List_Cycle_II_142 {
      * 1.先证明存在环
      * 2.再找到环的起点
      *
+     * 验证通过
+     * Runtime: 1 ms, faster than 41.18% of Java online submissions for Linked List Cycle II.
+     * Memory Usage: 45.6 MB, less than 18.70% of Java online submissions for Linked List Cycle II.
+     *
      * @param head
      * @return
      */
