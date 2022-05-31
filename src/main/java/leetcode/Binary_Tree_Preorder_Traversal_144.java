@@ -42,6 +42,44 @@ public class Binary_Tree_Preorder_Traversal_144 {
     }
 
     /**
+     * round 2
+     * @param root
+     * @return
+     */
+    public List<Integer> preorderTraversal_4(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            TreeNode n = stack.pop();
+            if (n == null) continue;
+            ret.add(n.val);
+            stack.push(n.right);
+            stack.push(n.left);
+        }
+        return ret;
+    }
+
+    /**
+     * round 2
+     * @param root
+     * @return
+     */
+    public List<Integer> preorderTraversal_3(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        helper(root, ret);
+        return ret;
+    }
+
+    private void helper(TreeNode node, List<Integer> ret) {
+        if (node == null) return;
+        ret.add(node.val);
+        helper(node.left, ret);
+        helper(node.right, ret);
+    }
+
+
+    /**
      * 迭代版本
      *
      * 验证通过：
