@@ -40,9 +40,14 @@ public class Binary_Tree_Preorder_Traversal_144 {
     public List<Integer> preorderTraversal(TreeNode root) {
         return preorderTraversal_1(root);
     }
-
+    
     /**
      * round 2
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 43.87% of Java online submissions for Binary Tree Preorder Traversal.
+     * Memory Usage: 41.7 MB, less than 66.59% of Java online submissions for Binary Tree Preorder Traversal.
+     *
      * @param root
      * @return
      */
@@ -62,6 +67,10 @@ public class Binary_Tree_Preorder_Traversal_144 {
 
     /**
      * round 2
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Preorder Traversal.
+     * Memory Usage: 42.5 MB, less than 21.14% of Java online submissions for Binary Tree Preorder Traversal.
+     *
      * @param root
      * @return
      */

@@ -32,7 +32,6 @@ public class Binary_Tree_Postorder_Traversal_145 {
     public List<Integer> postorderTraversal(TreeNode root) {
         return null;
     }
-
     /**
      * review
      * 非递归思路，迭代思路
@@ -47,6 +46,10 @@ public class Binary_Tree_Postorder_Traversal_145 {
      * 3.1 如果n是叶子节点，那么 n加入ret，跳到步骤2
      * 3.2 如果s==0，那么 n加入ret，跳到步骤2
      * 3.3 如果s!=0，那么 n加入stack1且stack2.push(0)， 右子树加入stack1且stack2.push(2)，左子树加入stack1且stack2.push(2)，跳到步骤2
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 45.01% of Java online submissions for Binary Tree Postorder Traversal.
+     * Memory Usage: 40.3 MB, less than 90.69% of Java online submissions for Binary Tree Postorder Traversal.
      *
      * @param root
      * @return
@@ -78,6 +81,10 @@ public class Binary_Tree_Postorder_Traversal_145 {
 
     /**
      * 递归思路
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Postorder Traversal.
+     * Memory Usage: 42.5 MB, less than 28.35% of Java online submissions for Binary Tree Postorder Traversal.
      *
      * @param root
      * @return
