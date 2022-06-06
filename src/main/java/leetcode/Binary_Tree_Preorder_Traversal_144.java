@@ -40,7 +40,7 @@ public class Binary_Tree_Preorder_Traversal_144 {
     public List<Integer> preorderTraversal(TreeNode root) {
         return preorderTraversal_1(root);
     }
-    
+
     /**
      * round 2
      *
