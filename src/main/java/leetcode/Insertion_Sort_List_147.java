@@ -27,7 +27,36 @@ package leetcode;
  */
 public class Insertion_Sort_List_147 {
     public static ListNode insertionSortList(ListNode head) {
-        return insertionSortList_1(head);
+        return insertionSortList_2(head);
+    }
+
+    /**
+     * 原始list分为已排序和未排序两部分
+     * 从未排序的list中获取第一个node，把他插入到已排序好的list中
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode insertionSortList_2(ListNode head) {
+        ListNode ret = new ListNode(0);
+        while (head != null) {
+            //1.摘除head，提取待插入排序的元素
+            ListNode r = head;
+            head = head.next;
+            r.next = null;
+            //2.把t插入到已排序好的list中
+            //FIXME: review round 2
+            //FIXME: 使用结构化思维，插入排序的核心逻辑分为两步，1.查到应该插入的位置，2.插入元素
+            ListNode s = ret;
+            //2.1.先找到应该插入的位置
+            while (s.next != null && s.next.val < r.val) {
+                s = s.next;
+            }
+            //2.2.再插入元素
+            r.next = s.next;
+            s.next = r;
+        }
+        return ret.next;
     }
 
     /**
@@ -71,6 +100,7 @@ public class Insertion_Sort_List_147 {
         do_func(new int[]{4, 2, 1, 3}, new int[]{1, 2, 3, 4});
         do_func(new int[]{-1, 5, 3, 4, 0}, new int[]{-1, 0, 3, 4, 5});
         do_func(new int[]{1, 1, 1, 1, 1}, new int[]{1, 1, 1, 1, 1});
+        do_func(new int[]{1}, new int[]{1});
     }
 
     private static void do_func(int[] l1, int[] expected) {
