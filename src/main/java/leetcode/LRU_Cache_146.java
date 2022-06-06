@@ -1,8 +1,6 @@
 package leetcode;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * 146. LRU Cache
@@ -59,38 +57,39 @@ public class LRU_Cache_146 {
 
         public int get(int key) {
             Node t = cache.get(key);
-            if (t != null) {
+            if (t == null) {
+                return -1;
+            } else {
                 //处理队列
                 resortQueue(t);
                 return t.val;
-            } else {
-                return -1;
             }
         }
 
         public void put(int key, int value) {
             Node t = cache.get(key);
             //是否存在
-            if (t != null) {
-                resortQueue(t);
-            } else {
+            if (t == null) {
                 //是否满了
                 if (cache.size() == capacity) {
-                    delete(head);
+                    cache.remove(key);
+                    deleteList(head);
                 }
                 Node n = new Node(value);
                 cache.put(key, n);
                 add2Tail(n);
+            } else {
+                resortQueue(t);
             }
         }
 
         private void resortQueue(Node t) {
             if (head == tail) return;
-            delete(t);
+            deleteList(t);
             add2Tail(t);
         }
 
-        private void delete(Node t) {
+        private void deleteList(Node t) {
             if (head == null) return;
             if (head == tail) {
                 head = null;
@@ -109,7 +108,6 @@ public class LRU_Cache_146 {
                 t.next = null;
                 t.prev = null;
             }
-            capacity--;
         }
 
         private void add2Tail(Node n) {
@@ -122,7 +120,6 @@ public class LRU_Cache_146 {
                 n.prev = tail;
                 tail = n;
             }
-            capacity++;
         }
 
     }
