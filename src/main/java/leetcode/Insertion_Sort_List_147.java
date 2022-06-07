@@ -29,10 +29,17 @@ public class Insertion_Sort_List_147 {
     public static ListNode insertionSortList(ListNode head) {
         return insertionSortList_2(head);
     }
-
     /**
+     * round 2
+     *
      * 原始list分为已排序和未排序两部分
      * 从未排序的list中获取第一个node，把他插入到已排序好的list中
+     *
+     * 验证通过：
+     * Runtime: 22 ms, faster than 53.65% of Java online submissions for Insertion Sort List.
+     * Memory Usage: 45.2 MB, less than 14.50% of Java online submissions for Insertion Sort List.
+     *
+     * TODO 在第一步摘除head的步骤中，增加是否已经有序的判断，可以进一步缩短算法执行的时间。详见leetcode提交。
      *
      * @param head
      * @return
