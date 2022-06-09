@@ -40,8 +40,13 @@ import java.util.HashMap;
  * At most 2 * 10^5 calls will be made to get and put.
  */
 public class LRU_Cache_146 {
-
-    class LRUCache {
+    /**
+     * 验证通过：
+     * Runtime: 110 ms, faster than 19.55% of Java online submissions for LRU Cache.
+     * Memory Usage: 124.4 MB, less than 61.81% of Java online submissions for LRU Cache.
+     *
+     */
+    static class LRUCache {
         int capacity = 0;
         HashMap<Integer, Node> cache;
         //FIXME 这里可以直接用java自带的Deque = new LinkedList()
@@ -51,6 +56,9 @@ public class LRU_Cache_146 {
         public LRUCache(int capacity) {
             this.capacity = capacity;
             cache = new HashMap<>();
+            //FIXME 如果head和tail都是dumb节点，那么deleteNode和add2Tail就不需要那么复杂的逻辑了。
+            //review
+            //FIXME 金矿 套路 链表操作必须有dumb节点表示dumbHead，双向链表的话还要有dumbTail
             head = null;
             tail = null;
         }
@@ -72,24 +80,26 @@ public class LRU_Cache_146 {
             if (t == null) {
                 //是否满了
                 if (cache.size() == capacity) {
-                    cache.remove(key);
-                    deleteList(head);
+                    cache.remove(head.key);
+                    deleteNode(head);
                 }
-                Node n = new Node(value);
+                Node n = new Node(key, value);
+                //防止key不变，value改变的情况
                 cache.put(key, n);
                 add2Tail(n);
             } else {
+                t.val = value;
                 resortQueue(t);
             }
         }
 
         private void resortQueue(Node t) {
             if (head == tail) return;
-            deleteList(t);
+            deleteNode(t);
             add2Tail(t);
         }
 
-        private void deleteList(Node t) {
+        private void deleteNode(Node t) {
             if (head == null) return;
             if (head == tail) {
                 head = null;
@@ -124,22 +134,44 @@ public class LRU_Cache_146 {
 
     }
 
-    class Node {
+    static class Node {
+        int key;
         int val;
         Node prev;
         Node next;
 
-        public Node(int v) {
-            val = v;
+        public Node(int key, int val) {
+            this.key = key;
+            this.val = val;
         }
     }
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
+    /**
+     * Your LRUCache object will be instantiated and called as such:
+     * LRUCache obj = new LRUCache(capacity);
+     * int param_1 = obj.get(key);
+     * obj.put(key,value);
+     */
+
+    public static void main(String[] args) {
+        int ret = -99999;
+        LRUCache lRUCache = new LRUCache(2);
+        lRUCache.put(1, 1); // cache is {1=1}
+        lRUCache.put(2, 2); // cache is {1=1, 2=2}
+        ret = lRUCache.get(1);    // return 1
+        System.out.println(ret);
+        lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1,3=3}
+        ret = lRUCache.get(2);    // returns -1 (not found)
+        System.out.println(ret);
+        lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+        ret = lRUCache.get(1);    // return -1 (not found)
+        System.out.println(ret);
+        ret = lRUCache.get(3);    // return 3
+        System.out.println(ret);
+        ret = lRUCache.get(4);    // return 4
+        System.out.println(ret);
+    }
+
 }
 
 
