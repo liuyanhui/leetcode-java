@@ -57,7 +57,7 @@ public class LRU_Cache_146 {
             this.capacity = capacity;
             cache = new HashMap<>();
             //FIXME 如果head和tail都是dumb节点，那么deleteNode和add2Tail就不需要那么复杂的逻辑了。
-            //review
+            //review 时需要注意的部分
             //FIXME 金矿 套路 链表操作必须有dumb节点表示dumbHead，双向链表的话还要有dumbTail
             head = null;
             tail = null;
