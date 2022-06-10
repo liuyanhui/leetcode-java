@@ -80,7 +80,7 @@ public class Sort_List_148 {
             d1 = ret;
             d2 = ret;
             while (d1.next != null && d2.next != null) {
-                //计算h2
+                //计算d2，找到归并排序的第二个链表的head。
                 int c1 = 0, c2 = 0;
                 while (c2 < cnt && d2.next != null) {
                     d2 = d2.next;
