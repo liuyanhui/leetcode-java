@@ -33,10 +33,54 @@ import java.util.Stack;
  * = 22
  *
  * Constraints:
- * 1 <= tokens.length <= 104
+ * 1 <= tokens.length <= 10^4
  * tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
  */
 public class Evaluate_Reverse_Polish_Notation_150 {
+    public static int evalRPN(String[] tokens) {
+        return evalRPN_2(tokens);
+    }
+
+    /**
+     * round 2
+     *
+     * 使用栈，算法如下：
+     * 1.遇到数字入栈
+     * 2.遇到操作符出栈数字（出栈2个数字），然后计算，计算结果再把数字入栈
+     *
+     * 验证通过：
+     * Runtime: 13 ms, faster than 17.46% of Java online submissions for Evaluate Reverse Polish Notation.
+     * Memory Usage: 44 MB, less than 51.32% of Java online submissions for Evaluate Reverse Polish Notation.
+     *
+     * @param tokens
+     * @return
+     */
+    public static int evalRPN_2(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(Integer.valueOf(tokens[0]));
+        for (int i = 1; i < tokens.length; i++) {
+            String s = tokens[i];
+            if (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/")) {
+                int n2 = stack.pop();
+                int n1 = stack.pop();
+                int r = 0;
+                if (s.equals("+")) {
+                    r = n1 + n2;
+                } else if (s.equals("-")) {
+                    r = n1 - n2;
+                } else if (s.equals("*")) {
+                    r = n1 * n2;
+                } else if (s.equals("/")) {
+                    r = n1 / n2;
+                }
+                stack.push(r);
+            } else {
+                stack.push(Integer.valueOf(tokens[i]));
+            }
+        }
+        return stack.pop();
+    }
+
     /**
      *
      * 题目说明：
@@ -56,7 +100,7 @@ public class Evaluate_Reverse_Polish_Notation_150 {
      * @param tokens
      * @return
      */
-    public static int evalRPN(String[] tokens) {
+    public static int evalRPN_1(String[] tokens) {
         Stack<Integer> stack = new Stack<>();
         for (String s : tokens) {
             if (s.equals("+")) {
