@@ -39,6 +39,10 @@ import java.util.List;
 public class Min_Stack_155 {
 
     /**
+     * round 2 ，关键在于英文理解。
+     * 要点是：只要求retrieving需要O(1)的复杂度。
+     */
+    /**
      * 验证通过：
      * Runtime: 4 ms, faster than 94.32% of Java online submissions for Min Stack.
      * Memory Usage: 40.9 MB, less than 48.21% of Java online submissions for Min Stack.
