@@ -33,7 +33,12 @@ public class Find_Peak_Element_162 {
      * 参考资料：
      * https://leetcode.com/problems/find-peak-element/solution/ 之Approach3
      *
-     * 跟巧妙的方法
+     * 更巧妙的思路
+     * 二分查找，比较与mid相邻的数字
+     * 0. mi=lo+(hi-lo)/2，
+     * 1. 如果[mi]>[mi+1]，那么hi=mi
+     * 2. 否则lo=mi+1
+     * 3. 因为有条件“nums[i] != nums[i + 1] for all valid i.”，所以无需考虑==的情况。
      *
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Find Peak Element.
