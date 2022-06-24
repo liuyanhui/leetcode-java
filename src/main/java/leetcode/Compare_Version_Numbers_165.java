@@ -14,7 +14,6 @@ import java.util.List;
  * To compare version numbers, compare their revisions in left-to-right order. Revisions are compared using their integer value ignoring any leading zeros. This means that revisions 1 and 001 are considered equal. If a version number does not specify a revision at an index, then treat the revision as 0. For example, version 1.0 is less than version 1.1 because their revision 0s are the same, but their revision 1s are 0 and 1 respectively, and 0 < 1.
  *
  * Return the following:
- *
  * If version1 < version2, return -1.
  * If version1 > version2, return 1.
  * Otherwise, return 0.
@@ -50,7 +49,48 @@ import java.util.List;
  */
 public class Compare_Version_Numbers_165 {
     public static int compareVersion(String version1, String version2) {
-        return compareVersion_2(version1, version2);
+        return compareVersion_3(version1, version2);
+    }
+
+
+    /**
+     * round 2
+     *
+     * 直觉思路intuition：
+     * 1.split成整形数组，要注意数组中元素对应version中的顺序（大版本号在高位，小版本号在低位）
+     * 2.从大版本号到小版本号比较数组，数组长度不够时按0处理
+     *
+     * 算法：
+     * 1.输入转化成整数数组arr1[]和arr2[]，大版本在高位，小版本在低位，数组长度分别记为len1和len2。
+     * 2.从高位到低位依次比较两个数组
+     * 2.1 n1 = i<len1?arr1[i]:0
+     * 2.2 n2 = i<len2?arr2[i]:0
+     * 2.3 如果n1>n2，那么 返回1
+     * 2.4 如果n1<n2，那么 返回-1
+     * 2.5 如果n1==n2，那么 比较下一组数字
+     * 2.6 i--
+     *
+     * fixme split()之后的数组顺序
+     *
+     * 验证通过:
+     * Runtime: 1 ms, faster than 89.06% of Java online submissions for Compare Version Numbers.
+     * Memory Usage: 41.8 MB, less than 66.06% of Java online submissions for Compare Version Numbers.
+     *
+     * @param version1
+     * @param version2
+     * @return
+     */
+    public static int compareVersion_3(String version1, String version2) {
+        String[] arr1 = version1.split("\\.");
+        String[] arr2 = version2.split("\\.");
+        int len = Math.max(arr1.length, arr2.length);
+        for (int i = 0; i < len; i++) {
+            int n1 = i < arr1.length ? Integer.valueOf(arr1[i]) : 0;
+            int n2 = i < arr2.length ? Integer.valueOf(arr2[i]) : 0;
+            if (n1 > n2) return 1;
+            else if (n1 < n2) return -1;
+        }
+        return 0;
     }
 
     /**
@@ -134,6 +174,15 @@ public class Compare_Version_Numbers_165 {
         do_func("0.1", "1.1", -1);
         do_func("1.0.1", "1", 1);
         do_func("7.5.2.4", "7.5.3", -1);
+        do_func("1.2.3", "1", 1);
+
+        //fixme review java的split()之后的数组中元素的顺序需要注意。
+        //fixme 这种情况下，遍历经过split后的数组时，从0到n遍历就是split之前的信息，无需进行反转
+        String s = "1,2,3,4,5,6,7,8";
+        String[] arr = s.split(",");
+        //fixme arr[0]是1，不是8
+        System.out.println("arr[0]=" + arr[0]);
+        ArrayUtils.printIntArray(arr);
     }
 
     private static void do_func(String version1, String version2, int expected) {
