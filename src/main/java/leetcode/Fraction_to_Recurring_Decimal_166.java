@@ -37,14 +37,79 @@ import java.util.Map;
  * denominator != 0
  */
 public class Fraction_to_Recurring_Decimal_166 {
+    public static String fractionToDecimal(int numerator, int denominator) {
+        return fractionToDecimal_3(numerator, denominator);
+    }
+
     /**
-     * 待验证
+     * round 2
+     *
+     * 思路：
+     * 1.先计算出整数部分，公式为 n/d
+     * 2.再计算小数部分，公式为 n-n/d
+     * 3.小数部分字符串判断是否是循环小数，或者根据被除数是否重复判断
+     *
+     * 算法：
+     * 0. cached=Map<Integer,Integer> 用来缓存被除数和对应的商的起始位置
+     * 1. 计算商的整数部分 integer=n/d
+     * 2. 被除数变更 n=n-integer*d
+     * 3. 如果 n!=0 循环计算小数部分
+     * 3.1 n扩大十倍
+     * 3.2 如果 cached中存在n，那么 表示是循环小数，
+     * 3.2.1 根据n在cached中的位置修改返回结果集（主要是添加圆括号）
+     * 3.2.2 跳出循环
+     * 3.3 如果 cached中不存在n，那么
+     * 3.3.1 计算商为t
+     * 3.3.2 t追加到返回结果集字符串中
+     * 3.3.3 n和t加入到cached中
+     * 3.3.4 重新计算n n=n-t*d
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 100.00% of Java online submissions for Fraction to Recurring Decimal.
+     * Memory Usage: 39.9 MB, less than 87.23% of Java online submissions for Fraction to Recurring Decimal.
+     *
      * @param numerator
      * @param denominator
      * @return
      */
-    public static String fractionToDecimal(int numerator, int denominator) {
-        return fractionToDecimal_2(numerator, denominator);
+    public static String fractionToDecimal_3(int numerator, int denominator) {
+        if (numerator == denominator) return "1";
+        StringBuilder s1 = new StringBuilder();//存储整数部分和小数点部分
+        StringBuilder s2 = new StringBuilder();//存储小数部分，不包含小数点
+        //转化成long很关键，为了避免无法计算的边界值
+        long n = numerator;
+        long d = denominator;
+        //下面的代码可以用精妙代码替代，详见fractionToDecimal_2()
+        if ((n < 0 && d > 0) || (n > 0 && d < 0)) {
+            s1.append("-");
+            n = Math.abs(n);
+            d = Math.abs(d);
+        }
+        Map<Long, Integer> cached = new HashMap<>();
+        //计算整数部分
+        long i = n / d;
+        s1.append(i);
+        n -= i * d;
+        //追加小数点
+        if (n != 0) s1.append(".");
+        //计算小数部分
+        int pos = 0;
+        while (n != 0) {
+            n *= 10;
+            //计算循环部分
+            if (cached.containsKey(n)) {
+                s2.insert(cached.get(n), "(");
+                s2.append(")");
+                break;
+            }
+            long t = n / d;
+            s2.append(t);
+            cached.put(n, pos);
+            n -= t * d;
+            pos++;
+        }
+
+        return s1.append(s2).toString();
     }
 
     /**
@@ -153,12 +218,14 @@ public class Fraction_to_Recurring_Decimal_166 {
         do_func(1, 9999999, "0.(0000001)");
         do_func(2147483647, 2147483647, "1");
         do_func(-2147483648, -2147483648, "1");
+        do_func(-10, 1, "-10");
+        do_func(-1, 10, "-0.1");
 
         //TODO 计算过程中超过了int的最大长度，导致错误。是否可以转换为long?
         //TODO 用long进行计算后，这条用例通过了
         do_func(-1, -2147483648, "0.0000000004656612873077392578125");
-        //todo 下面的用例会无限循环
-//        do_func(-1, -2147483600, "0.0000000004656612873077392578125");
+        //todo fractionToDecimal_2()下面的用例会无限循环
+        do_func(-1, -2147483600, "0.0000000004656612873077392578125");
 
 //        do_func(1, 2147483647, "0.0000000004656612875245797");
 
