@@ -22,14 +22,47 @@ import java.util.Map;
  *
  * Constraints:
  * n == nums.length
- * 1 <= n <= 5 * 104
- * -231 <= nums[i] <= 231 - 1
+ * 1 <= n <= 5 * 10^4
+ * -2^31 <= nums[i] <= 2^31 - 1
  *
  * Follow-up: Could you solve the problem in linear time and in O(1) space?
  */
 public class Majority_Element_169 {
     public static int majorityElement(int[] nums) {
-        return majorityElement_3(nums);
+        return majorityElement_4(nums);
+    }
+
+    /**
+     * 直觉思路：
+     * 把每个数字出现的次数保存在哈希表中，key是数字，value是出现次数。
+     * 时间复杂度：O(N)，空间复杂度O(N)
+     *
+     * 排序思路：
+     * 先排序再查找
+     * 时间复杂度：O(NlogN)，空间复杂度O(1)
+     *
+     * 本方法是一种更巧妙的实现。基本思想是如果两个数不相等那么这两个数都从集合中去掉，最后集合中留下就是所求。
+     *
+     * round 2
+     * 验证通过：
+     * Runtime: 2 ms, faster than 86.80% of Java online submissions for Majority Element.
+     * Memory Usage: 56.8 MB, less than 19.87% of Java online submissions for Majority Element.
+     *
+     * @param nums
+     * @return
+     */
+    public static int majorityElement_4(int[] nums) {
+        int m = 0, c = 0;
+        for (int n : nums) {
+            if (c == 0) {
+                m = n;
+                c++;
+            } else {
+                if (m == n) c++;
+                else c--;
+            }
+        }
+        return m;
     }
 
     /**
