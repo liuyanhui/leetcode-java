@@ -33,6 +33,50 @@ package leetcode;
  * s is between "A" and "FXSHRXW".
  */
 public class Excel_Sheet_Column_Number_171 {
+
+    public static int titleToNumber(String s) {
+        return titleToNumber_3(s);
+    }
+
+    /**
+     * 迭代思路
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 100.00% of Java online submissions for Excel Sheet Column Number.
+     * Memory Usage: 42.8 MB, less than 44.15% of Java online submissions for Excel Sheet Column Number.
+     *
+     * @param s
+     * @return
+     */
+    public static int titleToNumber_3(String s) {
+        int ret = 0;
+        for (int i = 0; i < s.length(); i++) {
+            ret = ret * 26 + s.charAt(i) - 'A' + 1;
+        }
+        return ret;
+    }
+
+    /**
+     * round 2
+     * 递归思路
+     * 类似于2进制转10进制的算法，只不过不需要考虑0的情况
+     *
+     * 验证通过：
+     * Runtime: 2 ms, faster than 77.21% of Java online submissions for Excel Sheet Column Number.
+     * Memory Usage: 43.3 MB, less than 13.89% of Java online submissions for Excel Sheet Column Number.
+     *
+     * @param s
+     * @return
+     */
+    public static int titleToNumber_2(String s) {
+        if (s == null || s.length() == 0) return 0;
+        int ret = 0;
+        if (s.length() > 1) {
+            ret = titleToNumber(s.substring(0, s.length() - 1)) * 26;
+        }
+        return ret + s.charAt(s.length() - 1) - 'A' + 1;
+    }
+
     /**
      * 递归法，公式为：
      * T(a) =  a
@@ -46,7 +90,7 @@ public class Excel_Sheet_Column_Number_171 {
      * @param s
      * @return
      */
-    public static int titleToNumber(String s) {
+    public static int titleToNumber_1(String s) {
         if (s == null || s.length() == 0) return 0;
         int ret = 0;
         if (s.length() == 1) {
