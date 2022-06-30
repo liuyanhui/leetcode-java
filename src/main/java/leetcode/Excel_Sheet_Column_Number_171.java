@@ -61,6 +61,16 @@ public class Excel_Sheet_Column_Number_171 {
      * 递归思路
      * 类似于2进制转10进制的算法，只不过不需要考虑0的情况
      *
+     * 公式为:F(s)=F(s[0:n-1])+value[s[n]]
+     * ZY -> 701
+     * 26*[Z]+[Y]=26*26+25
+     * AA -> 27
+     * 26*[A]+[A]=26*1+1=27
+     * Z -> 26
+     * [Z]=26
+     * AAA
+     * 26*(F(AA))+[A]=26*(s6*[A]+[A])+[A]
+     *
      * 验证通过：
      * Runtime: 2 ms, faster than 77.21% of Java online submissions for Excel Sheet Column Number.
      * Memory Usage: 43.3 MB, less than 13.89% of Java online submissions for Excel Sheet Column Number.

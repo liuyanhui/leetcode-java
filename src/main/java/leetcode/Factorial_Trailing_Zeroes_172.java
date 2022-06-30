@@ -28,7 +28,37 @@ package leetcode;
  */
 public class Factorial_Trailing_Zeroes_172 {
     public static int trailingZeroes(int n) {
-        return trailingZeroes_1(n);
+        return trailingZeroes_3(n);
+    }
+
+    /**
+     * review round 2
+     *
+     * 跟乘数中5的数量有关，乘数分解后结果中含有?个5，结果中就多?个0。
+     * 如：
+     * 5=1*4->1个0
+     * 10=2*5->1个0
+     * 25=5*5->2个0
+     * 50=2*5*5->2个0
+     *
+     * 有两种方案：递归法和迭代法
+     * 递归法参考资料：
+     * https://leetcode.com/problems/factorial-trailing-zeroes/discuss/52371/My-one-line-solutions-in-3-languages
+     * 迭代法参考资料：
+     * https://leetcode.com/problems/factorial-trailing-zeroes/discuss/52373/Simple-CC%2B%2B-Solution-(with-detailed-explaination)
+     *
+     * @param n
+     * @return
+     */
+    public static int trailingZeroes_3(int n) {
+        //迭代法
+        int result = 0;
+        for (int i = 5; n / i > 0; i *= 5) {
+            result += (n / i);
+        }
+        return result;
+        //递归法
+//        return n == 0 ? 0 : n / 5 + trailingZeroes(n / 5);
     }
 
     /**
