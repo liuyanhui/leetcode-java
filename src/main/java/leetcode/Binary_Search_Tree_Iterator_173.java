@@ -9,10 +9,10 @@ import java.util.Stack;
  * Medium
  * ------------------
  * Implement the BSTIterator class that represents an iterator over the in-order traversal of a binary search tree (BST):
- *
  * BSTIterator(TreeNode root) Initializes an object of the BSTIterator class. The root of the BST is given as part of the constructor. The pointer should be initialized to a non-existent number smaller than any element in the BST.
  * boolean hasNext() Returns true if there exists a number in the traversal to the right of the pointer, otherwise returns false.
  * int next() Moves the pointer to the right, then returns the number at the pointer.
+ *
  * Notice that by initializing the pointer to a non-existent smallest number, the first call to next() will return the smallest element in the BST.
  *
  * You may assume that next() calls will always be valid. That is, there will be at least a next number in the in-order traversal when next() is called.
@@ -37,14 +37,99 @@ import java.util.Stack;
  * bSTIterator.hasNext(); // return False
  *
  * Constraints:
- * The number of nodes in the tree is in the range [1, 105].
- * 0 <= Node.val <= 106
- * At most 105 calls will be made to hasNext, and next.
+ * The number of nodes in the tree is in the range [1, 10^5].
+ * 0 <= Node.val <= 10^6
+ * At most 10^5 calls will be made to hasNext, and next.
  *
  * Follow up:
  * Could you implement next() and hasNext() to run in average O(1) time and use O(h) memory, where h is the height of the tree?
  */
 public class Binary_Search_Tree_Iterator_173 {
+
+    /**
+     * round 2
+     * 方案3：
+     * 1.利用栈的原理，栈顶元素为next节点。
+     * 2.出栈元素，就是next节点，并且把右子树入栈
+     * 时间复杂度O(1)，空间复杂度O(H)
+     *
+     * 金矿：巧妙的利用的stack进行缓存next的状态。
+     *
+     */
+    class BSTIterator_4 {
+        Stack<TreeNode> stack = null;
+
+        public BSTIterator_4(TreeNode root) {
+            stack = new Stack<>();
+            putStack(root);
+        }
+
+        public int next() {
+            TreeNode node = stack.pop();
+            if (node.right != null) {
+                putStack(node.right);
+            }
+            return node.val;
+        }
+
+        public boolean hasNext() {
+            return !stack.empty();
+        }
+
+        private void putStack(TreeNode node) {
+            TreeNode t = node;
+            while (t != null) {
+                stack.push(t);
+                t = t.left;
+            }
+        }
+    }
+
+    /**
+     * round 2
+     * 思考：
+     * 1.需要有缓存记录当前节点，需要有变量存储树中的数据
+     *
+     * 方案1：
+     * 1.next()执行时，先从头执行in-order遍历找到当前节点，然后返回下一个节点。
+     * 2.hasNext()执行是，先从头执行in-order遍历找到当前节点，然后判断是否存在下一个节点。
+     * 时间复杂度O(N)，空间复杂度O(1)
+     *
+     * 方案2：
+     * 1.初始化时，把BST通过in-order遍历转换成数组存储。
+     * 2.这样无论是next()还是hasNext()都是在数组上操作
+     * 时间复杂度O(1)，空间复杂度O(N)
+     *
+     * 验证通过：
+     * Runtime: 20 ms, faster than 75.05% of Java online submissions for Binary Search Tree Iterator.
+     * Memory Usage: 52 MB, less than 30.96% of Java online submissions for Binary Search Tree Iterator.
+     */
+    class BSTIterator_3 {
+        List<TreeNode> list = null;
+        int cur = 0;
+
+        public BSTIterator_3(TreeNode root) {
+            list = new ArrayList<>();
+            //fill the list
+            dfs(root, list);
+        }
+
+        public int next() {
+            return list.get(cur++).val;
+        }
+
+        public boolean hasNext() {
+            return cur < list.size();
+        }
+
+        public void dfs(TreeNode node, List<TreeNode> list) {
+            if (node == null) return;
+            dfs(node.left, list);
+            list.add(node);
+            dfs(node.right, list);
+        }
+    }
+
     /**
      * 验证通过。
      * Runtime: 14 ms, faster than 99.14% of Java online submissions for Binary Search Tree Iterator.
