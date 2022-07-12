@@ -7,8 +7,8 @@ import java.util.*;
  * Medium
  * ----------------
  * The DNA sequence is composed of a series of nucleotides abbreviated as 'A', 'C', 'G', and 'T'.
- *
  * For example, "ACGAATTCCG" is a DNA sequence.
+ *
  * When studying DNA, it is useful to identify repeated sequences within the DNA.
  *
  * Given a string s that represents a DNA sequence, return all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule. You may return the answer in any order.
@@ -22,13 +22,51 @@ import java.util.*;
  * Output: ["AAAAAAAAAA"]
  *
  * Constraints:
- * 1 <= s.length <= 105
+ * 1 <= s.length <= 10^5
  * s[i] is either 'A', 'C', 'G', or 'T'.
  */
 public class Repeated_DNA_Sequences_187 {
 
     public static List<String> findRepeatedDnaSequences(String s) {
         return findRepeatedDnaSequences_2(s);
+    }
+
+    /**
+     * round 2
+     * 分析问题：
+     * 1.10 letter long
+     * 2.more than once
+     * 3.只有四种字符
+     *
+     * 暴力思路：
+     * 滑动窗口逐个提取10个字符的子串，判断该子串是否有重复。
+     * 时间复杂度：O(N*N)，空间复杂度：O(1)
+     *
+     * 哈希表思路：
+     * 1.用缓存保存已经出现过的子串
+     * 2.滑动窗口依次提取10个字符的子串，子串计算hashcode，如果hashcode存在缓存中，表示该子串重复出现，子串计入返回结果集中。
+     * 3.结果集去重。缓存可以记录子串重复的次数，出现次数大于1，则不再计入返回结果集中。
+     * 时间复杂度：O(N)，空间复杂度：O(N)
+     *
+     * @param s
+     * @return
+     */
+    public static List<String> findRepeatedDnaSequences_3(String s) {
+        List<String> ret = new ArrayList<>();
+        if (s == null || s.length() <= 10) return ret;
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length() - 10; i++) {
+            String t = s.substring(i, i + 10);
+            if (map.containsKey(t)) {
+                if (map.get(t) < 2) {
+                    map.put(t, 2);
+                    ret.add(t);
+                }
+            } else {
+                map.put(t, 1);
+            }
+        }
+        return ret;
     }
 
     /**
@@ -87,6 +125,7 @@ public class Repeated_DNA_Sequences_187 {
         do_func("AAAAAAAAAA", new ArrayList<>());
         do_func("AAAAAAAAAAA", Arrays.asList("AAAAAAAAAA"));
         do_func("AAAAAAAAAAAAA", Arrays.asList("AAAAAAAAAA"));
+        do_func("AAAAACCCCCAAAAACCCCCAAAAAGGGTTT", Arrays.asList("AAAAACCCCC", "CCCCCAAAAA"));
     }
 
     private static void do_func(String s, List<String> expected) {
