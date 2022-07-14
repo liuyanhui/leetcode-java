@@ -28,7 +28,7 @@ import java.util.*;
 public class Repeated_DNA_Sequences_187 {
 
     public static List<String> findRepeatedDnaSequences(String s) {
-        return findRepeatedDnaSequences_2(s);
+        return findRepeatedDnaSequences_3(s);
     }
 
     /**
@@ -48,6 +48,10 @@ public class Repeated_DNA_Sequences_187 {
      * 3.结果集去重。缓存可以记录子串重复的次数，出现次数大于1，则不再计入返回结果集中。
      * 时间复杂度：O(N)，空间复杂度：O(N)
      *
+     * 验证通过：
+     * Runtime: 33 ms, faster than 68.39% of Java online submissions for Repeated DNA Sequences.
+     * Memory Usage: 64.1 MB, less than 36.31% of Java online submissions for Repeated DNA Sequences.
+     *
      * @param s
      * @return
      */
@@ -55,7 +59,7 @@ public class Repeated_DNA_Sequences_187 {
         List<String> ret = new ArrayList<>();
         if (s == null || s.length() <= 10) return ret;
         Map<String, Integer> map = new HashMap<>();
-        for (int i = 0; i < s.length() - 10; i++) {
+        for (int i = 0; i <= s.length() - 10; i++) {
             String t = s.substring(i, i + 10);
             if (map.containsKey(t)) {
                 if (map.get(t) < 2) {
@@ -125,7 +129,7 @@ public class Repeated_DNA_Sequences_187 {
         do_func("AAAAAAAAAA", new ArrayList<>());
         do_func("AAAAAAAAAAA", Arrays.asList("AAAAAAAAAA"));
         do_func("AAAAAAAAAAAAA", Arrays.asList("AAAAAAAAAA"));
-        do_func("AAAAACCCCCAAAAACCCCCAAAAAGGGTTT", Arrays.asList("AAAAACCCCC", "CCCCCAAAAA"));
+        do_func("AAAAACCCCCAAAAACCCCCAAAAAGGGTTT", Arrays.asList("AAAAACCCCC", "AAAACCCCCA", "AAACCCCCAA", "AACCCCCAAA", "ACCCCCAAAA", "CCCCCAAAAA"));
     }
 
     private static void do_func(String s, List<String> expected) {
