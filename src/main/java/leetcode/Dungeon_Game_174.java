@@ -45,6 +45,10 @@ public class Dungeon_Game_174 {
      * dp[i,j]表示[i,j]的最小必须血量，所以dp[i,j]永远大于0。血量小于0，hero就挂了。
      * 从右下到左上的方向计算。
      * 这个方案不会存在全局最优解被局部最优解误伤的情况。因为dungeon[i,j]的前导元素dungeon[i+1,j]和dungeon[i,j+1]是已经确认的到终点的最优解。所以[i,j]在[i+1,j]和[i,j+1]基础上二选一，也必然是最优解。
+     * 
+     * 验证通过：
+     * Runtime: 1 ms, faster than 97.71% of Java online submissions for Dungeon Game.
+     * Memory Usage: 44.7 MB, less than 12.95% of Java online submissions for Dungeon Game.
      *
      * @param dungeon
      * @return
@@ -53,6 +57,12 @@ public class Dungeon_Game_174 {
         int M = dungeon.length;
         int N = dungeon[0].length;
         int[][] dp = new int[M + 1][N + 1];
+        for (int i = 0; i <= M; i++) {
+            dp[i][N] = Integer.MAX_VALUE;
+        }
+        for (int i = 0; i <= N; i++) {
+            dp[M][i] = Integer.MAX_VALUE;
+        }
         dp[M][N - 1] = 1;
         dp[M - 1][N] = 1;
         for (int i = M - 1; i >= 0; i--) {
