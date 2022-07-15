@@ -33,7 +33,74 @@ package leetcode;
  */
 public class Rotate_Array_189 {
     public static void rotate(int[] nums, int k) {
-        rotate_2(nums, k);
+        rotate_4(nums, k);
+    }
+
+    /**
+     * round 2
+     *
+     * 更加简介明了的实现
+     *
+     * @param nums
+     * @param k
+     */
+    public static void rotate_4(int[] nums, int k) {
+        k = k % nums.length;
+        reverseArray(nums, 0, nums.length - 1);
+        reverseArray(nums, 0, k - 1);
+        reverseArray(nums, k, nums.length - 1);
+    }
+
+    /**
+     * round 2
+     *
+     * 全部复制思路
+     * 1.把nums复制到新建数组中，再根据rotate规则将数组复制回nums。
+     * 时间复杂度O(N)，空间复杂度O(N)
+     *
+     * 部分复制思路
+     * 1.把需要rotate的数字从nums中移动到一个临时数组中
+     * 2.nums中剩下的数字已到数组的末尾
+     * 3.把临时数组中的数字移动到nums的头部
+     * 时间复杂度O(N)，空间复杂度O(N)
+     *
+     * 套路思路
+     * 1.前半部分反转，不需要rotate的部分
+     * 2.后半部分反转，需要rotate的部分
+     * 3.整体反转
+     * 时间复杂度O(N)，空间复杂度O(1)
+     *
+     * 本题为套路思路
+     *
+     * 验证通过：
+     * Runtime: 3 ms, faster than 26.36% of Java online submissions for Rotate Array.
+     * Memory Usage: 64.4 MB, less than 53.77% of Java online submissions for Rotate Array.
+     *
+     * @param nums
+     * @param k
+     */
+    public static void rotate_3(int[] nums, int k) {
+        int k1 = k % nums.length;//处理k超过数组长度的情况
+        int l = 0, r = nums.length - 1 - k1;
+        while (l < r) {
+            swap(nums, l++, r--);
+        }
+        l = nums.length - k1;
+        r = nums.length - 1;
+        while (l < r) {
+            swap(nums, l++, r--);
+        }
+        l = 0;
+        r = nums.length - 1;
+        while (l < r) {
+            swap(nums, l++, r--);
+        }
+    }
+
+    private static void swap(int[] nums, int l, int r) {
+        int t = nums[r];
+        nums[r] = nums[l];
+        nums[l] = t;
     }
 
     /**
@@ -113,7 +180,7 @@ public class Rotate_Array_189 {
 
     private static void do_func(int[] nums, int k, int[] expected) {
         rotate(nums, k);
-        ArrayUtils.printIntArray(nums);
+        ArrayUtils.printlnIntArray(nums);
         ArrayUtils.isSameThenPrintln(nums, expected);
         System.out.println("--------------");
     }
