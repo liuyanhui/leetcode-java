@@ -10,9 +10,8 @@ import java.util.Map;
  * 179. Largest Number
  * Medium
  * ---------------
- * Given a list of non-negative integers nums, arrange them such that they form the largest number.
- *
- * Note: The result may be very large, so you need to return a string instead of an integer.
+ * Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+ * Since the result may be very large, so you need to return a string instead of an integer.
  *
  * Example 1:
  * Input: nums = [10,2]
@@ -36,7 +35,55 @@ import java.util.Map;
  */
 public class Largest_Number_179 {
     public static String largestNumber(int[] nums) {
-        return largestNumber_2(nums);
+        return largestNumber_3(nums);
+    }
+
+    /**
+     * 思考过程：
+     * 1.根据每个数的最高位数字排序问题。需要考虑[3,30],[3,34],[3,301],[3,33,334,30,301]这样的特殊用例。
+     * 2.用例[3,30]，需要在较短数后追加最高位数字，再进行比较，如转化为:[33,30]
+     * 3.高位数字大者，优先追加到结果集中；高位数字相同时，比较次高位；缺位时，以最高位进行比较。
+     *
+     * 方案：
+     * 主要分为两个步骤：1.排序；2.连接组合
+     * 现根据某种规则排序，再依次把数连接组合成字符串。
+     * 排序规则：假设[a,b]，如果ab<ba，那么[b,a]。
+     *
+     * 验证通过：
+     * Runtime: 9 ms, faster than 68.67% of Java online submissions for Largest Number.
+     * Memory Usage: 44.1 MB, less than 34.31% of Java online submissions for Largest Number.
+     *
+     * @param nums
+     * @return
+     */
+    public static String largestNumber_3(int[] nums) {
+        String[] in = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            in[i] = String.valueOf(nums[i]);
+        }
+        Arrays.sort(in, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1.equals(o2)) return 0;
+                String s1 = o1 + o2;
+                String s2 = o2 + o1;
+                for (int i = 0; i < s1.length(); i++) {
+                    if (s1.charAt(i) > s2.charAt(i)) return 1;
+                    else if (s1.charAt(i) < s2.charAt(i)) return -1;
+                }
+                return 0;
+            }
+        });
+        //处理数组中数字全部是0的特殊情况
+        if (in[in.length - 1].equals("0")) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = in.length - 1; i >= 0; i--) {
+            sb.append(in[i]);
+        }
+
+        return sb.toString();
     }
 
     /**
@@ -134,11 +181,14 @@ public class Largest_Number_179 {
 
     public static void main(String[] args) {
         do_func(new int[]{10, 2}, "210");
+        do_func(new int[]{9, 30, 34, 5, 3}, "9534330");
         do_func(new int[]{3, 30, 34, 5, 9}, "9534330");
         do_func(new int[]{1}, "1");
         do_func(new int[]{10}, "10");
         do_func(new int[]{34323, 3432}, "343234323");
         do_func(new int[]{0, 0}, "0");
+        do_func(new int[]{30, 34, 3}, "34330");
+        do_func(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, "9876543210");
     }
 
     private static void do_func(int[] nums, String expected) {
