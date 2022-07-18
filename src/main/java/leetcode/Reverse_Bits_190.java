@@ -29,6 +29,33 @@ package leetcode;
 public class Reverse_Bits_190 {
     // you need treat n as an unsigned value
 
+    public static int reverseBits(int n) {
+        return reverseBits_2(n);
+    }
+
+    /**
+     * round 2
+     *
+     * 方案1：位运算 bit manipulate
+     * 按位提取相应的0/1值，然后按相反的顺序合并到结果中。
+     * 时间复杂度：O(32)，空间复杂度：O(1)
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 98.63% of Java online submissions for Reverse Bits.
+     * Memory Usage: 42.3 MB, less than 67.45% of Java online submissions for Reverse Bits.
+     *
+     * @param n
+     * @return
+     */
+    public static int reverseBits_2(int n) {
+        int ret = 0;
+        for (int i = 0; i < 32; i++) {
+            int t = (n >> i) & 1;
+            ret |= t << (31 - i);
+        }
+        return ret;
+    }
+
     /**
      * Bit Manipulation
      *
@@ -39,7 +66,7 @@ public class Reverse_Bits_190 {
      * @param n
      * @return
      */
-    public static int reverseBits(int n) {
+    public static int reverseBits_1(int n) {
         int ret = 0;
         for (int i = 0; i < 32; i++) {
             int t = (n >> i) & 1;
@@ -53,8 +80,7 @@ public class Reverse_Bits_190 {
         do_func(43261596, 964176192);// 00000010100101000001111010011100
 //        do_func(4294967293,3221225471);//11111111111111111111111111111101
 //        do_func(12345678901234567890,964176192);
-
-
+        do_func(3, -1073741824);// 00000010100101000001111010011100
     }
 
     private static void do_func(int n, int expected) {
