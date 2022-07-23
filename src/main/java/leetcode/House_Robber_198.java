@@ -27,7 +27,42 @@ package leetcode;
 public class House_Robber_198 {
 
     public static int rob(int[] nums) {
-        return rob_2(nums);
+        return rob_4(nums);
+    }
+
+    /**
+     * rob_3()的空间复杂度优化版
+     *
+     * @param nums
+     * @return
+     */
+    public static int rob_4(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int dp_1 = 0, dp_2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int t = Math.max(dp_2 + nums[i], dp_1);
+            dp_2 = dp_1;
+            dp_1 = t;
+        }
+        return dp_1;
+    }
+
+    /**
+     * round 2
+     * 典型的DP问题，前面的不同选择会影响后面不同的结果。公式如下
+     * dp[i]=max(dp[i-2]+nums[i],dp[i-1])
+     *
+     * @param nums
+     * @return
+     */
+    public static int rob_3(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int[] dp = new int[nums.length + 1];
+        dp[1] = nums[0];
+        for (int i = 2; i <= nums.length; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i - 1], dp[i - 1]);
+        }
+        return dp[nums.length];
     }
 
     /**
