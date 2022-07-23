@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * 199. Binary Tree Right Side View
@@ -28,6 +29,56 @@ import java.util.List;
 public class Binary_Tree_Right_Side_View_199 {
     public List<Integer> rightSideView(TreeNode root) {
         return rightSideView_dfs(root);
+    }
+
+    /**
+     * round 2
+     * bfs思路
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> rightSideView_bfs2(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        if (root == null) return ret;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            ret.add(stack.peek().val);
+            Stack<TreeNode> t = new Stack<>();
+            int size = stack.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = stack.pop();
+                if (node.left != null) t.push(node.left);
+                if (node.right != null) t.push(node.right);
+            }
+            stack = t;
+        }
+        return ret;
+    }
+
+    /**
+     * round 2
+     * dfs思路：
+     * DFS(pre-order)+分层记录法，每层被最后记录的就是所求
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> rightSideView_dfs2(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        dfs(root, 0, ret);
+        return ret;
+    }
+
+    private void dfs(TreeNode node, int level, List<Integer> list) {
+        if (node == null) return;
+        if (list.size() <= level) {
+            list.add(0);
+        }
+        list.set(level, node.val);
+        dfs(node.left, level + 1, list);
+        dfs(node.right, level + 1, list);
     }
 
     /**
