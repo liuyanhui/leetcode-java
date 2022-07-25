@@ -28,10 +28,10 @@ import java.util.Stack;
  */
 public class Binary_Tree_Right_Side_View_199 {
     public List<Integer> rightSideView(TreeNode root) {
-        return rightSideView_dfs(root);
+        return rightSideView_bfs2(root);
     }
 
-    /**
+    /** unconfirmed
      * round 2
      * bfs思路
      *
@@ -61,6 +61,10 @@ public class Binary_Tree_Right_Side_View_199 {
      * round 2
      * dfs思路：
      * DFS(pre-order)+分层记录法，每层被最后记录的就是所求
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 94.70% of Java online submissions for Binary Tree Right Side View.
+     * Memory Usage: 40.9 MB, less than 94.40% of Java online submissions for Binary Tree Right Side View.
      *
      * @param root
      * @return

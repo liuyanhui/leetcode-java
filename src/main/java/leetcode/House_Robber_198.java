@@ -33,6 +33,10 @@ public class House_Robber_198 {
     /**
      * rob_3()的空间复杂度优化版
      *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for House Robber.
+     * Memory Usage: 41.4 MB, less than 62.17% of Java online submissions for House Robber.
+     *
      * @param nums
      * @return
      */
@@ -47,10 +51,14 @@ public class House_Robber_198 {
         return dp_1;
     }
 
-    /**
+    /** unconfirmed
      * round 2
      * 典型的DP问题，前面的不同选择会影响后面不同的结果。公式如下
      * dp[i]=max(dp[i-2]+nums[i],dp[i-1])
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 20.84% of Java online submissions for House Robber.
+     * Memory Usage: 41 MB, less than 79.20% of Java online submissions for House Robber.
      *
      * @param nums
      * @return
