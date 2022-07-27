@@ -30,7 +30,7 @@ public class Binary_Tree_Right_Side_View_199 {
         return rightSideView_bfs2(root);
     }
 
-    /** 
+    /**
      * round 2
      * bfs思路
      *

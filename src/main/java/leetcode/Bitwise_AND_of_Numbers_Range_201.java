@@ -27,6 +27,27 @@ public class Bitwise_AND_of_Numbers_Range_201 {
     }
 
     /**
+     * rangeBitwiseAnd_2()的另一个版本
+     *
+     * 验证通过：
+     * Runtime: 8 ms, faster than 78.76% of Java online submissions for Bitwise AND of Numbers Range.
+     * Memory Usage: 44.4 MB, less than 32.97% of Java online submissions for Bitwise AND of Numbers Range.
+     *
+     * @param left
+     * @param right
+     * @return
+     */
+    public static int rangeBitwiseAnd_3(int left, int right) {
+        int c = 0;
+        while (left != right) {
+            left = left >> 1;
+            right = right >> 1;
+            c++;
+        }
+        return left << c;
+    }
+
+    /**
      * 参考思路：
      * https://leetcode.com/problems/bitwise-and-of-numbers-range/discuss/56729/Bit-operation-solution(JAVA)
      *
@@ -39,7 +60,7 @@ public class Bitwise_AND_of_Numbers_Range_201 {
      * 验证通过：
      * Runtime: 4 ms, faster than 100.00% of Java online submissions for Bitwise AND of Numbers Range.
      * Memory Usage: 38.4 MB, less than 32.72% of Java online submissions for Bitwise AND of Numbers Range.
-     * 
+     *
      * @param left
      * @param right
      * @return
