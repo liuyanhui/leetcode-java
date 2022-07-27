@@ -29,11 +29,36 @@ import java.util.Set;
  * Output: false
  *
  * Constraints:
- * 1 <= n <= 231 - 1
+ * 1 <= n <= 2^31 - 1
  */
 public class Happy_Number_202 {
     public static boolean isHappy(int n) {
-        return isHappy_2(n);
+        return isHappy_3(n);
+    }
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     * Runtime: 3 ms, faster than 45.75% of Java online submissions for Happy Number.
+     * Memory Usage: 41.6 MB, less than 25.94% of Java online submissions for Happy Number.
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isHappy_3(int n) {
+        Set<Integer> set = new HashSet<>();
+        while (true) {
+            int t = 0;
+            while (n > 0) {
+                t += Math.pow(n % 10, 2);
+                n /= 10;
+            }
+            if (t == 1) return true;
+            if (set.contains(t)) return false;
+            set.add(t);
+            n = t;
+        }
     }
 
     /**
