@@ -2,7 +2,6 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * 199. Binary Tree Right Side View
@@ -31,9 +30,13 @@ public class Binary_Tree_Right_Side_View_199 {
         return rightSideView_bfs2(root);
     }
 
-    /** unconfirmed
+    /** 
      * round 2
      * bfs思路
+     *
+     * 验证通过：
+     * Runtime: 3 ms, faster than 11.64% of Java online submissions for Binary Tree Right Side View.
+     * Memory Usage: 42.4 MB, less than 71.78% of Java online submissions for Binary Tree Right Side View.
      *
      * @param root
      * @return
@@ -41,18 +44,20 @@ public class Binary_Tree_Right_Side_View_199 {
     public List<Integer> rightSideView_bfs2(TreeNode root) {
         List<Integer> ret = new ArrayList<>();
         if (root == null) return ret;
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
-        while (!stack.empty()) {
-            ret.add(stack.peek().val);
-            Stack<TreeNode> t = new Stack<>();
-            int size = stack.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = stack.pop();
-                if (node.left != null) t.push(node.left);
-                if (node.right != null) t.push(node.right);
+        List<TreeNode> list = new ArrayList<>();
+        List<TreeNode> next = null;
+        list.add(root);
+        while (!list.isEmpty()) {
+            next = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                TreeNode node = list.get(i);
+                if (node.left != null) next.add(node.left);
+                if (node.right != null) next.add(node.right);
+                if (i == list.size() - 1) {
+                    ret.add(node.val);
+                }
             }
-            stack = t;
+            list = next;
         }
         return ret;
     }
