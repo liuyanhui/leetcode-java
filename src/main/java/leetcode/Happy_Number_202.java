@@ -39,6 +39,8 @@ public class Happy_Number_202 {
     /**
      * round 2
      *
+     * isHappy_2()的方法更有意思。
+     *
      * 验证通过：
      * Runtime: 3 ms, faster than 45.75% of Java online submissions for Happy Number.
      * Memory Usage: 41.6 MB, less than 25.94% of Java online submissions for Happy Number.

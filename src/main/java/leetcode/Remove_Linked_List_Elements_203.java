@@ -19,11 +19,33 @@ package leetcode;
  * Output: []
  *
  * Constraints:
- * The number of nodes in the list is in the range [0, 104].
+ * The number of nodes in the list is in the range [0, 10^4].
  * 1 <= Node.val <= 50
  * 0 <= k <= 50
  */
 public class Remove_Linked_List_Elements_203 {
+
+    /**
+     * round 2
+     * 
+     * @param head
+     * @param val
+     * @return
+     */
+    public static ListNode removeElements_2(ListNode head, int val) {
+        ListNode dumb = new ListNode(0, head);
+        ListNode prev = dumb;
+        while (prev.next != null) {
+            if (prev.next.val == val) {
+                prev.next = prev.next.next;
+            } else {
+                prev = prev.next;
+            }
+            // head = head.next;
+        }
+        return dumb.next;
+    }
+
     /**
      * 验证通过：
      * Runtime: 1 ms, faster than 78.37% of Java online submissions for Remove Linked List Elements.
@@ -33,7 +55,7 @@ public class Remove_Linked_List_Elements_203 {
      * @param val
      * @return
      */
-    public static ListNode removeElements(ListNode head, int val) {
+    public static ListNode removeElements_1(ListNode head, int val) {
         ListNode ret = new ListNode();
         ret.next = head;
         ListNode prevNode = ret;
@@ -54,7 +76,7 @@ public class Remove_Linked_List_Elements_203 {
     }
 
     private static void do_func(int[] arr, int val, int[] expected) {
-        ListNode ret = removeElements(ListNode.fromArray(arr), val);
+        ListNode ret = removeElements_2(ListNode.fromArray(arr), val);
         System.out.println(ret);
         System.out.println(ListNode.isSame(ret, expected));
         System.out.println("--------------");
