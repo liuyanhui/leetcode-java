@@ -32,7 +32,102 @@ import java.util.Map;
  */
 public class Isomorphic_Strings_205 {
     public static boolean isIsomorphic(String s, String t) {
-        return isIsomorphic_1(s, t);
+        return isIsomorphic_4(s, t);
+    }
+
+    /**
+     * 更巧妙的方案。
+     * 
+     * 参考思路：
+     * https://leetcode.com/problems/isomorphic-strings/discuss/57796/My-6-lines-solution
+     *
+     * 不是直接比较s和t中的字符，并判断他们是否都已经出现并且相同。（这样就需要判断两个条件：1.已经同时出现过；2.映射相同。
+     * 而是通过中间值进行比较，中间值就是上一次字符出现时的下标。这样就只需要判断一个条件：1.上一次出现的下标是否相同。
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isIsomorphic_4(String s, String t) {
+        int[] arr1 = new int[256], arr2 = new int[256];
+        for (int i = 0; i < s.length(); i++) {
+            if (arr1[s.charAt(i)] != arr2[t.charAt(i)]) return false;
+            //这里不能是i，i存在为0的情况。因为0是数组的初始值。如果非要是i，那么需要初始化数组时，把所有元素的值改为-1
+            arr1[s.charAt(i)] = i + 1;
+            arr2[t.charAt(i)] = i + 1;
+        }
+        return true;
+    }
+
+    /**
+     * round 2
+     * 两次校验法
+     *
+     * 验证通过：
+     * Runtime: 8 ms, faster than 76.84% of Java online submissions for Isomorphic Strings.
+     * Memory Usage: 43 MB, less than 52.16% of Java online submissions for Isomorphic Strings.
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isIsomorphic_3(String s, String t) {
+        return check(s, t) && check(t, s);
+    }
+
+    private static boolean check(String s, String t) {
+        int[] map = new int[256];
+        for (int i = 0; i < map.length; i++) {
+            map[i] = -1;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            char sc = s.charAt(i);
+            char tc = t.charAt(i);
+            if (map[sc] == -1) {
+                map[sc] = tc;
+            } else if (map[sc] != tc) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * round 2
+     * 思路：
+     * 1.使用int[256]数组保存s和t中对应位置字符的映射关系。
+     * 2.arr[i]表示s中字符对应t中的字符。如：s[0]='a'，t[0]='c'，那么arr[a]=c。a和c为ascii码中对应的数字。
+     * 3.需要对s->t和t->s分别进行校验
+     *
+     * 验证通过：
+     * Runtime: 6 ms, faster than 89.13% of Java online submissions for Isomorphic Strings.
+     * Memory Usage: 43.2 MB, less than 43.51% of Java online submissions for Isomorphic Strings.
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isIsomorphic_2(String s, String t) {
+        int[] mapS = new int[256];
+        int[] mapT = new int[256];
+        for (int i = 0; i < mapS.length; i++) {
+            mapS[i] = -1;
+            mapT[i] = -1;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            char sc = s.charAt(i);
+            char tc = t.charAt(i);
+            if (mapS[sc] == -1) {
+                if (mapT[tc] == -1) {
+                    mapS[sc] = tc;
+                    mapT[tc] = sc;
+                } else
+                    return false;
+            } else if (mapS[sc] != tc) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -71,7 +166,7 @@ public class Isomorphic_Strings_205 {
         do_func("foo", "bar", false);
         do_func("paper", "title", true);
         do_func("egggghhheff", "addddiiiamm", true);
-        do_func("ba", "ab", false);
+        do_func("ba", "ab", true);
         do_func("badc", "baba", false);
     }
 
