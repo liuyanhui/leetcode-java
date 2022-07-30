@@ -27,7 +27,11 @@ public class Remove_Linked_List_Elements_203 {
 
     /**
      * round 2
-     * 
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 99.08% of Java online submissions for Remove Linked List Elements.
+     * Memory Usage: 43.1 MB, less than 93.52% of Java online submissions for Remove Linked List Elements.
+     *
      * @param head
      * @param val
      * @return

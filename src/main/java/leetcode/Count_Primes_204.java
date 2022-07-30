@@ -1,8 +1,11 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 204. Count Primes
- * Easy
+ * Medium
  * -------------
  * Count the number of prime numbers less than a non-negative number, n.
  *
@@ -20,15 +23,52 @@ package leetcode;
  * Output: 0
  *
  * Constraints:
- * 0 <= n <= 5 * 106
+ * 0 <= n <= 5 * 10^6
  */
 public class Count_Primes_204 {
     public static int countPrimes(int n) {
-        return countPrimes_2(n);
+        return countPrimes_3(n);
+    }
+
+    /**
+     * round 2
+     *
+     * 思考：
+     * 1.暴力法。依次计算每个数，时间复杂度O(N*N)。
+     * 2.貌似有数学方法和计算机编程方法两种思路。
+     * 3.题目要求只给出质数的个数，没要求输出每个质数。
+     * 4.所有的合数都是质数的乘积
+     * 5.把所有满足条件的质数缓存起来，只要某个数字能被质数集合中的数字整除，那么这个数字一定不是质数。时间复杂度O(k*N)，k为质数个数。
+     *
+     * 采用了5.的方案
+     *
+     * 验证失败：Time Limit Exceeded
+     *
+     * @param n
+     * @return
+     */
+    public static int countPrimes_3(int n) {
+        List<Integer> primes = new ArrayList<>();
+        if (n > 2) primes.add(2);
+        if (n > 3) primes.add(3);
+        boolean isPrime = false;
+        for (int i = 4; i < n; i++) {
+            isPrime = true;
+            for (int j : primes) {
+                if (i / j * j == i) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            if (isPrime) primes.add(i);
+        }
+        return primes.size();
     }
 
     /**
      * 提前计算好是否为质数，不是需要的时候才计算
+     * round 2:排除法
+     * round 2:要么把质数挑出来，要么把合数排除。排除合数的方法更容易。
      *
      * 参考思路：
      * https://leetcode.com/problems/count-primes/discuss/57588/My-simple-Java-solution
@@ -83,8 +123,9 @@ public class Count_Primes_204 {
         do_func(1, 0);
         do_func(2, 0);
         do_func(3, 1);
-        do_func(12, 95);
+        do_func(12, 5);
         do_func(500, 95);
+        do_func(5000000, 348513);
     }
 
     private static void do_func(int n, int expected) {
