@@ -24,7 +24,26 @@ package leetcode;
  */
 public class Reverse_Linked_List_206 {
     public static ListNode reverseList(ListNode head) {
-        return reverseList_2(head);
+        return reverseList_3(head);
+    }
+
+    /**
+     * unconfirmed
+     * 1.链表分为两部分：已经反转的和未反转的。每次把未反转的头节点作为已反转的头结点。
+     * 2.无需使用dumb节点
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode reverseList_3(ListNode head) {
+        ListNode last = null;
+        while (head != null) {
+            ListNode t = head.next;
+            head.next = last;
+            last = head;
+            head = t;
+        }
+        return last;
     }
 
     /**

@@ -37,12 +37,12 @@ public class Isomorphic_Strings_205 {
 
     /**
      * 更巧妙的方案。
-     * 
+     *
      * 参考思路：
      * https://leetcode.com/problems/isomorphic-strings/discuss/57796/My-6-lines-solution
      *
      * 不是直接比较s和t中的字符，并判断他们是否都已经出现并且相同。（这样就需要判断两个条件：1.已经同时出现过；2.映射相同。
-     * 而是通过中间值进行比较，中间值就是上一次字符出现时的下标。这样就只需要判断一个条件：1.上一次出现的下标是否相同。
+     * 而是通过中间值进行比较，中间值就是上一次字符出现时的位置。这样就只需要判断一个条件：1.上一次出现的位置是否相同。
      *
      * @param s
      * @param t
@@ -61,7 +61,7 @@ public class Isomorphic_Strings_205 {
 
     /**
      * round 2
-     * 两次校验法
+     * 两次校验法。两次校验的方向相反。
      *
      * 验证通过：
      * Runtime: 8 ms, faster than 76.84% of Java online submissions for Isomorphic Strings.
