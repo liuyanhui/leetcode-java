@@ -28,9 +28,12 @@ public class Reverse_Linked_List_206 {
     }
 
     /**
-     * unconfirmed
      * 1.链表分为两部分：已经反转的和未反转的。每次把未反转的头节点作为已反转的头结点。
      * 2.无需使用dumb节点
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Linked List.
+     * Memory Usage: 41.6 MB, less than 98.97% of Java online submissions for Reverse Linked List.
      *
      * @param head
      * @return
