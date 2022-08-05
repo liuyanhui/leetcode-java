@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 207. Course Schedule
@@ -35,7 +32,65 @@ import java.util.Set;
  */
 public class Course_Schedule_207 {
     public static boolean canFinish(int numCourses, int[][] prerequisites) {
-        return canFinish_1(numCourses, prerequisites);
+        return canFinish_2(numCourses, prerequisites);
+    }
+
+    /**
+     * 金矿：Topological Sorting
+     * review round2
+     *
+     * Topological sorting算法思路：入度为零的节点加入队列中。以队列的某个节点开始，去掉该节点为起点的边，并把新产生的入度为零的节点加入到队列中。最终如果图中还存在边，那么表示有向图中是存在环的。
+     * 详细算法：
+     * 1.预先计算每个节点的indegree，并且indegree=0的节点加入到队列中
+     * 2.遍历队列
+     * 3.队列结点出队，并修改该节点的后继节点的indegree为indegree-1。如果后继节点的indegree==0，那么该后继节点加入队列中。
+     * 4.最后如果图中还存在indegree不为0的节点，那么表示图中存在环。
+     *
+     *
+     * BFS+Topological sorting算法：
+     * 1.转化为邻接表
+     * 2.初始化indegree[]
+     * 3.入度为0的节点加入到queue中
+     * 4.遍历queue
+     * 4.1.node = queue.poll()
+     * 4.2.遍历node的后继节点，后继节点序号为i
+     * 4.2.1.indegree[i]=indegree[i]-1
+     * 4.2.2.如果indegree[i]==0，那么i加入queue
+     * 5.如果indegree[]全部为0，表示没有环；否则存在环
+     *
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public static boolean canFinish_2(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        //转化为邻接表，并初始化indegree[]
+        List<List<Integer>> neighours = new ArrayList<>(numCourses);
+        for (int i = 0; i < numCourses; i++) {
+            neighours.add(new ArrayList<>());
+        }
+        for (int i = 0; i < prerequisites.length; i++) {
+            neighours.get(prerequisites[i][0]).add(prerequisites[i][1]);
+            indegree[prerequisites[i][1]]++;
+        }
+        //BFS
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) queue.offer(i);
+        }
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            if (neighours.get(node).size() == 0) continue;
+            for (int i : neighours.get(node)) {
+                indegree[i]--;
+                if (indegree[i] == 0) queue.offer(i);
+            }
+        }
+        int zeroCnt = 0;
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) zeroCnt++;
+        }
+        return zeroCnt == numCourses;
     }
 
     /**
@@ -47,7 +102,7 @@ public class Course_Schedule_207 {
      * 5.先排序，再查找。现根据先导课程排序，在依次查找以某个先导课程开始是否存在环。如果遇到已经计算过的课程，可以直接返回该课程的结果。
      * 6.先转化为邻接表，再遍历查找是否存在环。可以直接使用已经计算过的节点的结果。
      *
-     * 算法：
+     * DFS算法：
      * 1.转化为邻接表
      * 2.遍历邻接表+bfs。使用缓存set记录已遍历过的节点。记录当前遍历路径pathSet。节点记为cur
      * 2.1.如果cur在set中，那么跳过当前节点
@@ -58,6 +113,8 @@ public class Course_Schedule_207 {
      * 2.2.2.2.如果ct不在pathSet中，那么ct加入pathSet中，递归执行ct。
      * 2.2.2.3.ct移出pathSet
      * 3.返回true
+     *
+     * review 套路：遇到图相关的问题。基本需要转换成邻接表或邻接矩阵来处理。
      *
      * 验证通过：
      * Runtime: 14 ms, faster than 30.49% of Java online submissions for Course Schedule.
@@ -109,6 +166,7 @@ public class Course_Schedule_207 {
         do_func(2, new int[][]{{1, 0}, {0, 1}}, false);
         do_func(1, new int[][]{{0, 0}}, false);
         do_func(20, new int[][]{{0, 10}, {3, 18}, {5, 5}, {6, 11}, {11, 14}, {13, 1}, {15, 1}, {17, 4}}, false);
+        do_func(4, new int[][]{{1, 0}, {2, 0}, {3, 1}, {3, 2}}, true);
     }
 
     private static void do_func(int numCourses, int[][] prerequisites, boolean expected) {
