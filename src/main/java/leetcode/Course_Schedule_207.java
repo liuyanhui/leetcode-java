@@ -58,6 +58,10 @@ public class Course_Schedule_207 {
      * 4.2.2.如果indegree[i]==0，那么i加入queue
      * 5.如果indegree[]全部为0，表示没有环；否则存在环
      *
+     * 验证通过：
+     * Runtime: 8 ms, faster than 60.66% of Java online submissions for Course Schedule.
+     * Memory Usage: 47.8 MB, less than 62.47% of Java online submissions for Course Schedule.
+     *
      * @param numCourses
      * @param prerequisites
      * @return
@@ -73,23 +77,28 @@ public class Course_Schedule_207 {
             neighours.get(prerequisites[i][0]).add(prerequisites[i][1]);
             indegree[prerequisites[i][1]]++;
         }
-        //BFS
+
         Queue<Integer> queue = new LinkedList<>();
+        //入度为0的点加入队列
         for (int i = 0; i < numCourses; i++) {
             if (indegree[i] == 0) queue.offer(i);
         }
+        //遍历队列
         while (!queue.isEmpty()) {
             int node = queue.poll();
+            //过滤不在图中的课程
             if (neighours.get(node).size() == 0) continue;
             for (int i : neighours.get(node)) {
-                indegree[i]--;
-                if (indegree[i] == 0) queue.offer(i);
+                indegree[i]--;//入度减一
+                if (indegree[i] == 0) queue.offer(i);//入度发生变化，如果入度为0，那么加入队列
             }
         }
+        //计算入度为0的节点
         int zeroCnt = 0;
         for (int i = 0; i < indegree.length; i++) {
             if (indegree[i] == 0) zeroCnt++;
         }
+        //入度为0的节点数量等于课程数量时，表示DAG中没有环
         return zeroCnt == numCourses;
     }
 
