@@ -35,6 +35,7 @@ package leetcode;
  */
 public class Implement_Trie_Prefix_Tree_208 {
     /**
+     * review
      * 套路
      * 需要注意Trie的数据结构定义，其他都比较简单。
      *
@@ -44,7 +45,7 @@ public class Implement_Trie_Prefix_Tree_208 {
      *
      */
     static class Trie {
-        //这两个变量是重点
+        //FIXME: 这两个变量是重点
         private Trie[] values;
         private boolean isWord;
 
