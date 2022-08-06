@@ -32,7 +32,7 @@ public class Minimum_Size_Subarray_Sum_209 {
     }
 
     /**
-     * review 
+     * review
      * 更优的实现
      * 参考文档：
      * https://leetcode.com/problems/minimum-size-subarray-sum/discuss/59078/Accepted-clean-Java-O(n)-solution-(two-pointers)
