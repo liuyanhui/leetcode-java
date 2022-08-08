@@ -31,12 +31,68 @@ package leetcode;
  * wordDictionary.search("b.."); // return True
  *
  * Constraints:
- * 1 <= word.length <= 500
- * word in addWord consists lower-case English letters.
- * word in search consist of  '.' or lower-case English letters.
- * At most 50000 calls will be made to addWord and search.
+ * 1 <= word.length <= 25
+ * word in addWord consists of lowercase English letters.
+ * word in search consist of '.' or lowercase English letters.
+ * There will be at most 3 dots in word for search queries.
+ * At most 10^4 calls will be made to addWord and search.
  */
 public class Design_Add_and_Search_Words_Data_Structure_211 {
+    /**
+     * 思考：
+     * 1.Trie Tree + 模糊查找
+     * 2.如果Trie Tree的节点不为空，就可以跳过该节点的匹配
+     *
+     * 验证通过：
+     * Runtime: 483 ms, faster than 94.12% of Java online submissions for Design Add and Search Words Data Structure.
+     * Memory Usage: 104.7 MB, less than 83.71% of Java online submissions for Design Add and Search Words Data Structure.
+     *
+     */
+    static class WordDictionary_2 {
+        private WordDictionary_2[] successor = new WordDictionary_2[26];
+        private boolean isWord = false;
+
+        public WordDictionary_2() {
+
+        }
+
+        public void addWord(String word) {
+            WordDictionary_2 cur = this;
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (cur.successor[c - 'a'] == null) {
+                    cur.successor[c - 'a'] = new WordDictionary_2();
+                }
+                cur = cur.successor[c - 'a'];
+                if (i == word.length() - 1) cur.isWord = true;
+            }
+        }
+
+        public boolean search(String word) {
+            return do_search(word, 0, this);
+        }
+
+        private boolean do_search(String word, int beg, WordDictionary_2 dict) {
+            WordDictionary_2 cur = dict;
+            for (int i = beg; i < word.length(); i++) {
+                if (cur == null) return false;
+                char c = word.charAt(i);
+                if (c == '.') {
+                    for (int j = 0; j < cur.successor.length; j++) {
+                        if (cur.successor[j] == null) continue;
+                        if (do_search(word, i + 1, cur.successor[j]))
+                            return true;
+                    }
+                    return false;//这里比较关键
+                } else {
+                    cur = cur.successor[c - 'a'];
+                }
+            }
+            return cur == null ? false : cur.isWord;
+        }
+
+    }
+
     /**
      * 参考思路：
      * https://leetcode.com/problems/design-add-and-search-words-data-structure/discuss/59554/My-simple-and-clean-Java-code
@@ -109,7 +165,7 @@ public class Design_Add_and_Search_Words_Data_Structure_211 {
     }
 
     private static void test1() {
-        WordDictionary wordDictionary = new WordDictionary();
+        WordDictionary_2 wordDictionary = new WordDictionary_2();
         wordDictionary.addWord("bad");
         wordDictionary.addWord("dad");
         wordDictionary.addWord("mad");
@@ -121,13 +177,12 @@ public class Design_Add_and_Search_Words_Data_Structure_211 {
     }
 
     private static void test2() {
-        WordDictionary wordDictionary = new WordDictionary();
+        WordDictionary_2 wordDictionary = new WordDictionary_2();
         wordDictionary.addWord("a");
         wordDictionary.addWord("a");
         System.out.println(wordDictionary.search(".") == true);
         System.out.println(wordDictionary.search("a") == true);
         System.out.println(wordDictionary.search("aa") == false);
-        System.out.println(wordDictionary.search("a") == true);
         System.out.println(wordDictionary.search(".a") == false);
         System.out.println(wordDictionary.search("a.") == false);
         System.out.println("------------------------");
