@@ -60,6 +60,9 @@ public class Course_ScheduleII_210 {
      * 5.把不在ret[]中的节点编号补全
      * 6.返回ret[]
      *
+     * 验证通过：
+     * Runtime: 6 ms, faster than 84.63% of Java online submissions for Course Schedule II.
+     * Memory Usage: 48.8 MB, less than 66.82% of Java online submissions for Course Schedule II.
      *
      * @param numCourses
      * @param prerequisites
