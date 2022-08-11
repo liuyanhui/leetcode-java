@@ -30,7 +30,42 @@ package leetcode;
 public class House_Robber_II_213 {
 
     public static int rob(int[] nums) {
-        return rob_1(nums);
+        return rob_2(nums);
+    }
+
+    /**
+     * 思考：
+     * 1.暴力法+DP。遍历数组，每个数字作为第一个被抢的房间。最终取每次遍历的结果的最大值即可。
+     *     时间复杂度O(N*N)
+     * 2.在暴力法的基础上，相邻的两个数字必然只能有一个参与在最优解计算中，那么只需要对前两个数字作为起始开始计算即可。第一个数字计算时，最后一个数字不参与计算。第二个数字计算时，第一个数字不参与计算。
+     * 3.DP公式：dp[i]=max(dp[i-1],dp[i-2]+nums[i])
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for House Robber II.
+     * Memory Usage: 39.6 MB, less than 96.48% of Java online submissions for House Robber II.
+     *
+     * @param nums
+     * @return
+     */
+    public static int rob_2(int[] nums) {
+        if (nums.length == 1) return nums[0];
+        int res = 0;
+        int a = 0, b = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            int t = Math.max(b, a + nums[i]);
+            a = b;
+            b = t;
+        }
+        res = b;
+        a = 0;
+        b = 0;
+        for (int i = 1; i < nums.length; i++) {
+            int t = Math.max(b, a + nums[i]);
+            a = b;
+            b = t;
+        }
+        res = Math.max(res, b);
+        return res;
     }
 
     /**
@@ -42,7 +77,7 @@ public class House_Robber_II_213 {
      * 参考思路：
      * https://leetcode.com/problems/house-robber-ii/discuss/60044/Good-performance-DP-solution-using-Java
      * https://leetcode.com/problems/house-robber-ii/discuss/59934/Simple-AC-solution-in-Java-in-O(n)-with-explanation
-     * 
+     *
      * 问题转化为两个子集：
      * 1.包含第0个元素，不包含最后一个元素
      * 2.不包含第0个元素，包含最后一个元素
