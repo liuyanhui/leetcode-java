@@ -51,6 +51,7 @@ public class House_Robber_II_213 {
         if (nums.length == 1) return nums[0];
         int res = 0;
         int a = 0, b = 0;
+        //第一个数字参与计算，最后一个数字不参与计算
         for (int i = 0; i < nums.length - 1; i++) {
             int t = Math.max(b, a + nums[i]);
             a = b;
@@ -59,6 +60,7 @@ public class House_Robber_II_213 {
         res = b;
         a = 0;
         b = 0;
+        //最后一个数字参与计算，第一个数组不参与计算
         for (int i = 1; i < nums.length; i++) {
             int t = Math.max(b, a + nums[i]);
             a = b;
