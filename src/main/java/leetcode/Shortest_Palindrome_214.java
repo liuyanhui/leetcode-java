@@ -25,6 +25,8 @@ public class Shortest_Palindrome_214 {
         return shortestPalindrome_2(s);
     }
 
+    //KMP算法也可以解决该问题。介于KMP较复杂，暂且不考虑。
+
     /**
      * 参考思路：
      * https://leetcode.com/problems/shortest-palindrome/solution/ 之 approach 2
