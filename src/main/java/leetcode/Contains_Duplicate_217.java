@@ -27,6 +27,7 @@ import java.util.Set;
  */
 public class Contains_Duplicate_217 {
     /**
+     * round 2 同 round 1
      * 验证通过：
      * Runtime: 6 ms, faster than 49.07% of Java online submissions for Contains Duplicate.
      * Memory Usage: 45 MB, less than 35.20% of Java online submissions for Contains Duplicate.
