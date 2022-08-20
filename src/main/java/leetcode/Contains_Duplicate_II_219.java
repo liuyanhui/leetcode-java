@@ -31,8 +31,27 @@ import java.util.Set;
 public class Contains_Duplicate_II_219 {
 
     public static boolean containsNearbyDuplicate(int[] nums, int k) {
-        return containsNearbyDuplicate_1(nums, k);
+        return containsNearbyDuplicate_3(nums, k);
     }
+
+    /**
+     * round 2
+     * 
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static boolean containsNearbyDuplicate_3(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k) {
+                return true;
+            }
+            map.put(nums[i], i);
+        }
+        return false;
+    }
+
 
     /**
      * 参考思路：
