@@ -26,7 +26,42 @@ package leetcode;
  */
 public class Maximal_Square_221 {
     public static int maximalSquare(char[][] matrix) {
-        return maximalSquare_3(matrix);
+        return maximalSquare_4(matrix);
+    }
+
+    /**
+     * round 2
+     *
+     * 思考：
+     * 1.暴力法。遍历整个matrix，依次计算以[i,j]作为左上角顶点的square的面积，最后取最大值。Time Complexity:O(M*N*M*N)
+     * 2.正方形由右下的实心小正方形+左上部分的厂形组成。可用DP思路。
+     *
+     * DB思路
+     * 1.从左下到右上遍历整个矩阵
+     * 2.DP公式为：
+     * 2.1.dp[i,j]=1+min(dp[i-1,j],dp[i,j-1],dp[i-1,j-1]) 当[i,j]==1时
+     * 2.2.dp[i,j]=0 当[i,j]==0时
+     * 3.max(dp)*max(dp)就是所求
+     *
+     * 验证通过：
+     * Runtime: 6 ms, faster than 89.04% of Java online submissions for Maximal Square.
+     * Memory Usage: 57.6 MB, less than 70.48% of Java online submissions for Maximal Square.
+     *
+     * @param matrix
+     * @return
+     */
+    public static int maximalSquare_4(char[][] matrix) {
+        int res = 0;
+        int[][] dp = new int[matrix.length + 1][matrix[0].length + 1];
+        for (int i = matrix.length - 1; i >= 0; i--) {
+            for (int j = matrix[0].length - 1; j >= 0; j--) {
+                if (matrix[i][j] == '1') {
+                    dp[i][j] = 1 + Math.min(dp[i + 1][j], Math.min(dp[i][j + 1], dp[i + 1][j + 1]));
+                    res = Math.max(res, dp[i][j]);
+                }
+            }
+        }
+        return res * res;
     }
 
     /**
