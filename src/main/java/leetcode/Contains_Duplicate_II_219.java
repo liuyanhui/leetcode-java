@@ -36,7 +36,11 @@ public class Contains_Duplicate_II_219 {
 
     /**
      * round 2
-     * 
+     *
+     * 验证通过：
+     * Runtime: 42 ms, faster than 53.06% of Java online submissions for Contains Duplicate II.
+     * Memory Usage: 93.5 MB, less than 53.66% of Java online submissions for Contains Duplicate II.
+     *
      * @param nums
      * @param k
      * @return

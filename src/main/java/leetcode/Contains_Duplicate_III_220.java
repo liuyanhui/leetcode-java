@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- * 金矿：用整数的除法可以模拟出桶排序的场景
  * 220. Contains Duplicate III
  * Medium
  * -----------------------
@@ -36,6 +35,9 @@ public class Contains_Duplicate_III_220 {
     }
 
     /**
+     * round 1 & round 2
+     * review
+     *
      * bucket排序思路
      * 金矿：用整数除法实现桶排序
      * 参考思路：
@@ -66,6 +68,7 @@ public class Contains_Duplicate_III_220 {
             }
             //最早的移出bucket
 //            if (map.entrySet().size() >= k) {
+            //把最早进入窗口的数字删除
             if (i >= k) {
                 //这里需要转换成long，否则会出错
                 map.remove(((long) nums[i - k] - Integer.MIN_VALUE) / ((long) t + 1));
@@ -185,13 +188,13 @@ public class Contains_Duplicate_III_220 {
     }
 
     public static void main(String[] args) {
-        do_func(new int[]{1, 2, 3, 1}, 3, 0, true);
-        do_func(new int[]{1, 0, 1, 1}, 1, 2, true);
-        do_func(new int[]{1, 0, 1, 1}, 10, 2, true);
+//        do_func(new int[]{1, 2, 3, 1}, 3, 0, true);
+//        do_func(new int[]{1, 0, 1, 1}, 1, 2, true);
+//        do_func(new int[]{1, 0, 1, 1}, 10, 2, true);
         do_func(new int[]{1, 5, 9, 1, 5, 9}, 2, 3, false);
-        do_func(new int[]{1, 5, 9, 1, 5, 9}, 22, 3, true);
-        do_func(new int[]{-2147483648, 2147483647}, 1, 1, false);
-        do_func(new int[]{1, 2}, 0, 1, false);
+//        do_func(new int[]{1, 5, 9, 1, 5, 9}, 22, 3, true);
+//        do_func(new int[]{-2147483648, 2147483647}, 1, 1, false);
+//        do_func(new int[]{1, 2}, 0, 1, false);
 
     }
 
