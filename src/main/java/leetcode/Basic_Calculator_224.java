@@ -28,7 +28,77 @@ import java.util.Stack;
  */
 public class Basic_Calculator_224 {
     public static int calculate(String s) {
-        return calculate_3(s);
+        return calculate_4(s);
+    }
+
+    /**
+     * review
+     * round 2
+     *
+     * 递归法：
+     * 0.两步法：先计算()内的部分，去掉()，再用常规算法计算没有()的部分
+     * 1.去除()
+     * 1.1.遇到(，先找出对应的()中的字符串sub，对sub进行递归计算，并将结果结合正负号之后入栈；对循环下标i=i+sub.length
+     * 1.2.遇到+、-，n入stack
+     * 1.3.遇到)，continue
+     * 1.4.遇到空格，continue
+     * 1.5.遇到数字，数字计算n=n*10+c-'0'
+     * 2.计算stack
+     *
+     * 验证通过：
+     * Runtime: 354 ms, faster than 5.03% of Java online submissions for Basic Calculator.
+     * Memory Usage: 111.7 MB, less than 5.00% of Java online submissions for Basic Calculator.
+     *
+     * @param s
+     * @return
+     */
+    public static int calculate_4(String s) {
+        int res = 0;
+        Stack<Integer> stack = new Stack<>();
+        int n = 0;
+        int signal = 1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '+' || c == '-') {
+                stack.push(signal * n);
+                signal = c == '+' ? 1 : -1;
+                n = 0;
+            } else if (c == '(') {
+                String sub = getSubstring(s, i);
+                n = calculate(sub);
+                stack.push(n * signal);
+                signal = 1;
+                n = 0;
+                i += sub.length();
+            } else if (Character.isDigit(c)) {
+                n = n * 10 + c - '0';
+            }
+            if (i == s.length() - 1) {
+                stack.push(signal * n);
+            }
+        }
+        while (!stack.empty()) {
+            res += stack.pop();
+        }
+        return res;
+    }
+
+    private static String getSubstring(String s, int beg) {
+        int end = beg;
+        int cnt = 0;
+        for (int i = beg; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                cnt++;
+            } else if (c == ')') {
+                cnt--;
+            }
+            if (cnt == 0) {
+                end = i;
+                break;
+            }
+        }
+        return s.substring(beg + 1, end);
     }
 
     /**
