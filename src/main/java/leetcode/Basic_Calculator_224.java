@@ -28,7 +28,65 @@ import java.util.Stack;
  */
 public class Basic_Calculator_224 {
     public static int calculate(String s) {
-        return calculate_4(s);
+        return calculate_5(s);
+    }
+
+    /**
+     * round2
+     * review
+     * 参考：calculate_3()
+     *
+     * 思路：
+     * 1.参考OS关于线程栈帧相关的思路。把当前函数的栈帧压入栈，然后初始化另一个函数调用并执行逻辑。
+     * 2.能算则算，这样就无需再入栈，也无需后续的出栈并计算。那么在只有一层()的情况下，()中的结果无需入栈。这样，因为嵌套()而利用栈时，出栈计算急需要考虑栈顶的2个元素，其中第1个是signal，第2个是+/-()前的数字。对于第1个元素signal使用乘法，对于第2个元素使用加法。
+     *
+     * 具体算法如下：
+     * 1.如果是+、-，那么计算n(n=n*signal)，修改signal，n累加到res中
+     * 2.如果是数字，那么计算n
+     * 3.如果是(，那么先后入栈res和signal入栈，重置res，重置signal
+     * 4.如果是)，那么计算res=res+n*signal，n入栈，栈顶出栈s=stack.pop()，栈顶出栈表示sum=stack.pop()，sum=sum+res*s，res=sum
+     * 5.如果抵达字符串表达式末尾，那么res=res+n*signal
+     *
+     * 验证通过：
+     * Runtime: 10 ms, faster than 77.30% of Java online submissions for Basic Calculator.
+     * Memory Usage: 44.6 MB, less than 40.51% of Java online submissions for Basic Calculator.
+     *
+     * @param s
+     * @return
+     */
+    public static int calculate_5(String s) {
+        int res = 0;
+        Stack<Integer> stack = new Stack<>();
+        int n = 0;
+        int signal = 1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                n = n * 10 + c - '0';
+            } else if (c == '(') {
+                stack.push(res);
+                stack.push(signal);
+                signal = 1;
+                res = 0;
+                n = 0;
+            } else if (c == ')') {
+                //计算括号内的表达式
+                res += n * signal;
+                signal = 1;
+                n = 0;
+                //计算括号外的已经入栈的部分
+                res = stack.pop() * res + stack.pop();
+            } else if (c == '+' || c == '-') {
+                res += n * signal;
+                n = 0;
+                signal = c == '+' ? 1 : -1;
+            }
+
+            if (i == s.length() - 1) {
+                res += n * signal;
+            }
+        }
+        return res;
     }
 
     /**
@@ -44,6 +102,14 @@ public class Basic_Calculator_224 {
      * 1.4.遇到空格，continue
      * 1.5.遇到数字，数字计算n=n*10+c-'0'
      * 2.计算stack
+     *
+     * AC的结果中有使用递归方法的更巧妙简单的解决方案。如：
+     * 1.如果是(，那么递归
+     * 2.如果是数字，计算数字
+     * 3.如果是+或-或)或最后一个字符
+     * 3.1.计算res，
+     * 3.2.重置现场。
+     * 3.3.如果是)，那么返回res
      *
      * 验证通过：
      * Runtime: 354 ms, faster than 5.03% of Java online submissions for Basic Calculator.
@@ -64,7 +130,7 @@ public class Basic_Calculator_224 {
                 signal = c == '+' ? 1 : -1;
                 n = 0;
             } else if (c == '(') {
-                String sub = getSubstring(s, i);
+                String sub = helper(s, i);
                 n = calculate(sub);
                 stack.push(n * signal);
                 signal = 1;
@@ -83,7 +149,7 @@ public class Basic_Calculator_224 {
         return res;
     }
 
-    private static String getSubstring(String s, int beg) {
+    private static String helper(String s, int beg) {
         int end = beg;
         int cnt = 0;
         for (int i = beg; i < s.length(); i++) {
@@ -102,6 +168,8 @@ public class Basic_Calculator_224 {
     }
 
     /**
+     * round 2 : review
+     *
      * 与227类似的思路：
      * 1.利用stack进行计算，使用sign保存上一个操作符。根据不同类型的字符执行不同的逻辑。
      * 2.digit: it should be one digit from the current number
@@ -136,11 +204,16 @@ public class Basic_Calculator_224 {
                 ret += sign * number;
                 number = 0;
                 sign = -1;
-            } else if (c == '(') {//这里是精髓
-                stack.push(ret);
-                ret = 0;
-                stack.push(sign);
-                sign = 1;
+            } else if (c == '(') {//这里是精髓。
+                // Review
+                // Round2：所有的递归计算都可以用stack重写
+                // 1.巧妙的利用stack实现了类似递归的操作。Awesome!
+                // 2.本质上OS也是用stack实现的递归。把需要在递归结束后的继续执行的信息保存在stack中，为还原现场提供数据支持。
+                // 3.下面的代码没有计算，只是保存现场，并重置现场。类似于OS把当前栈帧压入栈中。
+                stack.push(ret);//这是是把现场保存起来
+                stack.push(sign);//这是是把现场保存起来
+                ret = 0;//这是重置现场
+                sign = 1;//这是重置现场
             } else if (c == ')') {//这里是精髓
                 ret += sign * number;
                 number = 0;
