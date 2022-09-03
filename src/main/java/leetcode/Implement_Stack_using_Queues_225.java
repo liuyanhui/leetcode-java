@@ -45,7 +45,56 @@ import java.util.Queue;
 public class Implement_Stack_using_Queues_225 {
 
     /**
+     * review
      * round 2
+     * AC中更巧妙的办法
+     */
+    class MyStack_5 {
+        Queue<Integer> queue = new LinkedList<>();
+
+        public MyStack_5() {
+
+        }
+
+        /**
+         * 这里很巧妙，它把入栈的元素的顺序反转了。
+         * @param x
+         */
+        public void push(int x) {
+            queue.offer(x);
+            int size = queue.size();
+            while (size > 1) {
+                queue.offer(queue.poll());
+                size--;
+            }
+        }
+
+        public int pop() {
+            return queue.poll();
+        }
+
+        public int top() {
+            return queue.peek();
+        }
+
+        public boolean empty() {
+            return queue.size() == 0;
+        }
+    }
+
+    /**
+     * round 2
+     *
+     * 仅使用一个queue的思路：
+     * 1.元素新增或删除时，需要重建queue。即每次pop或push时，在queue1上重新调整。
+     * 2.永远保证queue的队头是栈顶元素。
+     * 3.push时，把队头追加到队尾恢复顺序，再追加新元素，最后依次把size-1个元素出队并追加到队尾(保证满足步骤2)。
+     * 4.pop时，重建queue。把size-1个元素依次出队并追加到队尾(保证满足步骤2)。
+     * 5.top时，队头不出队，直接返回队头的值。
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 34.10% of Java online submissions for Implement Stack using Queues.
+     * Memory Usage: 42 MB, less than 27.20% of Java online submissions for Implement Stack using Queues.
      *
      */
     class MyStack_4 {
