@@ -9,18 +9,17 @@ import java.util.Queue;
  * 225. Implement Stack using Queues
  * Easy
  * ----------------------
- * Implement a last in first out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal queue (push, top, pop, and empty).
+ * Implement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (push, top, pop, and empty).
  *
  * Implement the MyStack class:
- *
  * void push(int x) Pushes element x to the top of the stack.
  * int pop() Removes the element on the top of the stack and returns it.
  * int top() Returns the element on the top of the stack.
  * boolean empty() Returns true if the stack is empty, false otherwise.
- * Notes:
  *
- * You must use only standard operations of a queue, which means only push to back, peek/pop from front, size, and is empty operations are valid.
- * Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue), as long as you use only a queue's standard operations.
+ * Notes:
+ * You must use only standard operations of a queue, which means that only push to back, peek/pop from front, size and is empty operations are valid.
+ * Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue's standard operations.
  *
  * Example 1:
  * Input
@@ -28,7 +27,6 @@ import java.util.Queue;
  * [[], [1], [2], [], [], []]
  * Output
  * [null, null, null, 2, 2, false]
- *
  * Explanation
  * MyStack myStack = new MyStack();
  * myStack.push(1);
@@ -42,9 +40,112 @@ import java.util.Queue;
  * At most 100 calls will be made to push, pop, top, and empty.
  * All the calls to pop and top are valid.
  *
- * Follow-up: Can you implement the stack such that each operation is amortized O(1) time complexity? In other words, performing n operations will take overall O(n) time even if one of those operations may take longer. You can use more than two queues.
+ * Follow-up: Can you implement the stack using only one queue?
  */
 public class Implement_Stack_using_Queues_225 {
+
+    /**
+     * round 2
+     *
+     */
+    class MyStack_4 {
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        public MyStack_4() {
+
+        }
+
+        public void push(int x) {
+            queue.offer(x);
+            reorg();
+        }
+
+        public int pop() {
+            int res = queue.poll();
+            reorg();
+            return res;
+        }
+
+        public int top() {
+            return queue.peek();
+        }
+
+        public boolean empty() {
+            return queue.size() == 0;
+        }
+
+        private void reorg() {
+            if (queue.size() > 1) {
+                int size = queue.size();
+                while (size > 1) {
+                    queue.offer(queue.poll());
+                    size--;
+                }
+            }
+        }
+    }
+
+    /**
+     * round 2
+     *
+     * 使用两个queue的思路:
+     * 1.queue1按入栈顺序保存数据，queue2按出栈顺序保存数据。这样是行不通的，因为queue2的数据无法按要求存储。
+     * 2.因为栈每次只能pop出一个元素，那么把queue1除了最后一个元素之外全部复制到queue2。出栈只操作queue2即可。queue2永远都只存储一个元素，栈顶元素。push和pop时都需要重新计算queue2。top时直接读取queue。
+     * 3.push时，追加到queue2，重建queue1和queue2，重建后queue2只存储一个（栈顶）元素。
+     * 4.pop时，queue2队头出队，重建queue1和queue2，重建后queue2只存储一个（栈顶）元素。
+     * 5.top时，从queue队头获取。
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 34.10% of Java online submissions for Implement Stack using Queues.
+     * Memory Usage: 42 MB, less than 36.45% of Java online submissions for Implement Stack using Queues.
+     *
+     */
+    class MyStack_3 {
+
+        Queue<Integer> q1 = new LinkedList<>();
+        Queue<Integer> q2 = new LinkedList<>();
+
+        public MyStack_3() {
+
+        }
+
+        public void push(int x) {
+            q2.offer(x);
+            reorg();
+        }
+
+        public int pop() {
+            int res = q2.poll();
+            reorg();
+            return res;
+        }
+
+        public int top() {
+            return q2.peek();
+        }
+
+        public boolean empty() {
+            return q2.size() == 0;
+        }
+
+        private void reorg() {
+            if (q2.size() == 0) {
+                if (q1.size() > 0) {
+                    while (q1.size() > 1) {
+                        q2.offer(q1.poll());
+                    }
+                    Queue t = q2;
+                    q2 = q1;
+                    q1 = t;
+                }
+            } else if (q2.size() > 1) {
+                while (q2.size() > 1) {
+                    q1.offer(q2.poll());
+                }
+            }
+        }
+    }
 
     /**
      * 验证通过：
