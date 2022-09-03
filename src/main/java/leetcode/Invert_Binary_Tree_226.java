@@ -29,7 +29,61 @@ import java.util.Queue;
  */
 public class Invert_Binary_Tree_226 {
     public static TreeNode invertTree(TreeNode root) {
-        return invertTree_bfs_2(root);
+        return invertTree_bfs_4(root);
+    }
+
+    /**
+     * round 2
+     * invertTree_bfs_2()更简洁
+     * 
+     * 验证通过：
+     * Runtime: 1 ms, faster than 10.45% of Java online submissions for Invert Binary Tree.
+     * Memory Usage: 41.7 MB, less than 41.16% of Java online submissions for Invert Binary Tree.
+     *
+     * @param root
+     * @return
+     */
+    public static TreeNode invertTree_bfs_4(TreeNode root) {
+        if (root == null) return null;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (queue.size() > 0) {
+            int size = queue.size();
+            while (size > 0) {
+                TreeNode node = queue.poll();
+                size--;
+                if (node == null) continue;
+                TreeNode t = node.left;
+                node.left = node.right;
+                node.right = t;
+                queue.offer(node.left);
+                queue.offer(node.right);
+
+            }
+        }
+        return root;
+    }
+
+    /**
+     * 思考：
+     * 1.递归法。先互换左右子节点，然后对左右子节点分别递归。
+     * 2.要注意子节点为空的情况。
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Invert Binary Tree.
+     * Memory Usage: 41.8 MB, less than 41.16% of Java online submissions for Invert Binary Tree.
+     *
+     * @param root
+     * @return
+     */
+    public static TreeNode invertTree_dfs_3(TreeNode root) {
+        if (root == null) return null;
+        TreeNode t = root.left;
+        root.left = root.right;
+        root.right = t;
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
     }
 
     /**
