@@ -37,6 +37,33 @@ public class Basic_Calculator_II_227 {
         return calculate_3(s);
     }
 
+//    public static int calculate_4(String s) {
+//        if (s == null || s.isEmpty()) return 0;
+//        int length = s.length();
+//        int currentNumber = 0, lastNumber = 0, result = 0;
+//        char operation = '+';
+//        for (int i = 0; i < length; i++) {
+//            char currentChar = s.charAt(i);
+//            if (Character.isDigit(currentChar)) {
+//                currentNumber = (currentNumber * 10) + (currentChar - '0');
+//            }
+//            if (!Character.isDigit(currentChar) && !Character.isWhitespace(currentChar) || i == length - 1) {
+//                if (operation == '+' || operation == '-') {
+//                    result += lastNumber;
+//                    lastNumber = (operation == '+') ? currentNumber : -currentNumber;
+//                } else if (operation == '*') {
+//                    lastNumber = lastNumber * currentNumber;
+//                } else if (operation == '/') {
+//                    lastNumber = lastNumber / currentNumber;
+//                }
+//                operation = currentChar;
+//                currentNumber = 0;
+//            }
+//        }
+//        result += lastNumber;
+//        return result;
+//    }
+
     /**
      * round 2
      * review
@@ -45,7 +72,8 @@ public class Basic_Calculator_II_227 {
      * 1.两步法。第一步先计算*和/，第二步再计算+和-。可以把-转化成+。
      * 2.遇到第二个操作符才根据第一个操作符计算前面的两个数字，所以需要缓存前两个数字和操作符。
      *
-     * 代码优化版本见calculate_2()。其核心思路严格按照上述的思路执行。
+     * 本方法使用了stack。AC和Solution的方案中有不适用stack的实现，太厉害了。它们本质上还是先计算乘除，再计算加减。
+     * stack方案的代码优化版本见calculate_2()。其核心思路严格按照上述的思路执行。
      *
      * 验证通过：
      * Runtime: 17 ms, faster than 72.23% of Java online submissions for Basic Calculator II.
@@ -207,19 +235,19 @@ public class Basic_Calculator_II_227 {
 
     public static void main(String[] args) {
         do_func("3+2*2", 7);
-        do_func("3/2", 1);
-        do_func("3+5/2", 5);
-        do_func("3+5 / 2", 5);
-        do_func("0 / 2", 0);
-        do_func("323+244*222", 54491);
-        do_func("334+545 / 29", 352);
-        do_func("0-111", -111);
-        do_func("0-2147483647", -2147483647);
-        do_func("0-2147483646", -2147483646);
-        do_func("1-1+1", 1);
-        do_func("2*3+4", 10);
-        do_func("2*30+4", 64);
-        do_func(" 3/2 ", 1);
+//        do_func("3/2", 1);
+//        do_func("3+5/2", 5);
+//        do_func("3+5 / 2", 5);
+//        do_func("0 / 2", 0);
+//        do_func("323+244*222", 54491);
+//        do_func("334+545 / 29", 352);
+//        do_func("0-111", -111);
+//        do_func("0-2147483647", -2147483647);
+//        do_func("0-2147483646", -2147483646);
+//        do_func("1-1+1", 1);
+//        do_func("2*3+4", 10);
+//        do_func("2*30+4", 64);
+//        do_func(" 3/2 ", 1);
 
     }
 
