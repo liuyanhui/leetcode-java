@@ -35,7 +35,7 @@ public class Invert_Binary_Tree_226 {
     /**
      * round 2
      * invertTree_bfs_2()更简洁
-     * 
+     *
      * 验证通过：
      * Runtime: 1 ms, faster than 10.45% of Java online submissions for Invert Binary Tree.
      * Memory Usage: 41.7 MB, less than 41.16% of Java online submissions for Invert Binary Tree.

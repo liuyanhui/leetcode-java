@@ -34,10 +34,71 @@ import java.util.Stack;
  */
 public class Basic_Calculator_II_227 {
     public static int calculate(String s) {
-        return calculate_2(s);
+        return calculate_3(s);
     }
 
     /**
+     * round 2
+     * review
+     *
+     * 思路：
+     * 1.两步法。第一步先计算*和/，第二步再计算+和-。可以把-转化成+。
+     * 2.遇到第二个操作符才根据第一个操作符计算前面的两个数字，所以需要缓存前两个数字和操作符。
+     *
+     * 代码优化版本见calculate_2()。其核心思路严格按照上述的思路执行。
+     *
+     * 验证通过：
+     * Runtime: 17 ms, faster than 72.23% of Java online submissions for Basic Calculator II.
+     * Memory Usage: 44.8 MB, less than 54.24% of Java online submissions for Basic Calculator II.
+     *
+     * @param s
+     * @return
+     */
+    public static int calculate_3(String s) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        int n = 0;
+        char lastOps = '+';
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ('0' <= c && c <= '9') {
+                n = n * 10 + c - '0';
+            }
+            if (c == '+' || c == '-') {
+                if (lastOps == '*') {
+                    stack.push(stack.pop() * n);
+                } else if (lastOps == '/') {
+                    stack.push(stack.pop() / n);
+                } else if (lastOps == '+') {
+                    stack.push(stack.pop() + n);
+                } else if (lastOps == '-') {
+                    stack.push(stack.pop() - n);
+                }
+                lastOps = c;
+                n = 0;
+            } else if (c == '*' || c == '/' || i == s.length() - 1) {
+                if (lastOps == '*') {
+                    stack.push(stack.pop() * n);
+                } else if (lastOps == '/') {
+                    stack.push(stack.pop() / n);
+                } else if (lastOps == '+') {
+                    stack.push(n);
+                } else if (lastOps == '-') {
+                    stack.push(-n);
+                }
+                lastOps = c;
+                n = 0;
+            }
+        }
+        int res = 0;
+        while (stack.size() > 0) {
+            res += stack.pop();
+        }
+        return res;
+    }
+
+    /**
+     * review
      * 参考思路：
      * https://leetcode.com/problems/basic-calculator-ii/discuss/63003/Share-my-java-solution
      *
@@ -145,9 +206,9 @@ public class Basic_Calculator_II_227 {
     }
 
     public static void main(String[] args) {
-//        do_func("3+2*2", 7);
-//        do_func("3/2", 1);
-//        do_func("3+5/2", 5);
+        do_func("3+2*2", 7);
+        do_func("3/2", 1);
+        do_func("3+5/2", 5);
         do_func("3+5 / 2", 5);
         do_func("0 / 2", 0);
         do_func("323+244*222", 54491);
