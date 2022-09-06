@@ -10,6 +10,8 @@ import java.util.List;
  * ----------------------
  * You are given a sorted unique integer array nums.
  *
+ * A range [a,b] is the set of all integers from a to b (inclusive).
+ *
  * Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
  *
  * Each range [a,b] in the list should be output as:
@@ -33,18 +35,6 @@ import java.util.List;
  * [6,6] --> "6"
  * [8,9] --> "8->9"
  *
- * Example 3:
- * Input: nums = []
- * Output: []
- *
- * Example 4:
- * Input: nums = [-1]
- * Output: ["-1"]
- *
- * Example 5:
- * Input: nums = [0]
- * Output: ["0"]
- *
  * Constraints:
  * 0 <= nums.length <= 20
  * -2^31 <= nums[i] <= 2^31 - 1
@@ -53,7 +43,47 @@ import java.util.List;
  */
 public class Summary_Ranges_228 {
     public static List<String> summaryRanges(int[] nums) {
-        return summaryRanges_2(nums);
+        return summaryRanges_3(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * 思考:
+     * 1.只有知道后一个数字才能决定前一个数字的处理方式
+     * 2.设[a,b]为某段输出。a=[0],b=[0]。
+     * 3.遍历nums
+     * 3.1.如果b==i-1，那么b=i
+     * 3.2.其他，"a->b"加入结果集，b=i，a=i
+     *
+     * 验证通过：
+     * Runtime: 8 ms, faster than 68.12% of Java online submissions for Summary Ranges.
+     * Memory Usage: 42.3 MB, less than 52.58% of Java online submissions for Summary Ranges.
+     *
+     * @param nums
+     * @return
+     */
+    public static List<String> summaryRanges_3(int[] nums) {
+        List<String> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) return res;
+        int a = nums[0], b = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (b + 1 == nums[i]) {
+                b = nums[i];
+            } else {
+                if (a < b)
+                    res.add(a + "->" + b);
+                else
+                    res.add(a + "");
+                a = nums[i];
+                b = nums[i];
+            }
+        }
+        if (a < b)
+            res.add(a + "->" + b);
+        else
+            res.add(a + "");
+        return res;
     }
 
     /**
