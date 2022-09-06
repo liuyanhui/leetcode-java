@@ -37,32 +37,52 @@ public class Basic_Calculator_II_227 {
         return calculate_3(s);
     }
 
-//    public static int calculate_4(String s) {
-//        if (s == null || s.isEmpty()) return 0;
-//        int length = s.length();
-//        int currentNumber = 0, lastNumber = 0, result = 0;
-//        char operation = '+';
-//        for (int i = 0; i < length; i++) {
-//            char currentChar = s.charAt(i);
-//            if (Character.isDigit(currentChar)) {
-//                currentNumber = (currentNumber * 10) + (currentChar - '0');
-//            }
-//            if (!Character.isDigit(currentChar) && !Character.isWhitespace(currentChar) || i == length - 1) {
-//                if (operation == '+' || operation == '-') {
-//                    result += lastNumber;
-//                    lastNumber = (operation == '+') ? currentNumber : -currentNumber;
-//                } else if (operation == '*') {
-//                    lastNumber = lastNumber * currentNumber;
-//                } else if (operation == '/') {
-//                    lastNumber = lastNumber / currentNumber;
-//                }
-//                operation = currentChar;
-//                currentNumber = 0;
-//            }
-//        }
-//        result += lastNumber;
-//        return result;
-//    }
+    /**
+     * review
+     * 参考思路：
+     * https://leetcode.com/problems/basic-calculator-ii/solution/ 之 Approach2
+     *
+     * 思考：
+     * 1.如果操作符是+和-，由于后续的操作符可能是"*和/"或"+和-"，那么这样就不能直接计算，需要引入中间值。
+     * 2.本质上还是先计算乘除，再计算加减。
+     * 3.如果操作符是*和/，计算中间值，中间值不累加到res中。
+     * 4.如果操作符是+和-，把中间值累加到res中，计算中间值。
+     * 5.只有中间值才能直接参与res的计算。
+     *
+     * @param s
+     * @return
+     */
+    public static int calculate_4(String s) {
+        if (s == null || s.isEmpty()) return 0;
+        int length = s.length();
+        int currentNumber = 0, lastNumber = 0, result = 0;
+        char operation = '+';
+        for (int i = 0; i < length; i++) {
+            char currentChar = s.charAt(i);
+            if (Character.isDigit(currentChar)) {
+                currentNumber = (currentNumber * 10) + (currentChar - '0');
+            }
+            if (!Character.isDigit(currentChar) && !Character.isWhitespace(currentChar) || i == length - 1) {
+                if (operation == '+' || operation == '-') {
+                    //这里要注意是先累加lastNumer，而不是currentNumber。
+                    //只有中间值lastNumber才能直接参与result的计算。
+                    result += lastNumber;
+                    //currentNumber只参与lastNumber的计算。
+                    lastNumber = (operation == '+') ? currentNumber : -currentNumber;
+                } else if (operation == '*') {
+                    lastNumber = lastNumber * currentNumber;
+                } else if (operation == '/') {
+                    lastNumber = lastNumber / currentNumber;
+                }
+                operation = currentChar;
+                currentNumber = 0;
+            }
+        }
+        // 更上面的result计算一样。每次计算都只有res和lastNumber参与。这表示每次都是一个数字参与计算，而不是两个。跟使用stack是一样的方式。
+        // lastNumber在这里替代了stack。lastNumber是下一个要参与result计算的值。
+        result += lastNumber;//只有中间值lastNumber才能直接参与result的计算。
+        return result;
+    }
 
     /**
      * round 2
