@@ -29,7 +29,23 @@ import java.util.List;
  * -10^9 <= nums[i] <= 10^9
  */
 public class Majority_Element_II_229 {
+
     /**
+     * round 2
+     *
+     * 思考：
+     * 1.先排序，再查找。时间复杂度：O(NlogN)
+     * 2.使用哈希表保存每个数字出现的次数，然后输出大于n/3次数的数字。时间复杂度：O(N)，空间复杂度O(N)。
+     * 3.最多有两个数字满足要求。
+     * 4.不能采用超过半数Majority题目的思路。【这是错误的结论】
+     * 5.从排序方面优化。对于已排序好的数组来说，结果一定出现在1/3、2/3这两个位置。
+     *
+     * 未实现
+     */
+
+    /**
+     * review
+     *
      * 参考思路：
      * https://leetcode.com/problems/majority-element-ii/discuss/63520/Boyer-Moore-Majority-Vote-algorithm-and-my-elaboration
      *
