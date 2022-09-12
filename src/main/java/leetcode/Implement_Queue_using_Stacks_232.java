@@ -17,7 +17,6 @@ import java.util.Stack;
  * Notes:
  * You must use only standard operations of a stack, which means only push to top, peek/pop from top, size, and is empty operations are valid.
  * Depending on your language, the stack may not be supported natively. You may simulate a stack using a list or deque (double-ended queue) as long as you use only a stack's standard operations.
- * Follow-up: Can you implement the queue such that each operation is amortized O(1) time complexity? In other words, performing n operations will take overall O(n) time even if one of those operations may take longer.
  *
  * Example 1:
  * Input
@@ -25,7 +24,6 @@ import java.util.Stack;
  * [[], [1], [2], [], [], []]
  * Output
  * [null, null, null, 1, 1, false]
- *
  * Explanation
  * MyQueue myQueue = new MyQueue();
  * myQueue.push(1); // queue is: [1]
@@ -38,8 +36,53 @@ import java.util.Stack;
  * 1 <= x <= 9
  * At most 100 calls will be made to push, pop, peek, and empty.
  * All the calls to pop and peek are valid.
+ *
+ * Follow-up: Can you implement the queue such that each operation is amortized O(1) time complexity? In other words, performing n operations will take overall O(n) time even if one of those operations may take longer.
  */
 public class Implement_Queue_using_Stacks_232 {
+    /**
+     * round 2
+     *
+     */
+    class MyQueue_2 {
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+
+        public MyQueue_2() {
+
+        }
+
+        public void push(int x) {
+            s1.push(x);
+        }
+
+        public int pop() {
+            while (s1.size() > 1) {
+                s2.push(s1.pop());
+            }
+            int res = s1.pop();
+            while (s2.size() > 0) {
+                s1.push(s2.pop());
+            }
+            return res;
+        }
+
+        public int peek() {
+            while (s1.size() > 1) {
+                s2.push(s1.pop());
+            }
+            int res = s1.peek();
+            while (s2.size() > 0) {
+                s1.push(s2.pop());
+            }
+            return res;
+        }
+
+        public boolean empty() {
+            return s1.size() > 0;
+        }
+    }
+
     /**
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Implement Queue using Stacks.
