@@ -41,7 +41,54 @@ import java.util.Stack;
  */
 public class Implement_Queue_using_Stacks_232 {
     /**
+     * review stack和queue是可以相互转化的；FIFO和FILO是可以相互转化的。
+     */
+    /**
      * round 2
+     * 参考思路：
+     * https://leetcode.com/problems/implement-queue-using-stacks/discuss/64206/Short-O(1)-amortized-C%2B%2B-Java-Ruby
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 71.06% of Java online submissions for Implement Queue using Stacks.
+     * Memory Usage: 41.9 MB, less than 40.50% of Java online submissions for Implement Queue using Stacks.
+     */
+    class MyQueue_3 {
+        private Stack<Integer> in = new Stack<>();
+        private Stack<Integer> out = new Stack<>();
+
+        // Push element x to the back of queue.
+        public void push(int x) {
+            in.push(x);
+        }
+
+        public int pop() {
+            peek();
+            return out.pop();
+        }
+
+        // Return whether the queue is empty.
+        public boolean empty() {
+            return in.isEmpty() && out.isEmpty();
+        }
+
+        // Get the front element.
+        public int peek() {
+            if (out.empty()) {
+                while (!in.empty()) {
+                    out.push(in.pop());
+                }
+            }
+            return out.peek();
+        }
+    }
+
+    /**
+     * round 2
+     * 与MyQueue_1()相反的实现。但不是amortized O(1) time complexity。
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Implement Queue using Stacks.
+     * Memory Usage: 40.4 MB, less than 86.94% of Java online submissions for Implement Queue using Stacks.
      *
      */
     class MyQueue_2 {
@@ -79,7 +126,7 @@ public class Implement_Queue_using_Stacks_232 {
         }
 
         public boolean empty() {
-            return s1.size() > 0;
+            return s1.size() == 0;
         }
     }
 
