@@ -21,6 +21,45 @@ package leetcode;
  * Follow up: Could you do it in O(n) time and O(1) space?
  */
 public class Palindrome_Linked_List_234 {
+    public static boolean isPalindrome(ListNode head) {
+        return isPalindrome_2(head);
+    }
+
+    /**
+     * round 2
+     * 验证通过：
+     * Runtime: 6 ms, faster than 78.47% of Java online submissions for Palindrome Linked List.
+     * Memory Usage: 96.6 MB, less than 80.73% of Java online submissions for Palindrome Linked List.
+     * 
+     * @param head
+     * @return
+     */
+    public static boolean isPalindrome_2(ListNode head) {
+        //分割成两部分
+        ListNode slow = new ListNode(0, head);
+        ListNode fast = new ListNode(0, head);
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //反转后半部分
+        ListNode h2 = new ListNode();
+        ListNode cur = slow.next;
+        while (cur != null) {
+            ListNode t = cur.next;
+            cur.next = h2.next;
+            h2.next = cur;
+            cur = t;
+        }
+        //比较前半部分和反转后的后半部分
+        ListNode h1 = new ListNode(0, head);
+        while (h2.next != null && h1.next.val == h2.next.val) {
+            h1 = h1.next;
+            h2 = h2.next;
+        }
+        return h2.next == null;
+    }
+
     /**
      * 验证通过：
      * Runtime: 4 ms, faster than 96.87% of Java online submissions for Palindrome Linked List.
@@ -29,7 +68,7 @@ public class Palindrome_Linked_List_234 {
      * @param head
      * @return
      */
-    public static boolean isPalindrome(ListNode head) {
+    public static boolean isPalindrome_1(ListNode head) {
         if (head == null) return false;
         ListNode slow = head, fast = head;
         //定位中间node
