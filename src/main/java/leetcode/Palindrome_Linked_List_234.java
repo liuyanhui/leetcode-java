@@ -30,7 +30,7 @@ public class Palindrome_Linked_List_234 {
      * 验证通过：
      * Runtime: 6 ms, faster than 78.47% of Java online submissions for Palindrome Linked List.
      * Memory Usage: 96.6 MB, less than 80.73% of Java online submissions for Palindrome Linked List.
-     * 
+     *
      * @param head
      * @return
      */
