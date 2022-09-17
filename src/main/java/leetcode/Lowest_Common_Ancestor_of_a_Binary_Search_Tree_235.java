@@ -33,10 +33,11 @@ import java.util.List;
  */
 public class Lowest_Common_Ancestor_of_a_Binary_Search_Tree_235 {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        return lowestCommonAncestor_1(root, p, q);
+        return lowestCommonAncestor_2(root, p, q);
     }
 
     /**
+     * review round 2
      * 参考思路：
      * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
      *
@@ -66,9 +67,16 @@ public class Lowest_Common_Ancestor_of_a_Binary_Search_Tree_235 {
     }
 
     /**
+     *
+     * round2 思考：
+     * 1.树的问题一般分为两种套路，分别是：bfs、dfs或preorder、inorder和postorder。
+     * 2.dfs思路：使用preorder查找p和q，并分别记录从root到p或q的路径，比较两个路径就可以得到LCA
+     *
+     * round1 AC
      * 验证通过：
      * Runtime: 3 ms, faster than 100.00% of Java online submissions
      * Memory Usage: 39.6 MB, less than 81.93% of Java online submissions
+     *
      * @param root
      * @param p
      * @param q
