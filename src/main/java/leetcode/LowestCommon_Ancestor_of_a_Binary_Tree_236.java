@@ -32,8 +32,62 @@ import java.util.List;
  * p and q will exist in the tree.
  */
 public class LowestCommon_Ancestor_of_a_Binary_Tree_236 {
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        return lowestCommonAncestor_1(root, p, q);
+    }
+
+    /**
+     * review
+     * 参考思路：
+     * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/65226/My-Java-Solution-which-is-easy-to-understand
+     *
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor_3(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if (left != null && right != null) return root;
+        return left != null ? left : right;
+    }
+
+    /**
+     * review
+     * 参考思路：
+     * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/ 之Approach1
+     *
+     * 验证通过：
+     * Runtime: 15 ms, faster than 31.12% of Java online submissions for Lowest Common Ancestor of a Binary Tree.
+     * Memory Usage: 47.1 MB, less than 67.38% of Java online submissions for Lowest Common Ancestor of a Binary Tree.
+     *
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
     public TreeNode lowestCommonAncestor_2(TreeNode root, TreeNode p, TreeNode q) {
-        return null;
+        ans = null;
+        findAncestor(root, p, q);
+        return ans;
+    }
+
+    private TreeNode ans = null;
+
+    private int findAncestor(TreeNode node, TreeNode p, TreeNode q) {
+        if (node == null) return 0;
+        if (ans != null) return 0;
+        int left = 0, right = 0, mid = 0;
+        if (node == p || node == q) mid = 1;
+        left = findAncestor(node.left, p, q);
+        right = findAncestor(node.right, p, q);
+        if (left + right + mid >= 2) {
+            ans = node;
+        }
+        return left + right + mid > 0 ? 1 : 0;
     }
 
     /**
