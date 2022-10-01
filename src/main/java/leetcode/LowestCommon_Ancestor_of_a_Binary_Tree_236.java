@@ -42,6 +42,10 @@ public class LowestCommon_Ancestor_of_a_Binary_Tree_236 {
      * 参考思路：
      * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/65226/My-Java-Solution-which-is-easy-to-understand
      *
+     * 验证通过:
+     * Runtime: 7 ms, faster than 90.84% of Java online submissions for Lowest Common Ancestor of a Binary Tree.
+     * Memory Usage: 43.6 MB, less than 94.10% of Java online submissions for Lowest Common Ancestor of a Binary Tree.
+     *
      * @param root
      * @param p
      * @param q
