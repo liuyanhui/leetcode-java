@@ -25,7 +25,38 @@ package leetcode;
  */
 public class Product_of_Array_Except_Self_238 {
     public static int[] productExceptSelf(int[] nums) {
-        return productExceptSelf_2(nums);
+        return productExceptSelf_3(nums);
+    }
+
+    /**
+     * round 2
+     * 
+     * 思考：
+     * 1.暴力法。不满足题目要求，要么必须使用除法，要么O(N*N)复杂度。
+     * 2.分治法。分别计算nums[0:i-1]和nums[i+1:]的乘积，两者相乘就是结果集中第i个的结果。公式为：F(i)=Product[0:i-1]*Product[i+1:]。
+     * 时间复杂度O(3N)，空间复杂度O(2N)
+     * 3.在"2.分治法"的基础上可以优化空间复杂度。分两轮计算：第一轮从前往后，计算[0:i-1]，结果保存在结果集；第二轮，在第一轮的基础上，从后往前计算[i+1:]，直接在结果集上计算。
+     * 时间复杂度O(2N)，空间复杂度O(N)
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 100.00% of Java online submissions for Product of Array Except Self.
+     * Memory Usage: 50.2 MB, less than 96.45% of Java online submissions for Product of Array Except Self.
+     *
+     * @param nums
+     * @return
+     */
+    public static int[] productExceptSelf_3(int[] nums) {
+        int[] res = new int[nums.length];
+        res[0] = 1;
+        for (int i = 1; i < nums.length; i++) {
+            res[i] = res[i - 1] * nums[i - 1];
+        }
+        int t = 1;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            t *= nums[i + 1];
+            res[i] = res[i] * t;
+        }
+        return res;
     }
 
     /**
@@ -98,7 +129,7 @@ public class Product_of_Array_Except_Self_238 {
 
     private static void do_func(int[] nums, int[] expected) {
         int[] ret = productExceptSelf(nums);
-        ArrayUtils.printIntArray(ret);
+        ArrayUtils.printlnIntArray(ret);
         System.out.println(ArrayUtils.isSame(ret, expected));
         System.out.println("--------------");
     }
