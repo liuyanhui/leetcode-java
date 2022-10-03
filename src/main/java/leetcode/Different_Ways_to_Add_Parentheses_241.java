@@ -10,6 +10,8 @@ import java.util.List;
  * -------------------------
  * Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. You may return the answer in any order.
  *
+ * The test cases are generated such that the output values fit in a 32-bit integer and the number of different results does not exceed 10^4.
+ *
  * Example 1:
  * Input: expression = "2-1-1"
  * Output: [0,2]
@@ -30,8 +32,78 @@ import java.util.List;
  * Constraints:
  * 1 <= expression.length <= 20
  * expression consists of digits and the operator '+', '-', and '*'.
+ * All the integer values in the input expression are in the range [0, 99].
  */
 public class Different_Ways_to_Add_Parentheses_241 {
+
+    public static List<Integer> diffWaysToCompute(String expression) {
+        return diffWaysToCompute_2(expression);
+    }
+
+    /**
+     * round 2
+     * 思考：
+     * 1.分治+递归思路。
+     * 2.现根据操作符分割字符串，再计算字符串，最后合并结果
+     *
+     * 算法：
+     * 1.遍历输入字符串
+     * 2.如果输入字符串是单个数字，那么返回该数字
+     * 3.如果是运算符，那么以运算符为界，分别递归计算其前面的字符串和后面的字符串，再使用该运算符计算这两个值。
+     * 4.公式为F[s] = F[s[0:i-1]] OP F[s[i+1:]] ，i是运算符的下标，0<i<n
+     *
+     * 可以使用缓存优化耗时，即把计算过的表达式的结果缓存起来。如：memo = new ArrayList[len+1][len+1]
+     *
+     * 验证通过：
+     * Runtime: 3 ms, faster than 70.12% of Java online submissions for Different Ways to Add Parentheses.
+     * Memory Usage: 43.7 MB, less than 14.17% of Java online submissions for Different Ways to Add Parentheses.
+     *
+     * @param expression
+     * @return
+     */
+    public static List<Integer> diffWaysToCompute_2(String expression) {
+        List<Integer> res = new ArrayList<>();
+        if (expression == null || expression.length() == 0) return res;
+        int n = 0;
+        boolean onlyDigit = true;
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if ('0' <= c && c <= '9') {
+                n = n * 10 + c - '0';
+            } else if (c == '+' || c == '-' || c == '*') {
+                n = 0;
+                onlyDigit = false;
+                List<Integer> left = diffWaysToCompute(expression.substring(0, i));
+                List<Integer> right = diffWaysToCompute(expression.substring(i + 1));
+                for (int l : left) {
+                    for (int r : right) {
+                        res.add(op(l, r, c));
+                    }
+                }
+            }
+        }
+        if (onlyDigit) res.add(n);
+        return res;
+    }
+
+    private static int op(int a, int b, char op) {
+        int res = 0;
+        switch (op) {
+            case '+':
+                res = a + b;
+                break;
+            case '-':
+                res = a - b;
+                break;
+            case '*':
+                res = a * b;
+                break;
+            default:
+                res = 0;
+        }
+        return res;
+    }
+
     /**
      * 递归法，公式为：
      * 验证通过：公式为：recursive(0,i-1) op recursive(i+1,n)
@@ -41,7 +113,7 @@ public class Different_Ways_to_Add_Parentheses_241 {
      * @param expression
      * @return
      */
-    public static List<Integer> diffWaysToCompute(String expression) {
+    public static List<Integer> diffWaysToCompute_1(String expression) {
         return do_recursive(expression, 0, expression.length() - 1);
     }
 
