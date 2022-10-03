@@ -29,9 +29,28 @@ package leetcode;
  */
 public class Single_Number_III_260 {
     /**
+     * @see Single_Number_136
+     * @see Single_Number_II_137
+     *
+     * @param nums
+     * @return
+     */
+    public static int[] singleNumber(int[] nums) {
+        return singleNumber_2(nums);
+    }
+
+    public static int[] singleNumber_2(int[] nums) {
+        return null;
+    }
+
+    /**
+     * review
      *
      * 参考思路：
      * https://leetcode-cn.com/problems/single-number-iii/solution/cai-yong-fen-zhi-de-si-xiang-jiang-wen-ti-jiang-we/
+     *
+     * 分类法，把问题转化成Single_Number_136问题，“有一个数组每个数字都出现两次，有一个数字只出现了一次，求出该数字”。
+     *
      * 验证通过：
      * Runtime: 1 ms, faster than 96.92% of Java online submissions for Single Number III.
      * Memory Usage: 38.6 MB, less than 97.06% of Java online submissions for Single Number III.
@@ -39,7 +58,7 @@ public class Single_Number_III_260 {
      * @param nums
      * @return
      */
-    public static int[] singleNumber(int[] nums) {
+    public static int[] singleNumber_1(int[] nums) {
         int[] ret = new int[2];
         //把所有的元素进行异或操作，最终得到一个异或值。因为是不同的两个数字，所以这个值必定不为 0；
         int xor = 0;

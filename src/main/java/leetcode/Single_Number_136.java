@@ -28,6 +28,13 @@ import java.util.Set;
  * Each element in the array appears twice except for one element which appears only once.
  */
 public class Single_Number_136 {
+    /**
+     * @see Single_Number_136
+     * @see Single_Number_III_260
+     *
+     * @param nums
+     * @return
+     */
     public static int singleNumber(int[] nums) {
         return singleNumber_2(nums);
     }

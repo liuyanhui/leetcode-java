@@ -22,6 +22,16 @@ package leetcode;
  * Each element in nums appears exactly three times except for one element which appears once.
  */
 public class Single_Number_II_137 {
+    /**
+     * 套路
+     *
+     * @see
+     * @see Single_Number_136
+     * @see Single_Number_III_260
+     *
+     * @param nums
+     * @return
+     */
     public static int singleNumber(int[] nums) {
         return singleNumber_1(nums);
     }
@@ -35,6 +45,7 @@ public class Single_Number_II_137 {
      */
 
     /**
+     * review
      * 思路1：先排序，再搜索
      * 思路2：使用哈希表记录出现次数
      * 都不满足要求
@@ -43,7 +54,7 @@ public class Single_Number_II_137 {
      *
      * 参考Discuss区的一种方法思路,时间复杂度O(32*n),空间复杂度O(1).思路如下:
      * 大神使用了一种统计的方法，不过不是我等平常思维的统计每个数出现了几次，而是开了一个长度为32的数组，统计每个二进制位出现了几次，
-     * 最后对3取模（如果是出现了K次就对K取模），取模完哪一位不是3的整倍数，就说明只出现了一次的那个数，在这个位上为1，最终可以求出最后的结果。
+     * 最后与3取模（如果是出现了K次就对K取模），取模完哪一位不是3的整倍数，就说明只出现了一次的那个数，在这个位上为1，最终可以求出最后的结果。
      *
      * 参考文档:
      * https://leetcode.com/problems/single-number-ii/discuss/43297/Java-O(n)-easy-to-understand-solution-easily-extended-to-any-times-of-occurance
