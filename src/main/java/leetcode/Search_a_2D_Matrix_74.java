@@ -23,6 +23,13 @@ package leetcode;
  * -10^4 <= matrix[i][j], target <= 10^4
  */
 public class Search_a_2D_Matrix_74 {
+    /**
+     * @see Search_a_2D_Matrix_II_240
+     *
+     * @param matrix
+     * @param target
+     * @return
+     */
     public static boolean searchMatrix(int[][] matrix, int target) {
         return searchMatrix_1(matrix, target);
     }
