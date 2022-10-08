@@ -23,6 +23,50 @@ import java.util.List;
  * -100 <= Node.val <= 100
  */
 public class Binary_Tree_Paths_257 {
+    public List<String> binaryTreePaths(TreeNode root) {
+        return binaryTreePaths_1(root);
+    }
+
+    /**
+     * round 2
+     *
+     * 思考：
+     * 1.一般来说，Tree的问题无非是DFS或BFS。DFS有三种：preorder,inorder,postorder。
+     * 2.本题采用DFS更合理。
+     *
+     * 验证通过：
+     * Runtime: 2 ms, faster than 94.57% of Java online submissions for Binary Tree Paths.
+     * Memory Usage: 42.7 MB, less than 86.64% of Java online submissions for Binary Tree Paths.
+     *
+     * @param root
+     * @return
+     */
+    public List<String> binaryTreePaths_2(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        dfs_inorder(root, res, new ArrayList<>());
+        return res;
+    }
+
+    private void dfs_inorder(TreeNode node, List<String> res, List<TreeNode> path) {
+        if (node == null) return;
+        path.add(node);
+        if (node.left == null && node.right == null) {
+            res.add(list2String(path));
+        }
+        dfs_inorder(node.left, res, path);
+        dfs_inorder(node.right, res, path);
+        path.remove(path.size() - 1);
+    }
+
+    private String list2String(List<TreeNode> list) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).val);
+            if (i < list.size() - 1) sb.append("->");
+        }
+        return sb.toString();
+    }
+
     /**
      * 验证通过：
      * Runtime: 10 ms, faster than 9.74% of Java online submissions for Binary Tree Paths.
@@ -30,7 +74,7 @@ public class Binary_Tree_Paths_257 {
      * @param root
      * @return
      */
-    public List<String> binaryTreePaths(TreeNode root) {
+    public List<String> binaryTreePaths_1(TreeNode root) {
         List<String> ret = new ArrayList<>();
         if (root == null) return ret;
         if (root.left == null && root.right == null) {
