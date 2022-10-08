@@ -24,6 +24,36 @@ package leetcode;
  * Follow up: Could you do it without any loop/recursion in O(1) runtime?
  */
 public class Add_Digits_258 {
+
+    public static int addDigits(int num) {
+        return addDigits_2(num);
+    }
+
+    /**
+     * 思考：
+     * 1.有两部分逻辑：1.累加当前数的每个数字；2.判断1.的结果是否为一位数字
+     *
+     * 验证通过：
+     * Runtime: 2 ms, faster than 78.58% of Java online submissions for Add Digits.
+     * Memory Usage: 41.7 MB, less than 26.68% of Java online submissions for Add Digits.
+     *
+     * @param num
+     * @return
+     */
+    public static int addDigits_2(int num) {
+        if (num < 0) return 0;
+        int res = num;
+        while (res > 9) {
+            num = res;
+            res = 0;
+            while (num > 0) {
+                res += (num % 10);
+                num /= 10;
+            }
+        }
+        return res;
+    }
+
     /**
      * 验证通过：
      * Runtime: 1 ms, faster than 100.00% of Java online submissions for Add Digits.
@@ -32,7 +62,7 @@ public class Add_Digits_258 {
      * @param num
      * @return
      */
-    public static int addDigits(int num) {
+    public static int addDigits_1(int num) {
         if (num <= 0) return 0;
         int ret = num;
         while (ret >= 10) {
