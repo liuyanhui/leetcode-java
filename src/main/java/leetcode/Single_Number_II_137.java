@@ -45,7 +45,9 @@ public class Single_Number_II_137 {
      */
 
     /**
-     * review
+     * review round 2
+     * 取模计算作为分类器的一种运用。
+     *
      * 思路1：先排序，再搜索
      * 思路2：使用哈希表记录出现次数
      * 都不满足要求

@@ -44,12 +44,14 @@ public class Single_Number_III_260 {
     }
 
     /**
-     * review
+     * review round 2
      *
      * 参考思路：
      * https://leetcode-cn.com/problems/single-number-iii/solution/cai-yong-fen-zhi-de-si-xiang-jiang-wen-ti-jiang-we/
      *
      * 分类法，把问题转化成Single_Number_136问题，“有一个数组每个数字都出现两次，有一个数字只出现了一次，求出该数字”。
+     * 是取模计算分类器的一种运用。跟Single_Number_II_137一样。
+     * review 扩展：取模计算是一个简单和方便的分类器算法。
      *
      * 验证通过：
      * Runtime: 1 ms, faster than 96.92% of Java online submissions for Single Number III.
