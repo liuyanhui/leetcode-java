@@ -37,6 +37,8 @@ public class Add_Digits_258 {
      * Runtime: 2 ms, faster than 78.58% of Java online submissions for Add Digits.
      * Memory Usage: 41.7 MB, less than 26.68% of Java online submissions for Add Digits.
      *
+     * TODO 数学思路，更优解O(1)： return (num - 1) % 9 + 1;
+     *
      * @param num
      * @return
      */

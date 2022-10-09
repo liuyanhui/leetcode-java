@@ -31,6 +31,33 @@ package leetcode;
  * -2^31 <= n <= 2^31 - 1
  */
 public class Ugly_Number_263 {
+    public static boolean isUgly(int n) {
+        return isUgly_2(n);
+    }
+
+    /**
+     * round 2
+     * 思考：
+     * 1.暴力法。n依次循环与2,3,5做除法，直到无法整除。如果最终结果是1，返回true；否则返回false。
+     *
+     * isUgly_1()的实现更优
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isUgly_2(int n) {
+        while (n / 2 * n == n) {
+            n /= 2;
+        }
+        while (n / 3 * n == n) {
+            n /= 3;
+        }
+        while (n / 5 * n == n) {
+            n /= 5;
+        }
+        return n == 1;
+    }
+
     /**
      * 验证通过：
      * Runtime: 1 ms, faster than 100.00% of Java online submissions for Ugly Number.
@@ -38,7 +65,7 @@ public class Ugly_Number_263 {
      * @param n
      * @return
      */
-    public static boolean isUgly(int n) {
+    public static boolean isUgly_1(int n) {
         if (n <= 0) return false;
         while (n % 2 == 0) {
             n /= 2;
@@ -61,6 +88,8 @@ public class Ugly_Number_263 {
         do_func(-1, true);
         do_func(-2, true);
         do_func(-21, false);
+        do_func(Integer.MAX_VALUE, false);
+        do_func(Integer.MIN_VALUE, false);
     }
 
     private static void do_func(int num, boolean expected) {
