@@ -46,6 +46,7 @@ public class Ugly_Number_263 {
      * @return
      */
     public static boolean isUgly_2(int n) {
+        if (n <= 0) return false;
         while (n / 2 * n == n) {
             n /= 2;
         }
