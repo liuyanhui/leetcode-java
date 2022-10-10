@@ -42,18 +42,22 @@ public class Ugly_Number_263 {
      *
      * isUgly_1()的实现更优
      *
+     * 验证成功：
+     * Runtime: 2 ms, faster than 75.69% of Java online submissions for Ugly Number.
+     * Memory Usage: 41.7 MB, less than 21.38% of Java online submissions for Ugly Number.
+     *
      * @param n
      * @return
      */
     public static boolean isUgly_2(int n) {
         if (n <= 0) return false;
-        while (n / 2 * n == n) {
+        while (n / 2 * 2 == n) {
             n /= 2;
         }
-        while (n / 3 * n == n) {
+        while (n / 3 * 3 == n) {
             n /= 3;
         }
-        while (n / 5 * n == n) {
+        while (n / 5 * 5 == n) {
             n /= 5;
         }
         return n == 1;
@@ -89,6 +93,7 @@ public class Ugly_Number_263 {
         do_func(-1, true);
         do_func(-2, true);
         do_func(-21, false);
+        do_func(7, false);
         do_func(Integer.MAX_VALUE, false);
         do_func(Integer.MIN_VALUE, false);
     }
