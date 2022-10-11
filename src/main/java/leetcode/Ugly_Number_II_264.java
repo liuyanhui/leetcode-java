@@ -22,7 +22,46 @@ package leetcode;
  */
 public class Ugly_Number_II_264 {
     public static int nthUglyNumber(int n) {
-        return nthUglyNumber_2(n);
+        return nthUglyNumber_3(n);
+    }
+
+    /**
+     * round 2
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/ugly-number-ii/discuss/69364/My-16ms-C%2B%2B-DP-solution-with-short-explanation
+     * https://leetcode.com/problems/ugly-number-ii/discuss/69362/O(n)-Java-solution
+     *
+     * 思考：
+     * 1.有三个因子影响结果。如果能把三个因子通过公式一维化。公式最好是递增的。
+     * 2.公式：n=i+j+k+1，F(n)=f(i,j,k) = 2^i * 3^j * 5^k ，初始时：i=j=k=0。然而，通过用例可以发现i,j,k与F(n)的关系不是线性的。
+     * 3.通过Discuss中的文章发现。问题可以转化为"merge k sorted list"问题，即合并已排序列表问题。
+     * 4.如果F(n)与i,j,k的关系无法推导，那么需要思考F(n)和F(n-1)的关系。公式为：F(n)=min(F(n-a)*2,F(n-b)*3,F(n-c)*5)，其中a<n,b<n,c<n。F(n)是前面的某个F(n-k)乘以[2,3,5]得到的结果。如果选择公式中的a,b,c成为要点。通过规律可以发现a,b,c是递增的，即它们不会减少只会增加。
+     * 5.本题中"merge k sorted list"中共有3个sorted list，分别为{F(a)*2}，{F(b)*3}，{F(c)*5}。
+     * 6.本题的合并排序是要去重的。所以当sorted list中的数字重复出现时，要忽略。如数字6时，2和3的sorted list都要从list中去除。
+     * 6.问题分为3部分：1.构建3个sorted list；2.合并排序这3个sorted list；3.去重。
+     *
+     * 验证通过：
+     * Runtime: 7 ms, faster than 43.89% of Java online submissions for Ugly Number II.
+     * Memory Usage: 41.9 MB, less than 71.18% of Java online submissions for Ugly Number II.
+     *
+     * @param n
+     * @return
+     */
+    public static int nthUglyNumber_3(int n) {
+        if (n < 0) return 0;
+        int[] res = new int[n];
+        res[0] = 1;
+        int a = 0, b = 0, c = 0;
+        int i = 1;
+        while (i < n) {
+            res[i] = Math.min(res[a] * 2, Math.min(res[b] * 3, res[c] * 5));
+            if (res[i] % 2 == 0) a++;
+            if (res[i] % 3 == 0) b++;
+            if (res[i] % 5 == 0) c++;
+            i++;
+        }
+        return res[n - 1];
     }
 
     /**
