@@ -35,10 +35,36 @@ package leetcode;
  */
 public class Missing_Number_268 {
     public static int missingNumber(int[] nums) {
-        return missingNumber_2(nums);
+        return missingNumber_3(nums);
     }
 
     /**
+     * round 2
+     *
+     * 思考：
+     * 1.数组复制排序去重法。使用新数组，把老数组的数字排序并插入到新数组中，在新数组中查找缺失的数字。时间复杂度：O(N)，空间复杂度：O(N)。
+     * 2.排序法。先排序，再查找。时间复杂度：O(NlogN)，空间复杂度：O(1)。
+     * 3.数学法。先计算总和，再依次减去数组中的数，剩下的就是所求。时间复杂度：O(N)，空间复杂度：O(1)。
+     * 高斯公式
+     * 4.Bit Manipulation 见missingNumber_2()
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 84.98% of Java online submissions for Missing Number.
+     * Memory Usage: 50.4 MB, less than 82.71% of Java online submissions for Missing Number.
+     *
+     * @param nums
+     * @return
+     */
+    public static int missingNumber_3(int[] nums) {
+        int total = (nums.length + 1) * nums.length / 2;
+        for (int n : nums) {
+            total -= n;
+        }
+        return total;
+    }
+
+    /**
+     * review round 2
      * Bit Manipulation 思路
      * 使用异或操作符，a^b^c^a^b=c
      *
