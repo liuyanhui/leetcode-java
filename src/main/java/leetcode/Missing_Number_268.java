@@ -64,7 +64,7 @@ public class Missing_Number_268 {
     }
 
     /**
-     * review round 2
+     * review round 2 ：XOR可以作为分类器，如：在一个整数集合中只有一个或几个少数的数字不满足普遍特征，这种问题需要用到分类器。XOR是一个很好的数字分类器。
      * Bit Manipulation 思路
      * 使用异或操作符，a^b^c^a^b=c
      *
