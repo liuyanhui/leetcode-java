@@ -33,7 +33,37 @@ public class H_Index_274 {
     }
 
     /**
+     * round 2
+     *
+     * 思考：
+     * 1.先排序，再倒序查找。
+     * 2.遍历数组，依次计算h-index。最大的h-index为所求。
+     * 3.h-index下行后终止遍历
+     *
+     * 验证通过：性能一般
+     * Runtime: 9 ms, faster than 6.69% of Java online submissions for H-Index.
+     * Memory Usage: 42.2 MB, less than 32.76% of Java online submissions for H-Index.
+     *
+     * hIndex_2()更优
+     *
+     * @param citations
+     * @return
+     */
+    public static int hIndex_3(int[] citations) {
+        if (citations == null || citations.length == 0) return 0;
+        Arrays.sort(citations);
+        int h = 0;
+        for (int i = 0; i < citations.length; i++) {
+            int t = Math.min(citations[i], citations.length - i);
+            if (t >= h) h = t;
+            else break;
+        }
+        return h;
+    }
+
+    /**
      * bucket sort 思路
+     * review round 2. bucket sort 比较冷门，需要理解适用场景。如：不要求完全有序的情况；range之间有序，但range内部无序；数字较大但slot有限，且不要求完全排序等。
      *
      * 参考思路：
      * https://leetcode.com/problems/h-index/discuss/70768/Java-bucket-sort-O(n)-solution-with-detail-explanation
