@@ -30,11 +30,39 @@ package leetcode;
  */
 public class H_Index_II_275 {
     public static int hIndex(int[] citations) {
-        return hIndex_2(citations);
+        return hIndex_3(citations);
     }
 
     /**
+     * round 2
+     *
+     * 思考：
+     * 1.跟274是一样的，只是274的输入是未排序的。
+     * 2.在排序后的数组中查找某个数，可以使用二分查找法优化时间复杂度。见hIndex_2()
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for H-Index II.
+     * Memory Usage: 52.3 MB, less than 51.06% of Java online submissions for H-Index II.
+     *
+     * @param citations
+     * @return
+     */
+    public static int hIndex_3(int[] citations) {
+        int h = 0;
+        for (int i = citations.length - 1; i >= 0; i--) {
+            if (citations[i] < (citations.length - i)) {
+                return citations.length - i - 1;
+            } else {
+                h++;
+            }
+        }
+        return h;
+    }
+
+    /**
+     * review round 2
      * 参考思路：
+     * https://leetcode.com/problems/h-index-ii/discuss/71063/Standard-binary-search
      * https://leetcode.com/problems/h-index-ii/discuss/71124/Java-binary-search-simple-and-clean
      *
      * 验证通过：
@@ -61,7 +89,12 @@ public class H_Index_II_275 {
     }
 
     /**
-     * 274. H-Index的方案，时间复杂度不满足要求
+     * 274. H-Index的方案
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for H-Index II.
+     * Memory Usage: 53 MB, less than 6.71% of Java online submissions for H-Index II.
+     *
      * @param citations
      * @return
      */
