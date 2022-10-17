@@ -23,7 +23,50 @@ package leetcode;
  */
 public class Perfect_Squares_279 {
     public static int numSquares(int n) {
-        return numSquares_2(n);
+        return numSquares_3(n);
+    }
+
+    static int least = Integer.MAX_VALUE;
+
+    /**
+     * 思考：
+     * 1.两部分内容：a.计算所有square number组合；b.找出the least number
+     * 2.递归+缓存是一个思路
+     *
+     * 验证通过：
+     * Runtime: 780 ms, faster than 8.33% of Java online submissions for Perfect Squares.
+     * Memory Usage: 41.3 MB, less than 96.72% of Java online submissions for Perfect Squares.
+     *
+     * @param n
+     * @return
+     */
+    public static int numSquares_3(int n) {
+        least = Integer.MAX_VALUE;
+        helper(n, 0);
+        return least;
+    }
+
+    private static void helper(int n, int cnt) {
+        //小于局部最优解的直接排除
+        if (cnt >= least) return;
+        int i = getMaxRoot(n);
+        for (; i >= 1; i--) {
+            if (i * i == n) {
+                least = Math.min(least, cnt + 1);
+                return;
+            } else {
+                helper(n - i * i, cnt + 1);
+            }
+        }
+    }
+
+    //计算平方根的整数部分
+    private static int getMaxRoot(int n) {
+        int i = 1;
+        while ((i + 1) * (i + 1) <= n) {
+            i++;
+        }
+        return i;
     }
 
     /**
@@ -97,6 +140,8 @@ public class Perfect_Squares_279 {
         do_func(81, 1);
         do_func(80, 2);
         do_func(79, 4);
+        do_func(1, 1);
+        do_func(9999, 4);
     }
 
     private static void do_func(int nums, int expected) {
