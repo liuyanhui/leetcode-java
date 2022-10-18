@@ -23,7 +23,35 @@ package leetcode;
  */
 public class Perfect_Squares_279 {
     public static int numSquares(int n) {
-        return numSquares_3(n);
+        return numSquares_4(n);
+    }
+
+    /**
+     * round 2
+     *
+     * 参考思路：
+     * https://leetcode.com/problems/perfect-squares/discuss/71495/An-easy-understanding-DP-solution-in-Java
+     * numSquares_2()
+     *
+     * DP思路：
+     * dp[0]=0
+     * dp[i]=min(dp[i],dp[i-j*j]+1) , 1<=j<=sqrt(n)
+     *
+     * @param n
+     * @return
+     */
+    public static int numSquares_4(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j * j <= i; j++) {
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+            }
+        }
+        return dp[n];
     }
 
     static int least = Integer.MAX_VALUE;
@@ -33,6 +61,8 @@ public class Perfect_Squares_279 {
      * 思考：
      * 1.两部分内容：a.计算所有square number组合；b.找出the least number
      * 2.递归+缓存是一个思路
+     *
+     * review 递归算法可以转换为DP算法或使用栈的算法
      *
      * 验证通过：
      * Runtime: 780 ms, faster than 8.33% of Java online submissions for Perfect Squares.
