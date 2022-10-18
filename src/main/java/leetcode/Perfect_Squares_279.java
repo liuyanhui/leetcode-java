@@ -37,6 +37,11 @@ public class Perfect_Squares_279 {
      * dp[0]=0
      * dp[i]=min(dp[i],dp[i-j*j]+1) , 1<=j<=sqrt(n)
      *
+     * 验证通过：
+     * 执行用时：49 ms, 在所有 Java 提交中击败了18.10%的用户
+     * 内存消耗：40.3 MB, 在所有 Java 提交中击败了92.08%的用户
+     * 通过测试用例：588 / 588
+     *
      * @param n
      * @return
      */
