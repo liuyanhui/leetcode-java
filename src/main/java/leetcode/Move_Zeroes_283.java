@@ -27,6 +27,37 @@ public class Move_Zeroes_283 {
     }
 
     /**
+     * round 2
+     *
+     * 算法：
+     * 计算过程中数组分为三部分：[0,left]已经计算好的非零数字部分；(left,right]是全部为0的部分；(right,~]未计算部分。
+     * left=0,right=0
+     * while (right <= nums.length){
+     *     IF nums[right]==0 THEN right++
+     *     ELSE swap(nums[left],nums[right]);left++
+     * }
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Move Zeroes.
+     * Memory Usage: 43.1 MB, less than 17.65% of Java online submissions for Move Zeroes.
+     *
+     * @param nums
+     */
+    public static void moveZeroes_3(int[] nums) {
+        int l = 0, r = 0;
+        while (r < nums.length) {
+            if (nums[r] != 0) {
+                nums[l] = nums[r];
+                l++;
+            }
+            r++;
+        }
+        while (l < nums.length) {
+            nums[l++] = 0;
+        }
+    }
+
+    /**
      * 数组元素分为三部分：1最左侧已经非0数字，2中间全部是0的数字，3最右侧未处理的数字
      * 用i,j将数组分割成三部分:[0,i),[i,j),[j,)
      * 初始i=j=0;
@@ -89,7 +120,7 @@ public class Move_Zeroes_283 {
 
     private static void do_func(int[] nums, int[] expected) {
         moveZeroes(nums);
-        ArrayUtils.printIntArray(nums);
+        ArrayUtils.printlnIntArray(nums);
         System.out.println(ArrayUtils.isSame(nums, expected));
         System.out.println("--------------");
     }
