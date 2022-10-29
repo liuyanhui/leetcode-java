@@ -35,7 +35,56 @@ import java.util.Stack;
  */
 public class Expression_Add_Operators_282 {
     public static List<String> addOperators(String num, int target) {
-        return addOperators_1(num, target);
+        return addOperators_2(num, target);
+    }
+
+
+    /**
+     * review
+     * 更巧妙的方法，原因：无需最后才计算字符串格式的表达式，通过巧妙的数学方式可以免去使用Stack计算表达式的值。
+     *
+     * 参考文档：
+     * https://leetcode.com/problems/expression-add-operators/discuss/572099/C%2B%2BJavaPython-Backtracking-and-Evaluate-on-the-fly-Clean-and-Concise
+     *
+     * 思路说明：
+     * 1.形如a+b*c的表达式，无法采用从左向右的计算方式。通常使用Stack进行计算。
+     * 2.[review] 本方法引入了一种可以从左向右计算的方法。算法为：记n=a+b，即先计算a+b，那么a+b*c=n-b+b*c
+     *
+     * 验证通过：
+     * Runtime: 343 ms, faster than 19.83% of Java online submissions for Expression Add Operators.
+     * Memory Usage: 117.6 MB, less than 23.25% of Java online submissions for Expression Add Operators.
+     *
+     */
+    public static List<String> addOperators_2(String num, int target) {
+        List<String> res = new ArrayList<>();
+        backtrack(num, 0, target, "", 0, 0, res);
+        return res;
+    }
+
+    private static void backtrack(String num, int pos, int target,
+                                  String path, long sum, long prevNum, List<String> res) {
+        if (pos == num.length()) {
+            if (sum == target) {
+                res.add(path);
+                return;
+            }
+        }
+        for (int i = pos; i < num.length(); i++) {
+            //过滤形如 [00] [?*0] [?+0] [?-0] 的情况
+            if (i > pos && num.charAt(pos) == '0') break;
+            long n = Long.parseLong(num.substring(pos, i + 1));
+            if (pos == 0) {
+                //追加数字
+                backtrack(num, i + 1, target, path + n, n, n, res);
+            } else {
+                //追加*
+                backtrack(num, i + 1, target, path + "*" + n, sum - prevNum + prevNum * n, prevNum * n, res);
+                //追加+
+                backtrack(num, i + 1, target, path + "+" + n, sum + n, n, res);
+                //追加-
+                backtrack(num, i + 1, target, path + "-" + n, sum - n, -n, res);
+            }
+        }
     }
 
     /**
@@ -67,6 +116,15 @@ public class Expression_Add_Operators_282 {
         return res;
     }
 
+    /**
+     *
+     * @param num
+     * @param last 最新的计算符后的数字
+     * @param pos 当前需要计算的数字在num中的位置
+     * @param target
+     * @param expression 当前表达式
+     * @param res
+     */
     private static void helper(String num, long last, int pos, int target, StringBuilder expression, List<String> res) {
         //计算并判断是否满足条件
         if (pos == num.length()) {
@@ -79,7 +137,7 @@ public class Expression_Add_Operators_282 {
         }
 
         int n = num.charAt(pos) - '0';
-        //插入数字
+        //追加数字
         //过滤形如 [00] [?*0] [?+0] [?-0] 的情况，这些情况下，不能直接追加数字
         if (last != 0) {
             last = last == -1 ? 0 : last;
@@ -90,24 +148,30 @@ public class Expression_Add_Operators_282 {
 
         if (expression.length() > 0) {
             last = n;
-            //插入*
+            //追加*
             expression.append("*");
             expression.append(String.valueOf(num.charAt(pos)));
             helper(num, last, pos + 1, target, expression, res);
             expression.delete(expression.length() - 2, expression.length());
-            //插入+
+            //追加+
             expression.append("+");
             expression.append(String.valueOf(num.charAt(pos)));
             helper(num, last, pos + 1, target, expression, res);
             expression.delete(expression.length() - 2, expression.length());
-            //插入-
+            //追加-
             expression.append("-");
             expression.append(String.valueOf(num.charAt(pos)));
             helper(num, last, pos + 1, target, expression, res);
             expression.delete(expression.length() - 2, expression.length());
         }
     }
-    //计算表达式的值
+
+    /**
+     * 计算表达式的值
+     *
+     * @param expression
+     * @return
+     */
     private static long eval(String expression) {
         long res = 0;
         if (expression == null || expression.length() == 0) return 0;
