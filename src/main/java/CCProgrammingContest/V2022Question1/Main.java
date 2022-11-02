@@ -1,4 +1,4 @@
-package CCProgrammingContest;
+package CCProgrammingContest.V2022Question1;
 
 import java.util.Scanner;
 
@@ -24,7 +24,7 @@ import java.util.Scanner;
  * 如果年化利率为4%，应该输出为4.00，不要输出0.0400，也不需要后面的%符号。
  * 再次提示：该计算方法为单利计算方式，非央行推荐的IRR复利计算方式。
  */
-public class V2022Question1 {
+public class Main {
     public static void main(String args[]) {
         Scanner cin = new Scanner(System.in);
         while (cin.hasNext()) {
