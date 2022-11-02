@@ -6,14 +6,15 @@ import java.util.Iterator;
  * 284. Peeking Iterator
  * Medium
  * ---------------------------
- * Design an iterator that supports the peek operation on a list in addition to the hasNext and the next operations.
+ * Design an iterator that supports the peek operation on an existing iterator in addition to the hasNext and the next operations.
  *
  * Implement the PeekingIterator class:
- *
- * PeekingIterator(int[] nums) Initializes the object with the given integer array nums.
+ * PeekingIterator(Iterator<int> nums) Initializes the object with the given integer iterator iterator.
  * int next() Returns the next element in the array and moves the pointer to the next element.
- * bool hasNext() Returns true if there are still elements in the array.
+ * boolean hasNext() Returns true if there are still elements in the array.
  * int peek() Returns the next element in the array without moving the pointer.
+ *
+ * Note: Each language may have a different implementation of the constructor and Iterator, but they all support the int next() and boolean hasNext() functions.
  *
  * Example 1:
  * Input
@@ -41,6 +42,48 @@ import java.util.Iterator;
 public class Peeking_Iterator_284 {
     // Java Iterator interface reference:
     // https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
+
+    /**
+     * round 2
+     * 验证通过：
+     * Runtime: 8 ms, faster than 52.60% of Java online submissions for Peeking Iterator.
+     * Memory Usage: 42.3 MB, less than 81.90% of Java online submissions for Peeking Iterator.
+     */
+    class PeekingIterator_2 implements Iterator<Integer> {
+        Iterator<Integer> it ;
+        int cur;
+        public PeekingIterator_2(Iterator<Integer> iterator) {
+            // initialize any member here.
+            it = iterator;
+        }
+
+        // Returns the next element in the iteration without advancing the iterator.
+        public Integer peek() {
+            if(cur==0){
+                cur = it.next();
+            }
+            return cur;
+        }
+
+        // hasNext() and next() should behave the same as in the Iterator interface.
+        // Override them if needed.
+        @Override
+        public Integer next() {
+            if(cur==0){
+                return it.next();
+            }else{
+                int res = cur;
+                cur = 0;
+                return res;
+            }
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cur>0 || it.hasNext();
+        }
+    }
 
     /**
      * 验证通过：
