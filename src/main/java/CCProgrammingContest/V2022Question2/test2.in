@@ -1,0 +1,61 @@
+IOException,2,1|IllegalArgumentException,1,2
+2022-10-29 00:00:00.000 192.168.0.1 8000 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=2408:841b:3820:4f2a:832:26c8:e079:4981, 2408:841b:3820:4f2a:832:26c8:e079:4981, 198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 74 - throw IOException!
+java.io.IOException: Error while analyzing com/mkyong/HelloController.
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzerError(Analyzer.java:162)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzeClass(Analyzer.java:134)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt$bundle$2.invoke(JacocoExt.kt:53)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt$bundle$2.invoke(JacocoExt.kt)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt.bundle(JacocoExt.kt:62)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt.bundle(JacocoExt.kt:52)
+        at com.epam.drill.plugins.test2code.AgentState.initialized(State.kt:123)
+        at com.epam.drill.plugins.test2code.Plugin.processData(Plugin.kt:239)
+        at com.epam.drill.plugins.test2code.Plugin.processData(Plugin.kt:218)
+        at com.epam.drill.admin.endpoints.plugin.PluginDispatcher.processPluginData(PluginDispatcher.kt:76)
+        at com.epam.drill.admin.endpoints.agent.AgentHandler$createWsLoop$$inlined$consumeEach$lambda$4.invokeSuspend(AgentHandler.kt:105)
+        at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+        at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:571)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:750)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:678)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:665)
+Caused by: java.lang.IllegalArgumentException: Unsupported class file major version 61
+        at com.epam.drill.plugins.test2code.shadow.org.objectweb.asm.ClassReader.<init>(ClassReader.java:195)
+        at com.epam.drill.plugins.test2code.shadow.org.objectweb.asm.ClassReader.<init>(ClassReader.java:176)
+        at com.epam.drill.plugins.test2code.shadow.org.objectweb.asm.ClassReader.<init>(ClassReader.java:162)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.internal.instr.InstrSupport.classReaderFor(InstrSupport.java:280)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzeClass(Analyzer.java:107)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzeClass(Analyzer.java:132)
+        ... 15 common frames omitted
+2022-10-29 00:00:00.001 192.168.0.1 8000 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=2408:841b:3820:4f2a:832:26c8:e079:4981, 2408:841b:3820:4f2a:832:26c8:e079:4981, 198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 74 -
+IOException thrown
+2022-10-29 00:01:02.000 192.168.0.1 8000 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=2408:841b:3820:4f2a:832:26c8:e079:4981, 2408:841b:3820:4f2a:832:26c8:e079:4981, 198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 74 - throw IOException!
+java.io.IOException: Error while analyzing com/mkyong/HelloController.
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzerError(Analyzer.java:162)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzeClass(Analyzer.java:134)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt$bundle$2.invoke(JacocoExt.kt:53)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt$bundle$2.invoke(JacocoExt.kt)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt.bundle(JacocoExt.kt:62)
+        at com.epam.drill.plugins.test2code.jvm.JacocoExtKt.bundle(JacocoExt.kt:52)
+        at com.epam.drill.plugins.test2code.AgentState.initialized(State.kt:123)
+        at com.epam.drill.plugins.test2code.Plugin.processData(Plugin.kt:239)
+        at com.epam.drill.plugins.test2code.Plugin.processData(Plugin.kt:218)
+        at com.epam.drill.admin.endpoints.plugin.PluginDispatcher.processPluginData(PluginDispatcher.kt:76)
+        at com.epam.drill.admin.endpoints.agent.AgentHandler$createWsLoop$$inlined$consumeEach$lambda$4.invokeSuspend(AgentHandler.kt:105)
+        at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+        at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:571)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:750)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:678)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:665)
+Caused by: java.lang.IllegalArgumentException: Unsupported class file major version 61
+        at com.epam.drill.plugins.test2code.shadow.org.objectweb.asm.ClassReader.<init>(ClassReader.java:195)
+        at com.epam.drill.plugins.test2code.shadow.org.objectweb.asm.ClassReader.<init>(ClassReader.java:176)
+        at com.epam.drill.plugins.test2code.shadow.org.objectweb.asm.ClassReader.<init>(ClassReader.java:162)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.internal.instr.InstrSupport.classReaderFor(InstrSupport.java:280)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzeClass(Analyzer.java:107)
+        at com.epam.drill.plugins.test2code.shadow.org.jacoco.core.analysis.Analyzer.analyzeClass(Analyzer.java:132)
+        ... 15 common frames omitted
+-1

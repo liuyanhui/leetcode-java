@@ -1,0 +1,34 @@
+SocketTimeoutException,2,5
+2022-10-19 09:49:10.419 198.203.183.33 9101 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 88 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+2022-10-19 09:49:15.429 198.203.183.33 9101 INFO  1837014106 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=addEnergy, tid=, ip=198.203.52.25, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.c.manager.StarDreamMfManager addEnergy 90 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+     at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+2022-10-19 09:49:30.419 198.203.183.33 9101 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 88 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+2022-10-19 09:50:10.429 198.203.183.33 9101 INFO  1837014106 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=addEnergy, tid=, ip=198.203.52.25, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.c.manager.StarDreamMfManager addEnergy 90 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+     at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+2022-10-19 09:50:40.419 198.203.183.33 9101 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 88 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+2022-10-19 09:52:10.429 198.203.183.33 9101 INFO  1837014106 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=addEnergy, tid=, ip=198.203.52.25, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.c.manager.StarDreamMfManager addEnergy 90 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+     at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+2022-10-19 09:59:10.419 198.203.183.33 9101 INFO  1837014086 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=, tid=, ip=198.203.52.55, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.f.s.s.p.s.AbstractSecureProtection doPreProtect 88 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+2022-10-19 09:59:15.429 198.203.183.33 9101 INFO  1837014106 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=addEnergy, tid=, ip=198.203.52.25, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.c.manager.StarDreamMfManager addEnergy 90 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+     at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+2022-10-19 09:59:35.429 198.203.183.33 9101 INFO  1837014106 catalina-exec-98  POST /mbank/credit/addEnergy.json [f=addEnergy, tid=, ip=198.203.52.25, sid=8E4B691960B0413AFED08F8D2A8B37E3]
+ c.c.c.manager.StarDreamMfManager addEnergy 90 - com.cmbc.mbank.test.HConnectionManager java.util.concurrent.ExecutionException: java.net.SocketTimeoutException: Call to ubuntu/0:0:0:0:0:0:0:1:60020 failed on socket timeout exception: java.net.SocketTimeoutException: 60000 millis timeout while waiting for channel to be ready for read. ch : java.nio.channels.SocketChannel[connected local=/0:0:0:0:0:0:0:1:42426 remote=ubuntu/0:0:0:0:0:0:0:1:60020]
+     at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+     at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+-1

@@ -1,6 +1,9 @@
 package CCProgrammingContest.V2022Question2;
 
-import java.util.Scanner;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * 题目描述
@@ -116,13 +119,94 @@ import java.util.Scanner;
  *
  */
 public class Main {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ParseException {
+        LocalDateTime time = LocalDateTime.MIN;
+        boolean runWell = true;
+        String timeStr = "";
+        Map<String, Alarm> keyMap = new HashMap<>();//保存关键字指标
+        Map<String, TreeMap<LocalDateTime, Integer>> alertMap = new HashMap<>();//保存关键字在日志中出现的时间和次数
+        Set<String> keyAppeared = new HashSet<>();//每行日志中关键字是否已经计算过
+        Map<String, LocalDateTime> alertHistory = new HashMap<>();//保存已报警关键字和报警时间
+
         Scanner cin = new Scanner(System.in);
         while (cin.hasNext()) {
 //            System.out.println(cin.next());
+            //1.解析输入的文件，按行解析。根据关键字检索。检索时要考虑一条日志多行的情况，同一行日志出现多次只算一次。
+            String rowContent = cin.nextLine();
+            if (rowContent.equals("-1")) {
+                break;
+            }
+            //解析第一行，获取报警指标数据
+            if (keyMap.size() == 0) {
+                for (String s : rowContent.split("\\|")) {
+                    String[] arr = s.split(",");
+                    keyMap.put(arr[0], new Alarm(arr[0], Integer.valueOf(arr[1]), Integer.valueOf(arr[2])));
+                    alertHistory.put(arr[0], LocalDateTime.MIN);
+                }
+                continue;
+            }
 
-            System.out.println("");
+            //解析日志数据
+            String[] contentArray = rowContent.split(" ");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+            //表示是新日志行
+            if (contentArray.length > 4
+                    && contentArray[0].split("-").length == 3 && contentArray[1].split(":").length == 3
+                    && contentArray[2].split("\\.").length == 4
+                    && contentArray[3].matches("^\\d+")) {
+                //清空key是否在当前行出现过的缓存
+                keyAppeared.clear();
+                //提取日志时间并格式化
+                timeStr = contentArray[0] + " " + contentArray[1];
+                time = LocalDateTime.parse(timeStr, dtf);
+            }
+            //依次从关键字map中匹配
+            for (String key : keyMap.keySet()) {
+                //当前key在该行日志已经加入报警Map，那么忽略；否则，加入报警
+                if (!keyAppeared.contains(key) && rowContent.contains(key)) {
+                    LocalDateTime timeWithMinite = LocalDateTime.of(time.getYear(),time.getMonth(),time.getDayOfMonth(),time.getHour(),time.getMinute());
+                    //2.保存检索结果。格式为：{关键字:[分钟时刻:次数]}
+                    saveAlertInfo(key, timeWithMinite, keyAppeared, alertMap);
+                    //3.报警。记录上一次报警的时间，格式为：{关键字:时间}。根据上一次报警时间和阈值判断是否需要报警。
+                    if (alertCheck(key, time, alertMap.get(key).get(timeWithMinite), keyMap, alertHistory)) {
+                        alertHistory.put(key, time);
+                        System.out.println(timeStr + "出现" + key + "错误");
+                        runWell = false;
+                    }
+                }
+            }
         }
+        if (runWell)
+            System.out.println("系统正常");
         cin.close();
+    }
+
+    private static void saveAlertInfo(String key, LocalDateTime time, Set<String> keyAppeared, Map<String, TreeMap<LocalDateTime, Integer>> alertMap) {
+        keyAppeared.add(key);
+        alertMap.putIfAbsent(key, new TreeMap<>());
+        alertMap.get(key).putIfAbsent(time, 0);
+        alertMap.get(key).put(time, alertMap.get(key).get(time) + 1);
+    }
+
+    private static boolean alertCheck(String key, LocalDateTime time, int freq, Map<String, Alarm> keyMap, Map<String, LocalDateTime> history) {
+        if (!keyMap.containsKey(key)) return false;
+        LocalDateTime allow = LocalDateTime.from(time).minusMinutes(keyMap.get(key).interval);
+        if (keyMap.get(key).limit <= freq && history.get(key).isBefore(allow)) {
+            return true;
+        }
+        return false;
+    }
+
+    static class Alarm {
+        String key;
+        int limit;
+        int interval;
+
+        public Alarm(String key, int limit, int interval) {
+            this.key = key;
+            this.limit = limit;
+            this.interval = interval;
+        }
     }
 }
