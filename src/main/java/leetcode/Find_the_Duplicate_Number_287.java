@@ -45,11 +45,14 @@ public class Find_the_Duplicate_Number_287 {
 
     /**
      * 金矿：在未排序的集合中查找某个数，采用基于数字的binary search；在已排序的集合中查找某个数，采用基于下标的binary search
+     * round 2：二分查找的两种套路。
      * 与Find_Minimum_in_Rotated_Sorted_Array_153和Kth_Smallest_Element_in_a_Sorted_Matrix_378可以组成一个系列
      *
      * 参考思路：
      * https://leetcode.com/problems/find-the-duplicate-number/solution/
      * https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code
+     * https://leetcode.com/problems/find-the-duplicate-number/solutions/72844/two-solutions-with-explanation-o-nlog-n-and-o-n-time-o-1-space-without-changing-the-input-array/
+     * 用到了Pigeonhole Principle
      *
      * 验证通过：
      * Runtime: 68 ms, faster than 5.42% of Java
@@ -62,9 +65,11 @@ public class Find_the_Duplicate_Number_287 {
         if (nums == null || nums.length == 0) return 0;
         int low = 1, high = nums.length - 1;
         //注意：这里是数字比较而不是下标，可能存在[1,1,1,2,1,1,1]这样的用例，初始时low==high
+        //review round 2 ：再次注意，low和high都是数字而不是下标。binary search是在查找数字而不是下标。所以计算count时需要遍历整个数组。
         while (low <= high) {
             int mid = low + (high - low) / 2;
             //关键点：每次都需要遍历整个数组
+            //review round 2 ：但是可以不用排序，反正都是要遍历数组的
             long count = Arrays.stream(nums).filter(v -> v <= mid).count();
             if (count <= mid) {
                 low = mid + 1;
@@ -81,8 +86,14 @@ public class Find_the_Duplicate_Number_287 {
      * node.val = nums[i]
      * node.next = nums[nums[i]]
      *
+     * review
+     * round 2:
+     * 1.把数组按照从前向后的顺序转化成linked list，然后利用快慢指针法计算重复出现的数字。
+     * 2.并不是严格意义上的linked list。因为在第3次(包括第3次)重复出现的数字后面的数字不会在linked list中，它们也不会被计算。
+     *
      * 参考思路：
      * https://leetcode.com/problems/find-the-duplicate-number/solution/ 之 Approach 3
+     * https://leetcode.com/problems/find-the-duplicate-number/solutions/72846/my-easy-understood-solution-with-o-n-time-and-o-1-space-without-modifying-the-array-with-clear-explanation/
      *
      * 验证通过:
      * Runtime: 6 ms, faster than 37.70% of Java online submissions for Find the Duplicate Number.
