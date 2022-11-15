@@ -37,7 +37,37 @@ import java.util.Map;
 public class Word_Pattern_290 {
 
     public static boolean wordPattern(String pattern, String s) {
-        return wordPattern_2(pattern, s);
+        return wordPattern_3(pattern, s);
+    }
+
+    /**
+     * round 2
+     * 
+     * 思路：
+     * 1.s分解成数组
+     * 2.使用Map，分别缓存pattern中字母代表的单词和s中单词代表的字母
+     * 3.遍历s和pattern
+     *
+     * @param pattern
+     * @param s
+     * @return
+     */
+    public static boolean wordPattern_3(String pattern, String s) {
+        Map<Character, String> char2Word = new HashMap<>();
+        Map<String, Character> word2Char = new HashMap<>();
+        String[] words = s.split(" ");
+        if (pattern.length() != words.length) return false;
+        for (int i = 0; i < words.length; i++) {
+            char2Word.putIfAbsent(pattern.charAt(i), words[i]);
+            word2Char.putIfAbsent(words[i], pattern.charAt(i));
+            if (char2Word.get(pattern.charAt(i)).equals(words[i])
+                    && word2Char.get(words[i]).equals(pattern.charAt(i))) {
+
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -103,6 +133,7 @@ public class Word_Pattern_290 {
         do_func("abba", "dog dog dog dog", false);
         do_func("aaa", "aa aa aa aa", false);
         do_func("aaaaaa", "aa aa aa aa", false);
+        do_func("a", "aaa", true);
     }
 
     private static void do_func(String pattern, String s, boolean expected) {
