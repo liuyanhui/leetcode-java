@@ -9,6 +9,7 @@ package leetcode;
  * You and your friend will alternate taking turns, and you go first.
  * On each turn, the person whose turn it is will remove 1 to 3 stones from the heap.
  * The one who removes the last stone is the winner.
+ *
  * Given n, the number of stones in the heap, return true if you can win the game assuming both you and your friend play optimally, otherwise return false.
  *
  * Example 1:
@@ -33,7 +34,50 @@ package leetcode;
  */
 public class Nim_Game_292 {
     public static boolean canWinNim(int n) {
-        return canWinNim_2(n);
+        return canWinNim_4(n);
+    }
+
+    /**
+     * round 2
+     * @param n
+     * @return
+     */
+    public static boolean canWinNim_4(int n) {
+        return n % 4 != 0;
+    }
+
+    /**
+     * round 2：
+     *
+     * DP问题.dp[i]=!dp[i-1] || !dp[i-2] || !dp[i-3]
+     *
+     * 规律如下：
+     * 1 win
+     * 2 win
+     * 3 win
+     * 4 lose
+     * 5 win
+     * 6 win
+     * 7 win
+     * 8 lose
+     * 9 win
+     * 通过规律可知4的倍数返回false，其他返回true
+     *
+     * @param n
+     * @return
+     */
+    public static boolean canWinNim_3(int n) {
+        if (n <= 3) return true;
+        boolean w1 = true, w2 = true, w3 = true;
+        boolean res = true;
+        // 增加条件i>0，是为防止i溢出
+        for (int i = 4; i <= n && i > 0; i++) {
+            res = !w1 || !w2 || !w3;
+            w1 = w2;
+            w2 = w3;
+            w3 = res;
+        }
+        return res;
     }
 
     /**

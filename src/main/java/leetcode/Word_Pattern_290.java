@@ -42,7 +42,7 @@ public class Word_Pattern_290 {
 
     /**
      * round 2
-     * 
+     *
      * 思路：
      * 1.s分解成数组
      * 2.使用Map，分别缓存pattern中字母代表的单词和s中单词代表的字母
