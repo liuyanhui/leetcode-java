@@ -49,7 +49,48 @@ import java.util.Map;
  */
 public class Bulls_and_Cows_299 {
     public static String getHint(String secret, String guess) {
-        return getHint_4(secret, guess);
+        return getHint_5(secret, guess);
+    }
+
+    /**
+     * round2
+     * getHint_4()的优化，把map替换为array
+     *
+     * 验证通过：
+     * Runtime 11 ms Beats 46.40%
+     * Memory 43 MB Beats 50.45%
+     *
+     * @param secret
+     * @param guess
+     * @return
+     */
+    public static String getHint_5(String secret, String guess) {
+        int bull = 0, cow = 0;
+        // FIXME getHint_3()中的实现是把sarr和garr合并为一个数组。
+        int[] sarr = new int[10], garr = new int[10];
+        for (int i = 0; i < secret.length(); i++) {
+            char s = secret.charAt(i);
+            char g = guess.charAt(i);
+            if (s == g) {
+                bull++;
+            } else {
+                if (garr[s - '0'] > 0) {
+                    cow++;
+                    garr[s - '0']--;
+                } else {
+                    sarr[s - '0']++;
+                }
+
+                if (sarr[g - '0'] > 0) {
+                    cow++;
+                    sarr[g - '0']--;
+                } else {
+                    garr[g - '0']++;
+                }
+            }
+        }
+
+        return bull + "A" + cow + "B";
     }
 
     /**
@@ -79,7 +120,7 @@ public class Bulls_and_Cows_299 {
             if (s == g) {
                 bull++;
             } else {
-                // FIXME 这里的逻辑有点复杂，需要优化。参考getHint_3()
+                // FIXME 这里的逻辑有点复杂，需要优化。总共只有0~9十个数字，所以可以用Array替代Map。参考getHint_3()
                 if (gmap.get(s - '0') != null && gmap.get(s - '0') > 0) {
                     cow++;
                     gmap.put(s - '0', gmap.get(s - '0') - 1);
