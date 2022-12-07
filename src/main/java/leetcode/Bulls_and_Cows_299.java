@@ -12,6 +12,7 @@ import java.util.Map;
  * You write down a secret number and ask your friend to guess what the number is. When your friend makes a guess, you provide a hint with the following info:
  * The number of "bulls", which are digits in the guess that are in the correct position.
  * The number of "cows", which are digits in the guess that are in your secret number but are located in the wrong position. Specifically, the non-bull digits in the guess that could be rearranged such that they become bulls.
+ *
  * Given the secret number secret and your friend's guess guess, return the hint for your friend's guess.
  *
  * The hint should be formatted as "xAyB", where x is the number of bulls and y is the number of cows. Note that both secret and guess may contain duplicate digits.
@@ -48,10 +49,59 @@ import java.util.Map;
  */
 public class Bulls_and_Cows_299 {
     public static String getHint(String secret, String guess) {
-        return getHint_3(secret, guess);
+        return getHint_4(secret, guess);
     }
 
     /**
+     * round 2
+     *
+     * 思考：
+     * 1.需要求解两个值，所以先求bulls再计算cows。
+     * 2.计算bulls。遍历secret和guess，统计bulls，记录bulls出现的位置。
+     * 3.计算cows。计算时先过滤bulls出现的位置。
+     * 4.合并2.3.，一次遍历，先计算bulls再计算cows。
+     *
+     * 验证通过：
+     * Runtime 17 ms Beats 26.78%
+     * Memory 43.3 MB Beats 22.88%
+     *
+     * @param secret
+     * @param guess
+     * @return
+     */
+    public static String getHint_4(String secret, String guess) {
+        int bull = 0, cow = 0;
+        Map<Integer, Integer> smap = new HashMap<>();
+        Map<Integer, Integer> gmap = new HashMap<>();
+        for (int i = 0; i < secret.length(); i++) {
+            char s = secret.charAt(i);
+            char g = guess.charAt(i);
+            if (s == g) {
+                bull++;
+            } else {
+                // FIXME 这里的逻辑有点复杂，需要优化。参考getHint_3()
+                if (gmap.get(s - '0') != null && gmap.get(s - '0') > 0) {
+                    cow++;
+                    gmap.put(s - '0', gmap.get(s - '0') - 1);
+                } else {
+                    smap.putIfAbsent(s - '0', 0);
+                    smap.put(s - '0', smap.get(s - '0') + 1);
+                }
+                if (smap.get(g - '0') != null && smap.get(g - '0') > 0) {
+                    cow++;
+                    smap.put(g - '0', smap.get(g - '0') - 1);
+                } else {
+                    gmap.putIfAbsent(g - '0', 0);
+                    gmap.put(g - '0', gmap.get(g - '0') + 1);
+                }
+            }
+        }
+
+        return bull + "A" + cow + "B";
+    }
+
+    /**
+     * review round2 巧妙的方法
      * 有点套路
      * 参考思路：
      * https://leetcode.com/problems/bulls-and-cows/discuss/74621/One-pass-Java-solution
