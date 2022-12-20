@@ -31,6 +31,30 @@ package leetcode;
  */
 public class Range_Sum_Query_Immutable_303 {
     /**
+     * round 2
+     * 提前计算好[0:i]的和，并保存在数组sum里。计算sumRange()时，只需要计算sum[right]-sum[left-1]即可
+     *
+     * 验证通过：
+     * Runtime 22 ms Beats 44.33%
+     * Memory 49.1 MB Beats 47.68%
+     */
+    class NumArray_3 {
+
+        int[] sum = null;
+
+        public NumArray_3(int[] nums) {
+            sum = new int[nums.length + 1];
+            for (int i = 0; i < nums.length; i++) {
+                sum[i + 1] = sum[i] + nums[i];
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            return sum[right + 1] - sum[left];
+        }
+    }
+
+    /**
      * 参考思路：
      * https://leetcode.com/problems/range-sum-query-immutable/solution/ 之 Approach3
      *
