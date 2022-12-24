@@ -44,20 +44,21 @@ public class Range_Sum_Query_2D_Immutable_304 {
      * 1.采用几何面积计算法
      * 用二维数组sum[i,j]记录从[0,0]到[i,j]的所有元素和，那么公式为sumRegion[r1,c1,r2,c2]=sum[r2,c2]-sum[r1-1,c2]-sum[r2,c1-1]+sum[r1-1,c1-1]
      *
+     * 更优方案见：NumMatrix_2
+     *
      * 验证通过：
      * Runtime 208 ms Beats 64.29%
      * Memory 65.9 MB Beats 86.71%
      */
     class NumMatrix_3 {
         int[][] sum = null;
-        int[][] rowSum;
 
         public NumMatrix_3(int[][] matrix) {
             sum = new int[matrix.length + 1][matrix[0].length + 1];
 
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix[i].length; j++) {
-                    //这里可以优化，优化为只计算一次，而不是每次循环都计算
+                    //这里可以优化，优化为只计算一次，而不是每次循环都计算。见NumMatrix_2()
                     int rowSum = 0;
                     for (int k = 0; k < i; k++) {
                         rowSum += matrix[k][j];
@@ -87,6 +88,11 @@ public class Range_Sum_Query_2D_Immutable_304 {
      * 验证通过：
      * Runtime: 80 ms, faster than 19.30% of Java online submissions for Range Sum Query 2D - Immutable.
      * Memory Usage: 97.5 MB, less than 5.12% of Java online submissions for Range Sum Query 2D - Immutable.
+     *
+     * round2
+     * 验证通过：
+     * Runtime 123 ms Beats 98.19%
+     * Memory 69.1 MB Beats 76.74%
      */
     class NumMatrix_2 {
 
