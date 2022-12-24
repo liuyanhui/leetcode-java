@@ -40,6 +40,9 @@ public class Remove_Invalid_Parentheses_301 {
      *
      * 递归思路
      *
+     * 时间更优的一个方案：
+     * https://leetcode.com/problems/remove-invalid-parentheses/solutions/75027/easy-short-concise-and-fast-java-dfs-3-ms-solution/
+     *
      * 验证通过：
      * Runtime 541 ms Beats 9.71%
      * Memory 42.4 MB Beats 86.3%

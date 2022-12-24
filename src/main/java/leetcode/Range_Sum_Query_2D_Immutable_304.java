@@ -11,6 +11,8 @@ package leetcode;
  * NumMatrix(int[][] matrix) Initializes the object with the integer matrix matrix.
  * int sumRegion(int row1, int col1, int row2, int col2) Returns the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
  *
+ * You must design an algorithm where sumRegion works on O(1) time complexity.
+ *
  * Example 1:
  * Input
  * ["NumMatrix", "sumRegion", "sumRegion", "sumRegion"]
@@ -34,6 +36,45 @@ package leetcode;
  * At most 10^4 calls will be made to sumRegion.
  */
 public class Range_Sum_Query_2D_Immutable_304 {
+
+    /**
+     * round 2
+     * 思路：
+     * 思路：
+     * 1.采用几何面积计算法
+     * 用二维数组sum[i,j]记录从[0,0]到[i,j]的所有元素和，那么公式为sumRegion[r1,c1,r2,c2]=sum[r2,c2]-sum[r1-1,c2]-sum[r2,c1-1]+sum[r1-1,c1-1]
+     *
+     * 验证通过：
+     * Runtime 208 ms Beats 64.29%
+     * Memory 65.9 MB Beats 86.71%
+     */
+    class NumMatrix_3 {
+        int[][] sum = null;
+        int[][] rowSum;
+
+        public NumMatrix_3(int[][] matrix) {
+            sum = new int[matrix.length + 1][matrix[0].length + 1];
+
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[i].length; j++) {
+                    //这里可以优化，优化为只计算一次，而不是每次循环都计算
+                    int rowSum = 0;
+                    for (int k = 0; k < i; k++) {
+                        rowSum += matrix[k][j];
+                    }
+                    int colSum = 0;
+                    for (int k = 0; k < j; k++) {
+                        colSum += matrix[i][k];
+                    }
+                    sum[i + 1][j + 1] = sum[i][j] + rowSum + colSum + matrix[i][j];
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            return sum[row2 + 1][col2 + 1] - sum[row1][col2 + 1] - sum[row2 + 1][col1] + sum[row1][col1];
+        }
+    }
 
     /**
      * 有点套路
@@ -61,7 +102,7 @@ public class Range_Sum_Query_2D_Immutable_304 {
         }
 
         public int sumRegion(int row1, int col1, int row2, int col2) {
-            return sumMatrix[row2 + 1][col2 + 1] - sumMatrix[row1][col2+1] - sumMatrix[row2+1][col1] + sumMatrix[row1][col1];
+            return sumMatrix[row2 + 1][col2 + 1] - sumMatrix[row1][col2 + 1] - sumMatrix[row2 + 1][col1] + sumMatrix[row1][col1];
         }
     }
 
