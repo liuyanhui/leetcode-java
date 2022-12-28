@@ -48,7 +48,7 @@ public class Range_Sum_Query_Mutable_307 {
      * Runtime: 96 ms, faster than 31.64% of Java online submissions for Range Sum Query - Mutable.
      * Memory Usage: 70.3 MB, less than 57.81% of Java online submissions for Range Sum Query - Mutable.
      */
-    class NumArray_2 {
+    static class NumArray_2 {
 
         int[] tree = null;
         int n = 0;
@@ -112,8 +112,13 @@ public class Range_Sum_Query_Mutable_307 {
      * 验证通过：
      * Runtime: 87 ms, faster than 65.98% of Java online submissions for Range Sum Query - Mutable.
      * Memory Usage: 70.6 MB, less than 47.80% of Java online submissions for Range Sum Query - Mutable.
+     *
+     * round 2:
+     * 验证通过：
+     * Runtime 127 ms Beats 75.56%
+     * Memory 71.9 MB Beats 91.19%
      */
-    class NumArray {
+    static class NumArray {
 
         int[] values = null;
         int[] bucket = null;
@@ -164,9 +169,28 @@ public class Range_Sum_Query_Mutable_307 {
      * int param_2 = obj.sumRange(left,right);
      */
     public static void main(String[] args) {
-        System.out.println((int) Math.ceil(1.2));
-        int i = 100;
-        i -= 10 + 3;
-        System.out.println(i);
+        NumArray_3 numArray;
+        int r1, r2;
+        //[[1, 3, 5]], [0, 2], [1, 2], [0, 2]
+        numArray = new NumArray_3(new int[]{1, 3, 5});
+        r1 = numArray.sumRange(0, 2); // return 1 + 3 + 5 = 9
+        System.out.print(r1);
+        System.out.println(r1 == 9 ? "√" : "X");
+        numArray.update(1, 2);   // nums = [1, 2, 5]
+        r2 = numArray.sumRange(0, 2); // return 1 + 2 + 5 = 8
+        System.out.print(r2);
+        System.out.println(r2 == 8 ? "√" : "X");
+        System.out.println("---------------------");
+
+        //[[-1]],[0,0],[0,1],[0,0]
+        numArray = new NumArray_3(new int[]{-1});
+        r1 = numArray.sumRange(0, 0);
+        System.out.print(r1);
+        System.out.println(r1 == -1 ? "√" : "X");
+        numArray.update(0, 1);
+        r2 = numArray.sumRange(0, 0);
+        System.out.print(r2);
+        System.out.println(r2 == 1 ? "√" : "X");
+        System.out.println("---------------------");
     }
 }
