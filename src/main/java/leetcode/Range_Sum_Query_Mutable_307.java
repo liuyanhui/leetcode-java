@@ -169,10 +169,10 @@ public class Range_Sum_Query_Mutable_307 {
      * int param_2 = obj.sumRange(left,right);
      */
     public static void main(String[] args) {
-        NumArray_3 numArray;
+        NumArray numArray;
         int r1, r2;
         //[[1, 3, 5]], [0, 2], [1, 2], [0, 2]
-        numArray = new NumArray_3(new int[]{1, 3, 5});
+        numArray = new NumArray(new int[]{1, 3, 5});
         r1 = numArray.sumRange(0, 2); // return 1 + 3 + 5 = 9
         System.out.print(r1);
         System.out.println(r1 == 9 ? "√" : "X");
@@ -183,7 +183,7 @@ public class Range_Sum_Query_Mutable_307 {
         System.out.println("---------------------");
 
         //[[-1]],[0,0],[0,1],[0,0]
-        numArray = new NumArray_3(new int[]{-1});
+        numArray = new NumArray(new int[]{-1});
         r1 = numArray.sumRange(0, 0);
         System.out.print(r1);
         System.out.println(r1 == -1 ? "√" : "X");
