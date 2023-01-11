@@ -48,7 +48,7 @@ public class Range_Sum_Query_Mutable_307 {
      * Runtime: 96 ms, faster than 31.64% of Java online submissions for Range Sum Query - Mutable.
      * Memory Usage: 70.3 MB, less than 57.81% of Java online submissions for Range Sum Query - Mutable.
      *
-     * round 2 : unsolved
+     * round 2:review
      */
     static class NumArray_2 {
 
@@ -115,7 +115,7 @@ public class Range_Sum_Query_Mutable_307 {
      * Runtime: 87 ms, faster than 65.98% of Java online submissions for Range Sum Query - Mutable.
      * Memory Usage: 70.6 MB, less than 47.80% of Java online submissions for Range Sum Query - Mutable.
      *
-     * round 2:
+     * round 2:review
      * 验证通过：
      * Runtime 127 ms Beats 75.56%
      * Memory 71.9 MB Beats 91.19%

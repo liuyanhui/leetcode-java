@@ -24,7 +24,22 @@ package leetcode;
  */
 public class Best_Time_to_Buy_and_Sell_Stock_with_Cooldown_309 {
     public static int maxProfit(int[] prices) {
-        return maxProfit_2(prices);
+        return maxProfit_3(prices);
+    }
+
+    public static int maxProfit_3(int[] prices) {
+        int[] buy = new int[prices.length];
+        int[] sell = new int[prices.length];
+        int[] cooldown = new int[prices.length];
+        buy[0] = -prices[0];
+        sell[0] = 0;
+        cooldown[0] = 0;
+        for (int i = 1; i < prices.length; i++) {
+            buy[i] = cooldown[i - 1] - prices[i];
+            sell[i] = Math.max(buy[i - 1], cooldown[i - 1]) + prices[i];
+            cooldown[i] = Math.max(Math.max(buy[i - 1], sell[i - 1]), cooldown[i - 1]);
+        }
+        return Math.max(Math.max(buy[prices.length - 1], sell[prices.length - 1]), cooldown[prices.length - 1]);
     }
 
     /**
@@ -55,6 +70,8 @@ public class Best_Time_to_Buy_and_Sell_Stock_with_Cooldown_309 {
      * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/discuss/75928/Share-my-DP-solution-(By-State-Machine-Thinking)
      *
      * 状态机的抽象是关键
+     *
+     * round2 : review 要画一画状态机的状态转换，注意：状态和动作要区分清楚，不能混在一起
      *
      * @param prices
      * @return
