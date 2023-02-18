@@ -41,7 +41,60 @@ import java.util.*;
  */
 public class Minimum_Height_Trees_310 {
     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        return findMinHeightTrees_2(n, edges);
+        return findMinHeightTrees_3(n, edges);
+    }
+
+    /**
+     * round 2 : review
+     * 验证失败：Time Limit Exceeded
+     * @param n
+     * @param edges
+     * @return
+     */
+    public static List<Integer> findMinHeightTrees_3(int n, int[][] edges) {
+        List<Integer> res = new ArrayList<>();
+        Map<Integer, List<Integer>> adjacency1 = new HashMap<>();
+        Map<Integer, List<Integer>> adjacency2 = new HashMap<>();
+        //构造邻接表
+        for (int i = 0; i < n; i++) {
+            adjacency1.put(i, new ArrayList<>());
+            adjacency2.put(i, new ArrayList<>());
+        }
+        for (int i = 0; i < edges.length; i++) {
+            adjacency1.get(edges[i][0]).add(edges[i][1]);
+            adjacency1.get(edges[i][1]).add(edges[i][0]);
+            adjacency2.get(edges[i][0]).add(edges[i][1]);
+            adjacency2.get(edges[i][1]).add(edges[i][0]);
+        }
+        //循环计算邻接表，去掉边缘节点
+        while (adjacency1.size() > 2) {
+            //查找并收集边缘节点
+            for (int key : adjacency1.keySet()) {
+                if (adjacency1.get(key).size() == 1) {
+                    //把当前节点重关联节点中删除
+                    List<Integer> list = adjacency2.get(adjacency1.get(key).get(0));
+                    for (int i = 0; i < list.size(); i++) {
+                        if (key == list.get(i)) {
+                            list.remove(i);
+                            break;
+                        }
+                    }
+                    //删除边缘节点
+                    adjacency2.remove(key);
+                }
+            }
+            //刷新adjacency1
+            adjacency1 = new HashMap<>();
+            for (int key : adjacency2.keySet()) {
+                adjacency1.put(key, new ArrayList<>(adjacency2.get(key)));
+            }
+        }
+
+        for (int key : adjacency1.keySet()) {
+            res.add(key);
+        }
+
+        return res;
     }
 
     /**
