@@ -66,6 +66,8 @@ public class Minimum_Height_Trees_310 {
             adjacency2.get(edges[i][0]).add(edges[i][1]);
             adjacency2.get(edges[i][1]).add(edges[i][0]);
         }
+
+        // Review round2 : 下面的逻辑过于复杂。findMinHeightTrees_2()中使用leaves和remainingNodes两个变量使得计算逻辑简化。
         //循环计算邻接表，去掉边缘节点
         while (adjacency1.size() > 2) {
             //查找并收集边缘节点
@@ -83,7 +85,7 @@ public class Minimum_Height_Trees_310 {
                     adjacency2.remove(key);
                 }
             }
-            //刷新adjacency1
+            //刷新adjacency1为adjacency2
             adjacency1 = new HashMap<>();
             for (int key : adjacency2.keySet()) {
                 adjacency1.put(key, new ArrayList<>(adjacency2.get(key)));
@@ -131,6 +133,7 @@ public class Minimum_Height_Trees_310 {
                 leaves.add(i);
             }
         }
+        // Review round2 : 这个记录节点数量的变量很巧妙
         //剪枝，去掉叶子节点
         int remainingNodes = n;
         while (remainingNodes > 2) {
