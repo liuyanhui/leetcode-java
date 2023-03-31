@@ -45,6 +45,12 @@ public class Remove_Duplicate_Letters_316 {
      * 2.1.3.当 c==stack.peek()时，do nothing;
      * 2.2.count[c]--;
      *
+     * TIP:栈顶字母如果后面不会再出现，那么该字母以及它前面入栈的字母都不能变化（出栈）；如果栈顶字母后面还会再出现，那么需要根据该栈顶字母和当前字母进行判断。
+     *
+     * 验证通过：
+     * Runtime 4 ms Beats 41.29%
+     * Memory 42.7 MB Beats 22.59%
+     *
      * @param s
      * @return
      */
