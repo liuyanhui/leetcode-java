@@ -27,6 +27,44 @@ package leetcode;
  * words[i] consists only of lowercase English letters.
  */
 public class Maximum_Product_of_Word_Lengths_318 {
+    public static int maxProduct(String[] words) {
+        return maxProduct_2(words);
+    }
+
+    /**
+     * round 2
+     * 思考：
+     * 1.暴力法。遍历words，过滤出不包含当前word中letter的单词，然后依次求长度乘积，并记录最大值。时间复杂度：O(N*N)
+     * 2.使用bitmap保存word中字母是否出现，进而通过bit manipulation判断是否有common letters
+     *
+     * 验证通过：
+     * Runtime 12 ms Beats 76.8%
+     * Memory 43.9 MB Beats 72.44%
+     *
+     * @param words
+     * @return
+     */
+    public static int maxProduct_2(String[] words) {
+        //用位图法记录特征值
+        int[] features = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j < words[i].length(); j++) {
+                int idx = words[i].charAt(j) - 'a';
+                features[i] = features[i] | (1 << idx);
+            }
+        }
+        //遍历、过滤、计算长度乘积、记录最大值
+        int res = 0;
+        for (int i = 0; i < words.length; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if ((features[i] & features[j]) == 0) {
+                    res = Math.max(res, words[i].length() * words[j].length());
+                }
+            }
+        }
+        return res;
+    }
+
     /**
      * 思路如下：
      * 1.是否存在common letters。用bitmap判断两个string是否存在公用字母，按位与即可。只有小写字母，所以int就够用了。
@@ -40,7 +78,7 @@ public class Maximum_Product_of_Word_Lengths_318 {
      * @param words
      * @return
      */
-    public static int maxProduct(String[] words) {
+    public static int maxProduct_1(String[] words) {
         if (words == null || words.length == 0) return 0;
         int[] bitmapArr = new int[words.length];
         for (int i = 0; i < words.length; i++) {
