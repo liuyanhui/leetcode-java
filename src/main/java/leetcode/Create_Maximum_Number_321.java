@@ -36,6 +36,11 @@ import java.util.Stack;
  */
 public class Create_Maximum_Number_321 {
     /**
+     * review
+     * round 2
+     */
+
+    /**
      * 分治思路。把两个数组分解为每个数组单独计算，然后合并。
      * 1.问题可以分解为单个数组nums中k个数字组成的最大值。
      * 2.nums1如果出i个数字，那么nums2需要出k-i个数字。那么nums1的i个数字和nums2的n-i个数字合并后就是解空间中的一个。
@@ -62,9 +67,11 @@ public class Create_Maximum_Number_321 {
                 int[] c1 = finkMaxK(nums1, i);
                 int[] c2 = finkMaxK(nums2, k - i);
                 candidats.add(merge(c1, c2));
+                //FIXME round 2 可以在加入candidats的时候就比较大小。
             }
         }
 
+        //FIXME round 2 : 下面的代码可以放在上面的循环中。并且可以复用compare_3()或compare_2()
         //查找解空间，找出candidats中的最大值
         int[] ret = candidats.get(0);
         for (int i = 1; i < candidats.size(); i++) {
@@ -141,27 +148,24 @@ public class Create_Maximum_Number_321 {
      * 参考文档：
      * https://leetcode.com/problems/create-maximum-number/discuss/77285/Share-my-greedy-solution
      *
-     * @param nums1
-     * @param i
-     * @param nums2
-     * @param j
-     * @return
+     * round2 :这里compare的目的是提取数字，并不是比较完整的数。与一般意义上的两个数的比较不同
+     * 前序数字完全相同时，取最长的那个数组的第一个元素。
+     *
      */
     private static boolean compare_2(int[] nums1, int i, int[] nums2, int j) {
         while (i < nums1.length && j < nums2.length && nums1[i] == nums2[j]) {
             i++;
             j++;
         }
+        //round2 :前序数字完全相同时，取最长的那个数组的第一个元素。
         return j == nums2.length || (i < nums1.length && nums1[i] > nums2[j]);
     }
 
     /**
      * 需要注意compare的逻辑，前导数字相等时，较长的数组胜出
-     * @param n1
-     * @param idx1
-     * @param n2
-     * @param idx2
-     * @return
+     * round2 ：这里compare的目的是提取数字，并不是比较完整的数。与一般意义上的两个数的比较不同。
+     * 前序数字完全相同时，取最长的那个数组的第一个元素。
+     *
      */
     private static boolean compare_3(int[] n1, int idx1, int[] n2, int idx2) {
         while (idx1 < n1.length && idx2 < n2.length) {
@@ -172,7 +176,8 @@ public class Create_Maximum_Number_321 {
                 return n1[idx1] > n2[idx2];
             }
         }
-        //超出后根据长度判断
+        //超出后根据长度判断。
+        // round2 :前序数字完全相同时，取最长的那个数组的第一个元素。
         return n1.length - idx1 > n2.length - idx2;
     }
 
