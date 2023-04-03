@@ -37,6 +37,19 @@ public class Bulb_Switcher_319 {
     public static int bulbSwitch(int n) {
         return bulbSwitch_4(n);
     }
+    /**
+     * review round 2
+     * 思考：
+     * 1.暴力法。从1~n依次计算，最后再统计结果。时间复杂度O(2N)，空间复杂度O(N)
+     * 2.寻找规律。
+     * 每个数字能被整除时才会toggle->被操作奇数次时，灯是亮的->质数一定是灭的->每个数的能被整数的数的集合是奇数时，灯是亮的，如：9,25,49
+     *
+     * bulbSwitch_4()的思路
+     * 1.每个数的能被整数的数的集合是奇数个数时，灯是亮的。
+     * 2.每个数被整除的数都是成对的，如：5:{[1,5]}，4:{[1,4],[2,2]}，8:{[1,8],[2,4]}，9:{[1,9],[3,3]}。
+     * 3.可以得出以下规律，只有某个数的平方才能满足上面的“奇数个数”条件。
+     *
+     */
 
     /**
      * 参考思路：https://leetcode.com/problems/bulb-switcher/discuss/77104/Math-solution..
@@ -45,7 +58,7 @@ public class Bulb_Switcher_319 {
      * @return
      */
     public static int bulbSwitch_4(int n) {
-        return (int)Math.sqrt(n);
+        return (int) Math.sqrt(n);
     }
 
     /**
