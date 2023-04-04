@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 322. Coin Change
  * Medium
@@ -39,6 +42,24 @@ public class Coin_Change_322 {
     public static int coinChange(int[] coins, int amount) {
         return coinChange_1(coins, amount);
     }
+
+    /**
+     * review
+     * round 2
+     * Thinking：
+     * 1.暴力法+递归法+Greedy。先排序coins；每次取最大的一个coin，然后递归；如果不满足条件，取第二大的coin。
+     * 此方法行不通，它每次选取最大面值的coin，会影响最终结果，如：coins={1, 4, 5, 8}, amount=11的用例无法通过。
+     *
+     * 以下是某的马后炮思考：
+     * 此问题转化为：
+     * 存在等式ax+by+cz+...=amount成立，{x,y,z,..}为coins，本题为求{a,b,c,..}中的a+b+c+...的最小值。
+     * 这里面有两类变量，{x,y,z,..}和amount，通过这两类变量求a+b+c+...的最小值。
+     * 既然有两类变量，那么分别思考其中一种变量变化时，如何求解。
+     * 如果采用{x,y,z,..}为主变量变化进行求解，那么影响因子太多（所有的xyz..都是因子，应为它们选择是有关联的），导致计算异常复杂。
+     * 如果采用amount变化进行求解，那么只有2个影响因子（变化的amount和xyz中的一个），求解的难度降低很多。coinChange_1()就是这种思路。
+     *
+     * 所以有时候把貌似确定的结果作为一个变量，从小到大或从大到小推导，可以简化问题复杂度，缩小解空间。
+     */
 
     /**
      * dp思路，dp[i]是amount=i时的最优解
