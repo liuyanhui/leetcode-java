@@ -27,10 +27,44 @@ package leetcode;
  */
 public class Odd_Even_Linked_List_328 {
     public static ListNode oddEvenList(ListNode head) {
-        return oddEvenList_3(head);
+        return oddEvenList_4(head);
     }
 
     /**
+     * round 2
+     *
+     * Thinking：
+     * 1.思路1：分别把odd和even节点单独提取出来，然后把even链表追加到odd链表后面.
+     * 2.思路2：在源链表上直接修改。把odd节点按顺序移动到链表前半部分即可，无需考虑even节点。需要记录odd节点的尾部节点和当前处理的节点。
+     *
+     * 与oddEvenList_2()类似。但是不如oddEvenList_3()精妙
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 42.2 MB Beats 50.38%
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode oddEvenList_4(ListNode head) {
+        if (head == null) return null;
+        ListNode res = new ListNode(0, head);
+        ListNode evenHead = head.next;
+        ListNode oddTail = res;
+        ListNode cur = new ListNode(0, head);
+        while (cur != null && cur.next != null) {
+            ListNode t = cur.next.next;
+            oddTail.next = cur.next;
+            oddTail = oddTail.next;
+            cur.next = t;
+            cur = cur.next;
+        }
+        oddTail.next = evenHead;
+        return res.next;
+    }
+
+    /**
+     * review round 2
      * 金矿
      * 奇偶互为next
      *
