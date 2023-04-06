@@ -35,6 +35,11 @@ public class Power_of_Three_326 {
     }
 
     /**
+     * round 2
+     * isPowerOfThree_2() is the best solution that uses a mathematics trick
+     */
+
+    /**
      * 还有几个通过数学方式的方案：
      * https://leetcode.com/problems/power-of-three/solution/
      * @param n

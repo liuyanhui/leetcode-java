@@ -45,6 +45,9 @@ public class Wiggle_Sort_II_324 {
      * 1.步骤3是关键。Step 3 is the key
      * 2.Reversing an array can seem like magic. 数组反转的魔力
      *
+     * 这个思路与wiggleSort_1()的区别在于wiggleSort_1()没有进行完整的排序，因为只需要根据中位数进行移动和切割数据即可，无需排序。
+     * 所以wiggleSort_1()的时间复杂度是O(N)，优于当前的O(N*logN)
+     *
      * 验证通过：
      * Runtime 4 ms Beats 95.24%
      * Memory 46.2 MB Beats 52.45%
