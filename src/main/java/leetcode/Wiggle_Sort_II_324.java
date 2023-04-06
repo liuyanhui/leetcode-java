@@ -27,7 +27,52 @@ import java.util.Arrays;
  */
 public class Wiggle_Sort_II_324 {
     public static void wiggleSort(int[] nums) {
-        wiggleSort_1(nums);
+        wiggleSort_2(nums);
+    }
+
+    /**
+     * review
+     * 参考思路：
+     * https://leetcode.cn/problems/wiggle-sort-ii/solution/yi-bu-yi-bu-jiang-shi-jian-fu-za-du-cong-onlognjia/
+     *
+     * round 2
+     * Thinking：
+     * 1.穷举各种解法，如：分治法；先排序再查找法；nums由少到多发等。
+     * 2.先排序，把排序后的数组平分为两部分，然后把后半部分按顺序穿插到前半部分中。如{a,b,c}+{x,y,z}=>{a,x,b,y,c,z}
+     * 3.为了处理[1,1,2,2,3,3]或[1,1,2,2,2,3]类似的用例，需要使穿插后尽可能分开。一种可行的办法是将前后两半部分反序后在穿插，是的重复的数尽可能分开。
+     *
+     * TIP:
+     * 1.步骤3是关键。Step 3 is the key
+     * 2.Reversing an array can seem like magic. 数组反转的魔力
+     *
+     * 验证通过：
+     * Runtime 4 ms Beats 95.24%
+     * Memory 46.2 MB Beats 52.45%
+     *
+     * @param nums
+     */
+    public static void wiggleSort_2(int[] nums) {
+        Arrays.sort(nums);
+        int frontLen = nums.length / 2 + (nums.length % 2 == 0 ? 0 : 1);
+        int[] front = new int[frontLen];
+        int[] end = new int[nums.length / 2];
+        for (int i = 0; i < frontLen; i++) {
+            //反转存储
+            front[front.length - 1 - i] = nums[i];
+        }
+
+        for (int i = frontLen; i < nums.length; i++) {
+            //反转存储
+            end[end.length - 1 - (i - frontLen)] = nums[i];
+
+        }
+        for (int i = 0; i < end.length; i++) {
+            nums[i * 2] = front[i];
+            nums[i * 2 + 1] = end[i];
+        }
+        if (nums.length % 2 != 0) {
+            nums[nums.length - 1] = front[front.length - 1];
+        }
     }
 
     /**
@@ -62,6 +107,7 @@ public class Wiggle_Sort_II_324 {
         }
     }
 
+    //review
     //荷兰国旗法，移动元素。[0,i)的元素<medium，[i,j)的元素==medium，[j,k]的元素未知，(k:n]的元素>medium
     private static void reverse(int[] nums, int medium) {
         int i = 0, j = 0, k = nums.length - 1;
@@ -120,6 +166,7 @@ public class Wiggle_Sort_II_324 {
     public static void main(String[] args) {
         do_func(new int[]{1, 5, 1, 1, 6, 4}, new int[]{1, 4, 1, 6, 1, 5});
         do_func(new int[]{1, 3, 2, 2, 3, 1}, new int[]{2, 3, 1, 3, 1, 2});
+        do_func(new int[]{4, 5, 5, 6}, new int[]{5, 6, 4, 5});
         do_func(new int[]{1, 3, 2, 2, 3, 1, 7}, new int[]{2, 3, 2, 7, 1, 3, 1});
         do_func(new int[]{1, 2, 3, 4, 5, 6, 7}, new int[]{4, 5, 3, 7, 2, 6, 1});
         do_func(new int[]{1, 1, 1, 1, 2, 2, 2, 2}, new int[]{1, 2, 1, 2, 1, 2, 1, 2});
