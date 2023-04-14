@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Stack;
+
 /**
  * 331. Verify Preorder Serialization of a Binary Tree
  * Medium
@@ -32,14 +34,54 @@ package leetcode;
  */
 public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
     public static boolean isValidSerialization(String preorder) {
-        return isValidSerialization_2(preorder);
+        return isValidSerialization_3(preorder);
     }
 
     /**
+     * round 2
+     *
+     * Thinking：
+     * 1.使用Stack模拟preorder，如果最后stack不为空表示不是Binary Tree
+     * 2.有两个主要变量：stack和当前下标
+     *
+     * isValidSerialization_2()的方法更巧妙。没有要求输出Binary Tree所以可以用这个巧妙的办法。
+     *
+     * 验证通过：
+     * Runtime 7 ms Beats 20.25%
+     * Memory 42.1 MB Beats 78.52%
+     *
+     * @param preorder
+     * @return
+     */
+    public static boolean isValidSerialization_3(String preorder) {
+        if (preorder == null || preorder.length() == 0) return false;
+        String[] arr = preorder.split(",");
+        Stack<String> stack = new Stack<>();
+        stack.push(arr[0]);
+        int i = 1;
+        while (!stack.empty()) {
+            String t = stack.pop();
+            if (t.equals("#")) continue;
+            if (i + 1 < arr.length) {
+                //右子树先入栈
+                stack.push(arr[i + 1]);
+                //左子树后入栈
+                stack.push(arr[i]);
+                i += 2;
+            } else {
+                return false;
+            }
+        }
+        return stack.empty() && i == arr.length;
+    }
+
+    /**
+     * review round2 It is a smart resolution.
      *
      * 验证通过：
      * Runtime: 3 ms, faster than 91.45% of Java.
      * Memory Usage: 39.1 MB, less than 50.84% of Java.
+     *
      * @param preorder
      * @return
      */
@@ -104,6 +146,7 @@ public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
         do_func("#", true);
         do_func("9,#,92,#,#", true);
         do_func("9,3,0,6,#,#,5,#,4,#,2,#,#,6,0,#,#,#,#", true);
+        do_func("1", false);
     }
 
     private static void do_func(String preorder, boolean expected) {
