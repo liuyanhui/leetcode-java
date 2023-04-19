@@ -33,6 +33,12 @@ public class Increasing_Triplet_Subsequence_334 {
     }
 
     /**
+     * review
+     * round 2
+     * increasingTriplet_2()中i和j的顺序是变化的，只是为了证明存在nums[i]<nums[j]或nums[j]<nums[i]，以保证triplet的前两个元素是存在的。i和j的顺序不确定是精髓。
+     */
+
+    /**
      * 金矿。运用数学推导思路，减少影响因素，降低复杂度
      * 参考思路：
      * https://leetcode.com/problems/increasing-triplet-subsequence/discuss/79004/Concise-Java-solution-with-comments.
@@ -123,6 +129,9 @@ public class Increasing_Triplet_Subsequence_334 {
         do_func(new int[]{1, 5, 0, 4, 1, 3}, true);
         do_func(new int[]{4, 6, 3, 4, 5}, true);
         do_func(new int[]{4, 6, 4, 5, 6}, true);
+        do_func(new int[]{0, 4, 1, -1, 2}, true);
+        do_func(new int[]{5, 1, 6}, false);
+        do_func(new int[]{1, 1, 6}, true);
     }
 
     private static void do_func(int[] nums, boolean expected) {
