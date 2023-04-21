@@ -36,6 +36,12 @@ public class Increasing_Triplet_Subsequence_334 {
      * review
      * round 2
      * increasingTriplet_2()中i和j的顺序是变化的，只是为了证明存在nums[i]<nums[j]或nums[j]<nums[i]，以保证triplet的前两个元素是存在的。i和j的顺序不确定是精髓。
+     *
+     * 另一种思考方式：
+     * 1.triplet有三个元素。三个元素的联动比较太过于复杂。是否可以简化。
+     * 2.其实在i,j存在的情况下，只需要和j比较就可以了。
+     * 3.所以问题转化为寻找i和j，以及寻找j和k两个相对独立的部分。再比较j和k时，不需要考虑i和j的顺序。把三个数字的比较转化为两组组间相关的两个数字的比较。
+     *
      */
 
     /**
