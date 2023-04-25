@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 341. Flatten Nested List Iterator
@@ -12,16 +9,16 @@ import java.util.List;
  * You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists. Implement an iterator to flatten it.
  *
  * Implement the NestedIterator class:
- * NestedIterator(List<NestedInteger> nestedList) Initializes the iterator with the nested list nestedList.
- * int next() Returns the next integer in the nested list.
- * boolean hasNext() Returns true if there are still some integers in the nested list and false otherwise.
+ *  - NestedIterator(List<NestedInteger> nestedList) Initializes the iterator with the nested list nestedList.
+ *  - int next() Returns the next integer in the nested list.
+ *  - boolean hasNext() Returns true if there are still some integers in the nested list and false otherwise.
  *
  * Your code will be tested with the following pseudocode:
- * initialize iterator with nestedList
- * res = []
- * while iterator.hasNext()
- *     append iterator.next() to the end of res
- * return res
+ *  - initialize iterator with nestedList
+ *  - res = []
+ *  - while iterator.hasNext()
+ *       append iterator.next() to the end of res
+ *  - return res
  *
  * If res matches the expected flattened list, then your code will be judged as correct.
  *
@@ -57,6 +54,95 @@ public class Flatten_Nested_List_Iterator_341 {
     }
 
     /**
+     * NestedIterator_2()中的Thinking中的第一种思路。属于递归法
+     * 创建对象时就实现了flat操作，next()和hashNext()只需要遍历链表即可
+     *
+     * review 更高效和简单的方案
+     *
+     */
+    public class NestedIterator_3 implements Iterator<Integer> {
+        List<Integer> arr;
+        int index;
+
+
+        public void pushArray(List<NestedInteger> nestedList) {
+            int n = nestedList.size();
+            for (int i = 0; i < n; i++) {
+                if (nestedList.get(i).isInteger())
+                    arr.add(nestedList.get(i).getInteger());
+                else
+                    pushArray(nestedList.get(i).getList());
+
+            }
+
+        }
+
+        public NestedIterator_3(List<NestedInteger> nestedList) {
+            arr = new ArrayList<Integer>();
+            index = 0;
+
+            pushArray(nestedList);
+        }
+
+        @Override
+        public Integer next() {
+
+            return arr.get(index++);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < arr.size();
+
+        }
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking：
+     * 1.一种思路是可以把输入序列化成字符串，然后遍历字符串。然鹅，序列化的过程就是flat的过程，本思路不可行。NestedIterator_3()说明这个思路是可行的。
+     * 2.使用stack。
+     *
+     * 验证通过：
+     * Runtime 6 ms Beats 16.48%
+     * Memory 44.3 MB Beats 88.14%
+     *
+     */
+    public static class NestedIterator_2 implements Iterator<Integer> {
+        Stack<NestedInteger> stack;
+
+        public NestedIterator_2(List<NestedInteger> nestedList) {
+            stack = new Stack<>();
+            for (int i = nestedList.size() - 1; i >= 0; i--) {
+                stack.push(nestedList.get(i));
+            }
+        }
+
+        @Override
+        public Integer next() {
+            return stack.pop().getInteger();
+        }
+
+        @Override
+        public boolean hasNext() {
+            //过滤null
+            while (!stack.empty() && stack.peek() == null) {
+                stack.pop();
+            }
+            if (stack.empty()) return false;
+            if (!stack.peek().isInteger()) {
+                NestedInteger t = stack.pop();
+                for (int i = t.getList().size() - 1; i >= 0; i--) {
+                    stack.push(t.getList().get(i));
+                }
+                return hasNext();//递归判断
+            }
+            return true;
+        }
+    }
+
+    /**
      * 参考思路：
      * https://leetcode.com/problems/flatten-nested-list-iterator/discuss/80147/Simple-Java-solution-using-a-stack-with-explanation
      *
@@ -72,7 +158,7 @@ public class Flatten_Nested_List_Iterator_341 {
      * Runtime: 4 ms, faster than 30.75% of Java .
      * Memory Usage: 42 MB, less than 20.42% of Java .
      */
-    public class NestedIterator implements Iterator<Integer> {
+    public static class NestedIterator implements Iterator<Integer> {
         //FIXME 这里也可以使用stack代替Deque，因为Deque初始化后只是操作队列头，并没有操作队列尾。
         //FIXME stack初始化时，反向入栈即可。即后面的元素先入栈。
         Deque<NestedInteger> deque = new ArrayDeque<>();
@@ -116,9 +202,19 @@ public class Flatten_Nested_List_Iterator_341 {
         }
     }
 
-/**
- * Your NestedIterator object will be instantiated and called as such:
- * NestedIterator i = new NestedIterator(nestedList);
- * while (i.hasNext()) v[f()] = i.next();
- */
+    /**
+     * Your NestedIterator object will be instantiated and called as such:
+     * NestedIterator i = new NestedIterator(nestedList);
+     * while (i.hasNext()) v[f()] = i.next();
+     */
+
+    public static void main(String[] args) {
+        List<NestedInteger> in = new ArrayList<>();
+        in.add(null);
+        NestedIterator_2 nestedIterator2 = new NestedIterator_2(in);
+        while (nestedIterator2.hasNext()) {
+            System.out.println(nestedIterator2.next());
+        }
+        System.out.println("----------------------------");
+    }
 }
