@@ -5,7 +5,7 @@ package leetcode;
  * Easy
  * -------------------------
  * Given an integer n, return true if it is a power of four. Otherwise, return false.
- * An integer n is a power of four, if there exists an integer x such that n == 4x.
+ * An integer n is a power of four, if there exists an integer x such that n == 4^x.
  *
  * Example 1:
  * Input: n = 16
@@ -29,6 +29,7 @@ public class Power_of_Four_342 {
     }
 
     /**
+     * review round 2
      * 找到规律
      * 参考思路：
      * https://leetcode.com/problems/power-of-four/discuss/80460/1-line-C%2B%2B-solution-without-confusing-bit-manipulations

@@ -54,6 +54,7 @@ public class Flatten_Nested_List_Iterator_341 {
     }
 
     /**
+     * review
      * NestedIterator_2()中的Thinking中的第一种思路。属于递归法
      * 创建对象时就实现了flat操作，next()和hashNext()只需要遍历链表即可
      *
@@ -64,7 +65,6 @@ public class Flatten_Nested_List_Iterator_341 {
         List<Integer> arr;
         int index;
 
-
         public void pushArray(List<NestedInteger> nestedList) {
             int n = nestedList.size();
             for (int i = 0; i < n; i++) {
@@ -72,28 +72,23 @@ public class Flatten_Nested_List_Iterator_341 {
                     arr.add(nestedList.get(i).getInteger());
                 else
                     pushArray(nestedList.get(i).getList());
-
             }
-
         }
 
         public NestedIterator_3(List<NestedInteger> nestedList) {
             arr = new ArrayList<Integer>();
             index = 0;
-
             pushArray(nestedList);
         }
 
         @Override
         public Integer next() {
-
             return arr.get(index++);
         }
 
         @Override
         public boolean hasNext() {
             return index < arr.size();
-
         }
     }
 
