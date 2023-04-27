@@ -45,6 +45,9 @@ public class Integer_Break_343 {
     }
 
     /**
+     * review round 2
+     * round 2 : 忽略k的变化
+     *
      * 总结规律之后，公式如下：
      * f(2)=max{1*max{1,f(1)}}
      * f(3)=max{1*max{2,f(2)},2*max{1,f(1)}}
