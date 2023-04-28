@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 345. Reverse Vowels of a String
  * Easy
@@ -20,6 +23,53 @@ package leetcode;
  * s consist of printable ASCII characters.
  */
 public class Reverse_Vowels_of_a_String_345 {
+    public static String reverseVowels(String s) {
+        return reverseVowels_2(s);
+    }
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     * Runtime 4 ms Beats 72.18%
+     * Memory 43.2 MB Beats 36.89%
+     *
+     * @param s
+     * @return
+     */
+    public static String reverseVowels_2(String s) {
+        if (s == null || s.length() == 0) return s;
+        Set<Character> vowels = new HashSet<Character>();
+        vowels.add('a');
+        vowels.add('A');
+        vowels.add('o');
+        vowels.add('O');
+        vowels.add('e');
+        vowels.add('E');
+        vowels.add('i');
+        vowels.add('I');
+        vowels.add('u');
+        vowels.add('U');
+
+        int l = 0, r = s.length() - 1;
+        char[] charArr = s.toCharArray();
+        while (l < r) {
+            while (l < r && !vowels.contains(charArr[l])) {
+                l++;
+            }
+            while (l < r && !vowels.contains(charArr[r])) {
+                r--;
+            }
+            if (l >= r) break;
+            char t = charArr[l];
+            charArr[l] = charArr[r];
+            charArr[r] = t;
+            l++;
+            r--;
+        }
+        return new String(charArr);
+    }
+
     /**
      * 验证通过：
      * Runtime: 2 ms, faster than 99.22% of Java online submissions for Reverse Vowels of a String.
@@ -27,7 +77,7 @@ public class Reverse_Vowels_of_a_String_345 {
      * @param s
      * @return
      */
-    public static String reverseVowels(String s) {
+    public static String reverseVowels_1(String s) {
         if (s == null || s.length() == 0) return "";
         char[] reversedArr = new char[s.length()];
         int l = 0, r = s.length() - 1;
