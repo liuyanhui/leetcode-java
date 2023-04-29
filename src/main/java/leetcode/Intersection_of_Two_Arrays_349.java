@@ -22,9 +22,13 @@ import java.util.*;
  * 0 <= nums1[i], nums2[i] <= 1000
  */
 public class Intersection_of_Two_Arrays_349 {
+    public static int[] intersection(int[] nums1, int[] nums2) {
+        return intersection_2(nums1, nums2);
+    }
 
     /**
      * round 2
+     * review 一定要先做350
      *
      * 可以把Map优化为buf，nums1和nums2长度和大小的上限都是1000
      *
@@ -34,23 +38,24 @@ public class Intersection_of_Two_Arrays_349 {
      * @param nums2
      * @return
      */
-    public int[] intersection_2(int[] nums1, int[] nums2) {
-        Map<Integer,Integer> map = new HashMap<>();
+    public static int[] intersection_2(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
         List<Integer> list = new ArrayList<>();
-        for(int n: nums1){
-            map.computeIfAbsent(n,v->1);
+        for (int n : nums1) {
+            map.computeIfAbsent(n, v -> 1);
         }
-        for(int n: nums2){
-            if(map.containsKey(n) && map.get(n)==1){
+        for (int n : nums2) {
+            if (map.containsKey(n) && map.get(n) == 1) {
                 list.add(n);
-                map.put(n,-1);
+                map.put(n, -1);
             }
         }
         int[] res = new int[list.size()];
-        for(int i=0;i<res.length;i++)
+        for (int i = 0; i < res.length; i++)
             res[i] = list.get(i);
         return res;
     }
+
     /**
      * 验证通过：
      * Runtime: 2 ms, faster than 95.31% of Java online submissions for Intersection of Two Arrays.
@@ -59,7 +64,7 @@ public class Intersection_of_Two_Arrays_349 {
      * @param nums2
      * @return
      */
-    public static int[] intersection(int[] nums1, int[] nums2) {
+    public static int[] intersection_1(int[] nums1, int[] nums2) {
         Set<Integer> set1 = new HashSet<>();
         for (int n : nums1) {
             set1.add(n);
