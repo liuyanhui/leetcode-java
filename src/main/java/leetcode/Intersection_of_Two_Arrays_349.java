@@ -1,7 +1,6 @@
 package leetcode;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 349. Intersection of Two Arrays
@@ -23,6 +22,35 @@ import java.util.Set;
  * 0 <= nums1[i], nums2[i] <= 1000
  */
 public class Intersection_of_Two_Arrays_349 {
+
+    /**
+     * round 2
+     *
+     * 可以把Map优化为buf，nums1和nums2长度和大小的上限都是1000
+     *
+     * 验证通过：
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] intersection_2(int[] nums1, int[] nums2) {
+        Map<Integer,Integer> map = new HashMap<>();
+        List<Integer> list = new ArrayList<>();
+        for(int n: nums1){
+            map.computeIfAbsent(n,v->1);
+        }
+        for(int n: nums2){
+            if(map.containsKey(n) && map.get(n)==1){
+                list.add(n);
+                map.put(n,-1);
+            }
+        }
+        int[] res = new int[list.size()];
+        for(int i=0;i<res.length;i++)
+            res[i] = list.get(i);
+        return res;
+    }
     /**
      * 验证通过：
      * Runtime: 2 ms, faster than 95.31% of Java online submissions for Intersection of Two Arrays.
