@@ -25,7 +25,45 @@ import java.util.*;
  */
 public class Top_K_Frequent_Elements_347 {
     public static int[] topKFrequent(int[] nums, int k) {
-        return topKFrequent_2(nums, k);
+        return topKFrequent_3(nums, k);
+    }
+
+    /**
+     * review round 2
+     *
+     * 参考topKFrequent_2()的思路
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int[] topKFrequent_3(int[] nums, int k) {
+        if (nums == null || nums.length == 0) return null;
+        int[] res = new int[k];
+        //统计数字出现的次数
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (int n : nums) {
+            counts.computeIfAbsent(n, v -> 0);
+            counts.put(n, counts.get(n) + 1);
+        }
+        //根据出现次数加入Bucket中
+        List<Integer>[] buckets = new List[nums.length+1];
+        for (int n : counts.keySet()) {
+            int f = counts.get(n);
+            if (buckets[f] == null) buckets[f] = new ArrayList<>();
+            buckets[f].add(n);
+        }
+        //获取frequency中最大的前k个元素
+        int idx = 0;
+        for (int i = buckets.length - 1; i >= 0; i--) {
+            if (buckets[i] != null) {
+                for (int n : buckets[i]) {
+                    res[idx++] = n;
+                }
+            }
+            if (idx == k) break;
+        }
+        return res;
     }
 
     /**
@@ -148,7 +186,7 @@ public class Top_K_Frequent_Elements_347 {
 
     private static void do_func(int[] nums, int k, int[] expected) {
         int[] ret = topKFrequent(nums, k);
-        ArrayUtils.printIntArray(ret);
+        ArrayUtils.printlnIntArray(ret);
         ArrayUtils.isSameThenPrintln(ret, expected);
         System.out.println("--------------");
     }
