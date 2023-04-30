@@ -66,7 +66,7 @@ public class Data_Stream_as_Disjoint_Intervals_352 {
             seen = new HashSet<>();
             intervals = new ArrayList<>();
             pure = true;
-            intervalsCache = new int[0][];
+            intervalsCache = new int[0][];//review 声明空的二维数组的方式
         }
 
         public void addNum(int value) {
@@ -76,7 +76,7 @@ public class Data_Stream_as_Disjoint_Intervals_352 {
                 intervals.add(value);
             } else {
                 int pos = findPosition(value);
-                merge(pos, value);
+                merge_2(pos, value);
             }
             seen.add(value);
             pure = false;
@@ -112,6 +112,32 @@ public class Data_Stream_as_Disjoint_Intervals_352 {
             }
             res = l;
             return res;
+        }
+
+        /**
+         * merge_1()的代码优化版，性能略差
+         *
+         * 验证通过：
+         * Runtime 21 ms Beats 89.79%
+         * Memory 43.2 MB Beats 14.8%
+         * @param k
+         * @param n
+         */
+        private void merge_2(int k, int n) {
+            if (k % 2 == 1) return;
+            //先插入
+            intervals.add(k, n);
+            intervals.add(k, n);
+            //再合并右边部分。注意下标变化
+            if (k <= intervals.size() - 4 && intervals.get(k + 2) == n + 1) {
+                intervals.remove(k + 2);//删除list元素是，要先删除后面的再删除前面的
+                intervals.remove(k + 1);
+            }
+            //先合并左边部分
+            if (k >= 2 && intervals.get(k - 1) + 1 == n) {
+                intervals.remove(k);
+                intervals.remove(k - 1);
+            }
         }
 
         private void merge(int k, int n) {
