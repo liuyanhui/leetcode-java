@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 352. Data Stream as Disjoint Intervals
@@ -43,6 +40,48 @@ import java.util.Set;
  * Follow up: What if there are lots of merges and the number of disjoint intervals is small compared to the size of the data stream?
  */
 public class Data_Stream_as_Disjoint_Intervals_352 {
+
+    /**
+     * SummaryRanges()自研
+     * SummaryRanges_2()标准答案，更简单
+     */
+
+    /**
+     * 使用TreeSet的方法更简单
+     * https://leetcode.com/problems/data-stream-as-disjoint-intervals/editorial/
+     */
+    class SummaryRanges_2 {
+        private Set<Integer> values;
+
+        public SummaryRanges_2() {
+            values = new TreeSet<>();
+        }
+
+        public void addNum(int value) {
+            values.add(value);
+        }
+
+        public int[][] getIntervals() {
+            if (values.isEmpty()) {
+                return new int[0][2];
+            }
+            List<int[]> intervals = new ArrayList<>();
+            int left = -1, right = -1;
+            for (Integer value : values) {
+                if (left < 0) {
+                    left = right = value;
+                } else if (value == right + 1) {//这里很巧妙
+                    right = value;
+                } else {
+                    intervals.add(new int[]{left, right});
+                    left = right = value;
+                }
+            }
+            intervals.add(new int[]{left, right});
+            return intervals.toArray(new int[0][]);
+        }
+    }
+
     /**
      * Thinking：
      * 1.记录已经add过的数字，已经add过的数字add时直接跳过
