@@ -37,6 +37,10 @@ public class Longest_Increasing_Subsequence_300 {
      *
      * Patience sorting是解决LIS问题的一种思路，性能更优。
      *
+     * 1.pile内的数字是递减的。
+     * 2.pile之间的top元素是递增的。
+     * 3.pile的长度就是LIS的长度。
+     *
      * 参考文档：
      * https://www.cs.princeton.edu/courses/archive/spring13/cos423/lectures/LongestIncreasingSubsequence.pdf
      * https://en.wikipedia.org/wiki/Patience_sorting
