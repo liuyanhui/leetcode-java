@@ -85,6 +85,7 @@ public class Design_Twitter_355 {
         public void follow(int followerId, int followeeId) {
             initUser(followerId);
             initUser(followeeId);
+            //round 2 防止重复follow
             if (userList.get(followerId).followedByMe.contains(followeeId)) {
                 return;
             }
@@ -111,11 +112,15 @@ public class Design_Twitter_355 {
         public void unfollow(int followerId, int followeeId) {
             initUser(followerId);
             initUser(followeeId);
+            //round 2 防止重复unfollow
             if (!userList.get(followerId).followedByMe.contains(followeeId)) {
                 return;
             }
-            userList.get(followerId).followedByMe.remove(new Integer(followeeId));
+            userList.get(followerId).followedByMe.remove(new Integer(followeeId));//round 2 ，remove()的输入
             userList.get(followeeId).fans.remove(new Integer(followerId));
+            //round 2 可以替换上面的代码
+//            userList.get(followerId).feeds.removeAll(userList.get(followeeId).tweets);
+
             //feeds处理，把followeeId的tweet从followerId的Feeds中移除
             for (Tweet t : userList.get(followeeId).tweets) {
                 userList.get(followerId).feeds.remove(t);
