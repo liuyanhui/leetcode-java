@@ -19,6 +19,43 @@ package leetcode;
  * 0 <= n <= 8
  */
 public class Count_Numbers_with_Unique_Digits_357 {
+
+    public static int countNumbersWithUniqueDigits(int n) {
+        return countNumbersWithUniqueDigits_2(n);
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking:
+     * 1.naive solution。
+     * 2.如何判断一个数不包含重复数字？位图法？
+     * 3.总结规律？按1位数，2位数，3位数..n位数分别计算。采用排列/组合中的组合进行计算。
+     * 1位数[0~9]：10
+     * 2位数[10~99]：9*9
+     * 3位数[100~999]:9*9*8
+     * 4位数[1000~9999]:9*9*8*7
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 39.7 MB Beats 34.56%
+     *
+     * @param n
+     * @return
+     */
+    public static int countNumbersWithUniqueDigits_2(int n) {
+        if (n < 0) return 0;
+        if (n == 0) return 1;
+        if (n == 1) return 10;
+        int res = 10;
+        int t = 9;
+        for (int i = 1; i < n; i++) {
+            t *= (9 - i + 1);
+            res += t;
+        }
+        return res;
+    }
+
     /**
      * 公式为：
      * f[0]=1
@@ -30,7 +67,7 @@ public class Count_Numbers_with_Unique_Digits_357 {
      * 最后把f[0]~f[n]累加就是结果
      *
      * 解释如下：
-     * 使用数学中的排列组合中的组合法，因为数字不能重复出现，最高位之中从1~9选择（共9种取法），非最高位可以从0~9选择（共10种取法，但是会一次递减）。
+     * 使用数学中的排列组合中的组合法，因为数字不能重复出现，最高位之中从1~9选择（共9种取法），非最高位可以从0~9选择（共10种取法，但是会依次递减）。
      * 使用组合公式即可得出不重复出现的数字次数。
      *
      * 验证通过：
@@ -40,7 +77,7 @@ public class Count_Numbers_with_Unique_Digits_357 {
      * @param n
      * @return
      */
-    public static int countNumbersWithUniqueDigits(int n) {
+    public static int countNumbersWithUniqueDigits_1(int n) {
         if (n == 0) return 1;
         int[] count = new int[n + 1];
         count[0] = 1;
