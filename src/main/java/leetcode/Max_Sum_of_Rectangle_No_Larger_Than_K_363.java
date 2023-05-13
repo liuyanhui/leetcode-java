@@ -28,11 +28,44 @@ package leetcode;
  */
 public class Max_Sum_of_Rectangle_No_Larger_Than_K_363 {
     public static int maxSumSubmatrix(int[][] matrix, int k) {
-        return maxSumSubmatrix_1(matrix, k);
+        return maxSumSubmatrix_2(matrix, k);
     }
 
+    /**
+     * 与maxSumSubmatrix_1()思路略有不同
+     * 1.划分左右边界，并求出在此边界下，每行的总和
+     * 2.暴力求解不大于k的最大值
+     *
+     * 验证通过：
+     * Runtime 237 ms Beats 84.69%
+     * Memory 43.4 MB Beats 7.14%
+     *
+     * @param matrix
+     * @param k
+     * @return
+     */
     public static int maxSumSubmatrix_2(int[][] matrix, int k) {
-        return 0;
+        int res = Integer.MIN_VALUE;
+        for (int col0 = 0; col0 < matrix[0].length; col0++) {
+            int[] rows = new int[matrix.length];
+            for (int col1 = col0; col1 < matrix[0].length; col1++) {
+                //这里是相对maxSumSubmatrix_1()优化的地方，减少了重复计算(BUD中的D)
+                for (int i = 0; i < matrix.length; i++) {
+                    rows[i] += matrix[i][col1];
+                }
+
+                for (int i = 0; i < rows.length; i++) {
+                    int sum = 0;
+                    for (int j = i; j < rows.length; j++) {
+                        sum += rows[j];
+                        if (sum <= k && sum > res) {
+                            res = sum;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     /**
