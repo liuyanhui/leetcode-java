@@ -28,7 +28,39 @@ package leetcode;
  */
 public class Maximum_Subarray_53 {
     public static int maxSubArray(int[] nums) {
-        return maxSubArray_2(nums);
+        return maxSubArray_3(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking:
+     * 1.naive solution.两层循环法，以每个元素为起始，后面的元素依次为终点，计算sum。时间复杂度O(N*N)
+     * 2.滑动窗口法。
+     * 2.1.窗口的sum大于0时，表示sum是递增的，滑动窗口向右扩张1位。
+     * 2.2.窗口的sum小于等于0时，窗口的sum需要重置为0，滑动窗口清空。
+     * 其中2.2是2.1的推导条件。
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 100%
+     * Memory 51.7 MB Beats 66.77%
+     *
+     * @param nums
+     * @return
+     */
+    public static int maxSubArray_3(int[] nums) {
+        int res = Integer.MIN_VALUE;
+        int window = 0;
+        for (int n : nums) {
+            window += n;
+            if (window > 0) {//窗口的sum大于0时，表示sum是递增的
+                res = Math.max(window, res);
+            } else {//窗口的sum小于等于0时，窗口的sum需要重置为0
+                window = 0;
+                res = Math.max(res, n);
+            }
+        }
+        return res;
     }
 
     /**
