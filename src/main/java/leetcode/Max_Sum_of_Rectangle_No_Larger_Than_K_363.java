@@ -35,6 +35,7 @@ public class Max_Sum_of_Rectangle_No_Larger_Than_K_363 {
 
     /**
      * review 有种更巧妙的方法，在maxSumSubmatrix_2()基础上进行了优化
+     * review 两个变量问题转化成一个变量问题的通用思路。前提是这两个变量存在因果关系。参见："560. Subarray Sum Equals K"
      *
      * 参考资料：
      * https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/83599/accepted-c-codes-with-explanation-and-references/

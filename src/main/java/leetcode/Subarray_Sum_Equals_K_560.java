@@ -31,6 +31,8 @@ public class Subarray_Sum_Equals_K_560 {
 
     /**
      * review 本题是"363. Max Sum of Rectangle No Larger Than K"的一个子集。
+     * review 两个变量问题转化成一个变量问题的通用思路。前提是这两个变量存在因果关系。
+     *
      * 参考"363. Max Sum of Rectangle No Larger Than K"中的maxSumSubmatrix_3()的思路
      *
      * Thinking：
