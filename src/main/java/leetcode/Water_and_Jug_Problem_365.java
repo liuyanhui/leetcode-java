@@ -35,6 +35,21 @@ public class Water_and_Jug_Problem_365 {
     public static boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {
         return canMeasureWater_2(jug1Capacity, jug2Capacity, targetCapacity);
     }
+    /**
+     * review
+     * round 2
+     *
+     * Thinking：
+     * 1.a，b，c三个作为常量组成一个等式，如：ax+by=c，其中：a=jug1，b=jug2，c=target。
+     * 在这个等式中，x和y都是整数（可能是负数），只要存在x和y满足等式，那么表示存在解，返回true。
+     * 2.等式中有两个变量。可以通过遍历一个变量，使之降维成一个变量求解的问题。那么如何确定变量的范围？
+     * 3.使得等式ax+by=c成立，需要满足贝祖定理的条件，即GCD(a,c)能被c整除。
+     *
+     * Bfs思路：
+     * canMeasureWater_2()和canMeasureWater_3()
+     * https://leetcode.com/problems/water-and-jug-problem/solutions/83709/breadth-first-search-with-explanation/
+     *
+     */
 
     /**
      * canMeasureWater_2()代码精简版，属于dfs法
@@ -215,6 +230,7 @@ public class Water_and_Jug_Problem_365 {
         do_func(1, 2, 3, true);
         do_func(6, 100, 71, false);
         do_func(1, 1, 12, false);
+        do_func(1, 1000000, 99999, true);
     }
 
     private static void do_func(int jug1Capacity, int jug2Capacity, int targetCapacity, boolean expected) {
