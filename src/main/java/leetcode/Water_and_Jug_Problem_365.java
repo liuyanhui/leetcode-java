@@ -44,15 +44,17 @@ public class Water_and_Jug_Problem_365 {
      * 在这个等式中，x和y都是整数（可能是负数），只要存在x和y满足等式，那么表示存在解，返回true。
      * 2.等式中有两个变量。可以通过遍历一个变量，使之降维成一个变量求解的问题。那么如何确定变量的范围？
      * 3.使得等式ax+by=c成立，需要满足贝祖定理的条件，即GCD(a,c)能被c整除。
+     * 4.实现见：canMeasureWater_1()
      *
      * Bfs思路：
+     * 穷举法
      * canMeasureWater_2()和canMeasureWater_3()
      * https://leetcode.com/problems/water-and-jug-problem/solutions/83709/breadth-first-search-with-explanation/
      *
      */
 
     /**
-     * canMeasureWater_2()代码精简版，属于dfs法
+     * canMeasureWater_2()代码精简版，属于bfs法
      *
      * 参考思路：
      * https://leetcode-cn.com/problems/water-and-jug-problem/solution/shui-hu-wen-ti-by-leetcode-solution/

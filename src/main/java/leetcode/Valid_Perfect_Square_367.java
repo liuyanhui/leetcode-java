@@ -4,8 +4,9 @@ package leetcode;
  * 367. Valid Perfect Square
  * Easy
  * -----------------------------
- * Given a positive integer num, write a function which returns True if num is a perfect square else False.
- * Follow up: Do not use any built-in library function such as sqrt.
+ * Given a positive integer num, return true if num is a perfect square or false otherwise.
+ * A perfect square is an integer that is the square of an integer. In other words, it is the product of some integer with itself.
+ * You must not use any built-in library function, such as sqrt.
  *
  * Example 1:
  * Input: num = 16
@@ -21,7 +22,27 @@ package leetcode;
 public class Valid_Perfect_Square_367 {
 
     public static boolean isPerfectSquare(int num) {
-        return isPerfectSquare_2(num);
+        return isPerfectSquare_4(num);
+    }
+
+    /**
+     * round 2
+     * Thinking：
+     * 1.naive solution
+     * 穷举法，从1开始。
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 21.8%
+     * Memory 39.3 MB Beats 80.75%
+     *
+     * @param num
+     * @return
+     */
+    public static boolean isPerfectSquare_4(int num) {
+        for (int i = 1; i <= num / i; i++) {
+            if (i * i == num) return true;
+        }
+        return false;
     }
 
     /**
@@ -58,7 +79,7 @@ public class Valid_Perfect_Square_367 {
      * binary search
      * 参考文档：
      * https://leetcode.com/problems/valid-perfect-square/discuss/83874/A-square-number-is-1%2B3%2B5%2B7%2B...-JAVA-code
-
+     *
      * @param num
      * @return
      */
@@ -100,6 +121,7 @@ public class Valid_Perfect_Square_367 {
         do_func(14, false);
         do_func(64, true);
         do_func(1, true);
+        do_func(Integer.MAX_VALUE, false);
     }
 
     private static void do_func(int num, boolean expected) {
