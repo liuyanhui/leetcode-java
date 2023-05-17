@@ -28,7 +28,56 @@ import java.util.*;
 public class Largest_Divisible_Subset_368 {
 
     public static List<Integer> largestDivisibleSubset(int[] nums) {
-        return largestDivisibleSubset_2(nums);
+        return largestDivisibleSubset_3(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking：
+     * 1.naive solution
+     * 遍历数组，两两计算每个数字。Time Complexity:O(N*N)
+     * 2.先排序，再计算。因为a%b=0时，必然存在a>=b。
+     * 类似naive solution。采用暴力法遍历数组，依次计算每种可能。Time Complexity:O(N*N)
+     *
+     * 与largestDivisibleSubset_1()方案一样
+     * largestDivisibleSubset_2()是更优解
+     *
+     * 验证通过：
+     * Runtime 30 ms Beats 14.91%
+     * Memory 43.7 MB Beats 6.96%
+     *
+     * @param nums
+     * @return
+     */
+    public static List<Integer> largestDivisibleSubset_3(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) return res;
+
+        Arrays.sort(nums);//排序
+
+        //FIXME：下面这行代码是可以优化的，用其他更巧妙的思路。见largestDivisibleSubset_2()
+        Map<Integer, List<Integer>> cache = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            //初始化nums[i]
+            cache.put(nums[i], new ArrayList<>());
+            cache.get(nums[i]).add(nums[i]);
+            //查找nums[i]的最优解
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[i] % nums[j] == 0) {
+                    if (cache.get(nums[j]).size() + 1 > cache.get(nums[i]).size()) {
+                        List<Integer> list = new ArrayList<>();
+                        list.addAll(cache.get(nums[j]));
+                        list.add(nums[i]);
+                        cache.put(nums[i], list);
+                    }
+                }
+            }
+            if (res.size() < cache.get(nums[i]).size()) {
+                res = cache.get(nums[i]);
+            }
+        }
+        return res;
     }
 
     /**
@@ -39,6 +88,9 @@ public class Largest_Divisible_Subset_368 {
      * 验证通过：
      * Runtime: 14 ms, faster than 98.88% of Java .
      * Memory Usage: 39.5 MB, less than 37.01% of Java .
+     *
+     * round 2
+     * 该方法是更优解。用prev[]数组记录了最优解。
      *
      * @param nums
      * @return
@@ -57,7 +109,7 @@ public class Largest_Divisible_Subset_368 {
 
         for (int i = 0; i < nums.length; i++) {
             dp[i] = 1;//初始化
-            prev[i] = -1;
+            prev[i] = -1;//[round 2]这里也比较巧妙，初始化为-1而不是0，因为它是prev，值为-1时表示没有prev
             for (int j = 0; j < i; j++) {
                 if (nums[i] % nums[j] == 0 && dp[j] + 1 > dp[i]) {
                     dp[i] = dp[j] + 1;
