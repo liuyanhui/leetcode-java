@@ -23,6 +23,14 @@ public class Sum_of_Two_Integers_371 {
     }
 
     /**
+     * round 2
+     * review
+     * 参考：getSum_2()
+     *
+     * 巧妙的办法。直接计算所有bit的当前位和进位，并把它们赋值给a和b，循环直到b为0为止。
+     */
+
+    /**
      * 位运算思路.
      * 重复计算，直到carry==0为止。
      *
@@ -36,8 +44,8 @@ public class Sum_of_Two_Integers_371 {
      */
     public static int getSum_2(int a, int b) {
         while (b != 0) {
-            int carry = (a & b) << 1;
-            a = a ^ b;
+            int carry = (a & b) << 1;//round 2 : 计算所有bit的carry
+            a = a ^ b;//round 2 : 计算所有bit的当前bit
             b = carry;
         }
         return a;
@@ -88,15 +96,15 @@ public class Sum_of_Two_Integers_371 {
     }
 
     public static void main(String[] args) {
-        do_func(1, 2, 3);
-        do_func(2, 3, 5);
-        do_func(0, 3, 3);
-        do_func(0, 0, 0);
-        do_func(-2, 5, 3);
+//        do_func(1, 2, 3);
+//        do_func(2, 3, 5);
+//        do_func(0, 3, 3);
+//        do_func(0, 0, 0);
+//        do_func(-2, 5, 3);
         do_func(-2, -5, -7);
-        do_func(1000, 1000, 2000);
-        do_func(-1000, 1000, 0);
-        do_func(-1000, -1000, -2000);
+//        do_func(1000, 1000, 2000);
+//        do_func(-1000, 1000, 0);
+//        do_func(-1000, -1000, -2000);
     }
 
     private static void do_func(int a, int b, int expected) {
