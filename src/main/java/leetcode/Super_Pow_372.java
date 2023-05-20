@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Arrays;
+
 /**
  * 372. Super Pow
  * Medium
@@ -29,7 +31,51 @@ package leetcode;
  * b doesn't contain leading zeros.
  */
 public class Super_Pow_372 {
+    public static int superPow(int a, int[] b) {
+        return superPow_2(a, b);
+    }
+
     static int base = 1337;
+
+    /**
+     * round 2
+     * 参考思路：superPow_1()
+     *
+     * Thinking:
+     * (a^12345)%c =
+     * (a^12340*a^5)%c =
+     * (((a^12340)%c)*((a^5)%c))%c =
+     * (((((a^1234)%c)^10)%c)*((a^5)%c))%c
+     *
+     * 假设：f(a,b)=a^b%1337
+     * f(a,12345)=f(f(a,12340)*f(a,5))
+     * =f(f(f(a,1234),10)*f(a,5))
+     *
+     * 验证通过：
+     * Runtime 19 ms Beats 17.27%
+     * Memory 54.4 MB Beats 5%
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static int superPow_2(int a, int[] b) {
+        if (b == null || b.length == 0) return 1;
+        if (b.length == 1) {
+            return calc(a, b[0]);
+        }
+        int[] head = Arrays.copyOfRange(b, 0, b.length - 1);
+        return (calc(superPow_2(a, head), 10) * calc(a, b[b.length - 1])) % base;
+    }
+
+    private static int calc(int a, int b) {
+        int res = 1;
+        for (int i = 0; i < b; i++) {
+            res *= (a % base);
+            res %= base;
+        }
+        return res;
+    }
 
     /**
      * 参考思路：
@@ -40,7 +86,7 @@ public class Super_Pow_372 {
      * a^b = a^i * a^(b-i)
      * (a^b)%c = ((a%c)^b)%c
      * 如何降幂？每次剥离b的个位数字。这样2000位的超长b，也只需要剥离2000次。具体见下面的用例:
-     *  (a^12345)%c = (a^12340*a^5)%c = (((a^12340)%c)*((a^5)%c))%c = (((((a^1234)%c)^10)%c)*((a^5)%c)))%c
+     *  (a^12345)%c = (a^12340*a^5)%c = (((a^12340)%c)*((a^5)%c))%c = (((((a^1234)%c)^10)%c)*((a^5)%c))%c
      *
      * if a>1337 then a%1337 ,即先把a减小到小于1337.
      *
@@ -52,7 +98,7 @@ public class Super_Pow_372 {
      * @param b
      * @return
      */
-    public static int superPow(int a, int[] b) {
+    public static int superPow_1(int a, int[] b) {
         return do_recursive(a, b, b.length - 1);
     }
 

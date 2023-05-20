@@ -28,6 +28,11 @@ public class Sum_of_Two_Integers_371 {
      * 参考：getSum_2()
      *
      * 巧妙的办法。直接计算所有bit的当前位和进位，并把它们赋值给a和b，循环直到b为0为止。
+     * 思路很重要。
+     *
+     * Bit Manipulate合集
+     * https://leetcode.com/problems/sum-of-two-integers/solutions/84278/a-summary-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently/
+     *
      */
 
     /**
@@ -43,7 +48,7 @@ public class Sum_of_Two_Integers_371 {
      * @return
      */
     public static int getSum_2(int a, int b) {
-        while (b != 0) {
+        while (b != 0) {//round 2: 直到b为0
             int carry = (a & b) << 1;//round 2 : 计算所有bit的carry
             a = a ^ b;//round 2 : 计算所有bit的当前bit
             b = carry;
