@@ -32,11 +32,37 @@ import java.util.PriorityQueue;
  * 1 <= nums1.length, nums2.length <= 10^5
  * -10^9 <= nums1[i], nums2[i] <= 10^9
  * nums1 and nums2 both are sorted in ascending order.
- * 1 <= k <= 1000
+ * 1 <= k <= 10000
  */
 public class Find_K_Pairs_with_Smallest_Sums_373 {
     public static List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         return kSmallestPairs_2(nums1, nums2, k);
+    }
+
+    /**
+     * round 2
+     * 参考：
+     * https://leetcode.com/problems/find-k-pairs-with-smallest-sums/solutions/84551/simple-java-o-klogk-solution-with-explanation/
+     * kSmallestPairs_2()
+     *
+     * 思路总结：
+     * 1.问题可以转化为m个排序数组的合并排序，然后在排序结果中取k个最小值的问题。我们把它看成二维数组对待。
+     * 2.假设有两个已排序数组n1和n2，长度分别为len1和len2。
+     * 3.转化后的二维数组为s[len1][len2]，其中s[i][j]=n1[i]+n2[j]。
+     * 4.问题转化为在行和列分别升序排序的二维数组中获取k个最小值问题。
+     * 5.基于"行和列分别升序排序"存在以下约束：当s[i][j]为第m个最小值时，第m+1个最小值为s[i][j+1]或s[i+1][last_seleted_j]，其中last_seleted_j要么是0，要么是上一次已经被选中的第i+1行的j+1。
+     *
+     * 算法梗概：
+     * 1.用小顶堆保存k个最小值数字组，然后从小顶堆中选择最小值出队，加入结果集。
+     * 2.新的数字加入heap时，因为下一行对应的数字组已经在heap里了，所以只需要新增当前行右侧的数字组，即{nums1[i],nums2[i+1]}，详见代码中的"精华3："
+     *
+     * @param nums1
+     * @param nums2
+     * @param k
+     * @return
+     */
+    public static List<List<Integer>> kSmallestPairs_3(int[] nums1, int[] nums2, int k) {
+        return null;
     }
 
     /**
