@@ -40,6 +40,7 @@ public class Find_K_Pairs_with_Smallest_Sums_373 {
     }
 
     /**
+     * review
      * round 2
      * 参考：
      * https://leetcode.com/problems/find-k-pairs-with-smallest-sums/solutions/84551/simple-java-o-klogk-solution-with-explanation/
@@ -55,6 +56,8 @@ public class Find_K_Pairs_with_Smallest_Sums_373 {
      * 算法梗概：
      * 1.用小顶堆保存k个最小值数字组，然后从小顶堆中选择最小值出队，加入结果集。
      * 2.新的数字加入heap时，因为下一行对应的数字组已经在heap里了，所以只需要新增当前行右侧的数字组，即{nums1[i],nums2[i+1]}，详见代码中的"精华3："
+     *
+     * review 扩展：m个已排序数组合并排序的问题。
      *
      * @param nums1
      * @param nums2
@@ -107,6 +110,7 @@ public class Find_K_Pairs_with_Smallest_Sums_373 {
             // next better pair could with be A: {after(num1), num2} or B: {num1. after(num2)}
             // for A, we've already added top possible k into queue, so A is either in the queue already, or not qualified
             // for B, it might be a better choice, so we offer it into queue
+            // round 2 : 在二维数组中向右向下查找最优解的过程中，只需要考虑向右一个维度。因为向下的查找部分已经做过了。这也算是降维的一种？
             int idx = t[2];
             if (idx + 1 < nums2.length) {// still at least one elem after num2 in array nums2
                 queue.offer(new Integer[]{t[0], nums2[idx + 1], idx + 1});

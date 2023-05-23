@@ -12,6 +12,7 @@ package leetcode;
  * -1: The number I picked is lower than your guess (i.e. pick < num).
  * 1: The number I picked is higher than your guess (i.e. pick > num).
  * 0: The number I picked is equal to your guess (i.e. pick == num).
+ *
  * Return the number that I picked.
  *
  * Example 1:
@@ -39,10 +40,42 @@ public class Guess_Number_Higher_or_Lower_374 {
     static int pick = 0;
 
     public static int guessNumber(int n) {
-        return guessNumber_3(n);
+        return guessNumber_4(n);
     }
 
     /**
+     * round 2
+     *
+     * Thinking:
+     * 1.二分查找法。
+     * 假设解空间为[i,j]，每次选择中间的数字m作为guess(m)的输入。
+     * 时间复杂度：O(logN)
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 39.4 MB Beats 69.39%
+     *
+     * @param n
+     * @return
+     */
+    public static int guessNumber_4(int n) {
+        int l = 1, r = n;
+        while (l < r) {
+            int m = (r - l) / 2 + l;
+            if (guess(m) == -1) {
+                r = m - 1;
+            } else if (guess(m) == 1) {
+                l = m + 1;
+            } else {
+                return m;
+            }
+        }
+        return l;
+    }
+
+    /**
+     * review round 2 这是一种新思路
+     *
      * 参考思路：
      * https://leetcode.com/problems/guess-number-higher-or-lower/solution/ 之Approach 2
      *
