@@ -54,7 +54,79 @@ package leetcode;
 public class Guess_Number_Higher_or_Lower_II_375 {
 
     public static int getMoneyAmount(int n) {
-        return getMoneyAmount_2(n);
+        return getMoneyAmount_4(n);
+    }
+
+    /**
+     * round 2
+     * 迭代法，递归法计算方向相反的方法
+     * getMoneyAmount_3()的方式是自顶向下的，时间复杂度高。如果是自底向上计算，那么时间复杂度会降低到O(N*N*N)
+     *
+     *
+     * 验证通过：
+     * Runtime 17 ms Beats 89.32%
+     * Memory 40.7 MB Beats 98.29%
+     *
+     * @param n
+     * @return
+     */
+    public static int getMoneyAmount_4(int n) {
+        int[][] cache = new int[n + 2][n + 2];
+        //沿对角线，从左向右遍历计算
+        for (int i = 1; i <= n; i++) {//这一层表示两个下标[m][n]的gap，即m+gap=n
+            for (int j = 1; i + j <= n; j++) {//这一层表示沿对角线平行线遍历的范围
+                //计算cache[j][i+j]
+                int t = Integer.MAX_VALUE;
+                for (int k = j; k <= i + j; k++) {
+                    t = Math.min(t, k + Math.max(cache[j][k - 1], cache[k + 1][i + j]));
+                }
+                cache[j][i + j] = t;
+            }
+        }
+        return cache[1][n];
+    }
+
+    /**
+     * round 2
+     * 递归法
+     *
+     * Thinking:
+     * 1.naive solution。采用递归+缓存中间值的思路。
+     * 1.1.公式为：
+     * f(1,n)=min(i+min(f(1,i-1),f(i+1,n)))
+     * f(1,1)=0
+     * f(1,2)=1
+     * ..
+     * f(n-1,n)=n-1
+     * f(n,n)=0
+     *
+     * f(1,3)
+     * =min(1+min(f(1,-1),f(2,3)),2+min(f(1,1),f(3,3)),3+min(f(1,2),f(3,2)))
+     * =min(2,2,4)
+     * =2
+     * 1.2.时间复杂度：O(N^N)
+     * 3.上面的方式是自顶向下的，时间复杂度高。如果是自底向上计算，那么时间复杂度会降低到O(N*N*N)
+     *
+     * 时间复杂度过高，会Time Limit Exceed
+     *
+     *
+     * @param n
+     * @return
+     */
+    public static int getMoneyAmount_3(int n) {
+        int[][] cache = new int[n + 1][n + 1];
+        return helper(1, n, cache);
+    }
+
+    private static int helper(int beg, int end, int[][] cache) {
+        if (beg >= end) return 0;
+        if (beg + 1 == end) return beg;
+        if (cache[beg][end] > 1) return cache[beg][end];
+        int res = Integer.MAX_VALUE;
+        for (int i = beg; i <= end; i++) {
+            res = Math.min(res, i + Math.max(helper(beg, i - 1, cache), helper(i + 1, end, cache)));
+        }
+        return res;
     }
 
     /**
