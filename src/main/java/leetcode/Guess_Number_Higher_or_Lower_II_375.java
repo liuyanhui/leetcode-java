@@ -71,7 +71,7 @@ public class Guess_Number_Higher_or_Lower_II_375 {
      * @return
      */
     public static int getMoneyAmount_4(int n) {
-        int[][] cache = new int[n + 2][n + 2];
+        int[][] cache = new int[n + 2][n + 2];//四个边缘扩大一周，防止下标溢出
         //沿对角线，从左向右遍历计算
         for (int i = 1; i <= n; i++) {//这一层表示两个下标[m][n]的gap，即m+gap=n
             for (int j = 1; i + j <= n; j++) {//这一层表示沿对角线平行线遍历的范围
@@ -130,7 +130,7 @@ public class Guess_Number_Higher_or_Lower_II_375 {
     }
 
     /**
-     * 金矿：如何从左向右沿对角线，遍历二维数组。
+     * review 金矿：如何从左向右沿对角线，遍历二维数组。
      * 例如：4*4的二维数组，遍历路径为
      * 第一次：[1,2] [2,3] [3,4]
      * 第二次：[1:3] [2:4]
