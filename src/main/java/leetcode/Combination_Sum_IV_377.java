@@ -1,5 +1,9 @@
 package leetcode;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 377. Combination Sum IV
  * Medium
@@ -36,7 +40,84 @@ package leetcode;
  */
 public class Combination_Sum_IV_377 {
     public static int combinationSum4(int[] nums, int target) {
-        return combinationSum4_2(nums, target);
+        return combinationSum4_4(nums, target);
+    }
+
+    /**
+     * 在combinationSum4_3()基础上优化，与combinationSum4_2()思路相同
+     *
+     * 由于target是有限的，可以采用DP思路，把从1到target的结果依次计算出来。
+     * 1.n[]排序
+     * 2.公式为 dp[k]=sum(d[n[i]])
+     * 3.时间复杂度：O(N*T)
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 74.69%
+     * Memory 40.6 MB Beats 13.71%
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int combinationSum4_4(int[] nums, int target) {
+        Arrays.sort(nums);
+        //初始化DP数组
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int n : nums) {
+            if (n > target) break;
+            dp[n] = 1;
+        }
+        //
+        for (int t = 1; t <= target; t++) {
+            for (int n : nums) {
+                if (t - n <= 0) break;
+                dp[t] += dp[t - n];
+            }
+        }
+
+        return dp[target];
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking:
+     * 1.naive solution
+     * 递归法
+     * f(n[],t)=f(n[],t-n[0])+f(n[],t-n[1])+...f(n[],t-n[k-1])，n[]的长度为k。
+     * 时间复杂度：O(N^N*T)
+     * 2.递归+缓存
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 23.27%
+     * Memory 41.1 MB Beats 5.47%
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int combinationSum4_3(int[] nums, int target) {
+        Map<Integer, Integer> cache = new HashMap<>();
+        Arrays.sort(nums);
+        return helper(nums, target, cache);
+    }
+
+    private static int helper(int[] nums, int target, Map<Integer, Integer> cache) {
+        if (target < 0) return 0;
+        if (target == 0) return 1;
+        if (cache.containsKey(target)) return cache.get(target);
+        int res = 0;
+        for (int n : nums) {
+            //nums已经过排序，如果当前已经无解，后续也无需在计算
+            if (target - n <= 0) {
+                if (target - n == 0) res++;
+                break;
+            }
+            res += helper(nums, target - n, cache);
+        }
+        cache.put(target, res);
+        return res;
     }
 
     /**
@@ -97,6 +178,7 @@ public class Combination_Sum_IV_377 {
         do_func(new int[]{9}, 3, 0);
         do_func(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 8, 128);
         do_func(new int[]{2, 1, 3}, 35, 1132436852);
+        do_func(new int[]{1, 2, 3}, 1, 1);
     }
 
     private static void do_func(int[] nums, int target, int expected) {

@@ -43,7 +43,8 @@ public class Wiggle_Subsequence_376 {
      * review
      * round 2
      *
-     * 验证失败：无法通过楼梯状的用例，如：nums={5, 5, 5, 4, 4, 4, 3, 3, 3}
+     * 验证失败：无法通过楼梯状的用例，如：nums={5, 5, 5, 4, 4, 4, 3, 3, 3}。
+     * 因为它对于连续相等的数字，有重大缺陷。要记录连续相等数字之前的数字，并且跳过连续相等的数字才行。
      *
      * 正确结果参考以下三个方案
      * wiggleMaxLength_1 wiggleMaxLength_2 wiggleMaxLength_3
