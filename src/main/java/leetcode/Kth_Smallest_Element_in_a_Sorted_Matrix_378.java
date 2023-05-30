@@ -6,9 +6,11 @@ import java.util.PriorityQueue;
  * 378. Kth Smallest Element in a Sorted Matrix
  * Medium
  * ---------------------------
- * Given an n x n matrix where each of the rows and columns are sorted in ascending order, return the kth smallest element in the matrix.
+ * Given an n x n matrix where each of the rows and columns is sorted in ascending order, return the kth smallest element in the matrix.
  *
  * Note that it is the kth smallest element in the sorted order, not the kth distinct element.
+ *
+ * You must find a solution with a memory complexity better than O(n2).
  *
  * Example 1:
  * Input: matrix = [[1,5,9],[10,11,13],[12,13,15]], k = 8
@@ -26,10 +28,63 @@ import java.util.PriorityQueue;
  * -10^9 <= matrix[i][j] <= 10^9
  * All the rows and columns of matrix are guaranteed to be sorted in non-decreasing order.
  * 1 <= k <= n^2
+ *
+ * Follow up:
+ * Could you solve the problem with a constant memory (i.e., O(1) memory complexity)?
+ * Could you solve the problem in O(n) time complexity? The solution may be too advanced for an interview but you may find reading this paper fun.
+ *
  */
 public class Kth_Smallest_Element_in_a_Sorted_Matrix_378 {
     public static int kthSmallest(int[][] matrix, int k) {
-        return kthSmallest_3(matrix, k);
+        return kthSmallest_4(matrix, k);
+    }
+
+    /**
+     * round 2
+     * review  有两种思路：
+     * 1.本题的思路。本质上还是排序的思路，只不过是只排序了kth最小值。
+     * 2.kthSmallest_3()的思路。这个思路更优，是二分查找思路。属于#"在未排序的集合中查找第k小的数"系列，参见kthSmallest_3()的注释
+     *
+     * 参考了373. Find K Pairs with Smallest Sums的方案
+     *
+     * Thinking:
+     * 1.属于行和列分别递增有序二维数组的排序问题。只是本题不要求排序，只查找kth最小值。
+     * 2.堆排序思路。
+     * 2.1.维护一个小顶堆heap。初始化时，每行的第一个元素加入heap。
+     * 2.2.heap的root删除并加入排序结果集，然后把root对应行的下一个元素加入heap。
+     * 2.3.重复步骤"2.2"
+     * 2.4.时间复杂度：O((M+N)logN)
+     * 2.5.需要单独记录heap中每个元素的位置。
+     * 2.5.这个思路只要行或列其中一个排序就可以使用，没有利用行和列都已经排序的条件。
+     *
+     * 验证通过：
+     * Runtime 30 ms Beats 9.89%
+     * Memory 48.4 MB Beats 30.58%
+     *
+     * @param matrix
+     * @param k
+     * @return
+     */
+    public static int kthSmallest_4(int[][] matrix, int k) {
+        PriorityQueue<Integer[]> heap = new PriorityQueue<>((o1, o2) -> o1[0] - o2[0]);
+        for (int i = 0; i < k && i < matrix.length; i++) {
+            Integer[] t = new Integer[3];
+            t[0] = matrix[i][0];
+            t[1] = i;
+            t[2] = 0;
+            heap.offer(t);
+        }
+
+        while (k-- > 1) {
+            Integer[] s = heap.poll();
+            if (s[2] + 1 >= matrix[0].length) continue;
+            Integer[] n = new Integer[3];
+            n[1] = s[1];
+            n[2] = s[2] + 1;
+            n[0] = matrix[n[1]][n[2]];
+            heap.offer(n);
+        }
+        return heap.poll()[0];
     }
 
     /**
@@ -56,7 +111,7 @@ public class Kth_Smallest_Element_in_a_Sorted_Matrix_378 {
             int mid = low + (high - low) / 2;
             // 关键：每次都要遍历整个matrix
             for (int i = 0; i < matrix.length; i++) {
-                for (int j = 0; j < matrix[i].length; j++) {
+                for (int j = 0; j < matrix[i].length; j++) {//FIXME: round 2: 这里可以优化。由于行和列是分别有序的，所以列的比较范围是非递增的。
                     if (matrix[i][j] <= mid) {
                         count++;
                     } else {
