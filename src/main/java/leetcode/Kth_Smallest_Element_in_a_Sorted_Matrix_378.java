@@ -97,6 +97,10 @@ public class Kth_Smallest_Element_in_a_Sorted_Matrix_378 {
      * 参考思路：
      * https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code
      *
+     * 1.先通过binary search找到一个值，然后再计算这个值是否为解。
+     * 2.如果不是解，那么根据binary search的规则组件缩小解空间。
+     * 3.本质上是先查找，再判断；在过程中缩小解空间。
+     *
      * 验证通过：
      * Runtime: 7 ms, faster than 67.55% of Java
      * Memory Usage: 56.2 MB, less than 5.54% of Java
