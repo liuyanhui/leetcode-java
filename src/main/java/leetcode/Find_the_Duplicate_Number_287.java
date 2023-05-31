@@ -44,6 +44,18 @@ public class Find_the_Duplicate_Number_287 {
     }
 
     /**
+     * round 2.5
+     * review
+     * 有多种方案：
+     * https://leetcode.com/problems/find-the-duplicate-number/editorial/
+     * https://leetcode.com/problems/find-the-duplicate-number/solutions/1892921/9-approaches-count-hash-in-place-marked-sort-binary-search-bit-mask-fast-slow-pointers/
+     * 有两种方案比较巧妙：
+     * 1.快慢指针法 Floyd's Tortoise and Hare (Cycle Detection)
+     * 2.类似于位图法或占位法。关键字：Negative Marking 或 Marking visited value within the array
+     *
+     */
+
+    /**
      * 金矿：在未排序的集合中查找某个数，采用基于数字的binary search；在已排序的集合中查找某个数，采用基于下标的binary search
      * round 2：二分查找的两种套路。
      * 与Find_Minimum_in_Rotated_Sorted_Array_153和Kth_Smallest_Element_in_a_Sorted_Matrix_378可以组成一个系列

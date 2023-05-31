@@ -45,6 +45,8 @@ public class Kth_Smallest_Element_in_a_Sorted_Matrix_378 {
      * 1.本题的思路。本质上还是排序的思路，只不过是只排序了kth最小值。
      * 2.kthSmallest_3()的思路。这个思路更优，是二分查找思路。属于#"在未排序的集合中查找第k小的数"系列，参见kthSmallest_3()的注释
      *
+     * 类似查找kth的最大或最小值，有时候无需排序，只需要查找即可。这类查找问题有两种情况（如上所述）。
+     *
      * 参考了373. Find K Pairs with Smallest Sums的方案
      *
      * Thinking:

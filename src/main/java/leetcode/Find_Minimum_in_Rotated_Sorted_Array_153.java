@@ -47,7 +47,7 @@ public class Find_Minimum_in_Rotated_Sorted_Array_153 {
      * 2.数组无序通过值比较
      * 本题属于第1种情况
      *
-     * FIXME 在未排序的集合中查找某个数，采用基于数字的binary search；在已排序的集合中查找某个数，采用基于下标的binary search
+     * review 在未排序的集合中查找某个数，采用基于数字的binary search；在已排序的集合中查找某个数，采用基于下标的binary search
      *
      * 算法如下：
      * 通过二分查找分割后，共有三种情况：
@@ -67,9 +67,9 @@ public class Find_Minimum_in_Rotated_Sorted_Array_153 {
         int mid = 0;
         while (left < right) {
             mid = (left + right) / 2;
-            if (nums[mid] > nums[right]) {
+            if (nums[mid] > nums[right]) {//review 这里只需要列出违反单调递增的条件即可，所以无需列出条件"nums[left] < nums[mid]"
                 left = mid + 1;
-            } else if (nums[left] > nums[mid]) {
+            } else if (nums[left] > nums[mid]) {//review 这里只需要列出违反单调递增的条件即可
                 right = mid;
             } else {
                 break;
