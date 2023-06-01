@@ -38,6 +38,16 @@ import java.util.*;
  */
 public class Insert_Delete_GetRandom_380 {
     /**
+     * round 2
+     * review 解决增、删和随机读的的时间复杂度都在O(1)的一个trick方法。
+     *
+     * 单一数据结构是无法实现o(1)的，要通过空间换时间的思路。
+     * 采用map和list两种数据结构存储数据。
+     * 删除时，先把待删除的元素移动到list的末尾，再删除即可。
+     *
+     */
+
+    /**
      * The List is used to store numbers and serve the getRandom() method. The Map contains the mapping between the value and its index in the ArrayList. The Map helps to check whether a value is already inserted or not. The main trick is when you remove a value. ArrayList's remove method is O(n) if you remove from random location. To overcome that, we swap the values between (randomIndex, lastIndex) and always remove the entry from the end of the list. After the swap, you need to update the new index of the swapped value (which was previously at the end of the list) in the map.
      *
      * 思路描述：
@@ -80,6 +90,7 @@ public class Insert_Delete_GetRandom_380 {
             if (!map.containsKey(val)) return false;
             int idx = map.get(val);
             if (idx < list.size() - 1) {
+                //review round 2 : 只需要把list的最后一个元素移动即可，因为最后一位是要被删除的。
                 int lastOne = list.get(list.size() - 1);
                 list.set(idx, lastOne);
                 map.put(lastOne, idx);
