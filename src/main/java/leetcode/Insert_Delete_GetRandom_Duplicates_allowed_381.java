@@ -37,6 +37,53 @@ import java.util.*;
  */
 public class Insert_Delete_GetRandom_Duplicates_allowed_381 {
     /**
+     * round 2
+     *
+     * 参考资料：
+     * https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/editorial/
+     * https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/solutions/85540/java-haspmap-linkedhashset-arraylist-155-ms/
+     *
+     * 验证通过
+     */
+    static class RandomizedCollection_2 {
+
+        Map<Integer, Set<Integer>> map;//FIXME：这里要用Set而不是List
+        List<Integer> list;
+
+        public RandomizedCollection_2() {
+            map = new HashMap<>();
+            list = new ArrayList<>();
+        }
+
+        public boolean insert(int val) {
+            boolean existed = map.containsKey(val) && !map.get(val).isEmpty();
+            list.add(val);
+            map.computeIfAbsent(val, v -> new HashSet<>());
+            map.get(val).add(list.size() - 1);
+            return !existed;
+        }
+
+        public boolean remove(int val) {
+            if (!map.containsKey(val) || map.get(val).isEmpty()) return false;
+
+            int delIndex = map.get(val).iterator().next();
+            map.get(val).remove(delIndex);//FIXME：注意顺序
+            int last = list.get(list.size() - 1);
+            list.set(delIndex, last);
+            map.get(last).add(delIndex);//FIXME： 先add，再remove。处理last==val的情况。
+            map.get(last).remove(list.size() - 1);
+            list.remove(list.size() - 1);
+
+            return true;
+        }
+
+
+        public int getRandom() {
+            return list.get(new Random().nextInt(list.size()));
+        }
+    }
+
+    /**
      * 参考思路：Insert_Delete_GetRandom_380，略复杂一点，思路相同。
      *
      * 验证通过：
@@ -77,10 +124,12 @@ public class Insert_Delete_GetRandom_Duplicates_allowed_381 {
                 map.get(lastOne).remove(array.size() - 1);
                 //再把新的下标插入
                 map.get(lastOne).add(valIdx);
-
+                //todo ？
                 map.get(val).remove(valIdx);
+                //替换array中的元素
                 array.set(valIdx, lastOne);
             }
+            //删除元素
             int t = array.size() - 1;
             array.remove(t);
             map.get(val).remove(t);
@@ -95,7 +144,7 @@ public class Insert_Delete_GetRandom_Duplicates_allowed_381 {
 
 
     public static void main(String[] args) {
-        RandomizedCollection randomizedSet = new RandomizedCollection();
+        RandomizedCollection_2 randomizedSet = new RandomizedCollection_2();
 //        System.out.println(randomizedSet.insert(1));
 //        System.out.println(randomizedSet.insert(1));
 //        System.out.println(randomizedSet.insert(2));
@@ -110,7 +159,7 @@ public class Insert_Delete_GetRandom_Duplicates_allowed_381 {
 //        System.out.println(randomizedSet.insert(1));
 
         System.out.println("------------------");
-        randomizedSet = new RandomizedCollection();
+        randomizedSet = new RandomizedCollection_2();
         System.out.println(randomizedSet.insert(10));
         System.out.println(randomizedSet.insert(10));
         System.out.println(randomizedSet.insert(20));
