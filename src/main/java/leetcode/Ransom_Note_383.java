@@ -25,6 +25,36 @@ package leetcode;
  * ransomNote and magazine consist of lowercase English letters.
  */
 public class Ransom_Note_383 {
+
+    public static boolean canConstruct(String ransomNote, String magazine) {
+        return canConstruct_2(ransomNote, magazine);
+    }
+
+    /**
+     * round 2
+     * 验证通过：
+     *
+     * @param ransomNote
+     * @param magazine
+     * @return
+     */
+    public static boolean canConstruct_2(String ransomNote, String magazine) {
+        if (magazine.length() < ransomNote.length()) return false;
+        int[] cntm = new int[26];
+        for (int i = 0; i < magazine.length(); i++) {
+            cntm[magazine.charAt(i) - 'a']++;
+        }
+        int[] cntr = new int[26];
+        for (int i = 0; i < ransomNote.length(); i++) {
+            cntr[ransomNote.charAt(i) - 'a']++;
+
+        }
+        for (int i = 0; i < 26; i++) {
+            if (cntm[i] < cntr[i]) return false;
+        }
+        return true;
+    }
+
     /**
      * 验证通过：
      * Runtime: 3 ms, faster than 83.11% of Java online submissions for Ransom Note.
@@ -34,7 +64,7 @@ public class Ransom_Note_383 {
      * @param magazine
      * @return
      */
-    public static boolean canConstruct(String ransomNote, String magazine) {
+    public static boolean canConstruct_1(String ransomNote, String magazine) {
         int[] count = new int[26];
         for (int i = 0; i < magazine.length(); i++) {
             char c = magazine.charAt(i);
