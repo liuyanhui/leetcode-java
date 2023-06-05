@@ -29,12 +29,22 @@ import java.util.Random;
  * solution.shuffle();    // Returns the random shuffling of array [1,2,3]. Example: return [1, 3, 2]
  *
  * Constraints:
- * 1 <= nums.length <= 200
+ * 1 <= nums.length <= 50
  * -10^6 <= nums[i] <= 10^6
  * All the elements of nums are unique.
- * At most 5 * 10^4 calls in total will be made to reset and shuffle.
+ * At most 10^4 calls in total will be made to reset and shuffle.
  */
 public class Shuffle_an_Array_384 {
+    /**
+     * round 2
+     * Thinking:
+     *  1.问题转化为如何把一个整型数组的数字随机打乱，并转换成一个随机的数组。还要保证性能。
+     *  2.从源数组随机获取一个数字，然后追加到新数组的末尾。
+     *  3.为了保证性能。源数组获取数字后，该数字与原数组的末尾数字互换，并把该数字追加到新数组末尾，最后删除源数组的末尾数字。
+     *  4.源数组和目标数据可以是一个数组，通过巧妙的swap节省内存空间
+     *
+     */
+    
     /**
      * 思路：
      * 1.每次随机从源数组中取出一个数字，然后从原数组中去掉这个数字，直到原数组为空。
