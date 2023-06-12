@@ -28,6 +28,17 @@ public class Lexicographical_Numbers_386 {
     }
 
     /**
+     * review
+     * round 2
+     * Thinking：
+     * 1.naive solution
+     * 先生成所有数字的list，然后按照字典序排序。需要实现比较算法。
+     * 时间复杂度：O(nlogn)，空间复杂度：O(1)
+     * 2.树的先序遍历法。lexicalOrder_1()
+     * 3.归纳法。lexicalOrder_2()
+     */
+
+    /**
      * 数学分析法。
      * 讨论
      * The basic idea is to find the next number to add.
@@ -67,7 +78,7 @@ public class Lexicographical_Numbers_386 {
     }
 
     /**
-     * 树的遍历，最大出度为10的数，每个子节点是父节点append而来（从0~9）。求解过程就是树的先序遍历过程。
+     * 树的遍历，最大出度为10的树，每个子节点是父节点append而来（从0~9）。求解过程就是树的先序遍历过程。
      *
      * 验证通过：
      * Runtime: 1 ms, faster than 100.00% of Java online submissions for Lexicographical Numbers.
