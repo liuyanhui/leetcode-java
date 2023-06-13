@@ -35,7 +35,7 @@ public class Lexicographical_Numbers_386 {
      * 先生成所有数字的list，然后按照字典序排序。需要实现比较算法。
      * 时间复杂度：O(nlogn)，空间复杂度：O(1)
      * 2.树的先序遍历法。lexicalOrder_1()
-     * 3.归纳法。lexicalOrder_2()
+     * 3.分析归纳法。lexicalOrder_2()
      */
 
     /**
@@ -48,6 +48,8 @@ public class Lexicographical_Numbers_386 {
      *
      * 参考资料：
      * https://leetcode.com/problems/lexicographical-numbers/discuss/86242/Java-O(n)-time-O(1)-space-iterative-solution-130ms
+     *
+     * review round 2 : 根据下一个数的位数变长、不变、变短分别进行逻辑处理
      *
      * 验证通过：
      * Runtime: 7 ms, faster than 32.22% of Java online submissions for Lexicographical Numbers.
@@ -62,11 +64,11 @@ public class Lexicographical_Numbers_386 {
         ret.add(1);
         for (int i = 2; i <= n; i++) {
             int cur = ret.get(ret.size() - 1);
-            if (cur * 10 <= n) {
+            if (cur * 10 <= n) {//round 2 : 下一个数的长度增加，追加0
                 ret.add(cur * 10);
-            } else if (cur + 1 <= n && (cur + 1) % 10 != 0) {
+            } else if (cur + 1 <= n && (cur + 1) % 10 != 0) {//round 2 :下一个数的长度不变，追加1~9
                 ret.add(cur + 1);
-            } else {
+            } else {//round 2 : 下一个数的长度减少
                 int t = cur / 10 + 1;
                 while (t % 10 == 0) {
                     t /= 10;

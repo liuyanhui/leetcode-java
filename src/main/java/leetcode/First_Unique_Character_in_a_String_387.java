@@ -27,7 +27,74 @@ import java.util.Map;
  */
 public class First_Unique_Character_in_a_String_387 {
     public static int firstUniqChar(String s) {
-        return firstUniqChar_1(s);
+        return firstUniqChar_5(s);
+    }
+
+    /**
+     * 更优的方案
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
+    public static int firstUniqChar_5(String s) {
+        int res = Integer.MAX_VALUE;
+        for (char c = 'a'; c <= 'z'; c++) {
+            int first = s.indexOf(c);
+            int end = s.lastIndexOf(c);
+            if (first != -1 && first == end) {
+                res = Math.min(res, first);
+            }
+        }
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
+    public static int firstUniqChar_4(String s) {
+        int[] cnt = new int[26];
+        int[] pos = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']++;
+            pos[s.charAt(i) - 'a'] = i;
+        }
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < pos.length; i++) {
+            if (cnt[i] == 1)
+                res = Math.min(res, pos[i]);
+        }
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+
+    /**
+     * round 2
+     *
+     * 两次遍历。第一次统计字母出现次数，第二次计算只出现一次的字母
+     *
+     * 验证通过：
+     * Runtime 8 ms Beats 81.72%
+     * Memory 44.4 MB Beats 10.84%
+     *
+     * @param s
+     * @return
+     */
+    public static int firstUniqChar_3(String s) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (cnt[s.charAt(i) - 'a'] == 1) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
