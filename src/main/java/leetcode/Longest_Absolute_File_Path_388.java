@@ -54,10 +54,59 @@ import java.util.Stack;
  * Constraints:
  * 1 <= input.length <= 10^4
  * input may contain lowercase or uppercase English letters, a new line character '\n', a tab character '\t', a dot '.', a space ' ', and digits.
+ * All file and directory names have positive length.
  */
 public class Longest_Absolute_File_Path_388 {
     public static int lengthLongestPath(String input) {
-        return lengthLongestPath_3(input);
+        return lengthLongestPath_4(input);
+    }
+
+    /**
+     * round 2
+     * 
+     * lengthLongestPath_3()的代码更简洁。
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 73.38%
+     * Memory 40.5 MB Beats 85.6%
+     *
+     * @param input
+     * @return
+     */
+    public static int lengthLongestPath_4(String input) {
+        if (input == null || input.length() == 0) return 0;
+        String[] arr = input.split("\n");
+        List<String> paths = new ArrayList<>();
+        int res = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int deep = 0;
+            String[] dirs = arr[i].split("\t");
+            int j = 0;
+            //计算目录深度
+            while (j < dirs.length && (dirs[j] == null || dirs[j].length() == 0)) {
+                deep++;
+                j++;
+            }
+            //删除多余的目录或文件
+            while (paths.size() > 0 && deep < paths.size()) {
+                paths.remove(paths.size() - 1);
+            }
+            //插入新目录或文件
+            while (j < dirs.length) {
+                paths.add(dirs[j]);
+                j++;
+            }
+
+            //判断是否为文件，如果是文件计算路径长度
+            if (paths.get(paths.size() - 1).indexOf('.') > 0) {//表示是文件
+                int t = 0;
+                for (String s : paths) {
+                    t += s.length() + 1;
+                }
+                res = Math.max(res, t - 1);
+            }
+        }
+        return res;
     }
 
     /**
