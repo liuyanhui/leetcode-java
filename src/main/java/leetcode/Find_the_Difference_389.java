@@ -32,7 +32,53 @@ package leetcode;
  */
 public class Find_the_Difference_389 {
     public static char findTheDifference(String s, String t) {
-        return findTheDifference_2(s, t);
+        return findTheDifference_3(s, t);
+    }
+
+    /**
+     * round 2
+     * findTheDifference_2()是另一种思路
+     * findTheDifference_4()也很不错
+     *
+     * 验证通过：
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static char findTheDifference_3(String s, String t) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']++;
+            cnt[t.charAt(i) - 'a']--;
+        }
+        cnt[t.charAt(t.length() - 1) - 'a']--;
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] < 0) {
+                return (char) (i + 'a');
+            }
+        }
+        return ' ';
+    }
+
+    /**
+     * round 2
+     *
+     * AC中的最快方案，耗时0ms
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static char findTheDifference_4(String s, String t) {
+        char s1[] = s.toCharArray();
+        char t1[] = t.toCharArray();
+        int ans = 0;
+        for (int i = 0; i < s1.length; i++) {
+            ans = ans + t1[i] - s1[i];
+        }
+        ans = ans + t1[t1.length - 1];
+        return (char) ans;
     }
 
     /**
