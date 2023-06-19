@@ -33,6 +33,26 @@ public class Elimination_Game_390 {
     }
 
     /**
+     * review 
+     * round 2
+     *
+     * Thinking:
+     * 1.native solution
+     * 直接在num[]上操作，被删除的数字置为0，最后剩下的数字就说所求。
+     * 时间复杂度：O(N*N)，空间复杂度：O(N)
+     * 2.利用两个stack保存数字，stack1出栈后加入stack2中（反之亦然），最终只剩一个数字。
+     * 时间复杂度：O(N)，空间复杂度：O(2*N)
+     * 3.https://leetcode.com/problems/elimination-game/solutions/87119/java-easiest-solution-o-logn-with-explanation/
+     * lastRemaining_2()
+     * 主要思路：设head是最左边的数字，每轮计算都更新head，直到只有一个数字。
+     * 更新head的算法如下：
+     * 1.从左向右时，更新head
+     * 2.从右向左且剩余数字的数量是奇数时，更新head
+     * 3.head是递增的，并且head+=step，step是计算轮次*2
+     *
+     */
+
+    /**
      * 递归法，没有完全理解
      * 参考思路：
      * https://leetcode.com/problems/elimination-game/discuss/87116/Java-Recursion-and-Proof
