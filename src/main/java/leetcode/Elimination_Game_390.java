@@ -33,7 +33,7 @@ public class Elimination_Game_390 {
     }
 
     /**
-     * review 
+     * review
      * round 2
      *
      * Thinking:
