@@ -30,14 +30,35 @@ import java.util.List;
 public class Is_Subsequence_392 {
 
     public static boolean isSubsequence(String s, String t) {
-        return isSubsequence_1(s, t);
+        return isSubsequence_3(s, t);
+    }
+
+    /**
+     * round 2
+     *
+     * 验证通过：Runtime 2 ms Beats 59.79%
+     * Memory 40.5 MB Beats 85.59%
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isSubsequence_3(String s, String t) {
+        int i = 0, j = 0;
+        while (i < s.length() && j < t.length()) {
+            if (s.charAt(i) == t.charAt(j)) {
+                i++;
+            }
+            j++;
+        }
+        return i == s.length();
     }
 
     /**
      * 照抄参考思路的代码。
      *
      * Follow up要求的参考思路：
-     *https://leetcode.com/problems/is-subsequence/discuss/87302/Binary-search-solution-for-follow-up-with-detailed-comments
+     * https://leetcode.com/problems/is-subsequence/discuss/87302/Binary-search-solution-for-follow-up-with-detailed-comments
      *
      * Follow-up: O(N) time for pre-processing, O(Mlog?) for each S.
      * Eg-1. s="abc", t="bahbgdca"

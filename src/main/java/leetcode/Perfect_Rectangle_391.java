@@ -41,7 +41,13 @@ public class Perfect_Rectangle_391 {
      * 参考思路：
      * https://leetcode.com/problems/perfect-rectangle/solutions/87181/really-easy-understanding-solution-o-n-java/
      *
-     * 1.用Hashmap实现过于复杂
+     * 思路：
+     * 1.大矩形四个顶点数量出现单数次，其余顶点出现偶数次。
+     * 2.小矩形面积和与大矩形相等。
+     * 3.同时满足上面两个条件，返回true
+     *
+     * 方案：
+     * 1.用Hashmap实现有点复杂
      * 2.用Set实现会简单。如果顶点不在Set则add()；如果顶点在Set中则remove()。
      * 3.用TreeSet更简单。通过矩形加入TreeSet判断是否重叠，如果重叠直接终止计算，返回false。
      *
