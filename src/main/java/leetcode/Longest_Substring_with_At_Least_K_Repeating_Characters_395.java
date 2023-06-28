@@ -27,6 +27,30 @@ public class Longest_Substring_with_At_Least_K_Repeating_Characters_395 {
     }
 
     /**
+     * review 
+     * round 2
+     * https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
+     *
+     * 三种方法：
+     * 1.naive solution 遍历穷举法
+     * 1.1.依次计算s[i,j]的最大Repeat Characters的值，记为R[i,j]。其中，0<=i<len，i<j<=len。
+     * 1.2.R[i,j]>=k时的max(j-i+1)为所求。
+     * 时间复杂度：O(N*N)，空间复杂度：O(N)
+     *
+     * 2.Divide And Conquer 分治法
+     * 本质上是排除法：把出现次数小于k的字符去掉；然后再采用分治法计算两侧的结果；最后取两侧结果的最大值。
+     *
+     * 3.Sliding Window 滑动窗口法
+     * 较难理解。问题有两个维度：k和the number of unique characters in substring。本方法是从后者切入的。
+     *
+     * A substring is valid if each character has at least k frequency. The main idea is to find all the valid substrings with a different number of unique characters and track the maximum length.
+     *
+     * https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/solutions/87739/java-strict-o-n-two-pointer-solution/
+     * https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
+     *
+     */
+
+    /**
      * 滑动窗口法：
      * https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters/solution/zhi-shao-you-kge-zhong-fu-zi-fu-de-zui-c-o6ww/
      * https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/solution/
