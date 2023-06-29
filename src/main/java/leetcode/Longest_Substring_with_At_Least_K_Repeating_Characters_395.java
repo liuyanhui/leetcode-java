@@ -27,7 +27,7 @@ public class Longest_Substring_with_At_Least_K_Repeating_Characters_395 {
     }
 
     /**
-     * review 
+     * review
      * round 2
      * https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
      *

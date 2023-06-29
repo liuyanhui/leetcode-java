@@ -35,7 +35,67 @@ package leetcode;
 public class Rotate_Function_396 {
 
     public static int maxRotateFunction(int[] nums) {
-        return maxRotateFunction_2(nums);
+        return maxRotateFunction_4(nums);
+    }
+
+    /**
+     * round 2
+     *
+     * 详见maxRotateFunction_3()的Thinking:2.
+     *
+     * 验证通过：
+     * Runtime 3 ms Beats 100%
+     * Memory 60.8 MB Beats 29.74%
+     *
+     * @param nums
+     * @return
+     */
+    public static int maxRotateFunction_4(int[] nums) {
+        int sum = 0;
+        int cache = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            cache += i * nums[i];
+        }
+        int res = cache;
+        for (int i = 1; i < nums.length; i++) {
+            cache = cache - nums.length * nums[nums.length - i] + sum;
+            res = Math.max(res, cache);
+        }
+        return res;
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking:
+     * 1.naive solution
+     * 穷举计算，并比较全局最优解。
+     * 公式为：
+     * F(0)=0*n[0]+1*n[1]+..+(len-2)*n[len-2]	+(len-1)*n[len-1]
+     * F(1)=1*n[0]+2*n[1]+..+(len-1)*n[len-2]	+0*n[len-1]
+     * F(2)=2*n[0]+3*n[1]+..+		0*n[len-2]	+1*n[len-1]
+     * 第0行的乘数因子为{0,1,2,..,len-1}
+     * 第1行的乘数因子为{1,2,3,..,len-1,0}
+     * 第i行的乘数因子为{(0+i)%len,(1+i)%len,(2+i)%len,..}
+     * 2.BUD优化
+     * D原则：第i-1次和第i次是有关联的，可以通过提前计算，避免不必要的计算。
+     * F(i)=F(i-1)-len*nums[len-i]+sum
+     * 那么在naive solution的基础上，可以时间复杂度优化为O(N)
+     *
+     * @param nums
+     * @return
+     */
+    public static int maxRotateFunction_3(int[] nums) {
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int t = 0;
+            for (int j = 0; j < nums.length; j++) {
+                t += ((i + j) % nums.length) * nums[j];
+            }
+            res = Math.max(res, t);
+        }
+        return res;
     }
 
     /**
