@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 397. Integer Replacement
  * Medium
@@ -30,7 +33,38 @@ package leetcode;
  */
 public class Integer_Replacement_397 {
     public static int integerReplacement(int n) {
-        return integerReplacement_2(n);
+        return integerReplacement_4(n);
+    }
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 39.5 MB Beats 41.51%
+     *
+     * @param n
+     * @return
+     */
+    public static int integerReplacement_4(int n) {
+        Map<Integer, Integer> cache = new HashMap<>();
+        cache.put(0, 0);
+        cache.put(1, 0);
+        return helper(n, cache);
+    }
+
+    private static int helper(int n, Map<Integer, Integer> cache) {
+        if (n <= 1) return 0;
+        if (cache.containsKey(n)) return cache.get(n);
+        int res = 0;
+        if (n % 2 == 0) {
+            res = helper(n / 2, cache) + 1;
+        } else {
+            //review 用下面的这种方式，可以避免n=Integer.MAX_VALUE时的溢出异常。与integerReplacement_2()不同。s
+            res = Math.min(helper(n / 2 + 1, cache), helper(n / 2, cache)) + 2;
+        }
+        cache.put(n, res);
+        return res;
     }
 
     /**
