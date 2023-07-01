@@ -34,7 +34,7 @@ public class Random_Pick_Index_398 {
 
     /**
      * round 2
-     * reservoir sample法不太熟悉
+     * reservoir sample法不熟悉
      */
 
     /**

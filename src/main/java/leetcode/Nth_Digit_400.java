@@ -23,7 +23,49 @@ import java.util.List;
  */
 public class Nth_Digit_400 {
     public static int findNthDigit(int n) {
-        return findNthDigit_2(n);
+        return findNthDigit_4(n);
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking：
+     * 1.native solution
+     * 从1到n开始依次计算每个数字。时间复杂度O(N)
+     * 2.总结规律
+     * 1~9每个数字都是1位，共9*1=9个digit；10~99每个数字都是2位，共90*2=180个digit；100~999每个数字都是3位，共900*3=2700个digit；..
+     * 3.分为3个步骤：
+     * 3.1.先找到数字n在几位数的范围内
+     * 3.2.再使用binary search定位到具体数字
+     * 3.3.最后得到解
+     * findNthDigit_4()方法有问题
+     *
+     * findNthDigit_3()是最优解
+     *
+     * @param n
+     * @return
+     */
+    public static int findNthDigit_4(int n) {
+        if (n < 10) return n;
+        //根据n定位slot
+        int base = 1;//i位数的起始值。如：1，10，100
+        int baseCnt = 0;//所有小于i-1位数字的digit总和
+        int width = 1;//数字实际的位数
+        while (width < 10) {
+            base = (int) Math.pow(10, width - 1);
+            int tmpCnt = 9 * base * width;//i位数字的digit总和
+            if (baseCnt > n - tmpCnt) {//用减法防止int溢出
+                break;
+            }
+            baseCnt += tmpCnt;
+            width++;
+        }
+        //定位到具体数字
+        int number = (n - baseCnt - 1) / width + base;
+        //计算digit在number中的序号
+        int seq = (n - baseCnt - 1) % width;//mod运算从0开始，所以要-1
+        //最后得到解
+        return String.valueOf(number).charAt(seq) - '0';
     }
 
     /**
@@ -142,5 +184,7 @@ public class Nth_Digit_400 {
         System.out.println(ret);
         System.out.println(ret == expected);
         System.out.println("--------------");
+//        String ss ="0123456789";
+//        System.out.println("2="+ss.charAt(2));
     }
 }
