@@ -31,6 +31,12 @@ import java.util.*;
  * At most 10^4 calls will be made to pick.
  */
 public class Random_Pick_Index_398 {
+
+    /**
+     * round 2
+     * reservoir sample法不太熟悉
+     */
+
     /**
      * Map缓存法
      * 验证通过：
