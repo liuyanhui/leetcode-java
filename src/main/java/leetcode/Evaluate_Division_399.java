@@ -42,6 +42,79 @@ import java.util.*;
  * Ai, Bi, Cj, Dj consist of lower case English letters and digits.
  */
 public class Evaluate_Division_399 {
+    public static double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        return calcEquation_2(equations, values, queries);
+    }
+
+    /**
+     * round 2
+     * 
+     * Thinking：
+     * 1.不要轻易缩小解空间，可能会把部分解的特征提前排除。比如：a/c=2时，不能简单设a=2和c=1，如果后续出现a/d=23等时，可能导致错误的结果。
+     * 2.是否可以根据条件，把计算关系转化成有向图，然后通过遍历图进行查找和计算。
+     * 2.1.图中的节点，有两个属性，都是列表。一个子节点列表，一个保存对应的结果（权重）列表。
+     * 2.2.采用两个邻接表，一个是节点列表，一个是权重列表。
+     * 2.3.采用DFS的方式遍历邻接表。
+     *
+     * 验证通过：
+     * Runtime 7 ms Beats 5.96%
+     * Memory 41.6 MB Beats 5.68%
+     *
+     * @param equations
+     * @param values
+     * @param queries
+     * @return
+     */
+    public static double[] calcEquation_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        double[] res = new double[queries.size()];
+        //构建邻接表，有向图
+        Map<String, Set<String>> mapNode = new HashMap<>();
+        Map<String, Map<String, Double>> mapWeight = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            List<String> e = equations.get(i);
+            mapNode.putIfAbsent(e.get(0), new HashSet<>());
+            mapNode.get(e.get(0)).add(e.get(1));
+            mapNode.putIfAbsent(e.get(1), new HashSet<>());
+            mapNode.get(e.get(1)).add(e.get(0));
+
+            mapWeight.putIfAbsent(e.get(0), new HashMap<>());
+            mapWeight.get(e.get(0)).put(e.get(1), values[i]);
+            mapWeight.putIfAbsent(e.get(1), new HashMap<>());
+            mapWeight.get(e.get(1)).put(e.get(0), 1 / values[i]);
+        }
+
+        //根据queries查找领接表
+        for (int i = 0; i < queries.size(); i++) {
+            res[i] = query(queries.get(i).get(0), queries.get(i).get(1), mapNode, mapWeight, new HashSet<>());
+        }
+
+        return res;
+    }
+
+    private static double query(String from, String to, Map<String, Set<String>> mapNode, Map<String, Map<String, Double>> mapWeight, Set<String> seen) {
+        String seenStr = from + "." + to;
+        if (seen.contains(seenStr)) return -1.0;
+        if (mapNode.containsKey(from)) {
+            if (from.equals(to)) return 1.0;
+            if (mapNode.get(from).contains(to)) {
+                return mapWeight.get(from).get(to);
+            }
+
+            for (String next : mapNode.get(from)) {
+                seen.add(seenStr);
+                double t = query(next, to, mapNode, mapWeight, seen);
+                seen.remove(seenStr);
+                if (t == -1.0) {
+                    continue;
+                } else {
+                    return mapWeight.get(from).get(next) * t;
+                }
+            }
+        }
+
+        return -1.0;
+    }
+
     /**
      * 问题转化为图的遍历，采用DFS法
      *
@@ -57,7 +130,7 @@ public class Evaluate_Division_399 {
      * @param queries
      * @return
      */
-    public static double[] calcEquation(
+    public static double[] calcEquation_1(
             List<List<String>> equations, double[] values, List<List<String>> queries) {
         double[] ret = new double[queries.size()];
         //构造领接表
@@ -99,6 +172,7 @@ public class Evaluate_Division_399 {
 
         return ret;
     }
+
     //领接表中的节点
     static class Node {
         public String c;//边的尾部字符
@@ -146,6 +220,17 @@ public class Evaluate_Division_399 {
         queries.add(Arrays.asList("a", "c"));
         queries.add(Arrays.asList("x", "y"));
         expected = new double[]{0.50000, 2.00000, -1.00000, -1.00000};
+        do_func(equations, values, queries, expected);
+
+        equations = new ArrayList<>();
+        equations.add(Arrays.asList("a", "e"));
+        equations.add(Arrays.asList("b", "e"));
+        values = new double[]{4.0, 3.0};
+        queries = new ArrayList<>();
+        queries.add(Arrays.asList("a", "b"));
+        queries.add(Arrays.asList("e", "e"));
+        queries.add(Arrays.asList("x", "x"));
+        expected = new double[]{1.33333, 1.00000, -1.00000};
         do_func(equations, values, queries, expected);
     }
 
