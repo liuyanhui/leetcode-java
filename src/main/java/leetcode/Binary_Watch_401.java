@@ -35,6 +35,30 @@ public class Binary_Watch_401 {
     }
 
     /**
+     * review 
+     * AC 中的另一种解法。非递归
+     *
+     * @param turnedOn
+     * @return
+     */
+    public List<String> readBinaryWatch_2(int turnedOn) {
+        ArrayList<String> results = new ArrayList<String>();
+
+        for (int hour = 0; hour < 12; hour++) {
+            for (int minute = 0; minute < 60; minute++) {
+                if (Integer.bitCount(hour) + Integer.bitCount(minute) == turnedOn) {
+                    if (minute < 10) {
+                        results.add(String.format("%d:0%d", hour, minute));
+                    } else {
+                        results.add(String.format("%d:%d", hour, minute));
+                    }
+                }
+            }
+        }
+        return results;
+    }
+
+    /**
      * Thinking：
      * 1.两个数组中选择固定个数元素并排列的问题。
      *
