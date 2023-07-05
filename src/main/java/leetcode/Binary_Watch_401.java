@@ -1,6 +1,8 @@
 package leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 401. Binary Watch
@@ -32,19 +34,30 @@ public class Binary_Watch_401 {
         return readBinaryWatch_1(turnedOn);
     }
 
+    /**
+     * Thinking：
+     * 1.两个数组中选择固定个数元素并排列的问题。
+     *
+     * 验证通过:
+     * Runtime 8 ms Beats 55.98%
+     * Memory 41 MB Beats 95.15%
+     *
+     * @param turnedOn
+     * @return
+     */
     public static List<String> readBinaryWatch_1(int turnedOn) {
         List<String> res = new ArrayList<>();
         if (turnedOn < 0 || 8 < turnedOn) return res;
-        int[] hours = {0, 1, 2, 4, 8};
-        int[] minutes = {0, 1, 2, 4, 8, 16, 32};
+        int[] hours = {1, 2, 4, 8};
+        int[] minutes = {1, 2, 4, 8, 16, 32};
 
         for (int h = 0; h < 4; h++) {
             //先选择hour
             List<String> res_h = new ArrayList<>();
-            getHours(h, 0, hours, new HashSet<>(), res_h);
+            getHours(h, 0, hours, 0, res_h);
             //再选择minute
             List<String> res_m = new ArrayList<>();
-            getMinites(turnedOn - h, 0, minutes, new HashSet<>(), res_m);
+            getMinites(turnedOn - h, 0, minutes, 0, res_m);
             //组合
             for (String th : res_h) {
                 for (String tm : res_m) {
@@ -55,7 +68,15 @@ public class Binary_Watch_401 {
         return res;
     }
 
-    private static void getHours(int n, int sum, int[] hours, Set<Integer> seen, List<String> res) {
+    /**
+     * 计算hour的排序
+     * @param n 参加计算的数字个数
+     * @param sum 当前的数字的sum
+     * @param hours 表盘上的hour的数组
+     * @param beg hours的起始index
+     * @param res 返回结果
+     */
+    private static void getHours(int n, int sum, int[] hours, int beg, List<String> res) {
         if (n < 0 || sum > 11) return;
         if (n == 0) {
             if (sum == 0) {
@@ -64,16 +85,13 @@ public class Binary_Watch_401 {
                 res.add(String.valueOf(sum));
             }
         } else if (n < 4) {
-            for (int i = 1; i < hours.length; i++) {
-                if (seen.contains(hours[i])) continue;
-                seen.add(hours[i]);
-                getHours(n - 1, sum + hours[i], hours, seen, res);
-                seen.remove(hours[i]);
+            for (int i = beg; i < hours.length; i++) {
+                getHours(n - 1, sum + hours[i], hours, i + 1, res);
             }
         }
     }
 
-    private static void getMinites(int n, int sum, int[] minites, Set<Integer> seen, List<String> res) {
+    private static void getMinites(int n, int sum, int[] minites, int beg, List<String> res) {
         if (n < 0 || sum > 59) return;
         if (n == 0) {
             if (sum == 0) {
@@ -84,11 +102,8 @@ public class Binary_Watch_401 {
                 res.add(String.valueOf(sum));
             }
         } else if (n < 6) {
-            for (int i = 1; i < minites.length; i++) {
-                if (seen.contains(minites[i])) continue;
-                seen.add(minites[i]);
-                getMinites(n - 1, sum + minites[i], minites, seen, res);
-                seen.remove(minites[i]);
+            for (int i = beg; i < minites.length; i++) {
+                getMinites(n - 1, sum + minites[i], minites, i + 1, res);
             }
         }
     }
@@ -96,12 +111,15 @@ public class Binary_Watch_401 {
     public static void main(String[] args) {
         do_func(1, Arrays.asList("0:01", "0:02", "0:04", "0:08", "0:16", "0:32", "1:00", "2:00", "4:00", "8:00"));
         do_func(9, Arrays.asList(""));
+        do_func(2, Arrays.asList("0:03", "0:05", "0:06", "0:09", "0:10", "0:12", "0:17", "0:18", "0:20", "0:24", "0:33", "0:34", "0:36", "0:40", "0:48", "1:01", "1:02", "1:04", "1:08", "1:16", "1:32", "2:01", "2:02", "2:04", "2:08", "2:16", "2:32", "3:00", "4:01", "4:02", "4:04", "4:08", "4:16", "4:32", "5:00", "6:00", "8:01", "8:02", "8:04", "8:08", "8:16", "8:32", "9:00", "10:00"));
 
     }
 
     private static void do_func(int turnedOn, List<String> expected) {
         List<String> ret = readBinaryWatch(turnedOn);
         System.out.println(ret);
+        ret.sort(null);
+        expected.sort(null);
         boolean same = ArrayListUtils.isSame(ret, expected);
         System.out.println(same);
         System.out.println("--------------");
