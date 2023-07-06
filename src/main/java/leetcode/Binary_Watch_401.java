@@ -35,7 +35,7 @@ public class Binary_Watch_401 {
     }
 
     /**
-     * review 
+     * review
      * AC 中的另一种解法。非递归
      *
      * @param turnedOn

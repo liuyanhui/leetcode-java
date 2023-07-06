@@ -29,6 +29,38 @@ import java.util.Stack;
  * num does not have any leading zeros except for the zero itself.
  */
 public class Remove_K_Digits_402 {
+    public static String removeKdigits(String num, int k) {
+        return removeKdigits_2(num, k);
+    }
+
+    public static String removeKdigits_2(String num, int k) {
+        //特殊情况处理
+        if (num.length() == k) return "0";
+        StringBuilder res = new StringBuilder(num);
+
+        while (k > 0) {
+            //找到num的第一个极大值
+            char last = res.charAt(0);
+            for (int i = 0; i < res.length(); i++) {
+                //1.趋势由单调不减变成单调不增
+                //2.到达最后一个元素时，如：用例"2222"
+                if (last > res.charAt(i) || i == res.length() - 1) {
+                    res.deleteCharAt(i - 1);
+                    break;
+                } else {
+                    last = res.charAt(i);
+                }
+            }
+            k--;
+        }
+        //去掉前导0，或保留res=0
+        while (res.indexOf("0") == 0 && res.length() > 1) {
+            res.delete(0, 1);
+        }
+
+        return res.toString();
+    }
+
     /**
      * 每次去掉一个数字，执行k次。
      * 思路是：从第0位开始单调递增的最大值就是可以去掉的数字。
@@ -48,7 +80,7 @@ public class Remove_K_Digits_402 {
      * @param k
      * @return
      */
-    public static String removeKdigits(String num, int k) {
+    public static String removeKdigits_1(String num, int k) {
         Stack<Integer> stack = new Stack<>();
         int deletedCount = 0;
         for (int i = 0; i < num.length(); i++) {
@@ -91,6 +123,9 @@ public class Remove_K_Digits_402 {
         do_func("10000", 3, "0");
         do_func("22222", 3, "22");
         do_func("1234567890", 9, "0");
+        do_func("9", 1, "0");
+        do_func("98765", 4, "5");
+        do_func("98765", 5, "0");
     }
 
     private static void do_func(String num, int k, String expected) {
