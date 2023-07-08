@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -30,9 +32,78 @@ import java.util.Stack;
  */
 public class Remove_K_Digits_402 {
     public static String removeKdigits(String num, int k) {
-        return removeKdigits_2(num, k);
+        return removeKdigits_3(num, k);
     }
 
+    /**
+     * round 2
+     * review 转换或修改约束时要当心，很大可能会放松约束或改变成别的约束，导致结果错误。
+     *
+     * 【单调栈】场景
+     * 参考removeKdigits_1()
+     *
+     * Thinking：
+     * 1.要查找由不减趋势转变为不增趋势的拐点，可以使用单调栈
+     *
+     * 验证通过:
+     * Runtime 26 ms Beats 74.66%
+     * Memory 48.2 MB Beats 5.11%
+     *
+     * @param num
+     * @param k
+     * @return
+     */
+    public static String removeKdigits_3(String num, int k) {
+        //特殊情况处理 1432219
+        if (num.length() == k) return "0";
+        //先查找被删除的digit
+        Stack<Integer> stack = new Stack<>();//保存下标而不是值
+        Set<Integer> delIndex = new HashSet<>();
+        for (int i = 0; i < num.length() && k > 0; i++) {
+            while (!stack.empty() && num.charAt(stack.peek()) > num.charAt(i) && k > 0) {
+                delIndex.add(stack.pop());
+                k--;
+            }
+            stack.push(i);
+        }
+        //特殊用例处理，如:num=222222或num=1234567等
+        while (k > 0) {
+            delIndex.add(stack.pop());
+            k--;
+        }
+        //删除digit生成结果
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < num.length(); i++) {
+            if (delIndex.contains(i)) continue;
+            res.append(num.charAt(i));
+        }
+        //定位前导0 leading zeroes
+        int beg = 0;
+        while (beg < res.length() - 1 && res.charAt(beg) == '0') {
+            beg++;
+        }
+
+        return res.substring(beg);
+    }
+
+    /**
+     * round 2
+     *
+     * Thinking：
+     * 1.字符串格式的数的排序问题。
+     * 2.naive solution
+     * 找到去掉k个数字之后的所有组合，然后获取最小值。需要注意前导0的情况。
+     * 3.先分析k=1的情况，然后依次增加k。F(i)的结果包含F(i+1)的结果。
+     * 3.1.k=1时，遍历num[]从左向右，第一个局部最大值就是应该删除的digit。
+     * 4.具体思路为：每次去掉一个digit，规则为去掉第一个局部最大值。
+     *
+     * 逻辑正确
+     * Time Limit Exceed
+     *
+     * @param num
+     * @param k
+     * @return
+     */
     public static String removeKdigits_2(String num, int k) {
         //特殊情况处理
         if (num.length() == k) return "0";
@@ -42,11 +113,11 @@ public class Remove_K_Digits_402 {
             //找到num的第一个极大值
             char last = res.charAt(0);
             for (int i = 0; i < res.length(); i++) {
-                //1.趋势由单调不减变成单调不增
-                //2.到达最后一个元素时，如：用例"2222"
-                if (last > res.charAt(i) || i == res.length() - 1) {
+                if (last > res.charAt(i)) {//1.趋势由单调不减变成单调不增
                     res.deleteCharAt(i - 1);
                     break;
+                } else if (i == res.length() - 1) {//2.到达最后一个元素时，如：用例"2222"
+                    res.deleteCharAt(i);
                 } else {
                     last = res.charAt(i);
                 }
@@ -55,7 +126,7 @@ public class Remove_K_Digits_402 {
         }
         //去掉前导0，或保留res=0
         while (res.indexOf("0") == 0 && res.length() > 1) {
-            res.delete(0, 1);
+            res.deleteCharAt(0);
         }
 
         return res.toString();
@@ -126,6 +197,7 @@ public class Remove_K_Digits_402 {
         do_func("9", 1, "0");
         do_func("98765", 4, "5");
         do_func("98765", 5, "0");
+        do_func("112", 1, "11");
     }
 
     private static void do_func(String num, int k, String expected) {
