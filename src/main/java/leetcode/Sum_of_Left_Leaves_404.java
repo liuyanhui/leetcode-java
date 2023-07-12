@@ -7,6 +7,7 @@ import java.util.Stack;
  * Easy
  * -------------------------
  * Given the root of a binary tree, return the sum of all left leaves.
+ * A leaf is a node with no children. A left leaf is a leaf that is the left child of another node.
  *
  * Example 1:
  * Input: root = [3,9,20,null,null,15,7]
@@ -23,7 +24,28 @@ import java.util.Stack;
  */
 public class Sum_of_Left_Leaves_404 {
     public static int sumOfLeftLeaves(TreeNode root) {
-        return sumOfLeftLeaves_1(root);
+        return sumOfLeftLeaves_4(root);
+    }
+
+    /**
+     * round 2
+     * 验证通过
+     *
+     * @param root
+     * @return
+     */
+    public static int sumOfLeftLeaves_4(TreeNode root) {
+        return dfs(root, false);
+    }
+
+    private static int dfs(TreeNode node, boolean isLeft) {
+        if (node == null) return 0;
+        int res = 0;
+        if (node.left == null && node.right == null) {
+            return isLeft ? node.val : 0;
+        }
+
+        return dfs(node.left, true) + dfs(node.right, false);
     }
 
     /**
