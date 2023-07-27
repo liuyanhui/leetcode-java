@@ -41,7 +41,8 @@ public class Queue_Reconstruction_by_Height_406 {
     }
 
     /**
-     * review
+     * review : It is such a smart solution.
+     *
      * 参考资料：
      * https://leetcode.com/problems/queue-reconstruction-by-height/solutions/89345/easy-concept-with-python-c-java-solution/
      * https://leetcode.com/problems/queue-reconstruction-by-height/solutions/427157/three-different-c-solutions-from-o-n-2-to-o-nlogn-faster-than-99/
