@@ -34,6 +34,12 @@ public class Fizz_Buzz_412 {
         return fizzBuzz_1(n);
     }
 
+    /**
+     * 验证通过
+     *
+     * @param n
+     * @return
+     */
     public static List<String> fizzBuzz_1(int n) {
         List<String> res = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
