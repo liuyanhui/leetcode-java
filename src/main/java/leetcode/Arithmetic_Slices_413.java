@@ -29,6 +29,19 @@ public class Arithmetic_Slices_413 {
         return numberOfArithmeticSlices_1(nums);
     }
 
+    /**
+     * Thinking：
+     * 1.分为子串subarray提取 和 判断subarray是否为Arithmetic两个部分。
+     * 2.subarray[i:j]是Arithmetic，但subarray[i:j+1]不是Arithmetic，那么从nums[j]开始重新提取。
+     * 3.subarray[i:j]如果是Arithmetic，那么统计在subarray[i:j]中的结果。公式为：设subarray[i:j]的长度为n，res=(n-2)+(n-3)..+(n-n+1)=1+2+..+(n-2)
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 40.2 MB Beats 77.37%
+     *
+     * @param nums
+     * @return
+     */
     public static int numberOfArithmeticSlices_1(int[] nums) {
         int res = 0;
         //提取subarray
