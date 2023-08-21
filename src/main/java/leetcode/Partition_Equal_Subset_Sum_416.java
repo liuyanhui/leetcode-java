@@ -24,7 +24,52 @@ import java.util.Arrays;
  */
 public class Partition_Equal_Subset_Sum_416 {
     public static boolean canPartition(int[] nums) {
-        return canPartition_1(nums);
+        return canPartition_2(nums);
+    }
+
+    /**
+     * review
+     * 参考资料：
+     * https://leetcode.com/problems/partition-equal-subset-sum/solutions/90592/0-1-knapsack-detailed-explanation/
+     *
+     * review 可以把二维dp数组优化为一维dp数组
+     *
+     * DP思路
+     * 1.声明dp数组为：dp[nums.length][sum(nums)/2+1]。dp[i][j]=true，表示在nums[0:i]区间内存在sum(nums[m:n])等于j的情况，其中0<=m<=n<=i。
+     * 2.公式为：dp[i][j]=dp[i-1][j] || dp[i-1][j-nums[i-1]]
+     * 3.dp[nums.length-1][sum(nums)/2+1]为返回结果
+     *
+     * 验证通过：
+     * Runtime 54 ms Beats 56.8%
+     * Memory 47 MB Beats 44.49%
+     *
+     * @param nums
+     * @return
+     */
+    public static boolean canPartition_2(int[] nums) {
+        int target = 0;
+        for (int n : nums) {
+            target += n;
+        }
+        if (target % 2 == 1)
+            return false;
+        target = target / 2;
+
+        boolean[][] dp = new boolean[nums.length][target + 1];
+        //初始化dp
+        for (int i = 0; i < nums.length; i++) {
+            dp[i][0] = true;
+        }
+
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 1; j <= target; j++) {
+                dp[i][j] = dp[i - 1][j];//不包含nums[i]的情况
+                if (j - nums[i - 1] >= 0) {//包含nums[i]的情况
+                    dp[i][j] = dp[i][j] || dp[i - 1][j - nums[i - 1]];
+                }
+            }
+        }
+        return dp[nums.length - 1][target];
     }
 
     /**
@@ -87,6 +132,9 @@ public class Partition_Equal_Subset_Sum_416 {
         do_func(new int[]{1, 2, 3, 5}, false);
         do_func(new int[]{1, 1, 1, 1}, true);
         do_func(new int[]{22}, false);
+        do_func(new int[]{1, 3}, false);
+        do_func(new int[]{3, 3, 1, 3}, false);
+        do_func(new int[]{100, 100, 99, 97}, false);
         do_func(new int[]{100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 99, 97}, false);
     }
 
