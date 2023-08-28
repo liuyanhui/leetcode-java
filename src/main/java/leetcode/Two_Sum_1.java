@@ -31,9 +31,39 @@ import java.util.Map;
  * -10^9 <= target <= 10^9
  * Only one valid answer exists.
  *
- * Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?
+ * Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
  */
 public class Two_Sum_1 {
+    public static int[] twoSum(int[] nums, int target) {
+        return twoSum_2(nums, target);
+    }
+
+    /**
+     * round 3
+     *
+     * 1.方法一
+     * 先排序，再使用夹逼法查找。夹逼过程中可以使用binary search优化时间复杂度。
+     * 时间复杂度：O(NlogN)
+     * 由于返回结果要求原始下标，所以这个方法不可行。
+     * 2.方法二
+     * 使用HashMap缓存所有输入，在HashMap中查找。
+     * 时间复杂度：O(N)
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int[] twoSum_2(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])) {
+                return new int[]{i, map.get(target - nums[i])};
+            }
+            map.put(nums[i], i);
+        }
+        return null;
+    }
+
     /**
      * 验证通过：
      * Runtime: 1 ms, faster than 99.68% of Java online submissions for Two Sum.
@@ -43,7 +73,7 @@ public class Two_Sum_1 {
      * @param target
      * @return
      */
-    public static int[] twoSum(int[] nums, int target) {
+    public static int[] twoSum_1(int[] nums, int target) {
         int[] ret = new int[2];
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
@@ -66,7 +96,7 @@ public class Two_Sum_1 {
     private static void do_func(int[] nums, int target, int[] expected) {
         int[] ret = twoSum(nums, target);
         Arrays.sort(ret);
-        ArrayUtils.printIntArray(ret);
+        ArrayUtils.printlnIntArray(ret);
         ArrayUtils.isSameThenPrintln(ret, expected);
         System.out.println("--------------");
     }
