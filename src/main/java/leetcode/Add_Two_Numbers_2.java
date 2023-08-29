@@ -27,6 +27,43 @@ package leetcode;
  * It is guaranteed that the list represents a number that does not have leading zeros.
  */
 public class Add_Two_Numbers_2 {
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        return addTwoNumbers_2(l1, l2);
+    }
+
+    /**
+     * round 3
+     *
+     * 验证通过：
+     *
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public static ListNode addTwoNumbers_2(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode();
+        ListNode cur = res;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int t = carry;
+            if (l1 != null) {
+                t += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                t += l2.val;
+                l2 = l2.next;
+            }
+            cur.next = new ListNode(t % 10);
+            carry = t / 10;
+            cur = cur.next;
+        }
+        if (carry > 0) {
+            cur.next = new ListNode(carry);
+        }
+        return res.next;
+    }
+
     /**
      * 验证通过：
      * Runtime: 1 ms, faster than 100.00% of Java online submissions for Add Two Numbers.
@@ -36,7 +73,7 @@ public class Add_Two_Numbers_2 {
      * @param l2
      * @return
      */
-    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    public static ListNode addTwoNumbers_1(ListNode l1, ListNode l2) {
         ListNode ret = new ListNode();
         int carry = 0;
         ListNode cur = ret;
