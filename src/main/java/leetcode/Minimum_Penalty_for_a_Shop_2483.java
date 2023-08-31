@@ -62,6 +62,10 @@ public class Minimum_Penalty_for_a_Shop_2483 {
      * Runtime 11 ms Beats 75.34%
      * Memory 44.3 MB Beats 44.59%
      *
+     * 含有更好的方案：https://leetcode.com/problems/minimum-penalty-for-a-shop/editorial/
+     * 1.two pass，跟下面的实现类似，但是更简单
+     * 2.one pass，利用趋势一致就可以求出解，并设第0天从0penalty开始，然后利用趋势求解。
+     *
      * @param customers
      * @return
      */
