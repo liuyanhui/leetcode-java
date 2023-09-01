@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,7 +37,41 @@ import java.util.Set;
  */
 public class Longest_Substring_Without_Repeating_Characters_3 {
     public static int lengthOfLongestSubstring(String s) {
-        return lengthOfLongestSubstring_4(s);
+        return lengthOfLongestSubstring_5(s);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.滑动窗口思路。
+     * 用Map保存已经出现的字母，key是字母，value是位置。
+     * 当右侧字母在缓存中已经存在时，计算substring长度并判断是否需要更新结果，窗口左边界移到map中该字母的下一位；否则，窗口右边界右移一位，字母加入map。
+     *
+     * 验证通过：
+     * Runtime 6 ms Beats 75.99%
+     * Memory 43 MB Beats  91.43%
+     *
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring_5(String s) {
+        int res = 0;
+        Map<Character, Integer> cache = new HashMap<>();
+        int left = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            //当前字母是否已经在窗口中
+            if (cache.containsKey(c) && left <= cache.get(c)) {
+                //计算窗口大小，并判断是否更新返回结果
+                res = Math.max(res, i - left);
+                //更新
+                left = cache.get(c) + 1;
+            }
+            //更新缓存
+            cache.put(c, i);
+        }
+        return Math.max(res, s.length() - left);//最后一个字符的特殊情况
     }
 
     /**
