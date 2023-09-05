@@ -46,7 +46,69 @@ public class Median_of_Two_Sorted_Arrays_4 {
      * @return
      */
     public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        return findMedianSortedArrays_3(nums1, nums2);
+        return findMedianSortedArrays_4(nums1, nums2);
+    }
+
+    /**
+     * round3
+     *
+     * 参考之前的方案，采用递归思路
+     *
+     * Thinking：
+     * 1.属于在两个已排序数组中获取第k小的数的问题。需要考虑总数是奇数还是偶数。
+     * 2.naview solution
+     * 排序两个数组，然后获取中位数。
+     * 3.merge sort solution
+     * 3.1.比较两个数组的最小值
+     * 3.2.删除最小值，k=k-1
+     * 3.3.重复执行【2.1.】，直到k=0
+     * 3.4.如果总数的奇数，返回k=0时两个数组的最小值的最小值；如果是偶数，返回k=0时，两个数组最小值的平均数。
+     * 4.recursive solution
+     * 4.1.数字总数是奇数，计算len/2
+     * 4.1.如果k==1，返回min(nums1[beg1],nums[beg2])
+     * 4.2.如果k>1，每次从两个数组中截取前k/2个数，比较nums1[beg1+k/2],nums[beg2+k/2]。
+     * 4.2.1.如果nums1[beg1+k/2]<nums[beg2+k/2]，beg1=beg1+k/2+1
+     * 4.2.2.否则如果nums1[beg1+k/2]<nums[beg2+k/2]，beg2=beg2+k/2+1
+     * 4.2.3.如果beg+k/2越界，用极大值替换nums[beg+k/2]进行比较。
+     * 4.2.4.递归执行【4.1】
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 100%
+     * Memory 44.9 MB Beats 13.92%
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public static double findMedianSortedArrays_4(int[] nums1, int[] nums2) {
+        int len = nums1.length + nums2.length;
+        if (len % 2 == 1) {
+            return helper_4(nums1, 0, nums2, 0, len / 2 + 1);
+        } else {
+            return (helper_4(nums1, 0, nums2, 0, len / 2) + helper_4(nums1, 0, nums2, 0, len / 2 + 1)) / 2;
+        }
+    }
+
+    /**
+     * k 从1开始而不是从0开始
+     */
+    private static double helper_4(int[] nums1, int beg1, int[] nums2, int beg2, int k) {
+        if (beg1 >= nums1.length) return nums2[beg2 + k - 1];
+        if (beg2 >= nums2.length) return nums1[beg1 + k - 1];
+        if (k == 1) return Math.min(nums1[beg1], nums2[beg2]);
+
+        int mid1 = Integer.MAX_VALUE, mid2 = Integer.MAX_VALUE;
+        if (beg1 + k / 2 - 1 < nums1.length) mid1 = nums1[beg1 + k / 2 - 1];
+        // review nums2取剩下的偏移量，否则会导致多取。用例({1, 3},{2, 7})无法通过
+        if (beg2 + k - k / 2 - 1 < nums2.length) mid2 = nums2[beg2 + k - k / 2 - 1];
+
+        if (mid1 < mid2) {
+            // review  最后一个参数取剩下的偏移量，否则会导致多取。用例({1, 3},{2, 7})无法通过
+            return helper_4(nums1, beg1 + k / 2, nums2, beg2, k - k / 2);
+        } else {
+            // review  最后一个参数取剩下的偏移量，否则会导致多取。用例({1, 3},{2, 7})无法通过
+            return helper_4(nums1, beg1, nums2, beg2 + k - k / 2, k / 2);
+        }
     }
 
     /**
