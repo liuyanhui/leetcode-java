@@ -30,7 +30,48 @@ package leetcode;
 public class Longest_Palindromic_Substring_5 {
 
     public static String longestPalindrome(String s) {
-        return longestPalindrome_1(s);
+        return longestPalindrome_3(s);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.首先要找到palindrome，然后再判断是否为最长substring
+     * 2.如果s[i]作为起点开始计算，计算过程是发散的，会增加难度；如果s[i]作为中间点，过程是收敛的。
+     *
+     * 验证通过：
+     * Runtime 19 ms Beats 67.87%
+     * Memory 43.5 MB Beats 54.42%
+     *
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome_3(String s) {
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            int j = 0;
+            //字符数为单数的palindrome
+            while (0 <= i - j && i + j < s.length() && s.charAt(i - j) == s.charAt(i + j)) {
+                j++;
+            }
+            j--;
+            if (j * 2 + 1 > res.length()) {
+                res = s.substring(i - j, i + j + 1);
+            }
+
+            //字符数为双数的palindrome
+            j = 0;
+            while (0 <= i - j && i + 1 + j < s.length() && s.charAt(i - j) == s.charAt(i + 1 + j)) {
+                j++;
+            }
+            j--;
+            if (j * 2 + 2 > res.length()) {
+                res = s.substring(i - j, i + j + 2);
+            }
+        }
+
+        return res;
     }
 
     /**

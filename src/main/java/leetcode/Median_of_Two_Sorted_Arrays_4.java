@@ -72,6 +72,9 @@ public class Median_of_Two_Sorted_Arrays_4 {
      * 4.2.3.如果beg+k/2越界，用极大值替换nums[beg+k/2]进行比较。
      * 4.2.4.递归执行【4.1】
      *
+     * 还有一种直接使用binary search的方法。它只使用与求中位数，无法求kth：
+     * https://leetcode.com/problems/median-of-two-sorted-arrays/solutions/2471/very-concise-o-log-min-m-n-iterative-solution-with-detailed-explanation/
+     *
      * 验证通过：
      * Runtime 1 ms Beats 100%
      * Memory 44.9 MB Beats 13.92%
@@ -222,7 +225,7 @@ public class Median_of_Two_Sorted_Arrays_4 {
      * https://leetcode.com/problems/median-of-two-sorted-arrays/solution/
      * 中文翻译：
      * https://zhuanlan.zhihu.com/p/70654378
-     * 我：因为有两个数组，需要对两个变量进行查找。而i+j=m-i+m-j这个等式，把两个变量简化为1个变量。这样降低了复杂度，并且可以使用binary search进行查找。
+     * 我：因为有两个数组，需要对两个变量进行查找。而i+j=m-i+n-j这个等式，把两个变量简化为1个变量。这样降低了复杂度，并且可以使用binary search进行查找。
      * @param A
      * @param B
      * @return
