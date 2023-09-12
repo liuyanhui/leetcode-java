@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Zigzag Conversion
  * Medium
@@ -37,6 +40,54 @@ package leetcode;
  * 1 <= numRows <= 1000
  */
 public class Zigzag_Conversion_6 {
+    public static String convert(String s, int numRows) {
+        return convert_2(s, numRows);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.先依次计算每行的字母，再合并每行。
+     * 2.遍历s时有两个方向：向下和向上。向下每次取numRows个字母，从第0行到第numRows-1行；向上每次取numRows-2个字母，从第numRows-2行到第1行。
+     *
+     * 验证通过：
+     * Runtime 5 ms Beats 67.93%
+     * Memory 44.4 MB Beats 34.55%
+     *
+     * @param s
+     * @param numRows
+     * @return
+     */
+    public static String convert_2(String s, int numRows) {
+        List<StringBuilder> list = new ArrayList<>();
+
+        for (int i = 0; i < numRows; i++) {
+            list.add(new StringBuilder());
+        }
+
+        int i = 0;
+        while (i < s.length()) {
+            int row = 0;
+            while (i < s.length() && row < numRows) {
+                list.get(row).append(s.charAt(i));
+                row++;
+                i++;
+            }
+            row = numRows - 2;
+            while (i < s.length() && 1 <= row) {
+                list.get(row).append(s.charAt(i));
+                row--;
+                i++;
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        for (StringBuilder t : list) {
+            res.append(t);
+        }
+        return res.toString();
+    }
+
     /**
      * 验证通过：
      * Runtime: 8 ms, faster than 57.81% of Java .
@@ -46,7 +97,7 @@ public class Zigzag_Conversion_6 {
      * @param numRows
      * @return
      */
-    public static String convert(String s, int numRows) {
+    public static String convert_1(String s, int numRows) {
         if (numRows == 1) return s;
         //初始化
         StringBuilder[] zigzagArray = new StringBuilder[numRows];
