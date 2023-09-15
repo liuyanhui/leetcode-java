@@ -32,7 +32,44 @@ package leetcode;
 public class Reverse_Integer_7 {
 
     public static int reverse(int x) {
-        return reverse_5(x);
+        return reverse_6(x);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.要注意reverse之后越界的情况。如果越界，返回0。
+     * 2.由于两个数相乘后会发生越界的情况，所以用除法替代乘法。期望计算a*b>c，用a>c/b替代。即，加减互换，乘除互换。
+     * 2.1.num*10+digit>MAX_VALUE 转化为 num>(MAX_VALUE-digit)/10
+     * 2.2.num*10+digit<MIN_VALUE 不可以转化为 num<(MIN_VALUE-digit)/10，因为当digit>0时，MIN_VALUE-digit会越界。
+     * 3.先判断是否会越界，再计算。
+     *
+     * review round3 reverse_5()和reverse_4()的思路更巧妙
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 97.97%
+     * Memory 39.3 MB Beats 94.35%
+     *
+     * @param x
+     * @return
+     */
+    public static int reverse_6(int x) {
+        int res = 0;
+        int singal = 1;
+        if (x < 0) singal = -1;
+        int divide = 10;
+        while (x != 0) {
+            int d = Math.abs(x % (divide * singal));
+            //MIN_VALUE的判断需要注意
+            if (((Integer.MIN_VALUE + d) / divide > res)
+                    || (res > (Integer.MAX_VALUE - d) / divide)) {
+                return 0;
+            }
+            res = res * 10 + d;
+            x /= 10;
+        }
+        return res * singal;
     }
 
     /**
@@ -51,7 +88,7 @@ public class Reverse_Integer_7 {
         x = sign * x;
         while (x > 0) {
             int t = ret * 10 + x % 10;
-            if (t / 10 != ret) {
+            if (t / 10 != ret) {//review 
                 return 0;
             }
             ret = ret * 10 + x % 10;
@@ -73,7 +110,7 @@ public class Reverse_Integer_7 {
         while (x != 0) {
             int tail = x % 10;
             int newResult = result * 10 + tail;
-            if ((newResult - tail) / 10 != result) {//这里非常精妙
+            if ((newResult - tail) / 10 != result) {//review 这里非常精妙
                 return 0;
             }
             result = newResult;
@@ -192,6 +229,7 @@ public class Reverse_Integer_7 {
         do_func(-2147483412, -2143847412);
         do_func(-2147483648, 0);
         do_func(1534236469, 0);
+        do_func(1003, 3001);
     }
 
     private static void do_func(int x, int expected) {
