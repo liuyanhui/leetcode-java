@@ -53,7 +53,86 @@ package leetcode;
  */
 public class String_to_Integer_atoi_8 {
     public static int myAtoi(String s) {
-        return myAtoi_3(s);
+        return myAtoi_4(s);
+    }
+
+    /**
+     * round 3
+     * 验证通过：
+     * Runtime 2 ms Beats 47.91%
+     * Memory 41 MB Beats 95.87%
+     *
+     * Thinking：
+     * 1.先提取数字字符串，再把字符串转换成整数。
+     * 1.1.提取数字字符串时，只提取第一个满足条件的字符串。
+     * 1.2.字符串转换成整数时，越界的数字分别去整数的最大值和最小值。
+     * 2.提取字符串
+     * 2.1.当"+"/"-"出现时，其后的字符必须是数字。同时满足时，作为数字字符串的起始。
+     * 2.2.
+     * 3.字符串转化为整数
+     * 3.1.正负符合单独计算
+     * 3.2.去掉前导0字符
+     * 3.3.越界判断。要注意计算过程不可以越界。使正数变大的运算要改成减少的运算，如：+改成-，*改成/；使负数变小的运算要改成减少的运算，如：-改成+，/改成*；
+     * 3.4.计算最终结果
+     *
+     * @param s
+     * @return
+     */
+    public static int myAtoi_4(String s) {
+        int beg = -1, i = 0;
+        int signal = 1;
+
+        //过滤最左侧的空格
+        while (i < s.length() && s.charAt(i) == ' ') {
+            i++;
+        }
+        //如果不是数字或正负号直接返回0
+        if (i < s.length() && s.charAt(i) != '-' && s.charAt(i) != '+' && !Character.isDigit(s.charAt(i))) {
+            return 0;
+        }
+        //提取正负号
+        if (i < s.length() && (s.charAt(i) == '-' || s.charAt(i) == '+')) {
+            signal = s.charAt(i) == '+' ? 1 : -1;
+            i++;
+        }
+        if (i < s.length() && !Character.isDigit(s.charAt(i))) {
+            return 0;
+        }
+
+        //计算数的第一个字符的位置
+        beg = i;
+
+        //计算数的结尾
+        while (i < s.length() && Character.isDigit(s.charAt(i))) {
+            i++;
+        }
+
+        //提取字符串
+        String d_str = s.substring(beg, i);
+
+        //转化字符串
+        if (d_str == null && d_str.length() == 0) {
+            return 0;
+        }
+        int res = 0;
+        i = 0;
+        //前导0过滤
+        while (i < d_str.length() && d_str.charAt(i) == '0') {
+            i++;
+        }
+        while (i < d_str.length()) {
+            int t = d_str.charAt(i) - '0';
+            //review 判断是否越界，一种巧妙的方法。还有一种方法是加变减，乘变除，或减变加，除变乘
+            if ((res * 10 + t * signal) / 10 == res) {
+                res = res * 10 + t * signal;
+            } else {
+                res = signal == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                break;
+            }
+            i++;
+        }
+
+        return res;
     }
 
     /**
@@ -269,6 +348,7 @@ public class String_to_Integer_atoi_8 {
         do_func("+12", 12);
         do_func("3.45678", 3);
         do_func("1095502006p8", 1095502006);
+        do_func("-82", -82);
     }
 
     private static int do_func(String input, int expected) {

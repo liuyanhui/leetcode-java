@@ -88,7 +88,7 @@ public class Reverse_Integer_7 {
         x = sign * x;
         while (x > 0) {
             int t = ret * 10 + x % 10;
-            if (t / 10 != ret) {//review 
+            if (t / 10 != ret) {//review
                 return 0;
             }
             ret = ret * 10 + x % 10;
