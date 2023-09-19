@@ -30,6 +30,35 @@ package leetcode;
  * -2^31 <= x <= 2^31 - 1
  */
 public class Palindrome_Number_9 {
+
+    public static boolean isPalindrome(int x) {
+        return isPalindrome_2(x);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.输入是负数直接返回false
+     * 2.把x反转为y，如果x==y，那么一定是palindrome。但是会存在越界的可能。除非转化成字符串，再反转和比较。
+     * 2.1.如果反转时越界，那么一定不是palindrome
+     *
+     * 验证通过
+     *
+     * @param x
+     * @return
+     */
+    public static boolean isPalindrome_2(int x) {
+        if (x < 0) return false;
+        int reverse = 0;
+        int t = x;
+        while (t > 0) {
+            reverse = reverse * 10 + t % 10;
+            t = t / 10;
+        }
+        return reverse == x;
+    }
+
     /**
      * 思路：按照数学方法，把数字反转。如果反转后的数字等于输入，说明输入是palingdrome number
      * 验证通过:
@@ -38,7 +67,7 @@ public class Palindrome_Number_9 {
      * @param x
      * @return
      */
-    public static boolean isPalindrome(int x) {
+    public static boolean isPalindrome_1(int x) {
         if (x < 0) {
             return false;
         }
