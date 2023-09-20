@@ -31,6 +31,18 @@ package leetcode;
  * 0 <= height[i] <= 10^4
  */
 public class Container_With_Most_Water_11 {
+    public static int maxArea(int[] height) {
+        return maxArea_1(height);
+    }
+
+    /**
+     * round 3
+     * review Totally have no idea.
+     *
+     * 1.二维空间求极值的问题，需要先锁定一个维度，将为一维问题？
+     * 2.在naive solution基础上进行了优化。
+     */
+
     /**
      * Round 2
      *
@@ -43,7 +55,7 @@ public class Container_With_Most_Water_11 {
      * @param height
      * @return
      */
-    public static int maxArea(int[] height) {
+    public static int maxArea_1(int[] height) {
         int ret = 0;
         int l = 0, r = height.length - 1;
         while (l < r) {
