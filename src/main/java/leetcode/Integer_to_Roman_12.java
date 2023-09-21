@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 12. Integer to Roman
  * Medium
@@ -48,7 +51,132 @@ package leetcode;
  */
 public class Integer_to_Roman_12 {
     public static String intToRoman(int num) {
-        return intToRoman_2(num);
+        return intToRoman_4(num);
+    }
+
+    /**
+     * 
+     * intToRoman_2()和intToRoman_3()和intToRoman_5()的思路更巧妙简单
+     * 1. intToRoman_2()是穷举法
+     * 2. intToRoman_3()和intToRoman_4()是加法
+     *
+     * 罗马计数法是只有加法。按加法拆解即可。需要注意4，5，9的特殊情况。
+     */
+
+    /**
+     * round 3
+     *
+     * 验证通过：
+     *
+     * @param num
+     * @return
+     */
+    public static String intToRoman_5(int num) {
+        if (num < 1 || num > 3999) return "";
+        Map<Integer, String> cache = new HashMap<>();
+        cache.put(1, "I");
+        cache.put(4, "IV");
+        cache.put(5, "V");
+        cache.put(9, "IX");
+        cache.put(10, "X");
+        cache.put(40, "XL");
+        cache.put(50, "L");
+        cache.put(90, "XC");
+        cache.put(100, "C");
+        cache.put(400, "CD");
+        cache.put(500, "D");
+        cache.put(900, "CM");
+        cache.put(1000, "M");
+
+        StringBuilder res = new StringBuilder();
+        int base = 1000;
+        while (base > 0) {
+            int t = num / base;
+            num = num - t * base;
+            if (t == 0) {
+
+            } else if (t < 4) {
+                while (t > 0) {
+                    res.append(cache.get(base));
+                    t--;
+                }
+            } else if (t == 4) {
+                res.append(cache.get(base));
+                res.append(cache.get(5 * base));
+            } else if (t == 5) {
+                res.append(cache.get(5 * base));
+            } else if (t < 9) {
+                res.append(cache.get(5 * base));
+                while (t - 5 > 0) {
+                    res.append(cache.get(base));
+                    t--;
+                }
+            } else {
+
+                res.append(cache.get(base));
+                res.append(cache.get(10 * base));
+            }
+            base /= 10;
+        }
+        return res.toString();
+    }
+
+    public static String intToRoman_4(int num) {
+        StringBuilder romanNumeral = new StringBuilder();
+        while (num >= 1000) {
+            romanNumeral.append("M");
+            num -= 1000;
+        }
+        while (num >= 900) {
+            romanNumeral.append("CM");
+            num -= 900;
+        }
+        while (num >= 500) {
+            romanNumeral.append("D");
+            num -= 500;
+        }
+        while (num >= 400) {
+            romanNumeral.append("CD");
+            num -= 400;
+        }
+        while (num >= 100) {
+            romanNumeral.append("C");
+            num -= 100;
+        }
+        while (num >= 90) {
+            romanNumeral.append("XC");
+            num -= 90;
+        }
+        while (num >= 50) {
+            romanNumeral.append("L");
+            num -= 50;
+        }
+        while (num >= 40) {
+            romanNumeral.append("XL");
+            num -= 40;
+        }
+        while (num >= 10) {
+            romanNumeral.append("X");
+            num -= 10;
+        }
+        while (num >= 9) {
+            romanNumeral.append("IX");
+            num -= 9;
+        }
+        while (num >= 5) {
+            romanNumeral.append("V");
+            num -= 5;
+        }
+        while (num >= 4) {
+            romanNumeral.append("IV");
+            num -= 4;
+        }
+        while (num >= 1) {
+            romanNumeral.append("I");
+            num -= 1;
+        }
+
+        return romanNumeral.toString();
     }
 
     /**
@@ -147,7 +275,7 @@ public class Integer_to_Roman_12 {
     }
 
     public static void main(String[] args) {
-//        do_func(3, "III");
+        do_func(3, "III");
         do_func(4, "IV");
         do_func(9, "IX");
         do_func(58, "LVIII");
