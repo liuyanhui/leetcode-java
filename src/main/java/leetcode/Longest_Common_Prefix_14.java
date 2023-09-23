@@ -25,7 +25,31 @@ package leetcode;
 public class Longest_Common_Prefix_14 {
 
     public static String longestCommonPrefix(String[] strs) {
-        return longestCommonPrefix_3(strs);
+        return longestCommonPrefix_4(strs);
+    }
+
+    /**
+     * round 3
+     *
+     * 验证通过：
+     * untime 1 ms Beats 82.83%
+     * Memory 40.1 MB Beats 77.16%
+     *
+     * @param strs
+     * @return
+     */
+    public static String longestCommonPrefix_4(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        int i = 0;
+        while (i < strs[0].length()) {
+            for (int j = 1; j < strs.length; j++) {
+                if (i >= strs[j].length() || strs[0].charAt(i) != strs[j].charAt(i)) {
+                    return strs[0].substring(0, i);
+                }
+            }
+            i++;
+        }
+        return i == 0 ? "" : strs[0].substring(0, i);
     }
 
     /**
