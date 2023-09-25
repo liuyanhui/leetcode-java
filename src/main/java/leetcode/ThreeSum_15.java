@@ -32,6 +32,16 @@ public class ThreeSum_15 {
     }
 
     /**
+     * round 3
+     *
+     * threeSum_2()中注意下面的代码
+     * if (i > 0 && num[i] == num[i - 1]) continue;//这里很重要，避免重复的nums[i]
+     *
+     * @param nums
+     * @return
+     */
+
+    /**
      * round 2
      * 参考思路：
      * https://leetcode.com/problems/3sum/discuss/7380/Concise-O(N2)-Java-solution
@@ -49,7 +59,7 @@ public class ThreeSum_15 {
         List<List<Integer>> ret = new ArrayList<>();
         Arrays.sort(num);
         for (int i = 0; i < num.length; i++) {
-            if (i > 0 && num[i] == num[i - 1]) continue;
+            if (i > 0 && num[i] == num[i - 1]) continue;//这里很重要，避免重复的nums[i]
             int j = i + 1, k = num.length - 1;
             while (j < k) {
                 int target = num[i] + num[j] + num[k];
