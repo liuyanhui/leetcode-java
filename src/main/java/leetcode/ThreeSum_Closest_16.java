@@ -28,7 +28,7 @@ public class ThreeSum_Closest_16 {
 
     /**
      * round 3
-     * Score[2]
+     * Score[1]
      *
      * Thinking：
      * 1.naive solution
@@ -36,6 +36,11 @@ public class ThreeSum_Closest_16 {
      * 时间复杂度:O(N*N*N)
      * 2.从降低时间复杂度的角度思考。N*N*N -> N*N*logN -> N*N。
      * 时间复杂度：O(N*N)
+     *
+     * 夹逼法的可行性说明：
+     * 1.数组是经过排序的，且n3是相对不变的。
+     * 2.当n1+n2+n3<target时，只能增加n1，而不能减小n2。如果减小n2，target会变得更小，必然不满足条件。
+     * 3.当n1+n2+n3>target时，只能减小n2。
      *
      */
 
