@@ -25,6 +25,20 @@ import java.util.Arrays;
  * -10^4 <= target <= 10^4
  */
 public class ThreeSum_Closest_16 {
+
+    /**
+     * round 3
+     * Score[2]
+     *
+     * Thinking：
+     * 1.naive solution
+     * 计算每种组合，并将和与target比较，最终得到结果。
+     * 时间复杂度:O(N*N*N)
+     * 2.从降低时间复杂度的角度思考。N*N*N -> N*N*logN -> N*N。
+     * 时间复杂度：O(N*N)
+     *
+     */
+
     /**
      * round 2
      * 采用类似15.ThreeSum问题中的夹逼法，把问题从三个变量降为两个变量。Time Complexity:O(N*N)

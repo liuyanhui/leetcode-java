@@ -33,6 +33,11 @@ public class ThreeSum_15 {
 
     /**
      * round 3
+     * Score[3]
+     *
+     * Thinking：
+     * 1.跟2Sum很像，但是无法使用2Sum的方案。因为数字无法重复使用，如果2Sum的方案，去重时会很复杂。
+     * 2.采用排序+降维+夹逼的思路。
      *
      * threeSum_2()中注意下面的代码
      * if (i > 0 && num[i] == num[i - 1]) continue;//这里很重要，避免重复的nums[i]
