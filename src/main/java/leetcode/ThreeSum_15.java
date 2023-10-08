@@ -33,7 +33,7 @@ public class ThreeSum_15 {
 
     /**
      * round 3
-     * Score[3]
+     * Score[3] Lower is harder
      *
      * Thinking：
      * 1.跟2Sum很像，但是无法使用2Sum的方案。因为数字无法重复使用，如果2Sum的方案，去重时会很复杂。

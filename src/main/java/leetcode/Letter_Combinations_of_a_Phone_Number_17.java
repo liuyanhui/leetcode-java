@@ -29,6 +29,56 @@ import java.util.List;
  * digits[i] is a digit in the range ['2', '9'].
  */
 public class Letter_Combinations_of_a_Phone_Number_17 {
+    public static List<String> letterCombinations(String digits) {
+        return letterCombinations_2(digits);
+    }
+
+    static List<String> panel = new ArrayList<String>() {{
+        add("");
+        add("");
+        add("abc");
+        add("def");
+        add("ghi");
+        add("jkl");
+        add("mno");
+        add("pqrs");
+        add("tuv");
+        add("wxyz");
+    }};
+
+    /**
+     * round 2
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 79.56%
+     * Memory 41.3 MB Beats 29.25%
+     *
+     * @param digits
+     * @return
+     */
+    public static List<String> letterCombinations_2(String digits) {
+        List<String> res = new ArrayList<>();
+        if (digits == null || digits.length() == 0)
+            return res;
+        //遍历当前按钮的字母
+        String root = panel.get(digits.charAt(0) - '0');
+        for (int i = 0; i < root.length(); i++) {
+            //提取按钮的字母作为前缀
+            String prefix = String.valueOf(root.charAt(i));
+            //递归计算剩余按钮
+            List<String> t = letterCombinations_2(digits.substring(1));
+            //合并
+            if (t.size() > 0) {
+                for (String suffix : t) {
+                    res.add(prefix + suffix);
+                }
+            } else {
+                res.add(prefix);
+            }
+        }
+        return res;
+    }
+
     /**
      * round 2
      * 简单粗暴的思路，依次合并两个list
@@ -38,7 +88,7 @@ public class Letter_Combinations_of_a_Phone_Number_17 {
      * @param digits
      * @return
      */
-    public static List<String> letterCombinations(String digits) {
+    public static List<String> letterCombinations_1(String digits) {
         List<String> ret = new ArrayList<>();
         if (digits == null || digits.length() == 0) return ret;
         List<String>[] numToLetter = new List[10];

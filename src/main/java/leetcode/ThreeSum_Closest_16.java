@@ -28,13 +28,14 @@ public class ThreeSum_Closest_16 {
 
     /**
      * round 3
-     * Score[1]
+     * Score[1] Lower is harder
      *
      * Thinking：
      * 1.naive solution
      * 计算每种组合，并将和与target比较，最终得到结果。
      * 时间复杂度:O(N*N*N)
      * 2.从降低时间复杂度的角度思考。N*N*N -> N*N*logN -> N*N。
+     * 把从3个数的组合中查找，降维为从2个数的组合中查找。
      * 时间复杂度：O(N*N)
      *
      * 夹逼法的可行性说明：
