@@ -29,6 +29,69 @@ import java.util.List;
  * -10^9 <= target <= 10^9
  */
 public class FourSum_18 {
+
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
+        return fourSum_2(nums, target);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.naive solution
+     * 四层遍历，暴力求解。时间复杂度：O(N*N*N*N)
+     * 2.先排序，在降维成2Sum的方案。时间复杂度：O(N*N*N)
+     *
+     * 验证通过：
+     * Runtime 16 ms Beats 74.4%
+     * Memory 44.1 MB Beats 39.19%
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static List<List<Integer>> fourSum_2(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length < 4) return res;
+
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;//过滤重复出现的数
+            for (int j = i + 1; j < nums.length; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;//过滤重复出现的数
+                int l = j + 1, r = nums.length - 1;
+                while (l < r) {
+                    long sum = (long)nums[i] + (long)nums[j] + (long)nums[l] + (long)nums[r];//防止整型数字溢出
+                    if (sum == target) {
+                        List<Integer> t = new ArrayList();
+                        t.add(nums[i]);
+                        t.add(nums[j]);
+                        t.add(nums[l]);
+                        t.add(nums[r]);
+                        res.add(t);
+                        l++;
+                        r--;
+                        //review 下面是关键，不可以挪到if外面。只有满足条件才可以过滤left和right。
+                        //过滤重复出现的数
+                        while (l < r && nums[l - 1] == nums[l]) {
+                            l++;
+                        }
+                        //过滤重复出现的数
+                        while (l < r && nums[r] == nums[r + 1]) {
+                            r--;
+                        }
+                    } else if (sum < target) {
+                        l++;
+                    } else {
+                        r--;
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     /**
      * round 2
      * 按照KSum问题来解决。
@@ -45,7 +108,7 @@ public class FourSum_18 {
      * @param target
      * @return
      */
-    public static List<List<Integer>> fourSum(int[] nums, int target) {
+    public static List<List<Integer>> fourSum_1(int[] nums, int target) {
         Arrays.sort(nums);
         return kSum(nums, 0, target, 4);
     }
@@ -101,6 +164,9 @@ public class FourSum_18 {
         do_func(new int[]{2, 2, 2, 2, 2}, 88, new int[][]{});
         do_func(new int[]{2, 2, 2, 2, 2}, 2, new int[][]{});
         do_func(new int[]{2, 2, 2, 2, 2}, 6, new int[][]{});
+        do_func(new int[]{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, 8, new int[][]{{2, 2, 2, 2}});
+        do_func(new int[]{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3}, 8, new int[][]{{2, 2, 2, 2}});
+        do_func(new int[]{1000000000, 1000000000, 1000000000, 1000000000}, -294967296, new int[][]{});
     }
 
     private static void do_func(int[] nums, int target, int[][] expected) {
