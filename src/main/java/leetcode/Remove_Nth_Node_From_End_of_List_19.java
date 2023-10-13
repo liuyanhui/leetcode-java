@@ -27,6 +27,45 @@ package leetcode;
  * Follow up: Could you do this in one pass?
  */
 public class Remove_Nth_Node_From_End_of_List_19 {
+
+    public static ListNode removeNthFromEnd(ListNode head, int n) {
+        return removeNthFromEnd_2(head, n);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking：
+     * 1.双指针法。
+     * 双指针法先定位到被删除节点的上一个节点，再执行删除操作。
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 40.5 MB Beats 54.49%
+     *
+     * @param head
+     * @param n
+     * @return
+     */
+    public static ListNode removeNthFromEnd_2(ListNode head, int n) {
+        if (head == null) return null;
+        ListNode res = new ListNode(0, head);
+        ListNode prev = res;
+        ListNode end = head;
+        //先定位被删除的节点的上一个节点
+        while (end != null) {
+            if (n <= 0) {
+                prev = prev.next;
+            }
+            end = end.next;
+            n--;
+        }
+        //删除节点
+        prev.next = prev.next.next;
+        return res.next;
+    }
+
     /**
      * 双指针，first在前，second在后。first前进一步，n--；当n==0时，second开始前进；直到first到达尾部。
      * 当first到达尾部时，second删除next节点即可。即：second.next = second.next.next
@@ -39,7 +78,7 @@ public class Remove_Nth_Node_From_End_of_List_19 {
      * @param n
      * @return
      */
-    public static ListNode removeNthFromEnd(ListNode head, int n) {
+    public static ListNode removeNthFromEnd_1(ListNode head, int n) {
         ListNode ret = new ListNode(0, head);
         ListNode first = ret, second = ret;
         while (first.next != null) {
