@@ -40,7 +40,40 @@ import java.util.Stack;
  */
 public class Valid_Parentheses_20 {
     public static boolean isValid(String s) {
-        return isValid_3(s);
+        return isValid_4(s);
+    }
+
+    /**
+     * round 3
+     *
+     * review 可以采用char[]替代stack<>，这样会有更好的性能。
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats  82.63%
+     * Memory 40.4 MB Beats 53.5%
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isValid_4(String s) {
+        if (s == null || s.length() == 0) return false;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else {
+                if (stack.empty()) return false;
+                if ((c == ')' && stack.peek() == '(')
+                        || (c == ']' && stack.peek() == '[')
+                        || (c == '}' && stack.peek() == '{')) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        return stack.empty();
     }
 
     /**
