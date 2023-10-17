@@ -45,6 +45,7 @@ public class Valid_Parentheses_20 {
 
     /**
      * round 3
+     * Score[5] Lower is harder
      *
      * review 可以采用char[]替代stack<>，这样会有更好的性能。
      *
