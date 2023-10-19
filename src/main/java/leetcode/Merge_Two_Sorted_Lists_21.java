@@ -26,7 +26,44 @@ package leetcode;
  */
 public class Merge_Two_Sorted_Lists_21 {
     public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        return mergeTwoLists_3(l1, l2);
+        return mergeTwoLists_4(l1, l2);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking：
+     * 1.类似插入排序的方式。在计算过程中，有三个部分：已经排序好的部分res，list1未排序部分，list2为排序部分。依次比较list1的head和list2的head，选择较小者追加到res尾部。
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 41.2 MB Beats 53.33%
+     *
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public static ListNode mergeTwoLists_4(ListNode list1, ListNode list2) {
+        ListNode res = new ListNode();
+        ListNode tail = res;
+        while (list1 != null && list2 != null) {
+            if (list1.val <= list2.val) {
+                tail.next = list1;
+                list1 = list1.next;
+            } else {
+                tail.next = list2;
+                list2 = list2.next;
+            }
+            tail = tail.next;
+        }
+        if (list1 != null) {
+            tail.next = list1;
+        }
+        if (list2 != null) {
+            tail.next = list2;
+        }
+        return res.next;
     }
 
     /**
