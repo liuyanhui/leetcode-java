@@ -22,7 +22,57 @@ import java.util.*;
 public class Generate_Parentheses_22 {
 
     public static List<String> generateParenthesis(int n) {
-        return generateParenthesis_3(n);
+        return generateParenthesis_4(n);
+    }
+
+    static Map<Integer, List<String>> cache = new HashMap<>();
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1.递归法。
+     * n=5时的遍历的过程为：()???? -->(?)??? --> (??)?? --> (???)? --> (????) --> ????()
+     *
+     * 验证通过：
+     *
+     * @param n
+     * @return
+     */
+    public static List<String> generateParenthesis_4(int n) {
+        List<String> res = new ArrayList<>();
+        if (n <= 0) {
+            res.add("");
+            return res;
+        }
+        if (cache.containsKey(n))
+            return cache.get(n);
+        if (n == 1) {
+            res.add("()");
+            cache.put(n, res);
+            return res;
+        }
+
+        //n=5时的遍历的过程为：()???? -->(?)??? --> (??)?? --> (???)? --> (????) --> ????()
+        for (int i = 0; i < n; i++) {
+            List<String> headList = new ArrayList<>();
+            List<String> innerList = generateParenthesis(i);
+            List<String> tailList = generateParenthesis(n - 1 - i);
+            //先计算(???)???中的前半部分(???)
+            for (String s : innerList) {
+                headList.add("(" + s + ")");
+            }
+            //再计算(???)???中的后半部分???
+            for (String head : headList) {
+                for (String tail : tailList) {
+                    res.add(head + tail);
+                }
+            }
+        }
+
+        cache.putIfAbsent(n, res);
+
+        return res;
     }
 
     /**
