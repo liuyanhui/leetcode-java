@@ -45,6 +45,16 @@ public class Merge_k_Sorted_Lists_23 {
     }
 
     /**
+     * rounnd 3
+     * Score[3] Lower is harder
+     *
+     * mergeKLists_1()和mergeKLists_2()是一种方案
+     * mergeKLists_3()是一种方案
+     * mergeKLists_4()是一种方案
+     *
+     */
+
+    /**
      * round2
      * 没有想到使用PriorityQueue的方案
      *
