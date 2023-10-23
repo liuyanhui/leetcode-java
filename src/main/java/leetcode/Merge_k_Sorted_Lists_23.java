@@ -46,7 +46,7 @@ public class Merge_k_Sorted_Lists_23 {
 
     /**
      * rounnd 3
-     * Score[3] Lower is harder
+     * Score[2] Lower is harder
      *
      * mergeKLists_1()和mergeKLists_2()是一种方案
      * mergeKLists_3()是一种方案
