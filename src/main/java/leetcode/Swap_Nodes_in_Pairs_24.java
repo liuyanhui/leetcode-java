@@ -24,7 +24,37 @@ package leetcode;
  */
 public class Swap_Nodes_in_Pairs_24 {
     public static ListNode swapPairs(ListNode head) {
-        return swapPairs_3(head);
+        return swapPairs_4(head);
+    }
+
+    /**
+     * round 2
+     * Score[4] Lower is harder
+     *
+     * swapPairs_3()的思路更简单。
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode swapPairs_4(ListNode head) {
+        ListNode res = new ListNode(0, head);
+        //单独处理头结点
+        if (head != null && head.next != null) {
+            res.next = head.next;
+        } else {
+            res.next = head;
+        }
+        ListNode tail = new ListNode();
+        while (head != null && head.next != null) {
+            ListNode tmp = head.next.next;
+            tail.next = head.next;
+            head.next.next = head;
+            head.next = tmp;
+            tail = head;
+            head = tmp;
+        }
+
+        return res.next;
     }
 
     /**
@@ -129,6 +159,7 @@ public class Swap_Nodes_in_Pairs_24 {
         do_func(new int[]{1, 2, 3, 4}, new int[]{2, 1, 4, 3});
         do_func(new int[]{}, new int[]{});
         do_func(new int[]{1}, new int[]{1});
+        do_func(new int[]{1, 2, 3}, new int[]{2, 1, 3});
     }
 
     private static void do_func(int[] head, int[] expected) {
