@@ -38,7 +38,57 @@ package leetcode;
  */
 public class Reverse_Nodes_in_k_Group_25 {
     public static ListNode reverseKGroup(ListNode head, int k) {
-        return reverseKGroup_4(head, k);
+        return reverseKGroup_5(head, k);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * review 不难，但是比较绕
+     *
+     * Thinking：
+     * 1.链表分为3部分：已经计算的(h1,t1)，正在计算的(h2,t2)，未计算的(h3,t3)。
+     * 1.1. f(h2,k)负责反转链表，并且执行h2.next=h3，返回值为新的头节点t2。t1.next = t2;
+     * 1.2. 持续调用f(h2.next,k)
+     * 2.预先判断未计算部分(h3,t3)链表的节点数量是否大于k
+     *
+     * 验证通过：
+     *
+     * @param head
+     * @param k
+     * @return
+     */
+    public static ListNode reverseKGroup_5(ListNode head, int k) {
+        ListNode h1 = new ListNode();
+        ListNode t1 = h1;
+        //链表中节点数量是否大于等于k
+        int cnt = 1;
+        ListNode cur = head;
+        while (cur != null && cnt < k) {
+            cur = cur.next;
+            cnt++;
+        }
+        //如果数量不满足条件，不执行反转操作
+        if (cnt < k || cur == null) return head;
+        //执行反转操作
+        ListNode h2 = head;
+        ListNode t2 = h2;
+        ListNode h3 = t2.next;//未处理部分的头节点
+        cnt = 1;
+        while (cnt < k) {
+            ListNode t = h3.next;
+            h3.next = h2;
+            h2 = h3;
+            h3 = t;
+            cnt++;
+        }
+        h1.next = h2;
+        t1 = t2;
+        t1.next = h3;
+        //递归计算剩余的链表
+        t1.next = reverseKGroup(h3, k);
+
+        return h2;
     }
 
     /**

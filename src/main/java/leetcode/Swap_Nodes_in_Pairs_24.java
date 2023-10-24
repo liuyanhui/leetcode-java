@@ -33,6 +33,8 @@ public class Swap_Nodes_in_Pairs_24 {
      *
      * swapPairs_3()的思路更简单。
      *
+     * 验证通过
+     *
      * @param head
      * @return
      */
@@ -59,6 +61,7 @@ public class Swap_Nodes_in_Pairs_24 {
 
     /**
      * 递归
+     * review 极简方案
      * 参考思路：
      * https://leetcode.com/problems/swap-nodes-in-pairs/discuss/11030/My-accepted-java-code.-used-recursion.
      *
