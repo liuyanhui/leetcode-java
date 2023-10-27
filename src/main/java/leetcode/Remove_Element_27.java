@@ -50,6 +50,15 @@ public class Remove_Element_27 {
     }
 
     /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking:
+     * 1.分段法。已计算的需要保留的部分[0,i]，已计算无需保留的部分(i,j)，未计算部分[j,~]
+     *
+     */
+
+    /**
      * round2
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00%.

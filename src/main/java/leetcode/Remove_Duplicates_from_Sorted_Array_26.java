@@ -50,6 +50,12 @@ public class Remove_Duplicates_from_Sorted_Array_26 {
      * round 3
      * Score[5] Lower is harder
      *
+     * Thinking：
+     * 1.分段法。即分为已计算部分[0,i]，空白部分(i+1,j)，未计算部分[j,~]。
+     * 2.
+     * IF nums[i]==nums[j] THEN j++
+     * ELSE nums[i+1]=nums[j] j++
+     *
      * 验证通过：
      *
      * @param nums
