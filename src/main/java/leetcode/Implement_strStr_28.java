@@ -38,7 +38,34 @@ public class Implement_strStr_28 {
      * @return
      */
     public static int strStr(String haystack, String needle) {
-        return strStr_2(haystack, needle);
+        return strStr_3(haystack, needle);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * 验证通过：
+     *
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public static int strStr_3(String haystack, String needle) {
+        if (haystack == null || needle == null) return -1;
+        if (needle.length() == 0) return 0;
+        if (haystack.equals(needle)) return 0;
+        for (int i = 0; i <= haystack.length() - needle.length(); i++) {
+            for (int j = 0; j < needle.length(); j++) {
+                if (haystack.charAt(i + j) != needle.charAt(j)) {
+                    break;
+                }
+                if (j == needle.length() - 1) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     /**
@@ -85,6 +112,8 @@ public class Implement_strStr_28 {
         do_func("", "", 0);
         do_func("aaa", "aaaa", -1);
         do_func("mississippi", "issip", 4);
+        do_func("aaa", "aaa", 0);
+        do_func("abc", "c", 2);
     }
 
     private static void do_func(String haystack, String needle, int expected) {
