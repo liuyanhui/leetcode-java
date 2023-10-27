@@ -43,7 +43,28 @@ package leetcode;
  */
 public class Remove_Duplicates_from_Sorted_Array_26 {
     public static int removeDuplicates(int[] nums) {
-        return removeDuplicates_3(nums);
+        return removeDuplicates_4(nums);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * 验证通过：
+     *
+     * @param nums
+     * @return
+     */
+    public static int removeDuplicates_4(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int i = 0, j = 1;
+        while (j < nums.length) {
+            if (nums[i] != nums[j]) {
+                nums[++i] = nums[j];
+            }
+            j++;
+        }
+        return i + 1;
     }
 
     /**
