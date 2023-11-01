@@ -36,7 +36,53 @@ package leetcode;
  */
 public class Divide_Two_Integers_29 {
     public static int divide(int dividend, int divisor) {
-        return divide_3(dividend, divisor);
+        return divide_4(dividend, divisor);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1.naive solution
+     * 1.1. 用减法替代除法，循环执行dividend=dividend-dividor，直到dividend<divisor，循环次数就是结果。
+     * 1.2. 要注意超过上限和下限。
+     * 1.3. 时间复杂度O(N)
+     * 2.不能使用乘、除和取模运算，是否可以使用位运算？不可以
+     * 3.穷举法。
+     * 3.1. 穷举i的所有可能，公式为：dividor*i<dividend-dividor*i，i从0开始增加。这个过程只用加减法。
+     * 3.2. sum(dividor*{i})中最接近dividend的组合的i的和就是所求。
+     * 3.3. divide_3()中的说明更直观
+     *
+     * 参考divide_3()中的实现
+     * 边界值的计算比较繁琐
+     *
+     * 验证通过
+     *
+     * @param dividend
+     * @param divisor
+     * @return
+     */
+    public static int divide_4(int dividend, int divisor) {
+        //唯一会发生溢出的情况，特殊处理
+        if (dividend == 1 << 31 && divisor == -1) return (1 << 31) - 1;
+        int res = 0;
+        int sign = ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) ? 1 : -1;
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        while (dividend - divisor >= 0) {
+            int t = divisor;
+            int r = 1;
+            //加班变减法 dividend>=t+t
+            while (dividend - t - t >= 0) {
+                t += t;
+                r += r;
+            }
+            res += r;
+            dividend -= t;
+        }
+
+        return res * sign;
     }
 
     /**
@@ -71,9 +117,9 @@ public class Divide_Two_Integers_29 {
         //这里的Math.abs()很精妙，即使Integer.MIN_VALUE是最小的负数
         int a = Math.abs(A), b = Math.abs(B), res = 0, x = 0;
         while (a - b >= 0) {
-            //找到满足条件的最大的2^n
-            //公式：dividend-(divisor*(2^n))
-            for (x = 0; a - (b << x << 1) >= 0; x++);
+            //找到满足条件的最大的2^x
+            //公式：dividend-(divisor*(2^x))
+            for (x = 0; a - (b << x << 1) >= 0; x++) ;
             //下面的代码有问题，不可以替换上一行代码。
             // 因为：虽然一般来说i<<x<<1等价于i<<(x+1)，但是1<<32却不等于1<<31<<1。
             // 原因：如果移动的位数超过了该类型的最大位数，那么编译器会对移动的位数取模。如对int型移动33位，实际上只移动了33%32=1位。
@@ -82,7 +128,7 @@ public class Divide_Two_Integers_29 {
             res += 1 << x;
             a -= b << x;
         }
-        //这里也很巧妙，"(A > 0) == (B > 0)"用来判断结果的正负
+        //review 这里也很巧妙，"(A > 0) == (B > 0)"用来判断结果的正负
         return (A > 0) == (B > 0) ? res : -res;
     }
 
@@ -144,7 +190,7 @@ public class Divide_Two_Integers_29 {
     }
 
     public static void main(String[] args) {
-//        System.out.println(Math.abs(Integer.MIN_VALUE));
+        System.out.println(Math.abs(Integer.MIN_VALUE));
 //        System.out.println(Integer.MIN_VALUE);
 //        System.out.println(Math.log(Integer.MAX_VALUE) / Math.log(2));
 //        System.out.println(Math.abs(Integer.MIN_VALUE) - 55);
@@ -154,11 +200,11 @@ public class Divide_Two_Integers_29 {
 //        System.out.println(Integer.MIN_VALUE - 1);
 //        System.out.println(Integer.MIN_VALUE - (-1));
 //        System.out.println(Math.abs(Integer.MIN_VALUE) - (-603979776));
-        System.out.println(1<<31);
-        System.out.println(1<<32);
-        System.out.println(1<<31<<1);
-        System.out.println(3<<31);
-        System.out.println(3<<32);
+//        System.out.println(1 << 31);
+//        System.out.println(1 << 32);
+//        System.out.println(1 << 31 << 1);
+//        System.out.println(3 << 31);
+//        System.out.println(3 << 32);
         System.out.println("==========");
 
         do_func(10, 3, 3);
@@ -177,9 +223,9 @@ public class Divide_Two_Integers_29 {
         do_func(Integer.MAX_VALUE, Integer.MAX_VALUE, 1);
         do_func(1, Integer.MAX_VALUE, 0);
         do_func(1, Integer.MIN_VALUE, 0);
-        do_func(-2147483648, 2, -1073741824);
-        do_func(-2147483648, -2147483648, 1);
-        do_func(-2147483648, -55, 1);
+        do_func(Integer.MIN_VALUE, 2, -1073741824);
+        do_func(Integer.MIN_VALUE, Integer.MIN_VALUE, 1);
+        do_func(Integer.MIN_VALUE, -55, 39045157);
         do_func(32, 2, 16);
     }
 
