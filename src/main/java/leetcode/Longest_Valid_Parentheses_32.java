@@ -32,8 +32,18 @@ public class Longest_Valid_Parentheses_32 {
     public static int longestValidParentheses(String s) {
         return longestValidParentheses_1(s);
     }
+    /**round 3
+     * Score[2] Lower is harder
+     *
+     * longestValidParentheses_1()中"2."无法通过类似"()(())"和"()()"的用例。
+     * 可以通过初始化stack.push(-1)解决。
+     * It is such an amazing solution.
+     *
+     */
 
     /**
+     * round 3
+     * Score[3] Lower is harder
      *
      * Thinking：
      * 1.naive solution
