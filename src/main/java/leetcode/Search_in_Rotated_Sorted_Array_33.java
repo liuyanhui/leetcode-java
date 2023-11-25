@@ -33,7 +33,52 @@ package leetcode;
  */
 public class Search_in_Rotated_Sorted_Array_33 {
     public static int search(int[] nums, int target) {
-        return search_2(nums, target);
+        return search_3(nums, target);
+    }
+
+    /**
+     * Thinking：
+     * 1.naive solution
+     * 遍历nums查找target。时间复杂度O(N)
+     * 2.binary search
+     * 2.1.把nums从中间切割成2个部分，target要么在已排序的部分里，要么在仍然rotate的部分里。一共有4种情况。
+     * 2.2.二分之后有4种情况
+     * IF target==nums[m] THEN return m
+     * IF nums[l]<=nums[m] THEN
+     * 	IF nums[l]<=target<nums[m] THEN r=m-1
+     * 	ELSE l=m+1
+     * ELSE
+     * 	IF nums[m]<target<=nums[r] THEN l=m+1
+     * 	ELSE r=m-1
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00% of users with Java
+     * Memory 41.24 MB Beats 18.37% of users with Java
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int search_3(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int m = (l + r) / 2;
+            if (target == nums[m]) return m;
+            if (nums[l] <= nums[m]) {//m在左边已排序部分
+                if (nums[l] <= target && target < nums[m]) {//target只可能在m的左侧
+                    r = m - 1;
+                } else {//target只可能在m的右侧
+                    l = m + 1;
+                }
+            } else {//m在右边已排序部分
+                if (nums[m] < target && target <= nums[r]) {//target只可能在m的右侧
+                    l = m + 1;
+                } else {//target只可能在m的左侧
+                    r = m - 1;
+                }
+            }
+        }
+        return -1;
     }
 
     /**
