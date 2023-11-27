@@ -30,7 +30,58 @@ package leetcode;
  */
 public class Find_First_and_Last_Position_of_Element_in_Sorted_Array_34 {
     public static int[] searchRange(int[] nums, int target) {
-        return searchRange_2(nums, target);
+        return searchRange_3(nums, target);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking：
+     * 1.naive solution
+     * 两次依次遍历，分别计算出起始和结束下标。时间复杂度O(N)
+     * 2.binary search
+     * 利用不同的二分查找法，先找到target对应的下标。然后在向两端扩展。
+     * 时间复杂度O(logN)
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java .
+     * Memory Usage: 44.43 MB, less than 45.46% of Java
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int[] searchRange_3(int[] nums, int target) {
+        int[] res = new int[2];
+        res[0] = -1;
+        res[1] = -1;
+
+        //先找到起始下标
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int m = (l + r) / 2;
+            if (nums[m] == target) {
+                //查找起始下标
+                int t = m;
+                while (0 < t && nums[t - 1] == nums[t]) {
+                    t--;
+                }
+                res[0] = t;
+                //查找结束下标
+                t = m;
+                while (t < nums.length - 1 && nums[t] == nums[t + 1]) {
+                    t++;
+                }
+                res[1] = t;
+                break;
+            } else if (nums[m] < target) {
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return res;
     }
 
     /**
@@ -119,7 +170,7 @@ public class Find_First_and_Last_Position_of_Element_in_Sorted_Array_34 {
 
     private static void do_func(int[] nums, int target, int[] expected) {
         int[] ret = searchRange(nums, target);
-        ArrayUtils.printIntArray(ret);
+        ArrayUtils.printlnIntArray(ret);
         ArrayUtils.isSameThenPrintln(ret, expected);
         System.out.println("--------------");
     }

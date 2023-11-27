@@ -37,6 +37,9 @@ public class Search_in_Rotated_Sorted_Array_33 {
     }
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     *
      * Thinking：
      * 1.naive solution
      * 遍历nums查找target。时间复杂度O(N)
