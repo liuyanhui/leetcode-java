@@ -36,7 +36,34 @@ package leetcode;
  */
 public class Search_Insert_Position_35 {
     public static int searchInsert(int[] nums, int target) {
-        return searchInsert_5(nums, target);
+        return searchInsert_6(nums, target);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00%
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int searchInsert_6(int[] nums, int target) {
+        if (nums == null || nums.length == 0) return -1;
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int m = (l + r) / 2;
+            if (nums[m] == target) {
+                return m;
+            } else if (nums[m] < target) {
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return l;
     }
 
     /**
