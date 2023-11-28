@@ -47,7 +47,76 @@ package leetcode;
  */
 public class Valid_Sudoku_36 {
     public static boolean isValidSudoku(char[][] board) {
-        return isValidSudoku_2(board);
+        return isValidSudoku_3(board);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1.naive solution
+     * 1.1. 分别校验行、列、3X3的方格。
+     * 1.2. 3X3的方格的公式为
+     * //大9宫格由9个小九宫格组成，按矩阵排列。
+     * for(int i=0;i<3;i++){
+     * 	for(int j=0;j<3;j++){
+     * 		//小9宫格由9个数字组成，按矩阵排列。
+     * 		for(int m=0;m<3;m++){
+     * 			for(int n=0;n<3;n++){
+     * 				r=i*3+m;
+     * 				c=j*3+n;
+     *                        }        * 		}
+     *    }
+     * }
+     *
+     * 验证通过：
+     * Runtime: 1 ms, faster than 100.00% of Java online submissions for Valid Sudoku.
+     * Memory Usage: 43.22 MB, less than 62.62% of Java online submissions for Valid Sudoku.
+     *
+     * @param board
+     * @return
+     */
+    public static boolean isValidSudoku_3(char[][] board) {
+        int[] seen = new int[10];
+        //校验行
+        for (int i = 0; i < 9; i++) {
+            seen = new int[10];
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') continue;
+                int t = board[i][j] - '0';
+                if (seen[t] > 0) return false;
+                seen[t]++;
+            }
+        }
+        //校验列
+        for (int i = 0; i < 9; i++) {
+            seen = new int[10];
+            for (int j = 0; j < 9; j++) {
+                if (board[j][i] == '.') continue;
+                int t = board[j][i] - '0';
+                if (seen[t] > 0) return false;
+                seen[t]++;
+            }
+        }
+        //校验9宫格
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                seen = new int[10];
+                //小9宫格由9个数字组成，按矩阵排列。
+                for (int m = 0; m < 3; m++) {
+                    for (int n = 0; n < 3; n++) {
+                        int r = i * 3 + m;
+                        int c = j * 3 + n;
+                        if (board[r][c] == '.') continue;
+                        int t = board[r][c] - '0';
+                        if (seen[t] > 0) return false;
+                        seen[t]++;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
