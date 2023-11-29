@@ -12,6 +12,7 @@ import java.util.Arrays;
  * Each of the digits 1-9 must occur exactly once in each row.
  * Each of the digits 1-9 must occur exactly once in each column.
  * Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+ *
  * The '.' character indicates empty cells.
  *
  * Example 1:
@@ -26,6 +27,87 @@ import java.util.Arrays;
  * It is guaranteed that the input board has only one solution.
  */
 public class Sudoku_Solver_37 {
+    public static void solveSudoku(char[][] board) {
+        solveSudoku_2(board);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1.穷举思路。
+     * 1.1. 分别保存行、列、3X3的填写情况，使用List保存，每个List的长度是9。
+     * 1.2. 每填一个数字，分别校验行、列、3X3。
+     * 1.3. 采用递归法。
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 97.06% of users with Java
+     * Memory 40.30 MB Beats 32.81% of users with Java
+     *
+     * @param board
+     */
+    public static void solveSudoku_2(char[][] board) {
+        //初始化
+        int[][] seenRow = new int[9][10];
+        int[][] seenCol = new int[9][10];
+        int[][] seenSubbox = new int[9][10];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') continue;
+                int val = board[i][j] - '0';
+                seenRow[i][val]++;
+                seenCol[j][val]++;
+                int r_sub = i / 3 * 3 + j / 3;
+                int c_sub = i % 3 * 3 + j % 3;
+                seenSubbox[r_sub][val]++;
+            }
+        }
+        dfs(board, 0, 0, seenRow, seenCol, seenSubbox);
+    }
+
+    private static boolean dfs(char[][] board, int i, int j, int[][] seenRow, int[][] seenCol, int[][] seenSubbox) {
+        if (board[i][j] != '.') {//题目给定的不需要判断
+            return findNext(board, i, j, seenRow, seenCol, seenSubbox);
+        }
+        int r_sub = i / 3 * 3 + j / 3;
+        int c_sub = i % 3 * 3 + j % 3;
+        //穷举
+        for (int t = 1; t <= 9; t++) {
+            //判断是否违反约束
+            if (seenRow[i][t] > 0 || seenCol[j][t] > 0 || seenSubbox[r_sub][t] > 0) {
+                continue;
+            }
+            seenRow[i][t]++;
+            seenCol[j][t]++;
+            seenSubbox[r_sub][t]++;
+            board[i][j] = (char) (t + '0');
+            if (findNext(board, i, j, seenRow, seenCol, seenSubbox)) {
+                return true;
+            }
+            board[i][j] = '.';
+            seenRow[i][t]--;
+            seenCol[j][t]--;
+            seenSubbox[r_sub][t]--;
+        }
+
+        return false;
+    }
+
+    private static boolean findNext(char[][] board, int i, int j, int[][] seenRow, int[][] seenCol, int[][] seenSubbox) {
+        if (i == 8 && j == 8) return true;
+        //先计算列，再计算行。从左到右，从上到下的顺序计算。
+        if (j < 8) {
+            if (dfs(board, i, j + 1, seenRow, seenCol, seenSubbox))
+                return true;
+        } else if (i < 8) {
+            if (dfs(board, i + 1, 0, seenRow, seenCol, seenSubbox)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 递归法+穷举
      *
@@ -35,7 +117,7 @@ public class Sudoku_Solver_37 {
      *
      * @param board
      */
-    public static void solveSudoku(char[][] board) {
+    public static void solveSudoku_1(char[][] board) {
         do_recursive(board, 0, 0);
     }
 
