@@ -37,6 +37,57 @@ import java.util.List;
  * 1 <= target <= 500
  */
 public class Combination_Sum_39 {
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        return combinationSum_2(candidates, target);
+    }
+
+    /**
+     * Thinking：
+     * 1. 递归
+     * 2. 不可以使用缓存，存储中间结果。因为每个target可能存在多个解。
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 75.85% of users with Java
+     * Memory 44.00 MB Beats 31.71% of users with Java
+     *
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public static List<List<Integer>> combinationSum_2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> res = helper(candidates, 0, target);
+        return res;
+    }
+
+    private static List<List<Integer>> helper(int[] candidates, int beg, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (target <= 0) return res;
+        //查询缓存
+        for (int i = beg; i < candidates.length; i++) {
+            //跳过重复的数。本题不需要
+            // if(i>0 && candidates[i]==candidates[i-1]) continue;
+            int gap = target - candidates[i];
+            if (gap == 0) {
+                List<Integer> cur = new ArrayList<>();
+                cur.add(candidates[i]);
+                res.add(cur);
+            } else if (gap > 0) {
+                List<List<Integer>> tmp = helper(candidates, i, gap);//合并
+                for (List<Integer> list : tmp) {
+                    List<Integer> t = new ArrayList<>(list);
+                    t.add(candidates[i]);
+                    res.add(t);
+                }
+            } else {
+                //candidate已经排序，跳过更大的数
+                break;
+            }
+        }
+
+        return res;
+    }
+
     /**
      * round2 review
      * 金矿：组合排列的方案
@@ -52,7 +103,7 @@ public class Combination_Sum_39 {
      * @param target
      * @return
      */
-    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+    public static List<List<Integer>> combinationSum_1(int[] candidates, int target) {
         List<List<Integer>> ret = new ArrayList<>();
         Arrays.sort(candidates);
         List<Integer> existed = new ArrayList<>();
