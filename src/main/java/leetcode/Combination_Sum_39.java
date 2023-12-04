@@ -45,6 +45,8 @@ public class Combination_Sum_39 {
      * round 3
      * Score[3] Lower is harder
      *
+     * combinationSum_1()和combinationSum_2()是不同的递归实现
+     *
      * Thinking：
      * 1. 递归
      * 2. 不可以使用缓存，存储中间结果。因为每个target可能存在多个解。
@@ -66,7 +68,7 @@ public class Combination_Sum_39 {
     private static List<List<Integer>> helper(int[] candidates, int beg, int target) {
         List<List<Integer>> res = new ArrayList<>();
         if (target <= 0) return res;
-        //查询缓存
+        //review 跳过已经计算的数，可以避免结果集出现重复的解。
         for (int i = beg; i < candidates.length; i++) {
             //跳过重复的数。本题不需要
             // if(i>0 && candidates[i]==candidates[i-1]) continue;

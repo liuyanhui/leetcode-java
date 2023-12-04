@@ -38,6 +38,50 @@ import java.util.List;
  * 1 <= target <= 30
  */
 public class Combination_Sum_II_40 {
+
+    public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        return combinationSum2_2(candidates, target);
+    }
+
+    /**
+     * Thinking：
+     * 1. 先排序，再递归。
+     *
+     * combinationSum2_1()和combinationSum2_2()是不同的递归实现
+     *
+     * 验证通过：
+     * Runtime 3 ms Beats 75.48% of users with Java
+     * Memory 43.92 MB Beats 9.28% of users with Java
+     *
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public static List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        return helper(candidates, target, 0);
+    }
+
+    private static List<List<Integer>> helper(int[] candidates, int target, int beg) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (target <= 0) {
+            res.add(new ArrayList<>());
+            return res;
+        }
+        for (int i = beg; i < candidates.length; i++) {
+            //review  这里很关键，去重关键步骤
+            if (i > beg && candidates[i] == candidates[i - 1]) continue;
+            if (target - candidates[i] < 0) continue;
+            List<List<Integer>> tmp = helper(candidates, target - candidates[i], i + 1);
+            for (List<Integer> list : tmp) {
+                List<Integer> newList = new ArrayList(list);
+                newList.add(candidates[i]);
+                res.add(newList);
+            }
+        }
+        return res;
+    }
+
     /**
      * round2 review
      * 金矿：组合排列系列
@@ -55,7 +99,7 @@ public class Combination_Sum_II_40 {
      * @param target
      * @return
      */
-    public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    public static List<List<Integer>> combinationSum2_1(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> ret = new ArrayList<>();
         List<Integer> existed = new ArrayList<>();
