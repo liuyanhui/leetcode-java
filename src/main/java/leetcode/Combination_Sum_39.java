@@ -42,6 +42,9 @@ public class Combination_Sum_39 {
     }
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     *
      * Thinking：
      * 1. 递归
      * 2. 不可以使用缓存，存储中间结果。因为每个target可能存在多个解。
