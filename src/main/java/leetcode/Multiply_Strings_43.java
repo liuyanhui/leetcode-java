@@ -25,7 +25,59 @@ import java.util.List;
  */
 public class Multiply_Strings_43 {
     public static String multiply(String num1, String num2) {
-        return multiply_1(num1,num2);
+        return multiply_3(num1, num2);
+    }
+
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * Thinking：
+     * 1. 分为两步：a*b时，a*b[i]按位相乘，然后结果进位(10的倍数)相加。
+     * 1.1 a*100这种情况需要单独考虑
+     * 2. 另一种简单的思路
+     * 2.1.
+     * https://leetcode.com/problems/multiply-strings/solutions/17605/easiest-java-solution-with-graph-explanation/
+     * https://leetcode.cn/problems/multiply-strings/solutions/1/you-hua-ban-shu-shi-da-bai-994-by-breezean/
+     * 2.2. `num1[i] * num2[j]` will be placed at indices `[i + j`, `i + j + 1]`
+     *
+     * 验证通过:
+     * Runtime 4 ms Beats 50.42% of users with Java
+     * Memory 41.34 MB Beats 61.82% of users with Java
+     *
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public static String multiply_3(String num1, String num2) {
+        if (num1 == null || num1.length() == 0 || num2 == null || num2.length() == 0)
+            return "0";
+        if (num1.equals("0") || num2.equals("0")) return "0";
+        int[] resArray = new int[num1.length() + num2.length()];
+        //review  主要遍历方向，必须是从低位到高位。不可以搞反
+        for (int i = num1.length() - 1; i >= 0; i--) {
+            int a = num1.charAt(i) - '0';
+            for (int j = num2.length() - 1; j >= 0; j--) {
+                int b = num2.charAt(j) - '0';
+
+                int t1 = resArray[i + j + 1] + a * b;
+                resArray[i + j + 1] = t1 % 10;
+                //review 这种实现情况下，不用考虑高位进位的情况
+                resArray[i + j] += t1 / 10;
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        //过滤前导0
+        //review  过滤算法
+        boolean signal = false;
+        for (int i = 0; i < resArray.length; i++) {
+            if (resArray[i] > 0 || signal) {
+                res.append(resArray[i]);
+                signal = true;
+            }
+        }
+        return res.toString();
     }
 
     /**
@@ -114,6 +166,10 @@ public class Multiply_Strings_43 {
         do_func("123", "1", "123");
         do_func("1", "123", "123");
         do_func("123", "0", "0");
+        do_func("9", "9", "81");
+        do_func("99", "9", "891");
+        do_func("99", "99", "9801");
+        do_func("999", "999", "998001");
     }
 
     private static void do_func(String num1, String num2, String expected) {

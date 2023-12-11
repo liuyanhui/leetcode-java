@@ -34,6 +34,8 @@ public class Trapping_Rain_Water_42 {
      * 单调栈思路：参考trap_4()和trap_3()
      * 夹逼思路：参考trap_1()和trap_2()
      *
+     * 本题的单调栈中的约束是单调不增，而不是单调递减。
+     *
      * @param height
      * @return
      */
