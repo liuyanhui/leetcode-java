@@ -24,7 +24,7 @@ import java.util.Stack;
  */
 public class Trapping_Rain_Water_42 {
     public static int trap(int[] height) {
-        return trap_5(height);
+        return trap_4(height);
     }
 
     /**
