@@ -24,8 +24,19 @@ import java.util.Stack;
  */
 public class Trapping_Rain_Water_42 {
     public static int trap(int[] height) {
-        return trap_4(height);
+        return trap_5(height);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * 单调栈思路：参考trap_4()和trap_3()
+     * 夹逼思路：参考trap_1()和trap_2()
+     *
+     * @param height
+     * @return
+     */
 
     /**
      * round 2
