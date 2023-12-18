@@ -42,13 +42,22 @@ public class Wildcard_Matching_44 {
      * Thinking：
      * 1. 匹配方式不唯一，存在多中匹配方式的情况。
      * 2. 字符优先级，越精确优先级越高，优先级由高到低为：a，?，*
-     * 3. 递归思路，分别针对
+     * 3. 递归思路，分别针对p中的三种情况进行计算
      * 公式为f(s,i,p,j):
      * 遍历p FROM j TO len(p)
      * 	IF p[j]=='?' AND i+1<len(s) THEN i++,j++
      * 	IF i<len(s) AND p[j]=='a' AND s[j]=='a' THEN i++,j++
      * 	IF p[j]=='*' THEN f(s,i, p,j+1),f(s,i+1,p,j)
      * IF i==len(s) AND j==len(p) THEN return true
+     *
+     * 更巧妙、更优雅、更高效的方法，
+     * https://leetcode.com/problems/wildcard-matching/solutions/17810/linear-runtime-and-constant-space-solution/
+     * 总结如下：
+     * 分为四种情况分别考虑：
+     * 1.p[j]==?或p[j]==s[i]的情况（当前字符根据?匹配或字符相同匹配）
+     * 2.p[j]==*的情况（当前字符根据*匹配）
+     * 3.不满足1.和2.，但是p[j-1]==*的情况
+     * 4.其他情况
      *
      * 验证通过：
      * Runtime 42 ms Beats 8.51% of users with Java
