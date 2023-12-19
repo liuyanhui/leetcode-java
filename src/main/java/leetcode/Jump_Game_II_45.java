@@ -35,6 +35,7 @@ public class Jump_Game_II_45 {
 
     /**
      * round 3
+     * Score[3] Lower is harder
      *
      * Thinking：
      * 1. naive solution 【本方法采用了这个方案】
@@ -99,8 +100,8 @@ public class Jump_Game_II_45 {
                 //计算当前bfs层级的最远到达的位置
                 nextEnd = Math.max(nextEnd, i + nums[i]);
             }
-            beg = end + 1;
-            end = nextEnd;
+            beg = end + 1;//review 这里很巧妙
+            end = nextEnd;//review 这里很巧妙
         }
         return jump;
     }
