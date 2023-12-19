@@ -54,10 +54,10 @@ public class Wildcard_Matching_44 {
      * https://leetcode.com/problems/wildcard-matching/solutions/17810/linear-runtime-and-constant-space-solution/
      * 总结如下：
      * 分为四种情况分别考虑：
-     * 1.p[j]==?或p[j]==s[i]的情况（当前字符根据?匹配或字符相同匹配）
-     * 2.p[j]==*的情况（当前字符根据*匹配）
-     * 3.不满足1.和2.，但是p[j-1]==*的情况
-     * 4.其他情况
+     * 1.p[j]==?或p[j]==s[i]的情况（当前字符根据?匹配或字符相同匹配）==> i++,j++
+     * 2.p[j]==*的情况（当前字符根据*匹配）==> j++, 缓存*开始的的位置（包括si和pj）
+     * 3.不满足1.和2.，但是p[j-1]==*的情况, ==> i++，更新si和pj
+     * 4.其他情况 ==> return false
      *
      * 验证通过：
      * Runtime 42 ms Beats 8.51% of users with Java

@@ -7,10 +7,12 @@ import java.util.Set;
  * 45. Jump Game II
  * Medium
  * ----------------------------
- * Given an array of non-negative integers nums, you are initially positioned at the first index of the array.
- * Each element in the array represents your maximum jump length at that position.
- * Your goal is to reach the last index in the minimum number of jumps.
- * You can assume that you can always reach the last index.
+ * You are given a 0-indexed array of integers nums of length n. You are initially positioned at nums[0].
+ * Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at nums[i], you can jump to any nums[i + j] where:
+ *  0 <= j <= nums[i] and
+ *  i + j < n
+ *
+ * Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
  *
  * Example 1:
  * Input: nums = [2,3,1,1,4]
@@ -24,10 +26,47 @@ import java.util.Set;
  * Constraints:
  * 1 <= nums.length <= 10^4
  * 0 <= nums[i] <= 1000
+ * It's guaranteed that you can reach nums[n - 1].
  */
 public class Jump_Game_II_45 {
     public static int jump(int[] nums) {
-        return jump_2(nums);
+        return jump_3(nums);
+    }
+
+    /**
+     * round 3
+     *
+     * Thinking：
+     * 1. naive solution 【本方法采用了这个方案】
+     * 暴力法，设dp[]为nums中每个数的最优解，dp[0]=0,dp[1:]=MAX_VALUE
+     * 1.1.从小到大依次计算nums[i]移动的情况，针对每个i循环执行dp[j]=min(dp[i]+1,dp[j])，i<j<=i+nums[i]
+     * 时间复杂度：O(N*N)
+     * 2.jump_2()的思路
+     * 2.1. 由于无需记录过程中的最优解，所以可以优化算法。
+     * 2.2. 只需记录次数jump和每次可以达到的最远i即可。当i>=len(nums)-1时，jump为结果。
+     *
+     * 3.本质上都是BFS思路
+     *
+     *
+     * 验证通过：
+     * Runtime 38 ms Beats 20.81% of users with Java
+     * Memory 45.16 MB Beats 11.94% of users with Java
+     *
+     * @param nums
+     * @return
+     */
+    public static int jump_3(int[] nums) {
+        int[] dp = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            //注意i+j超出最大长度
+            for (int j = 1; j <= nums[i] && i + j < nums.length; j++) {
+                dp[i + j] = Math.min(dp[i + j], dp[i] + 1);
+            }
+        }
+        return dp[nums.length - 1];
     }
 
     /**
