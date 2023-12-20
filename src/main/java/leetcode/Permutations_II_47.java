@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 47. Permutations II
@@ -26,6 +24,53 @@ import java.util.List;
  * -10 <= nums[i] <= 10
  */
 public class Permutations_II_47 {
+
+    public static List<List<Integer>> permuteUnique(int[] nums) {
+        return permuteUnique_2(nums);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking :
+     * 1. 先排序，再递归，递归时去重
+     *
+     * 验证通过：
+     * Runtime 3 ms Beats 50.24% of users with Java
+     * Memory 43.42 MB Beats 96.79% of users with Java
+     *
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> permuteUnique_2(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        Arrays.sort(nums);
+        hepler(nums, new ArrayList<>(), new HashSet<>(), ret);
+        return ret;
+    }
+
+    private static void hepler(int[] nums, List<Integer> head, Set<Integer> seen, List<List<Integer>> ret) {
+        if (nums.length == head.size()) {
+            ret.add(new ArrayList<>(head));
+            return;
+        }
+        int last = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            //过滤已经出现的
+            if (seen.contains(i)) continue;
+            //结果去重
+            if (last == nums[i]) continue;
+
+            last = nums[i];
+            head.add(nums[i]);
+            seen.add(i);
+            hepler(nums, head, seen, ret);
+            seen.remove(i);
+            head.remove(head.size() - 1);
+        }
+    }
+
     /**
      * 金矿
      * review R2 ：手动人肉调试代码时，使用树形结构的方式，模拟递归调用。递归本质上就是树形结构的方式。
@@ -44,7 +89,7 @@ public class Permutations_II_47 {
      * @param nums
      * @return
      */
-    public static List<List<Integer>> permuteUnique(int[] nums) {
+    public static List<List<Integer>> permuteUnique_1(int[] nums) {
         Arrays.sort(nums);
         boolean[] used = new boolean[nums.length];
         return backtrack(nums, 0, used);
