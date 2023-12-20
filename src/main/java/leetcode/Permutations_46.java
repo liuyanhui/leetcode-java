@@ -29,6 +29,48 @@ import java.util.Set;
  * All the integers of nums are unique.
  */
 public class Permutations_46 {
+    public static List<List<Integer>> permute(int[] nums) {
+        return permute_2(nums);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归思路
+     * 1.1. 公式为：f(int[] nums,Set<Integer> seen,List<Integer> head,List<List<Integer>> ret)
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 43.49% of users with Java
+     * Memory 44.15 MB Beats 22.78% of users with Java
+     *
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> permute_2(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        Set<Integer> seen = new HashSet<>();
+        List<Integer> head = new ArrayList<>();
+        hepler(nums, seen, head, ret);
+        return ret;
+    }
+
+    private static void hepler(int[] nums, Set<Integer> seen, List<Integer> head, List<List<Integer>> ret) {
+        if (head.size() == nums.length) {
+            ret.add(new ArrayList<>(head));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (seen.contains(nums[i])) continue;
+            seen.add(nums[i]);
+            head.add(nums[i]);
+            hepler(nums, seen, head, ret);
+            head.remove(head.size() - 1);
+            seen.remove(nums[i]);
+        }
+    }
+
     /**
      * review
      * 递归
@@ -42,7 +84,7 @@ public class Permutations_46 {
      * @param nums
      * @return
      */
-    public static List<List<Integer>> permute(int[] nums) {
+    public static List<List<Integer>> permute_1(int[] nums) {
         return backtrack(nums, new HashSet<Integer>());
     }
 
