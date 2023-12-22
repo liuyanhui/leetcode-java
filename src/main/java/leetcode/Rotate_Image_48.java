@@ -5,32 +5,60 @@ import java.util.Arrays;
 /**
  * 这里有金矿
  * https://leetcode.com/problems/rotate-image/
- * <p>
  * 48. Rotate Image
- * <p>
  * Medium
- * <p>
+ * -----------------------------------
  * You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
- * <p>
- * You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate
- * another 2D matrix and do the rotation.
- * <p>
- * Example 1: Input: matrix = [[1,2,3],[4,5,6],[7,8,9]] Output: [[7,4,1],[8,5,2],[9,6,3]]
- * <p>
- * Example 2: Input: matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]] Output:
- * [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
- * <p>
- * Example 3: Input: matrix = [[1]] Output: [[1]]
- * <p>
- * Example 4: Input: matrix = [[1,2],[3,4]] Output: [[3,1],[4,2]]
- * <p>
+ *
+ * You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
+ *
+ * Example 1:
+ * Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+ * Output: [[7,4,1],[8,5,2],[9,6,3]]
+ *
+ * Example 2:
+ * Input: matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+ * Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+ *
  * Constraints:
- * <p>
- * matrix.length == n matrix[i].length == n 1 <= n <= 20 -1000 <= matrix[i][j] <= 1000
+ * n == matrix.length == matrix[i].length
+ * 1 <= n <= 20
+ * -1000 <= matrix[i][j] <= 1000
  */
 public class Rotate_Image_48 {
     public static void rotate(int[][] matrix) {
-        rotate_3(matrix);
+        rotate_4(matrix);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1.图片rotate的常用套路
+     * 先上下对称互换，在沿对角线互换
+     *
+     * 验证通过：
+     *
+     * @param matrix
+     */
+    public static void rotate_4(int[][] matrix) {
+        //上下对称互换
+        for (int i = 0; i < matrix.length / 2; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                int t = matrix[i][j];
+                matrix[i][j] = matrix[matrix.length - 1 - i][j];
+                matrix[matrix.length - 1 - i][j] = t;
+            }
+        }
+        //对角线互换
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < i; j++) {
+                int t = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = t;
+            }
+        }
     }
 
     /**
