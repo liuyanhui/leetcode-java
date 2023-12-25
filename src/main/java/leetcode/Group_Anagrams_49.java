@@ -28,6 +28,16 @@ import java.util.*;
  * strs[i] consists of lowercase English letters.
  */
 public class Group_Anagrams_49 {
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1.先提取特征，再分组。
+     *
+     */
+
     /**
      * 1.提取每个字符串的特征值。特征值是int[26]，表示26个字母出现的次数。或者特征值是字母序的字符串。
      * 2.根据特征值分组即可。
