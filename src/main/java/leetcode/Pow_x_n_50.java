@@ -4,7 +4,7 @@ package leetcode;
  * 50. Pow(x, n)
  * Medium
  * ----------------------------
- * Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+ * Implement pow(x, n), which calculates x raised to the power n (i.e., x^n).
  *
  * Example 1:
  * Input: x = 2.00000, n = 10
@@ -22,11 +22,52 @@ package leetcode;
  * Constraints:
  * -100.0 < x < 100.0
  * -2^31 <= n <= 2^31-1
+ * n is an integer.
+ * Either x is not zero or n > 0.
  * -10^4 <= x^n <= 10^4
  */
 public class Pow_x_n_50 {
     public static double myPow(double x, int n) {
-        return myPow_3(x, n);
+        return myPow_4(x, n);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1.递归思路
+     * 1.1.
+     * IF n>0 AND n是偶数 THEN F(x,n)=F(x,n/2)*F(x,n/2)
+     * IF n>0 AND n是偶数 THEN F(x,n)=F(x,n/2)*F(x,n/2)*x
+     * IF n<0 THEN 先计算x*F(x,n+1) //这样防止n=Integer.MIN_VALUE=-2147483648时，溢出。
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 43.10 MB Beats 5.10%
+     *
+     * @param x
+     * @param n
+     * @return
+     */
+    public static double myPow_4(double x, int n) {
+        if (x == 0) return 0;
+        if (x == 1 || n == 0) return 1;
+        if (n == 1) return x;
+        if (n == -1) return 1 / x;
+        double ret = 0;
+        if (n % 2 == 0) {
+            ret = myPow(x, n / 2);
+            ret *= ret;
+        } else if (n > 0) {
+            ret = myPow(x, n / 2);
+            ret *= ret;
+            ret *= x;
+        } else {
+            ret = myPow(x, n + 1);
+            ret *= 1 / x;
+        }
+        return ret;
     }
 
     /**
