@@ -68,6 +68,7 @@ public class Largest_Rectangle_in_Histogram_84 {
         for (int i = 0; i <= heights.length; i++) {
             while (!stack.empty() && (i == heights.length || heights[stack.peek()] > heights[i])) {
                 int t = stack.pop();
+                // review round 3 这里很重要，保证边界极小值不被遗漏
                 int leftIdx = stack.empty() ? -1 : stack.peek();
                 maxArea = Math.max(maxArea, heights[t] * (i - leftIdx - 1));
             }
@@ -135,6 +136,8 @@ public class Largest_Rectangle_in_Histogram_84 {
         do_func(new int[]{2, 1, 5, 6, 2, 3}, 10);
         do_func(new int[]{2, 4}, 4);
         do_func(new int[]{20}, 20);
+        do_func(new int[]{0, 2, 1, 5, 6, 2, 3}, 10);
+        do_func(new int[]{2, 1, 5, 6, 2, 3, 0, 2, 1, 5, 6, 2, 3}, 10);
     }
 
     private static void do_func(int[] heights, int expected) {
