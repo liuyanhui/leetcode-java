@@ -36,10 +36,42 @@ package leetcode;
  * 0 <= m, n <= 200
  * 1 <= m + n <= 200
  * -10^9 <= nums1[i], nums2[i] <= 10^9
+ *
+ * Follow up: Can you come up with an algorithm that runs in O(m + n) time?
+ *
  */
 public class Merge_Sorted_Array_88 {
     public static void merge(int[] nums1, int m, int[] nums2, int n) {
-        merge_3(nums1, m, nums2, n);
+        merge_4(nums1, m, nums2, n);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. 从后向前合并排序。
+     * O(M+N)时间复杂度
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 42.02 MB Beats 58.86%
+     *
+     * @param nums1
+     * @param m
+     * @param nums2
+     * @param n
+     */
+    public static void merge_4(int[] nums1, int m, int[] nums2, int n) {
+        if (n == 0) return;
+        int i = m - 1, j = n - 1;
+        int k = 1;
+        while (i >= 0 && j >= 0) {
+            nums1[m + n - k++] = nums1[i] < nums2[j] ? nums2[j--] : nums1[i--];
+        }
+        while (j >= 0) {
+            nums1[m + n - k++] = nums2[j--];
+        }
     }
 
     /**
@@ -146,12 +178,14 @@ public class Merge_Sorted_Array_88 {
         do_func(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3, new int[]{1, 2, 2, 3, 5, 6});
         do_func(new int[]{1}, 1, new int[]{}, 0, new int[]{1});
         do_func(new int[]{0}, 0, new int[]{1}, 1, new int[]{1});
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(int[] nums1, int m, int[] nums2, int n, int[] expected) {
         merge(nums1, m, nums2, n);
         ArrayUtils.printlnIntArray(nums1);
         ArrayUtils.isSameThenPrintln(nums1, expected);
+        assert ArrayUtils.isSame(nums1, expected);
         System.out.println("--------------");
     }
 }
