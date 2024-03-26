@@ -10,9 +10,9 @@ import java.util.Map;
  * We can scramble a string s to get a string t using the following algorithm:
  * If the length of the string is 1, stop.
  * If the length of the string is > 1, do the following:
- * Split the string into two non-empty substrings at a random index, i.e., if the string is s, divide it to x and y where s = x + y.
- * Randomly decide to swap the two substrings or to keep them in the same order. i.e., after this step, s may become s = x + y or s = y + x.
- * Apply step 1 recursively on each of the two substrings x and y.
+ *  Split the string into two non-empty substrings at a random index, i.e., if the string is s, divide it to x and y where s = x + y.
+ *  Randomly decide to swap the two substrings or to keep them in the same order. i.e., after this step, s may become s = x + y or s = y + x.
+ *  Apply step 1 recursively on each of the two substrings x and y.
  *
  * Given two strings s1 and s2 of the same length, return true if s2 is a scrambled string of s1, otherwise, return false.
  *
@@ -44,7 +44,61 @@ import java.util.Map;
  */
 public class Scramble_String_87 {
     public static boolean isScramble(String s1, String s2) {
-        return isScramble_2(s1, s2);
+        return isScramble_3(s1, s2);
+    }
+
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * 理解题目更重要
+     * 递归函数要尽可能简单，把全局部分排除在递归之外。结果通过返回结果合并或者通过全局遍历合并
+     * 题目的约束是：分割之后，针对左右两部分分别递归scramble，而不是s1完全Scramble之后，再用Scramble(s1)==s2进行比较是否相等。
+     *
+     * Runtime 10 ms Beats 47.07% of users with Java
+     * Memory 45.24 MB Beats 31.89% of users with Java
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public static boolean isScramble_3(String s1, String s2) {
+        if (s1.equals(s2)) return true;
+        if (s1.length() != s2.length()) return false;
+
+        String key = s1 + ":" + s2;
+        if (cache.containsKey(key)) return cache.get(key);
+
+        //快速判断
+        int[] cnt = new int[26];
+        for (int i = 0; i < s1.length(); i++) {
+            cnt[s1.charAt(i) - 'a']++;
+            cnt[s2.charAt(i) - 'a']--;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] != 0) {
+                cache.put(key, false);
+                return false;
+            }
+        }
+
+        for (int i = 1; i < s1.length(); i++) {
+            String s1Left = s1.substring(0, i);
+            String s1Right = s1.substring(i);
+
+            String s2Left_notswap = s2.substring(0, i);
+            String s2Right_notswap = s2.substring(i);
+
+            String s2Left_swap = s2.substring(0, s1.length() - i);
+            String s2Right_swap = s2.substring(s1.length() - i);
+
+            if ((isScramble_3(s1Left, s2Left_notswap) && isScramble_3(s1Right, s2Right_notswap))
+                    || (isScramble_3(s1Left, s2Right_swap) && isScramble_3(s1Right, s2Left_swap))) {
+                cache.put(key, true);
+                return true;
+            }
+        }
+        cache.put(key, false);
+        return false;
     }
 
     private static Map<String, Boolean> cache = new HashMap<>();
@@ -161,6 +215,7 @@ public class Scramble_String_87 {
         do_func("great", "eatrg", true);
         do_func("gredat", "eatrgd", false);
         do_func("eebaacbcbcadaaedceaaacadccd", "eadcaacabaddaceacbceaabeccd", false);
+        System.out.println("------done--------");
     }
 
     private static void do_func(String s1, String s2, boolean expected) {
