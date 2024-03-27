@@ -39,7 +39,33 @@ import java.util.*;
  */
 public class Gray_Code_89 {
     public static List<Integer> grayCode(int n) {
-        return grayCode_4(n);
+        return grayCode_5(n);
+    }
+
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * 见grayCode_4()
+     *
+     * 验证通过：
+     * Runtime 7 ms Beats 67.77%
+     * Memory 51.58 MB Beats 47.29%
+     *
+     * @param n
+     * @return
+     */
+    public static List<Integer> grayCode_5(int n) {
+        List<Integer> ret = new ArrayList<>();
+        ret.add(0);
+        for (int i = 1; i <= n; i++) {
+            int j = ret.size() - 1;
+            for (; j >= 0; j--) {
+                ret.add((1 << i - 1) + ret.get(j));
+            }
+
+        }
+        return ret;
     }
 
     /**
@@ -58,11 +84,14 @@ public class Gray_Code_89 {
      * 整体时间复杂度O(n*(2^n))
      *
      * 找出规律:
-     * 1. grayCode(n)与grayCode(n-1)的关系
+     * 1. review grayCode(n)与grayCode(n-1)的关系
      * 2. 返回结果的规律
      * 3. https://leetcode.com/problems/gray-code/solutions/29891/share-my-solution/
-     * My idea is to generate the sequence iteratively. For example, when n=3, we can get the result based on n=2.
-     * 00,01,11,10 -> (000,001,011,010 ) (110,111,101,100). The middle two numbers only differ at their highest bit, while the rest numbers of part two are exactly symmetric of part one. It is easy to see its correctness.
+     * My idea is to generate the sequence iteratively.
+     * For example, when n=3, we can get the result based on n=2.
+     * 00,01,11,10 -> (000,001,011,010 ) (110,111,101,100).
+     * The middle two numbers only differ at their highest bit, while the rest numbers of part two are exactly symmetric of part one.
+     * It is easy to see its correctness.
      * 4. grayCode_3()
      *    grayCode_1()
      *
@@ -208,7 +237,7 @@ public class Gray_Code_89 {
         do_func(1, Arrays.asList(new Integer[]{0, 1}));
         do_func(3, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
 //        do_func(12, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
-        do_func(16, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
+//        do_func(16, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
         System.out.println("-------Done-------");
     }
 
