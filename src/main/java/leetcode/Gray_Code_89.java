@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * https://leetcode.com/problems/gray-code/
@@ -10,11 +8,11 @@ import java.util.List;
  * Medium
  * -----------------
  * An n-bit gray code sequence is a sequence of 2^n integers where:
- * Every integer is in the inclusive range [0, 2^n - 1],
- * The first integer is 0,
- * An integer appears no more than once in the sequence,
- * The binary representation of every pair of adjacent integers differs by exactly one bit, and
- * The binary representation of the first and last integers differs by exactly one bit.
+ *  Every integer is in the inclusive range [0, 2^n - 1],
+ *  The first integer is 0,
+ *  An integer appears no more than once in the sequence,
+ *  The binary representation of every pair of adjacent integers differs by exactly one bit, and
+ *  The binary representation of the first and last integers differs by exactly one bit.
  *
  * Given an integer n, return any valid n-bit gray code sequence.
  *
@@ -41,7 +39,72 @@ import java.util.List;
  */
 public class Gray_Code_89 {
     public static List<Integer> grayCode(int n) {
-        return grayCode_3(n);
+        return grayCode_4(n);
+    }
+
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归+穷举+缓存
+     * 1.1. 递归函数
+     * helper(int n,Set<Integer> exist,List<Integer> ret)
+     * 1.2. 查找gray-code算法
+     * findGrayCode(int num)
+     * 采用Bit运算，针对输入值num，遍历替换n个bit中的某一个。
+     * 时间复杂度O(n)
+     * 1.3.
+     * 整体时间复杂度O(n*(2^n))
+     *
+     * 找出规律:
+     * 1. grayCode(n)与grayCode(n-1)的关系
+     * 2. 返回结果的规律
+     * 3. https://leetcode.com/problems/gray-code/solutions/29891/share-my-solution/
+     * My idea is to generate the sequence iteratively. For example, when n=3, we can get the result based on n=2.
+     * 00,01,11,10 -> (000,001,011,010 ) (110,111,101,100). The middle two numbers only differ at their highest bit, while the rest numbers of part two are exactly symmetric of part one. It is easy to see its correctness.
+     * 4. grayCode_3()
+     *    grayCode_1()
+     *
+     *
+     * 验证失败，逻辑正确
+     * Exception in thread "main" java.lang.StackOverflowError
+     *
+     * @param n
+     * @return
+     */
+    public static List<Integer> grayCode_4(int n) {
+        List<Integer> ret = new ArrayList<>();
+        Set<Integer> exist = new HashSet<>();
+        ret.add(0);
+        exist.add(0);
+        helper(n, exist, ret);
+        return ret;
+    }
+
+    private static boolean helper(int n, Set<Integer> exist, List<Integer> ret) {
+        if (ret.size() == Math.pow(2, n)) {
+            //判断首尾数字是否为gray code
+            for (int i = 0; i < n; i++) {
+                if (ret.get(ret.size() - 1) == Math.pow(2, i)) return true;
+            }
+            return false;
+        }
+        int last = ret.get(ret.size() - 1);
+        //查找gray code
+        for (int i = 0; i < n; i++) {
+            int t = last ^ (1 << i);//XOR
+            if (!exist.contains(t)) {
+                ret.add(t);
+                exist.add(t);
+                if (helper(n, exist, ret)) {
+                    return true;
+                }
+                ret.remove(ret.size() - 1);
+                exist.remove(t);
+            }
+        }
+        return false;
     }
 
     /**
@@ -144,6 +207,9 @@ public class Gray_Code_89 {
         do_func(2, Arrays.asList(new Integer[]{0, 1, 3, 2}));
         do_func(1, Arrays.asList(new Integer[]{0, 1}));
         do_func(3, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
+//        do_func(12, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
+        do_func(16, Arrays.asList(new Integer[]{0, 1, 3, 2, 6, 7, 5, 4}));
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(int n, List<Integer> expected) {
