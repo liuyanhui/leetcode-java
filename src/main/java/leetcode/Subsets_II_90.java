@@ -24,7 +24,44 @@ import java.util.*;
  */
 public class Subsets_II_90 {
     public static List<List<Integer>> subsetsWithDup(int[] nums) {
-        return subsetsWithDup_3(nums);
+        return subsetsWithDup_5(nums);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. 属于Combination题型，但是增加了去重要求。
+     * 2. 先排序，在计算Combination。通过排序后的特征去重。
+     * 3. 排序+递归
+     * 3.1. void helper(int[] nums,int beg,List<Integer> cur,List<List<Integer>> ret)
+     * 3.2. 递归函数中，循环遍历时去重，即：遍历时如果当前数字等于上一次遍历时的数字，那么跳过该数字。
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 99.82%
+     * Memory 43.33 MB Beats 60.24%
+     *
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> subsetsWithDup_5(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();
+        ret.add(cur);
+        Arrays.sort(nums);
+        dfs_5(nums, 0, cur, ret);
+        return ret;
+    }
+
+    private static void dfs_5(int[] nums, int beg, List<Integer> cur, List<List<Integer>> ret) {
+        for (int i = beg; i < nums.length; i++) {
+            if (i > beg && nums[i - 1] == nums[i]) continue;
+            List<Integer> t = new ArrayList<>(cur);
+            t.add(nums[i]);
+            ret.add(t);
+            dfs_5(nums, i + 1, t, ret);
+        }
     }
 
     /**
