@@ -14,8 +14,8 @@ import java.util.Map;
  * 'Z' -> "26"
  *
  * To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, "11106" can be mapped into:
- * "AAJF" with the grouping (1 1 10 6)
- * "KJF" with the grouping (11 10 6)
+ *  "AAJF" with the grouping (1 1 10 6)
+ *  "KJF" with the grouping (11 10 6)
  * Note that the grouping (1 11 06) is invalid because "06" cannot be mapped into 'F' since "6" is different from "06".
  *
  * Given a string s containing only digits, return the number of ways to decode it.
@@ -51,7 +51,71 @@ import java.util.Map;
 public class Decode_Ways_91 {
 
     public static int numDecodings(String s) {
-        return numDecodings_4(s);
+        return numDecodings_5(s);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归
+     * 1.1. int helper(String s ,int beg)
+     * 递归时，选择正确的数字。成功到达s的末尾返回1，否则返回0。
+     * 1.2. 需要排除">27"和"0?"的情况
+     * 1.3. 时间复杂度:O(2^N)
+     * 2. DP思路
+     * 2.1. 公式为dp[i]=dp[i-1]+dp[i-2]，条件如下：
+     * dp[0]=1
+     * IF s[i]满足条件 THEN dp[i]=dp[i-1]
+     * ELSE IF s[i-1]+s[i]满足条件 THEN dp[i]+=dp[i-2]
+     * ELSE dp[i]=0
+     *
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
+    public static int numDecodings_5(String s) {
+        int[] dp = new int[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0) {
+                dp[0] = check(s.substring(0, 1)) ? 1 : 0;
+            } else if (i == 1) {
+                //1个数字的情况
+                if (check(s.substring(i, i + 1))) {
+                    dp[i] += dp[i - 1];
+                }
+                //2个数字的情况
+                if (check(s.substring(i - 1, i + 1))) {
+                    dp[i] += 1;
+                }
+            } else {
+                //1个数字的情况
+                if (check(s.substring(i, i + 1))) {
+                    dp[i] += dp[i - 1];
+                }
+                //2个数字的情况
+                if (check(s.substring(i - 1, i + 1))) {
+                    dp[i] += dp[i - 2];
+                }
+            }
+
+        }
+        return dp[s.length() - 1];
+    }
+
+    private static boolean check(String input) {
+        if (input == null || input.length() == 0 || input.length() > 2)
+            return false;
+        if (input.charAt(0) == '0')
+            return false;
+        // if (input.length()==2 || input.charAt(1)>'6')
+        // 	return false;
+        int n = Integer.valueOf(input);
+        if (n > 26)
+            return false;
+        return true;
     }
 
     /**
@@ -204,6 +268,7 @@ public class Decode_Ways_91 {
         int ret = numDecodings(s);
         System.out.println(ret);
         System.out.println(ret == expected);
+        assert ret == expected;
         System.out.println("--------------");
     }
 }
