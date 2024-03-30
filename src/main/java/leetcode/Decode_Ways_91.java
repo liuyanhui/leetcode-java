@@ -262,6 +262,7 @@ public class Decode_Ways_91 {
         do_func("3000002", 0);
         do_func("111111111111111111111111111111111111111111111", 1836311903);
         do_func("111", 3);
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(String s, int expected) {
