@@ -25,7 +25,49 @@ package leetcode;
  */
 public class Reverse_Linked_List_II_92 {
     public static ListNode reverseBetween(ListNode head, int m, int n) {
-        return reverseBetween_3(head, m, n);
+        return reverseBetween_4(head, m, n);
+    }
+
+    public static ListNode reverseBetween_4(ListNode head, int m, int n) {
+
+        //review 头尾节点，如果存在为null的可能，那么采用dumb节点。
+        //双指针分割链表
+        ListNode one_dumb = new ListNode(0, head), one_tail = null;
+        ListNode two_head = null, two_tail = null;
+        ListNode three_dumb = new ListNode();
+        int i = 1;
+        while (i <= n) {
+            if (i < m) {
+                one_tail = head;
+            } else if (i == m) {
+                two_head = head;
+            } else {
+                two_tail = head;
+            }
+            head = head.next;
+            i++;
+        }
+        three_dumb.next = head;
+
+        //reverse 中间过程为：[head_old,head_new]+[cur,tail_old]
+        ListNode cur = two_head;
+        ListNode two_new_dumb = new ListNode();
+        while (cur != three_dumb.next) {
+            ListNode t = cur.next;
+            cur.next = two_new_dumb.next;
+            two_new_dumb.next = cur;
+            cur = t;
+        }
+        //合并
+        //头结点的特殊情况
+        if (m == 1) {
+            one_dumb.next = two_tail;
+        } else {
+            one_tail.next = two_tail;
+        }
+        two_head.next = three_dumb.next;
+
+        return one_dumb.next;
     }
 
     /**
@@ -177,12 +219,14 @@ public class Reverse_Linked_List_II_92 {
         do_func(new int[]{1, 2, 3, 4, 5}, 1, 1, new int[]{1, 2, 3, 4, 5});
         do_func(new int[]{1, 2, 3, 4, 5}, 5, 5, new int[]{1, 2, 3, 4, 5});
         do_func(new int[]{5}, 1, 1, new int[]{5});
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(int[] l1, int m, int n, int[] expected) {
         ListNode ret = reverseBetween(ListNode.fromArray(l1), m, n);
         System.out.println(ret);
         System.out.println(ret.equalsTo(ListNode.fromArray(expected)));
+        assert ret.equalsTo(ListNode.fromArray(expected));
         System.out.println("--------------");
     }
 }
