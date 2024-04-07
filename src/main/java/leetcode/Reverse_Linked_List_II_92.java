@@ -28,8 +28,27 @@ public class Reverse_Linked_List_II_92 {
         return reverseBetween_4(head, m, n);
     }
 
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. 先用双指针法把链表截为三部分；reverse中间部分；把三部分重新连接起来。
+     * 1.1. 过程为
+     * [:]
+     * -> [:one_tail]+[two_head,two_tail]+[three_head:]
+     * -> [:one_tail]+[two_tail,two_head]+[three_head:]
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 40.76 MB Beats 93.90%
+     *
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
     public static ListNode reverseBetween_4(ListNode head, int m, int n) {
-
         //review 头尾节点，如果存在为null的可能，那么采用dumb节点。
         //双指针分割链表
         ListNode one_dumb = new ListNode(0, head), one_tail = null;
@@ -39,9 +58,10 @@ public class Reverse_Linked_List_II_92 {
         while (i <= n) {
             if (i < m) {
                 one_tail = head;
-            } else if (i == m) {
-                two_head = head;
             } else {
+                if (i == m) {
+                    two_head = head;
+                }
                 two_tail = head;
             }
             head = head.next;
