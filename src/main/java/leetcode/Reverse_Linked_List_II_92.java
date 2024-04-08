@@ -25,7 +25,7 @@ package leetcode;
  */
 public class Reverse_Linked_List_II_92 {
     public static ListNode reverseBetween(ListNode head, int m, int n) {
-        return reverseBetween_4(head, m, n);
+        return reverseBetween_3(head, m, n);
     }
 
     /**
@@ -38,6 +38,8 @@ public class Reverse_Linked_List_II_92 {
      * [:]
      * -> [:one_tail]+[two_head,two_tail]+[three_head:]
      * -> [:one_tail]+[two_tail,two_head]+[three_head:]
+     *
+     * reverseBetween_3()更优雅
      *
      * 验证通过：
      * Runtime 0 ms Beats 100.00%
@@ -100,7 +102,7 @@ public class Reverse_Linked_List_II_92 {
      * 4.left节点记为tail2，right节点记为head2
      * 5.把三部分重新连接[head:tail1]，[head2,tail2]，[head3:~]
      *
-     * 金矿：链表操作切记要使用dumb作为头结点。
+     * review 金矿：链表操作切记要使用dumb作为头结点。有时候tail节点也需要采用dumb
      *
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Linked List II.
@@ -113,6 +115,7 @@ public class Reverse_Linked_List_II_92 {
      */
     public static ListNode reverseBetween_3(ListNode head, int m, int n) {
         ListNode dumb = new ListNode(0, head);
+        //review round 3: 头尾节点，如果存在为null的可能，那么采用dumb节点。比如下面的tail1
         ListNode tail1 = dumb, head2 = null, tail2, head3;
         ListNode cur = head;
         // find node[left] and node[tail1]
