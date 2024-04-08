@@ -30,7 +30,53 @@ import java.util.List;
  */
 public class Restore_IP_Addresses_93 {
     public static List<String> restoreIpAddresses(String s) {
-        return restoreIpAddresses_4(s);
+        return restoreIpAddresses_5(s);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归法
+     * helper(String s,int beg,List<String> ip,List<String> ret)
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 83.30%
+     * Memory 41.95 MB Beats 91.19%
+     * @param s
+     * @return
+     */
+    public static List<String> restoreIpAddresses_5(String s) {
+        List<String> ret = new ArrayList<>();
+        helper(s, 0, new ArrayList<>(), ret);
+        return ret;
+    }
+
+    private static void helper(String s, int beg, List<String> ip, List<String> ret) {
+        if (ip.size() <= 3) {
+            for (int i = 1; i <= 3 && i + beg <= s.length(); i++) {
+                String t = s.substring(beg, beg + i);
+                if (check_5(t)) {
+                    ip.add(t);
+                    helper(s, beg + i, ip, ret);
+                    ip.remove(ip.size() - 1);
+                }
+            }
+        } else if (ip.size() == 4 && beg == s.length()) {
+            ret.add(String.join(".", ip));
+        }
+    }
+
+    private static boolean check_5(String s) {
+        if (s == null || s.equals("") || s.length() > 3) {
+            return false;
+        }
+        if (s.length() > 1 && s.charAt(0) == '0') {
+            return false;
+        }
+        int t = Integer.valueOf(s);
+        return 0 <= t && t <= 255;
     }
 
     /**
@@ -215,6 +261,8 @@ public class Restore_IP_Addresses_93 {
         do_func("1111", new String[]{"1.1.1.1"});
         do_func("010010", new String[]{"0.10.0.10", "0.100.1.0"});
         do_func("101023", new String[]{"1.0.10.23", "1.0.102.3", "10.1.0.23", "10.10.2.3", "101.0.2.3"});
+        do_func("11111111", new String[]{"1.1.1.1"});
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(String s, String[] expected) {
@@ -232,6 +280,7 @@ public class Restore_IP_Addresses_93 {
             same = false;
         }
         System.out.println(same);
+        assert same;
         System.out.println("--------------");
     }
 }
