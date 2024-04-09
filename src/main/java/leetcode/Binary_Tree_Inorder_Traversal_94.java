@@ -30,7 +30,50 @@ import java.util.Stack;
  */
 public class Binary_Tree_Inorder_Traversal_94 {
     public List<Integer> inorderTraversal(TreeNode root) {
-        return inorderTraversal_1(root);
+        return inorderTraversal_5(root);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. Tree问题的方案可以分为：DFS和BFS，其中DFS分为preorder、inorder和postorder三种。
+     * 2. Tree是特殊的Graph。
+     * 3. review 采用栈+循环，也可以采用递归。重点是出栈后的逻辑要覆盖各种情况。
+     * 3.1. 出栈的节点node，只需要执行两步：当前节点node.val加入结果集；node.right入栈；node.right的所有的左子孙节点都入栈
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 41.51 MB Beats 39.43%
+     *
+     * @param root
+     * @return
+     */
+    public static List<Integer> inorderTraversal_5(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        if (root == null) return ret;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (root.left != null) {
+            stack.push(root.left);
+            root = root.left;
+        }
+        while (!stack.empty()) {
+            TreeNode t = stack.pop();
+            ret.add(t.val);
+            //右子节点入栈
+            if (t.right != null) {
+                stack.push(t.right);
+                //右子节点的左子孙节点入栈
+                TreeNode tl = t.right;
+                while (tl.left != null) {
+                    stack.push(tl.left);
+                    tl = tl.left;
+                }
+            }
+        }
+        return ret;
     }
 
     /**
