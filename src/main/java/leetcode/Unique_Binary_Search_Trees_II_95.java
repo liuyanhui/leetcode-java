@@ -23,7 +23,21 @@ import java.util.List;
 public class Unique_Binary_Search_Trees_II_95 {
 
     public static List<TreeNode> generateTrees(int n) {
-        return generateTrees_3(n);
+        return generateTrees_5(n);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * DP，递归都可实现。
+     * 递归时返回ret.add(null)很精妙
+     *
+     * @param n
+     * @return
+     */
+    public static List<TreeNode> generateTrees_5(int n) {
+        return null;
     }
 
     /**
@@ -108,7 +122,7 @@ public class Unique_Binary_Search_Trees_II_95 {
     public static List<TreeNode> generateTrees_3(int n) {
         List<TreeNode>[] ret = new List[n + 1];
         ret[0] = new ArrayList<>();
-        ret[0].add(null);//省去了后面对列表进行非空判断的逻辑
+        ret[0].add(null);//review 省去了后面对列表进行非空判断的逻辑
         for (int i = 1; i <= n; i++) {//依次计算DP数组
             ret[i] = new ArrayList<>();
             //计算dp[i]
@@ -169,7 +183,7 @@ public class Unique_Binary_Search_Trees_II_95 {
     private static List<TreeNode> do_recursive_2(int beg, int end) {
         List<TreeNode> ret = new ArrayList<>();
         if (beg > end) {
-            //tip:这里的代码很巧妙，使得后续的左子树列表和右子树列表进行笛卡尔积的时候无需进行null的判断
+            //review tip:这里的代码很巧妙，使得后续的左子树列表和右子树列表进行笛卡尔积的时候无需进行null的判断
             ret.add(null);
             return ret;
         } else if (beg == end) {
