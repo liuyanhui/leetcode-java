@@ -23,6 +23,14 @@ public class Unique_Binary_Search_Trees_96 {
     }
 
     /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归或DP（n从小到大）
+     */
+
+    /**
      * round 2
      *
      * DP思路
