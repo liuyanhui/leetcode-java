@@ -116,6 +116,7 @@ public class Unique_Binary_Search_Trees_96 {
         do_func(3, 5);
         do_func(1, 1);
         do_func(19, 1767263190);
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(int x, int expected) {

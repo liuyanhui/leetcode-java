@@ -7,10 +7,10 @@ package leetcode;
  * Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
  *
  * An interleaving of two strings s and t is a configuration where they are divided into non-empty substrings such that:
- * s = s1 + s2 + ... + sn
- * t = t1 + t2 + ... + tm
- * |n - m| <= 1
- * The interleaving is s1 + t1 + s2 + t2 + s3 + t3 + ... or t1 + s1 + t2 + s2 + t3 + s3 + ...
+ *  s = s1 + s2 + ... + sn
+ *  t = t1 + t2 + ... + tm
+ *  |n - m| <= 1
+ *  The interleaving is s1 + t1 + s2 + t2 + s3 + t3 + ... or t1 + s1 + t2 + s2 + t3 + s3 + ...
  *
  * Note: a + b is the concatenation of strings a and b.
  *
@@ -27,16 +27,99 @@ package leetcode;
  * Output: true
  *
  * Constraints:
- * 0 <= s1.length, s2.length <= 100
- * 0 <= s3.length <= 200
- * s1, s2, and s3 consist of lowercase English letters.
+ *  0 <= s1.length, s2.length <= 100
+ *  0 <= s3.length <= 200
+ *  s1, s2, and s3 consist of lowercase English letters.
  *
  * Follow up: Could you solve it using only O(s2.length) additional memory space?
  */
 public class Interleaving_String_97 {
 
     public static boolean isInterleave(String s1, String s2, String s3) {
-        return isInterleave_3(s1, s2, s3);
+        return isInterleave_5(s1, s2, s3);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * DP思路
+     * review 假设dp[m+1][n+1]。dp[i][j]为s1[i]和s2[j]在s3[i+j-1]的匹配情况，其中dp[0][j]为s1为""或不选择s1字母的情况。
+     *
+     * 验证通过：
+     *
+     *
+     * @param s1
+     * @param s2
+     * @param s3
+     * @return
+     */
+    public static boolean isInterleave_5(String s1, String s2, String s3) {
+        if (s1 == null || s2 == null || s3 == null) {
+            return true;
+        }
+        if (s1.length() + s2.length() != s3.length()) {
+            return false;
+        }
+
+        int[][] dp = new int[s1.length() + 1][s2.length() + 1];
+
+        for (int i = 0; i <= s1.length(); i++) {
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0 && j == 0) {
+                    dp[0][0] = 1;
+                } else if (i == 0) {//不选择s1字母的情况，或s1==""的情况
+                    if (s2.charAt(j - 1) == s3.charAt(i + j - 1) && dp[0][j - 1] == 1) {
+                        dp[0][j] = 1;
+                    }
+                } else if (j == 0) {//不选择s2字母的情况，或s2==""的情况
+                    if (s1.charAt(i - 1) == s3.charAt(i + j - 1) && dp[i - 1][0] == 1) {
+                        dp[i][0] = 1;
+                    }
+                } else {//同时选择s1和s2的情况
+                    if (s1.charAt(i - 1) == s3.charAt(i + j - 1) && dp[i - 1][j] == 1) {
+                        dp[i][j] = 1;
+                    } else if (s2.charAt(j - 1) == s3.charAt(i + j - 1) && dp[i][j - 1] == 1) {
+                        dp[i][j] = 1;
+                    }
+                }
+            }
+        }
+
+        return dp[s1.length()][s2.length()] == 1;
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * 验证失败：超时。增加缓存后可以解决
+     *
+     * @param s1
+     * @param s2
+     * @param s3
+     * @return
+     */
+    public static boolean isInterleave_4(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) {
+            return false;
+        }
+        if (s2 == null || s2.length() == 0) {
+            return s1.equals(s3);
+        }
+        if (s1 == null || s1.length() == 0) {
+            return s2.equals(s3);
+        }
+        //先选s1
+        if (s1.charAt(0) == s3.charAt(0) && isInterleave(s1.substring(1), s2, s3.substring(1))) {
+            return true;
+        }
+        //后选s2
+        if (s2.charAt(0) == s3.charAt(0) && isInterleave(s1, s2.substring(1), s3.substring(1))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -191,12 +274,15 @@ public class Interleaving_String_97 {
         do_func("", "aaa", "aaa", true);
         do_func("bbbbbabbbbabaababaaaabbababbaaabbabbaaabaaaaababbbababbbbbabbbbababbabaabababbbaabababababbbaaababaa", "babaaaabbababbbabbbbaabaabbaabbbbaabaaabaababaaaabaaabbaaabaaaabaabaabbbbbbbbbbbabaaabbababbabbabaab", "babbbabbbaaabbababbbbababaabbabaabaaabbbbabbbaaabbbaaaaabbbbaabbaaabababbaaaaaabababbababaababbababbbababbbbaaaabaabbabbaaaaabbabbaaaabbbaabaaabaababaababbaaabbbbbabbbbaabbabaabbbbabaaabbababbabbabbab", false);
         do_func("", "", "a", false);
+        do_func("a", "", "c", false);
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(String s1, String s2, String s3, boolean expected) {
         boolean ret = isInterleave(s1, s2, s3);
         System.out.println(ret);
         System.out.println(ret == expected);
+        assert ret == expected;
         System.out.println("--------------");
     }
 }
