@@ -28,6 +28,8 @@ import java.util.Stack;
  */
 public class Validate_Binary_Search_Tree_98 {
     /**
+     * round 3
+     * Score[1] Lower is harder
      *
      * review R2 20220302
      *
@@ -54,7 +56,7 @@ public class Validate_Binary_Search_Tree_98 {
      *这个思路中父节点会承担两中角色，左子树的最大值边界和右子树的最小值边界。这种方式会使一个变量承担两种职能，并且还需要一个变量left_or_right说明是左子树还是右子树，增加了实现的复杂度。
      *
      * 思路2：在思路1的基础上进行优化。
-     * 把父节点的两种智能分拆开，这样用途明确，并且不再需要变量left_or_right。父节点分别作为左子树的最大值边界和右子树的最小值边界，那么就可以把父节点拆分成最大值和最小值递归函数中。
+     * 把父节点作为边界值，在两个子树中的作用不同。父节点分别作为左子树的最大值边界和右子树的最小值边界，那么就可以把父节点拆分成最大值和最小值递归函数中。
      *
      * 本函数就是采用了【思路2】。
      *
@@ -66,14 +68,14 @@ public class Validate_Binary_Search_Tree_98 {
      * @return
      */
     public static boolean isValidBST_1(TreeNode root) {
-        return isValidBST_1(root, Long.MIN_VALUE, Long.MAX_VALUE);
+        return check(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
     //如果用int类型,[2147483647]用例无法通过
-    private static boolean isValidBST_1(TreeNode node, long min, long max) {
+    private static boolean check(TreeNode node, long min, long max) {
         if (node == null) return true;
         if (min >= node.val || node.val >= max) return false;
-        return isValidBST_1(node.left, min, node.val) && isValidBST_1(node.right, node.val, max);
+        return check(node.left, min, node.val) && check(node.right, node.val, max);
     }
 
     /**
