@@ -31,6 +31,7 @@ public class Validate_Binary_Search_Tree_98 {
      * round 3
      * Score[1] Lower is harder
      *
+     * review R3
      * review R2 20220302
      *
      * @param root
@@ -41,6 +42,7 @@ public class Validate_Binary_Search_Tree_98 {
     }
 
     /**
+     * review R3
      * 递归法
      * 参考思路：
      * https://leetcode.com/problems/validate-binary-search-tree/discuss/32109/My-simple-Java-solution-in-3-lines
@@ -79,6 +81,7 @@ public class Validate_Binary_Search_Tree_98 {
     }
 
     /**
+     * review R3
      * in-order 迭代遍历法
      * 参考思路：
      * https://leetcode.com/problems/validate-binary-search-tree/discuss/32112/Learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-(Java-Solution)
@@ -102,7 +105,7 @@ public class Validate_Binary_Search_Tree_98 {
                 root = root.left;
             }
             root = stack.pop();
-            if (pre != null && root.val < pre.val) return false;
+            if (pre != null && root.val <= pre.val) return false;
             pre = root;
             root = root.right;
         }
