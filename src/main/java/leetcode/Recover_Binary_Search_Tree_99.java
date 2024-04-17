@@ -30,6 +30,18 @@ public class Recover_Binary_Search_Tree_99 {
     }
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * recoverTree_1() 和 recoverTree_2()都很有意思
+     *
+     * @param root
+     */
+    public static void recoverTree_3(TreeNode root) {
+
+    }
+
+    /**
      * 金矿
      * Threaded Binary Tree，or Morris Traversal
      *
@@ -134,7 +146,7 @@ public class Recover_Binary_Search_Tree_99 {
             root = stack.pop();
             if (pre != null && pre.val > root.val) {
                 if (node1 == null) node1 = pre;
-                node2 = root;
+                node2 = root;//review round3 这里很关键
             }
             pre = root;
             root = root.right;
@@ -160,7 +172,6 @@ public class Recover_Binary_Search_Tree_99 {
         recoverTree(root2);
         System.out.println("----------------");
     }
-
 
 
 }
