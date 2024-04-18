@@ -33,12 +33,76 @@ public class Recover_Binary_Search_Tree_99 {
      * round 3
      * Score[2] Lower is harder
      *
-     * recoverTree_1() 和 recoverTree_2()都很有意思
+     * Thinking：
+     * 1. 先找到，再恢复。递归或非递归
+     * 2. 采用递归或非递归的方式，通过inorder策略遍历树，生成排序数组，根据排序数组进行recover操作，空间复杂度O(N)。
+     * 3. 空间复杂度为O(1)的思路。采用Morris遍历算法，计算并记录第一个异常的node1，然后继续遍历直到node1.val>node2.val出现。然后交换node1和node2。
+     * 3.1. 无需记录异常节点和它们的父节点，只需要交换val即可。
+     * 3.2. Morris Traversal 过程中会产生环。可以通过是否存在环来判断是否已经建立了回溯路径，是否已经是第二次进入这个节点。
+     * review 3.2.
+     *
+     * review recoverTree_1() 和 recoverTree_2()都很有意思
+     *
+     * Morris Traversal 算法如下：
+     * 1. Morris Traversal + inorder 。先建环，再遍历，再删除环恢复原状。
+     * 1.1. 设当前节点为cur
+     * 1.2. 如果 cur.left 不为空，检查从cur到cur.left 是否存在环。
+     * 1.2.1. 如果没有环，表示是第一次访问cur节点。生成回溯路径，产生一个环（算法为：cur.left 按 inorder 遍历的最后一个节点设为t，t.right=cur)。
+     * 1.2.1.1 cur = cur.left ，执行步骤【1.2】
+     * 1.2.2. 如果存在环，表示是第二次访问cur节点。先操作cur；再把环删除，以恢复原状。
+     * 1.2.2.1. 操作cur节点
+     * 1.2.2.2. 删除环，恢复原状
+     * 1.2.2.3. cur = cur.right，执行步骤【1.2】
+     * 1.3. 如果 cur.left 为空
+     * 1.3.1. 操作cur节点
+     * 1.3.2. cur = cur.right
+     *
      *
      * @param root
      */
     public static void recoverTree_3(TreeNode root) {
+        TreeNode node1 = null, node2 = null;
+        TreeNode pre = null;
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.left != null) {
+                //判断是否存在环
+                TreeNode t = cur.left;
+                while (t.right != null && t.right != cur) {
+                    t = t.right;
+                }
+                if (t.right == null) {//不存在环，第一次访问cur
+                    t.right = cur;//构建一个环
+                    cur = cur.left;//继续遍历左子树
+                } else {//存在环，第二次访问cur
+                    t.right = null;//删除环，恢复原状
+                    // 计算cur节点
+                    // 判断是否需要recover
+                    if (pre != null && pre.val > cur.val) {
+                        if (node1 == null) node1 = pre;
+                        node2 = cur;
+                    }
 
+                    pre = cur;
+                    cur = cur.right;//继续遍历右子树
+                }
+            } else {
+                // 计算cur节点
+                // 判断是否需要recover
+                if (pre != null && pre.val > cur.val) {
+                    if (node1 == null) node1 = pre;
+                    node2 = cur;
+                }
+
+                pre = cur;
+                cur = cur.right;//继续遍历右子树
+            }
+        }
+        if (node1 != null && node2 != null) {
+            int t = node1.val;
+            node1.val = node2.val;
+            node2.val = t;
+        }
     }
 
     /**
