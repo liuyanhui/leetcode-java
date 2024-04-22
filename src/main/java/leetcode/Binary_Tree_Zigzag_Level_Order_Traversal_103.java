@@ -29,6 +29,44 @@ public class Binary_Tree_Zigzag_Level_Order_Traversal_103 {
     public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         return zigzagLevelOrder_2(root);
     }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. BFS法 或 DFS法
+     * 2. 先按level收集节点，再反转偶数行的元素。或按level收集的同时，对偶数行元素特殊处理。
+     *
+     * 验证通过：
+     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Zigzag Level Order Traversal.
+     * Memory Usage: 42.15 MB, less than 33.82% of Java online submissions for Binary Tree Zigzag Level Order Traversal.
+     *
+     * @param root
+     * @return
+     */
+    public static List<List<Integer>> zigzagLevelOrder_3(TreeNode root) {
+        List<List<Integer>> ret = new ArrayList<>();
+        helper(root, ret, 0);
+        return ret;
+    }
+
+    private static void helper(TreeNode node, List<List<Integer>> ret, int level) {
+        if (node == null) return;
+        if (ret.size() == level) {
+            ret.add(new ArrayList<>());
+        }
+        List<Integer> cur_level = ret.get(level);
+        if (level % 2 == 0) {
+            cur_level.add(node.val);
+        } else {
+            cur_level.add(0, node.val);
+        }
+
+        helper(node.left, ret, level + 1);
+        helper(node.right, ret, level + 1);
+    }
+
     /**
      * round 2，
      * DFS发
