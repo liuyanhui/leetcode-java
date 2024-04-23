@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 104. Maximum Depth of Binary Tree
  * Easy
@@ -20,6 +23,56 @@ package leetcode;
  * -100 <= Node.val <= 100
  */
 public class Maximum_Depth_of_Binary_Tree_104 {
+
+    public static int maxDepth(TreeNode root) {
+        return maxDepth_2(root);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * BFS方案
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public static int maxDepth_3(TreeNode root) {
+        if (root == null) return 0;
+        List<TreeNode> list1 = new ArrayList<>();
+        List<TreeNode> list2 = null;
+        list1.add(root);
+        int ret = 0;
+        while (list1.size() > 0) {
+            list2 = new ArrayList<>();
+            for (TreeNode node : list1) {
+                if (node.left != null) list2.add(node.left);
+                if (node.right != null) list2.add(node.right);
+            }
+            list1 = list2;
+            ret++;
+        }
+        return ret;
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * DFS方案
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public static int maxDepth_2(TreeNode root) {
+        if (root == null) return 0;
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+
     /**
      * DFS法
      *
@@ -29,12 +82,12 @@ public class Maximum_Depth_of_Binary_Tree_104 {
      * @param root
      * @return
      */
-    public int maxDepth(TreeNode root) {
+    public static int maxDepth_1(TreeNode root) {
         if (root == null) return 0;
         return helper(root, 1);
     }
 
-    private int helper(TreeNode node, int level) {
+    private static int helper(TreeNode node, int level) {
         if (node == null) return level - 1;
         int left = helper(node.left, level + 1);
         int right = helper(node.right, level + 1);
