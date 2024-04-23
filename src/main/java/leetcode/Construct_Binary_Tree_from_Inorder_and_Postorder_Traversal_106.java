@@ -27,7 +27,7 @@ import java.util.Map;
  * postorder is guaranteed to be the postorder traversal of the tree.
  */
 public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
+    public static TreeNode buildTree(int[] inorder, int[] postorder) {
         return buildTree_2(inorder, postorder);
     }
 
@@ -50,7 +50,7 @@ public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
      * @param postorder
      * @return
      */
-    public TreeNode buildTree_2(int[] inorder, int[] postorder) {
+    public static TreeNode buildTree_2(int[] inorder, int[] postorder) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
             map.put(inorder[i], i);
@@ -58,7 +58,7 @@ public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
         return helper(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1, map);
     }
 
-    private TreeNode helper(int[] inorder, int begi, int endi, int[] postorder, int begp, int endp, Map<Integer, Integer> map) {
+    private static TreeNode helper(int[] inorder, int begi, int endi, int[] postorder, int begp, int endp, Map<Integer, Integer> map) {
         if (begi > endi) return null;
         TreeNode root = new TreeNode(postorder[endp]);
         if (begi == endi) return root;
@@ -83,12 +83,12 @@ public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
      * @param postorder
      * @return
      */
-    public TreeNode buildTree_1(int[] inorder, int[] postorder) {
+    public static TreeNode buildTree_1(int[] inorder, int[] postorder) {
         return do_recursive(postorder, 0, postorder.length - 1, inorder, 0, inorder.length - 1);
     }
 
-    private TreeNode do_recursive(int[] postorder, int postBeg, int postEnd,
-                                  int[] inorder, int inBeg, int inEnd) {
+    private static TreeNode do_recursive(int[] postorder, int postBeg, int postEnd,
+                                         int[] inorder, int inBeg, int inEnd) {
         if (postBeg > postEnd) return null;
         if (postBeg == postEnd) return new TreeNode(postorder[postEnd]);
         TreeNode root = new TreeNode(postorder[postEnd]);

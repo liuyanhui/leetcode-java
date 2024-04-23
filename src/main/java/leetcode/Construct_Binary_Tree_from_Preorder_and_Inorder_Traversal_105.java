@@ -39,6 +39,7 @@ public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
      * 2. 约束：每个数字是唯一不重复的。
      * 3. preorder的第一个节点preorder[0]，把inorder划分成三部分：左边为preorder[0]的左子树，preorder[0]为父节点，右边为preorder[0]的右子树。
      *
+     * buildTree_1()是本方法的优化方向。降低空间和时间复杂度。
      *
      * 验证通过：
      * Runtime 6 ms Beats 16.10% of users with Java
