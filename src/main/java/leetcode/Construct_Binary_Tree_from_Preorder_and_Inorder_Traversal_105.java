@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Arrays;
+
 /**
  * 105. Construct Binary Tree from Preorder and Inorder Traversal
  * Medium
@@ -24,8 +26,45 @@ package leetcode;
  * inorder is guaranteed to be the inorder traversal of the tree.
  */
 public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
         return buildTree_1(preorder, inorder);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. DFS思路
+     * 2. 约束：每个数字是唯一不重复的。
+     * 3. preorder的第一个节点preorder[0]，把inorder划分成三部分：左边为preorder[0]的左子树，preorder[0]为父节点，右边为preorder[0]的右子树。
+     *
+     *
+     * 验证通过：
+     * Runtime 6 ms Beats 16.10% of users with Java
+     * Memory 45.37 MB Beats 12.26% of users with Java
+     *
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public static TreeNode buildTree_2(int[] preorder, int[] inorder) {
+        if (preorder.length == 0) return null;
+        TreeNode root = new TreeNode(preorder[0]);
+        int rootIdxInorder = 0;
+        //在inorder中定位root节点
+        for (; rootIdxInorder < inorder.length; rootIdxInorder++) {
+            if (inorder[rootIdxInorder] == preorder[0]) break;
+        }
+        //分别复制左子树和右子树的数组
+        int[] leftPreOrder = Arrays.copyOfRange(preorder, 1, rootIdxInorder + 1);
+        int[] leftInOrder = Arrays.copyOfRange(inorder, 0, rootIdxInorder);
+        int[] rigthPreOrder = Arrays.copyOfRange(preorder, rootIdxInorder + 1, preorder.length);
+        int[] rigthInOrder = Arrays.copyOfRange(inorder, rootIdxInorder + 1, inorder.length);
+        //递归
+        root.left = buildTree(leftPreOrder, leftInOrder);
+        root.right = buildTree(rigthPreOrder, rigthInOrder);
+        return root;
     }
 
     /**
@@ -43,13 +82,13 @@ public class Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105 {
      * @param inorder
      * @return
      */
-    public TreeNode buildTree_1(int[] preorder, int[] inorder) {
+    public static TreeNode buildTree_1(int[] preorder, int[] inorder) {
         return do_recursive(preorder, 0, preorder.length - 1,
                 inorder, 0, inorder.length - 1);
     }
 
-    private TreeNode do_recursive(int[] pre, int begPre, int endPre,
-                                  int[] in, int begIn, int endIn) {
+    private static TreeNode do_recursive(int[] pre, int begPre, int endPre,
+                                         int[] in, int begIn, int endIn) {
         if (begPre > endPre) return null;
         if (begPre == endPre) return new TreeNode(pre[begPre]);
         TreeNode root = new TreeNode(pre[begPre]);
