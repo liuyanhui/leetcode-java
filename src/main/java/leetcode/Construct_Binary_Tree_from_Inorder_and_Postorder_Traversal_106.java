@@ -32,6 +32,39 @@ public class Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal_106 {
     }
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * 类似Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal_105
+     *
+     * 验证通过：
+     *
+     * @param inorder
+     * @param postorder
+     * @return
+     */
+    public static TreeNode buildTree_3(int[] inorder, int[] postorder) {
+        return helper_3(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1);
+    }
+
+    private static TreeNode helper_3(int[] inorder, int inBeg, int inEnd, int[] postorder, int postBeg, int postEnd) {
+        if (inBeg > inEnd || postBeg > postEnd) return null;
+        TreeNode node = new TreeNode(postorder[postEnd]);
+        //在inorder中找到node节点
+        int cnt = 0;
+        for (int i = inBeg; i <= inEnd; i++) {
+            if (inorder[i] == node.val) break;
+            cnt++;
+        }
+        // 递归生成左右子树
+        // inorder中[inBeg,inBeg+cnt-1]为左子树，[inBeg+cnt+1,inEnd]为右子树
+        // postorder中[postBeg,postBeg+cnt-1]为左子树,[postBeg+cnt,postEnd-1]为右子树
+        node.left = helper_3(inorder, inBeg, inBeg + cnt - 1, postorder, postBeg, postBeg + cnt - 1);
+        node.right = helper_3(inorder, inBeg + cnt + 1, inEnd, postorder, postBeg + cnt, postEnd - 1);
+        return node;
+    }
+
+    /**
      * round 2 :
      *
      * postorder的倒序类似于preorder（区别是：先右子树后左子树）
