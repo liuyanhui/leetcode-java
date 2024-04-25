@@ -28,8 +28,66 @@ import java.util.Queue;
  * -1000 <= Node.val <= 1000
  */
 public class Binary_Tree_Level_Order_Traversal_II_107 {
-    public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        return levelOrderBottom_1(root);
+    public static List<List<Integer>> levelOrderBottom(TreeNode root) {
+        return levelOrderBottom_3(root);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * DFS方案
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrderBottom_4(TreeNode root) {
+        List<List<Integer>> ret = new ArrayList<>();
+        helper_4(root, 1, ret);
+        return ret;
+    }
+
+    private static void helper_4(TreeNode node, int level, List<List<Integer>> ret) {
+        if (node == null) return;
+        if (level > ret.size()) {
+            ret.add(0, new ArrayList<>());
+        }
+        ret.get(ret.size() - level).add(node.val);//review 在列表第0个元素执行插入操作，无需反转
+        helper_4(node.left, level + 1, ret);
+        helper_4(node.right, level + 1, ret);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * BFS方案
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public static List<List<Integer>> levelOrderBottom_3(TreeNode root) {
+        List<List<Integer>> ret = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (queue.size() > 0) {
+            int size = queue.size();
+            List<Integer> curList = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode t = queue.poll();
+                if (t == null) continue;
+                curList.add(t.val);
+                queue.offer(t.left);
+                queue.offer(t.right);
+            }
+            if (curList.size() > 0)
+                ret.add(0, curList);//review 在列表第0个元素执行插入操作，无需反转
+        }
+        return ret;
     }
 
     /**
@@ -45,7 +103,7 @@ public class Binary_Tree_Level_Order_Traversal_II_107 {
      * @param root
      * @return
      */
-    public List<List<Integer>> levelOrderBottom_1(TreeNode root) {
+    public static List<List<Integer>> levelOrderBottom_1(TreeNode root) {
         List<List<Integer>> list = new ArrayList<>();
         helper(root, list, 0);
         List<List<Integer>> ret = new ArrayList<>();
@@ -55,7 +113,7 @@ public class Binary_Tree_Level_Order_Traversal_II_107 {
         return ret;
     }
 
-    private void helper(TreeNode node, List<List<Integer>> ret, int level) {
+    private static void helper(TreeNode node, List<List<Integer>> ret, int level) {
         if (node == null) return;
         if (level >= ret.size()) ret.add(new ArrayList<>());
         ret.get(level).add(node.val);
@@ -65,7 +123,7 @@ public class Binary_Tree_Level_Order_Traversal_II_107 {
 
     /**
      * 1.使用Queue保存待遍历的节点，每个节点依次加入对应level的list
-     * 
+     *
      * 验证通过：
      * Runtime: 2 ms, faster than 53.51% of Java.
      * Memory Usage: 43.8 MB, less than 26.51% of Java.
@@ -73,7 +131,7 @@ public class Binary_Tree_Level_Order_Traversal_II_107 {
      * @param root
      * @return
      */
-    public List<List<Integer>> levelOrderBottom_2(TreeNode root) {
+    public static List<List<Integer>> levelOrderBottom_2(TreeNode root) {
         List<List<Integer>> list = new ArrayList<>();
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
