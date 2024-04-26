@@ -30,6 +30,15 @@ public class Convert_Sorted_Array_to_Binary_Search_Tree_108 {
     }
 
     /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * 递归法。
+     * 迭代法会异常复杂，因为需要时刻考虑height-balanced问题。
+     *
+     */
+
+    /**
      * round 2
      * BST的inorder遍历就是排序后的数组。
      * 递归法
