@@ -39,6 +39,44 @@ public class Convert_Sorted_List_to_Binary_Search_Tree_109 {
     }
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归法。通过快慢指针法找到root节点，然后递归。
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 43.98 MB Beats 99.44% of users with Java
+     *
+     * @param head
+     * @return
+     */
+    public TreeNode sortedListToBST_5(ListNode head) {
+        if (head == null) return null;
+        ListNode fast = head;
+        ListNode slow = head;
+        //先找到root节点
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //截断左右子树的链表
+        ListNode cur = head;
+        while (cur != slow && cur.next != slow) {
+            cur = cur.next;
+        }
+        cur.next = null;//截断左子树的链表
+        TreeNode root = new TreeNode(slow.val);
+        // slow.next = null;//截断右子树的链表 review 这里不需要
+        if (head != slow)//review 这里很巧妙
+            root.left = sortedListToBST(head);
+        root.right = sortedListToBST(slow.next);
+        return root;
+    }
+
+
+    /**
      * 套路
      * 一个更巧妙的方案，性能更好，更简洁
      * 巧妙的使用了左闭右开的方式作为递归时的输入参数。免去了边界值和中间遍历的使用。
@@ -63,7 +101,7 @@ public class Convert_Sorted_List_to_Binary_Search_Tree_109 {
             slow = slow.next;
             fast = fast.next.next;
         }
-        if (head == tail) return null;
+        if (head == tail) return null;//review 这里很巧妙
         TreeNode newNode = new TreeNode(slow.val);
         newNode.left = sort(head, slow);//左闭右开
         newNode.right = sort(slow.next, tail);//左闭右开
