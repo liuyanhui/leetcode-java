@@ -26,8 +26,64 @@ package leetcode;
  * -10^4 <= Node.val <= 10^4
  */
 public class Balanced_Binary_Tree_110 {
-    public boolean isBalanced(TreeNode root) {
+    public static boolean isBalanced(TreeNode root) {
         return isBalanced_1(root);
+    }
+
+    public static boolean isBalanced_3(TreeNode root) {
+        return helper_3(root) >= 0;
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * 见isBalanced_2()
+     *
+     * 验证通过：
+     *
+     * @param node
+     * @return
+     */
+    private static int helper_3(TreeNode node) {
+        if (node == null) return 0;
+        int left = helper_3(node.left);
+        int right = helper_3(node.right);
+        if (left >= 0 && right >= 0 && Math.abs(left - right) <= 1)
+            return Math.max(right, left) + 1;
+        return -1;
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. 递归。先判断每个子树是否为balanced tree，再判断当前节点的树是否为balanced tree。
+     * 2. 把深度计算和是否平衡树的逻辑分离开。
+     *
+     * isBalanced_1()和isBalanced_2()是把深度计算和是否为balanced tree合二为一的方案。如果返回值小于0，表示不是balance tree；否则，返回深度。
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public static boolean isBalanced_2(TreeNode root) {
+        if (root == null) return true;
+        if (isBalanced(root.left) && isBalanced(root.right)) {
+            int left = helper_2(root.left);
+            int right = helper_2(root.right);
+            if (Math.abs(left - right) <= 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static int helper_2(TreeNode node) {
+        if (node == null) return 0;
+        return Math.max(helper_2(node.left), helper_2(node.right)) + 1;
     }
 
     /**
@@ -43,12 +99,12 @@ public class Balanced_Binary_Tree_110 {
      * @param root
      * @return
      */
-    public boolean isBalanced_1(TreeNode root) {
+    public static boolean isBalanced_1(TreeNode root) {
         int sig = helper(root);
         return sig >= 0 ? true : false;
     }
 
-    private int helper(TreeNode node) {
+    private static int helper(TreeNode node) {
         if (node == null) return 0;
         int depth = 0;
         int left = helper(node.left);
