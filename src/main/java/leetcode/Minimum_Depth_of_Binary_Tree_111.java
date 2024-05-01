@@ -29,6 +29,34 @@ public class Minimum_Depth_of_Binary_Tree_111 {
     }
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. 注意最小深度的定义是：root到最近的leaf节点。
+     *
+     * 验证通过：
+     * Runtime 5 ms Beats 50.46% of users with Java
+     * Memory 62.93 MB Beats 74.55% of users with Java
+     *
+     * @param root
+     * @return
+     */
+    public static int minDepth_4(TreeNode root) {
+        return helper_4(root, 0);
+    }
+
+    private static int helper_4(TreeNode node, int depth) {
+        if (node == null) return depth;
+        if (node.left == null && node.right == null) {
+            return depth + 1;
+        }
+        int left = node.left == null ? Integer.MAX_VALUE : helper_4(node.left, depth + 1);
+        int right = node.right == null ? Integer.MAX_VALUE : helper_4(node.right, depth + 1);
+        return Math.min(left, right);
+    }
+
+    /**
      * 一种非常简洁的代码
      * dfs是不需要把leve也作为参数输入，类似于minDepth_1()就是把level也输入了。
      *
