@@ -24,7 +24,7 @@ import java.util.Queue;
  * -1000 <= Node.val <= 1000
  */
 public class Minimum_Depth_of_Binary_Tree_111 {
-    public static int minDepth(TreeNode root) {
+    public int minDepth(TreeNode root) {
         return minDepth_1(root);
     }
 
@@ -44,7 +44,7 @@ public class Minimum_Depth_of_Binary_Tree_111 {
      * @param root
      * @return
      */
-    public static int minDepth_4(TreeNode root) {
+    public int minDepth_4(TreeNode root) {
         return helper_4(root, 0);
     }
 
