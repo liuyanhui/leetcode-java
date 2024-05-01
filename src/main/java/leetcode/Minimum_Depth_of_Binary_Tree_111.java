@@ -24,7 +24,7 @@ import java.util.Queue;
  * -1000 <= Node.val <= 1000
  */
 public class Minimum_Depth_of_Binary_Tree_111 {
-    public int minDepth(TreeNode root) {
+    public static int minDepth(TreeNode root) {
         return minDepth_1(root);
     }
 
@@ -35,6 +35,8 @@ public class Minimum_Depth_of_Binary_Tree_111 {
      * Thinking：
      * 1. 注意最小深度的定义是：root到最近的leaf节点。
      *
+     * minDepth_5()更优雅
+     *
      * 验证通过：
      * Runtime 5 ms Beats 50.46% of users with Java
      * Memory 62.93 MB Beats 74.55% of users with Java
@@ -44,6 +46,29 @@ public class Minimum_Depth_of_Binary_Tree_111 {
      */
     public static int minDepth_4(TreeNode root) {
         return helper_4(root, 0);
+    }
+
+    /**
+     *
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * 验证通过：
+     * Runtime 4 ms Beats 78.59%
+     * Memory 62.94 MB Beats 74.55%
+     *
+     * @param root
+     * @return
+     */
+    public int minDepth_5(TreeNode root) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        int left = root.left == null ? Integer.MAX_VALUE : minDepth(root.left);
+        int right = root.right == null ? Integer.MAX_VALUE : minDepth(root.right);
+
+        return Math.min(left, right) + 1;
     }
 
     private static int helper_4(TreeNode node, int depth) {
