@@ -28,7 +28,29 @@ package leetcode;
  */
 public class Path_Sum_112 {
     public static boolean hasPathSum(TreeNode root, int targetSum) {
-        return hasPathSum_2(root, targetSum);
+        return hasPathSum_3(root, targetSum);
+    }
+
+    /**
+     *
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking：
+     * 1. DFS思路。preorder、inorder和postorder都可以。
+     * 2. BFS思路。使用队列。
+     * 3. 遇到leaf节点时，计算Sum，并判断是否等于targetSum。
+     *
+     * DFS思路验证通过：
+     *
+     */
+    public static boolean hasPathSum_3(TreeNode root, int targetSum) {
+        if (root == null) return false;
+        if (root.left == null && root.right == null) {
+            if (root.val == targetSum) return true;
+            else return false;
+        }
+        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
     }
 
     /**
