@@ -21,6 +21,11 @@ package leetcode;
  * Input: root = [1,2], targetSum = 0
  * Output: false
  *
+ * Example 4:
+ * Input: root = [], targetSum = 0
+ * Output: false
+ * Explanation: Since the tree is empty, there are no root-to-leaf paths.
+ *
  * Constraints:
  * The number of nodes in the tree is in the range [0, 5000].
  * -1000 <= Node.val <= 1000
@@ -45,7 +50,7 @@ public class Path_Sum_112 {
      *
      */
     public static boolean hasPathSum_3(TreeNode root, int targetSum) {
-        if (root == null) return false;
+        if (root == null) return false;//review 这里很关键，见【Example 4:】
         if (root.left == null && root.right == null) {
             if (root.val == targetSum) return true;
             else return false;

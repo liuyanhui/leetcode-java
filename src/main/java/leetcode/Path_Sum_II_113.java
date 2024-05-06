@@ -31,6 +31,42 @@ import java.util.List;
 public class Path_Sum_II_113 {
 
     /**
+     *
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. DFS思路。
+     * 2. BFS思路。不适用，因为需要保存所有的路径。这样会使得算法很复杂，需要很多额外的存储空间。
+     * 3. leaf节点是没有子节点的。
+     *
+     * 验证通过：
+     *
+     */
+    public static List<List<Integer>> pathSum_3(TreeNode root, int targetSum) {
+        List<List<Integer>> ret = new ArrayList<>();
+        dfs(root, targetSum, new ArrayList<>(), ret);
+        return ret;
+    }
+
+    private static void dfs(TreeNode node, int target, List<Integer> path, List<List<Integer>> ret) {
+        if (node == null) return;//review 这里很关键，见Path_Sum_112.hasPathSum_3()
+        if (node.left == null && node.right == null) {
+            if (node.val == target) {
+                List<Integer> t = new ArrayList<>(path);
+                t.add(node.val);
+                ret.add(t);
+            }
+            return;
+        }
+        path.add(node.val);
+        dfs(node.left, target - node.val, path, ret);
+        dfs(node.right, target - node.val, path, ret);
+        path.remove(path.size() - 1);
+    }
+
+
+    /**
      * round 2
      * dfs+preorder
      *
