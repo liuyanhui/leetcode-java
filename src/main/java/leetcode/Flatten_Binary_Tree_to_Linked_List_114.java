@@ -35,6 +35,45 @@ public class Flatten_Binary_Tree_to_Linked_List_114 {
     }
 
     /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. DFS思路。先把node的右子树挂到node的左子树的最右子节点的右子节点，然后递归node的右子节点。
+     * 1.1. 设 t 为 node.left 的最右节点。
+     * 1.2. t.right = node.right
+     * 1.3. node.right = node.left
+     * 1.4. 递归步骤【1.1】输入为node.right
+     * 2. BFS思路。
+     * 2.1. 设 cur = root
+     * 2.2. root.left 和 root.right 依次加入 queue
+     * 2.2. 当 queue 不为空时循环
+     * 2.2.1. 队列头出队记为 t
+     * 2.2.2. t 为空时 continue
+     * 2.2.3. cur.right = t
+     * 2.2.4. t.left 和 t.right 依次加入 queue
+     *
+     * 验证通过：
+     *
+     * @param root
+     */
+    public static void flatten_5(TreeNode root) {
+        if (root == null) return;
+        if (root.left != null) {
+            TreeNode t = root.left;
+            //查找左子树的最右节点
+            while (t.right != null) {
+                t = t.right;
+            }
+            t.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+
+        flatten(root.right);
+    }
+
+    /**
      * round 2
      * Space Complexity:O(1)
      *
