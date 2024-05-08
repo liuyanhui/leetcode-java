@@ -36,7 +36,59 @@ package leetcode;
  */
 public class Distinct_Subsequences_115 {
     public static int numDistinct(String s, String t) {
-        return numDistinct_4(s, t);
+        return numDistinct_5(s, t);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * 穷举法。
+     * 穷举以 s[i] 开头的所有子序列，并统计数量。Time Complexity:O(N^N)
+     * 2. 穷举法+缓存。
+     * cache[i][j] 表示 s[i:] 和 t[j:] 是否匹配
+     * Time Complexity:O(N^2)
+     * 3. 递归法。
+     * helper(s,i,t,j)
+     * IF s[i]==t[j] THEN 递归helper(s,i+1,t,j+1)
+     * IF s[i]!=t[j] THEN 递归helper(s,i+1,t,j)
+     * 4. DP法。
+     * 定义 m=len(s),n=len(t)
+     * 定义 dp[m+1][n+1]
+     * 设 dp[i+1][j+1] 为 s[0:i] 和 t[0:j] 匹配的数量
+     * dp[0][:]=1
+     * 公式为：
+     * IF s[i]==t[j] THEN
+     * 	dp[i+1][j+1]+=dp[i][j]
+     * dp[i+1][j+1]+=dp[i][j+1]
+     * dp[m][n]为返回结果
+     *
+     * 本方法采用DP思路。
+     *
+     * 验证通过：
+     * Runtime 12 ms Beats 84.41%
+     * Memory 48.78 MB Beats 55.68%
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static int numDistinct_5(String s, String t) {
+        int[][] dp = new int[s.length() + 1][t.length() + 1];
+        for (int i = 0; i <= s.length(); i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 0; j <= i && j < t.length(); j++) {//review 注意这里的条件
+                if (s.charAt(i) == t.charAt(j)) {
+                    dp[i + 1][j + 1] += dp[i][j];
+                }
+                dp[i + 1][j + 1] += dp[i][j + 1];
+            }
+        }
+        return dp[s.length()][t.length()];
     }
 
     /**
