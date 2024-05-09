@@ -37,7 +37,66 @@ import java.util.List;
  */
 public class Populating_Next_Right_Pointers_in_Each_Node_116 {
     public static Node connect(Node root) {
-        return connect_3(root);
+        return connect_4(root);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. DFS 方案
+     * 1.1. 采用preorder遍历，函数为dfs(Node node,int level,List<Node> prevList)
+     * 1.2. 用列表保存每层的上一个节点，记为prev。设置prev.next=node。把prev替换为node。
+     * 1.3. 空间复杂度:O(h)，h为树的高度。
+     * 2. BFS 方案
+     * 2.1. 遍历每层的队列时，把前一个节点的right属性设为下一个节点。
+     * 2.2. 空间复杂度:O(N)。
+     * 3. 充分利用next这个属性，无论在DFS还是BFS都可以在O(1)空间复杂度下实现。
+     * 参考connect_dfs2()和connect_bfs2()
+     *
+     * 本方法是dfs的一种实现。
+     *
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public static Node connect_4(Node root) {
+        Node curLayer = root;
+        while (curLayer != null) {
+            Node prev = null;
+            Node nextLayer = null;
+            //遍历当前层，并修改下一层的next属性
+            Node cur = curLayer;
+            while (cur != null) {
+                //review 题目给定的条件是perfect binary tree。所以下面的代码可以优化
+                //把下一层修改为链表
+                if (cur.left != null) {
+                    if (prev == null) {
+                        prev = cur.left;
+                        nextLayer = cur.left;
+                    } else {
+                        prev.next = cur.left;
+                        prev = prev.next;
+                    }
+                }
+                if (cur.right != null) {
+                    if (prev == null) {
+                        prev = cur.right;
+                        nextLayer = cur.right;
+                    } else {
+                        prev.next = cur.right;
+                        prev = prev.next;
+                    }
+                }
+                cur = cur.next;
+            }
+            //把下一层切换为当前层
+            curLayer = nextLayer;
+        }
+        return root;
     }
 
     /**
