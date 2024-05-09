@@ -55,7 +55,9 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
      * 3. 充分利用next这个属性，无论在DFS还是BFS都可以在O(1)空间复杂度下实现。
      * 参考connect_dfs2()和connect_bfs2()
      *
-     * 本方法是dfs的一种实现。
+     * connect_dfs2()非常优雅
+     *
+     * 本方法是bfs的一种实现。
      *
      *
      * 验证通过：
@@ -140,7 +142,7 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
     /**
      * 套路
      *
-     * 完美的，简介的方案
+     * review 完美的，简洁的方案
      * 充分利用.next这个属性
      *
      * 参考思路：
