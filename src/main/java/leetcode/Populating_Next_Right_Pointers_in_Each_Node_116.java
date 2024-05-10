@@ -44,6 +44,8 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
      * round 3
      * Score[3] Lower is harder
      *
+     * 是Populating_Next_Right_Pointers_in_Each_Node_II_117的特殊情况。
+     *
      * Thinking：
      * 1. DFS 方案
      * 1.1. 采用preorder遍历，函数为dfs(Node node,int level,List<Node> prevList)
@@ -64,6 +66,7 @@ public class Populating_Next_Right_Pointers_in_Each_Node_116 {
      *
      * @param root
      * @return
+     * @See Populating_Next_Right_Pointers_in_Each_Node_II_117.
      */
     public static Node connect_4(Node root) {
         Node curLayer = root;

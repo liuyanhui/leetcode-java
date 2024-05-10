@@ -37,7 +37,93 @@ import java.util.List;
  */
 public class Populating_Next_Right_Pointers_in_Each_Node_II_117 {
     public static Node connect(Node root) {
-        return connect_2(root);
+        return connect_3(root);
+    }
+
+    /**
+     * DFS思路。不能用dfs思路，原因见下面。
+     *
+     * 验证失败：
+     *
+     * @param root
+     * @return
+     *
+     * @See Populating_Next_Right_Pointers_in_Each_Node_116
+     */
+    public static Node connect_4(Node root) {
+        if (root == null) return root;
+        //找到下一层的头结点
+        Node dumb = new Node();//review 头结点存在为空的情况，所以使用dumb节点
+        //先从当前节点的子节点开始
+        if (root.left != null) {
+            dumb.next = root.left;
+            dumb = dumb.next;
+        }
+        if (root.right != null) {
+            dumb.next = root.right;
+            dumb = dumb.next;
+        }
+        //再计算当前节点的兄弟节点的子节点
+        Node t = root.next;
+        //循环查找直到同辈兄弟节点的子节点不为空
+        while (t != null && t.left == null && t.right == null) {
+            t = t.next;//review 这里逻辑有问题。dfs情况下，t.next可能还没有遍历到，所以同层兄弟是不完全的。
+        }
+        if (t != null) {
+            dumb.next = t.left != null ? t.left : t.right;
+        }
+        connect(root.left);
+        connect(root.right);
+        return root;
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * 是Populating_Next_Right_Pointers_in_Each_Node_116的一般情况
+     * Populating_Next_Right_Pointers_in_Each_Node_116.connect_4()完全一样
+     *
+     * BFS思路
+     *
+     * 验证通过：
+     *
+     * @see Populating_Next_Right_Pointers_in_Each_Node_116
+     */
+    public static Node connect_3(Node root) {
+        Node curLayer = root;
+        while (curLayer != null) {
+            Node prev = null;
+            Node nextLayer = null;
+            //遍历当前层，并修改下一层的next属性
+            Node cur = curLayer;
+            while (cur != null) {
+                //review 题目给定的条件是perfect binary tree。所以下面的代码可以优化
+                //把下一层修改为链表
+                if (cur.left != null) {
+                    if (prev == null) {
+                        prev = cur.left;
+                        nextLayer = cur.left;
+                    } else {
+                        prev.next = cur.left;
+                        prev = prev.next;
+                    }
+                }
+                if (cur.right != null) {
+                    if (prev == null) {
+                        prev = cur.right;
+                        nextLayer = cur.right;
+                    } else {
+                        prev.next = cur.right;
+                        prev = prev.next;
+                    }
+                }
+                cur = cur.next;
+            }
+            //把下一层切换为当前层
+            curLayer = nextLayer;
+        }
+        return root;
     }
 
     /**
