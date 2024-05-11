@@ -41,6 +41,9 @@ public class Populating_Next_Right_Pointers_in_Each_Node_II_117 {
     }
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     *
      * DFS思路。不能用dfs思路，原因见下面。
      *
      * 验证失败：

@@ -25,8 +25,40 @@ import java.util.List;
 public class Pascals_Triangle_118 {
 
     public static List<List<Integer>> generate(int numRows) {
-        return generate_2(numRows);
+        return generate_3(numRows);
     }
+
+    /**
+     *
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 85.57%
+     * Memory 42.26 MB Beats 7.37%
+     *
+     * @param numRows
+     * @return
+     */
+    public static List<List<Integer>> generate_3(int numRows) {
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 1; i <= numRows; i++) {
+            List<Integer> curLevel = new ArrayList<>();
+            curLevel.add(1);//第一个数字
+            if (i > 1) {//第二行才执行
+                List<Integer> lastLevel = ret.get(ret.size() - 1);
+                //只计算中间的数字
+                for (int j = 1; j < i - 1; j++) {
+                    curLevel.add(lastLevel.get(j) + lastLevel.get(j - 1));
+                }
+                curLevel.add(1);//最后一个数字
+            }
+            ret.add(curLevel);
+        }
+
+        return ret;
+    }
+
 
     /**
      * round 2
@@ -91,6 +123,7 @@ public class Pascals_Triangle_118 {
         do_func(1, expected);
         do_func(0, expected);
         do_func(10, expected);
+        System.out.println("-------OK-------");
     }
 
     private static void do_func(int numRows, List<List<Integer>> expected) {
