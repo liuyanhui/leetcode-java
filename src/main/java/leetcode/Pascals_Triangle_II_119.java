@@ -12,6 +12,7 @@ import java.util.List;
  * Given an integer rowIndex, return the rowIndexth row of the Pascal's triangle.
  * Notice that the row index starts from 0.
  * In Pascal's triangle, each number is the sum of the two numbers directly above it.
+ *
  * Follow up:
  * Could you optimize your algorithm to use only O(k) extra space?
  *
@@ -32,7 +33,38 @@ import java.util.List;
  */
 public class Pascals_Triangle_II_119 {
     public static List<Integer> getRow(int rowIndex) {
-        return getRow_3(rowIndex);
+        return getRow_4(rowIndex);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. 迭代法和公式法
+     *
+     * 验证通过：
+     *
+     * @param rowIndex
+     * @return
+     */
+    public static List<Integer> getRow_4(int rowIndex) {
+        List<Integer> last = new ArrayList<>();
+        List<Integer> cur;
+        if (rowIndex < 0) return last;
+        int cnt = 0;
+        while (rowIndex >= cnt) {
+            cur = new ArrayList<>();
+            cur.add(1);
+            for (int i = 1; i < last.size(); i++) {
+                cur.add(last.get(i - 1) + last.get(i));
+            }
+            if (cnt > 0) cur.add(1);
+            last = cur;
+            cnt++;
+        }
+
+        return last;
     }
 
     /**
@@ -110,16 +142,19 @@ public class Pascals_Triangle_II_119 {
 
     public static void main(String[] args) {
         List<Integer> expected = new ArrayList<>();
-
-        do_func(3, Arrays.asList(new Integer[]{1, 3, 3, 1}));
         do_func(0, Arrays.asList(new Integer[]{1}));
         do_func(1, Arrays.asList(new Integer[]{1, 1}));
-        do_func(10, expected);
+        do_func(2, Arrays.asList(new Integer[]{1, 2, 1}));
+        do_func(3, Arrays.asList(new Integer[]{1, 3, 3, 1}));
+        do_func(4, Arrays.asList(new Integer[]{1, 4, 6, 4, 1}));
+        do_func(10, Arrays.asList(new Integer[]{1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1}));
+        System.out.println("-------- OK ------");
     }
 
     private static void do_func(int numRows, List<Integer> expected) {
         List<Integer> ret = getRow(numRows);
         System.out.println(ret);
+        ArrayListUtils.isSameIntegerThenPrintln(ret, expected);
         System.out.println("--------------");
     }
 }

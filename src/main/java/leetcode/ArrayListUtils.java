@@ -16,6 +16,16 @@ public class ArrayListUtils {
         return true;
     }
 
+    public static boolean isSameInteger(List<Integer> list1, List<Integer> list2) {
+        if (list1 == null && list2 == null) return false;
+        if (list1 == null || list2 == null) return false;
+        if (list1.size() != list2.size()) return false;
+        for (int i = 0; i < list1.size(); i++) {
+            if (list1.get(i).intValue() != list2.get(i).intValue()) return false;
+        }
+        return true;
+    }
+
     public static boolean isSame(List<List<Integer>> list, int[][] arr) {
         boolean same = true;
         if (list.size() == arr.length) {
@@ -51,6 +61,14 @@ public class ArrayListUtils {
             same = false;
         }
         return same;
+    }
+
+    public static void isSameThenPrintln(List list1, List list2) {
+        System.out.println(isSame(list1, list2));
+    }
+
+    public static void isSameIntegerThenPrintln(List<Integer> list1, List<Integer> list2) {
+        System.out.println(isSameInteger(list1, list2));
     }
 
     public static boolean sortedThenCompare(List<Integer> list1, List<Integer> list2) {
