@@ -33,8 +33,39 @@ import java.util.List;
  */
 public class Triangle_120 {
     public static int minimumTotal(List<List<Integer>> triangle) {
-        return minimumTotal_6(triangle);
+        return minimumTotal_7(triangle);
     }
+
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * 自底向上的DP实现，以为DP数组
+     * 分析详见：minimumTotal_5()和minimumTotal_7()
+     *
+     * 本方法性能：
+     * Time Complexty: O(N*N)
+     * Space Complexty: O(N)
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 74.98%
+     * Memory 43.31 MB Beats 90.31%
+     *
+     * @param triangle
+     * @return
+     */
+    public static int minimumTotal_7(List<List<Integer>> triangle) {
+        if (triangle == null || triangle.size() == 0) return 0;
+        int[] dp = new int[triangle.size() + 1];
+        for (int i = triangle.size() - 1; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {//从前往后的方式，无需考虑dp污染
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
+            }
+        }
+        return dp[0];
+    }
+
 
     /**
      * round 3
@@ -91,7 +122,8 @@ public class Triangle_120 {
      * round 3
      * Score[3] Lower is harder
      *
-     * 验证失败，dp数组优化为一位数组时，自定向下的方案由于无法正确回溯上一层的计算过程，所以无法通过某些案例。
+     * 验证失败：
+     * dp数组优化为一位数组时，自定向下的方案由于无法正确回溯上一层的计算过程，所以无法通过某些案例。
      * 需要采用自底向上的实现才行。
      * 详见：minimumTotal_4()
      *
