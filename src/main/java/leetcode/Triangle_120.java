@@ -33,8 +33,93 @@ import java.util.List;
  */
 public class Triangle_120 {
     public static int minimumTotal(List<List<Integer>> triangle) {
-        return minimumTotal_4(triangle);
+        return minimumTotal_6(triangle);
     }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. native solution
+     * DFS思路，遍历所有的可能，计算出最小和路径。
+     * Time Complexty: O(N!) N是triangle的长度
+     * Space Complexty: O(N)
+     * 2. 通过分析可知，局部最优解与全局最优解相关性不大。即 [0~i+1] 层的最优解依赖 [0~i] 的最优解，但是不依赖 [0~i-1] 层的最优解没有相关性。
+     * 3. 如果全局最优解必然会在每一层选择一个元素。设在i层选择了j元素，记为 T[i,j]。那么T[i,j]在[0~i]层的局部最优解，必然在全局最优解路径中。所以计算局部最优解是有用处的。
+     * 4. DP思路，参考【3.】。
+     * 4.1. dp[i][j]为自定向下第i层第j个元素的最优解，n=len(triangle)
+     * 4.2. dp[i][j]=min(dp[i-1][j-1],dp[i-1][j])+triangle[i][j]
+     * 4.3. dp[n-1][:]的最小值为全局最优解
+     * 5. 可以把dp数组优化为以为数组
+     *
+     * 本方法性能：
+     * Time Complexty: O(N*N)
+     * Space Complexty: O(N*N)
+     *
+     * 验证通过：
+     * Runtime 3 ms Beats 65.90%
+     * Memory 43.89 MB Beats 72.03%
+     *
+     * @param triangle
+     * @return
+     */
+    public static int minimumTotal_6(List<List<Integer>> triangle) {
+        if (triangle == null || triangle.size() == 0) return 0;
+        int[][] dp = new int[triangle.size()][triangle.size()];
+        dp[0][0] = triangle.get(0).get(0);//提前处理第0行
+        for (int i = 1; i < triangle.size(); i++) {
+            for (int j = 0; j <= i; j++) {
+                if (j == 0) {
+                    dp[i][j] = dp[i - 1][j];
+                } else if (j < i) {
+                    dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]);
+                } else {//与dp数组的默认值比较
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                dp[i][j] += triangle.get(i).get(j);
+            }
+        }
+        int ret = Integer.MAX_VALUE;
+        for (int n : dp[triangle.size() - 1]) {
+            ret = Math.min(ret, n);
+        }
+        return ret;
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * 验证失败，dp数组优化为一位数组时，自定向下的方案由于无法正确回溯上一层的计算过程，所以无法通过某些案例。
+     * 需要采用自底向上的实现才行。
+     * 详见：minimumTotal_4()
+     *
+     * @param triangle
+     * @return
+     */
+    public static int minimumTotal_5(List<List<Integer>> triangle) {
+        if (triangle == null || triangle.size() == 0) return 0;
+        int[] dp = new int[triangle.size()];
+        for (int i = 0; i < triangle.size(); i++) {
+            for (int j = 0; j <= i; j++) {
+                if (j == 0) {
+                    //do nothing
+                } else if (j < i) {
+                    dp[j] = Math.min(dp[j - 1] - triangle.get(i).get(j - 1), dp[j]);
+                } else {//与dp数组的默认值比较
+                    dp[j] = dp[j - 1] - triangle.get(i).get(j - 1);
+                }
+                dp[j] += triangle.get(i).get(j);
+            }
+        }
+        int ret = Integer.MAX_VALUE;
+        for (int n : dp) {
+            ret = Math.min(ret, n);
+        }
+        return ret;
+    }
+
 
     /**
      * round 2
@@ -152,7 +237,8 @@ public class Triangle_120 {
         do_func(new Integer[][]{{2}, {3, 4}, {6, 5, 7}, {4, 1, 8, 3}}, 11);
         do_func(new Integer[][]{{-10}}, -10);
         do_func(new Integer[][]{{1}, {1, 1}, {1, 1, 1}, {1, 1, 1, 1}}, 4);
-
+        do_func(new Integer[][]{{-1}, {2, 3}, {1, -1, -3}}, -1);
+        System.out.println("-------- OK ------");
     }
 
     private static void do_func(Integer[][] arr, int expected) {
