@@ -25,7 +25,37 @@ package leetcode;
  */
 public class Best_Time_to_Buy_and_Sell_Stock_121 {
     public static int maxProfit(int[] prices) {
-        return maxProfit_1(prices);
+        return maxProfit_3(prices);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. 不断查找最小值，并用当前最小值计算profit的过程。
+     * 当prices[buy]>prices[i]buy=i；否则low不变
+     * 当prices[buy]<prices[i]时，计算maxprofit
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 78.47%
+     * Memory 61.35 MB Beats 75.83%
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_3(int[] prices) {
+        if (prices == null || prices.length == 0) return 0;
+        int ret = 0;
+        int buy = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[buy] > prices[i]) {
+                buy = i;
+            } else {
+                ret = Math.max(ret, prices[i] - prices[buy]);
+            }
+        }
+        return ret;
     }
 
     /**
@@ -50,9 +80,9 @@ public class Best_Time_to_Buy_and_Sell_Stock_121 {
         for (int i = 0; i < length; i++) {
             if (prices[i] < minPrice) {
                 minPrice = prices[i];
-            }else {
+            } else {
                 int i1 = prices[i] - minPrice;
-                if (i1 > answer){
+                if (i1 > answer) {
                     answer = i1;
                 }
             }
@@ -94,6 +124,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_121 {
     public static void main(String[] args) {
         do_func(new int[]{7, 1, 5, 3, 6, 4}, 5);
         do_func(new int[]{7, 6, 4, 3, 1}, 0);
+        System.out.println("-------- THE END ------");
     }
 
     private static void do_func(int[] nums, int expected) {
