@@ -32,7 +32,95 @@ package leetcode;
  */
 public class Best_Time_to_Buy_and_Sell_Stock_II_122 {
     public static int maxProfit(int[] prices) {
-        return maxProfit_2(prices);
+        return maxProfit_4(prices);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution 低买高卖
+     * 1.1. 买入是从i开始的极小值buy（递减到递增的拐点），卖出是买入buy之后极大值（递增到递减的拐点）
+     * 1.2. 买入后才能卖出
+     *
+     * maxProfit_3()是递归实现
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 92.40%
+     * Memory 44.92 MB Beats 98.73%
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_4(int[] prices) {
+        int ret = 0;
+        int buy = -1;
+        for (int i = 1; i < prices.length; i++) {
+            if (buy == -1) {//未买入，不能卖出
+                if (prices[i - 1] < prices[i]) {
+                    //买入
+                    buy = i - 1;
+                }
+            } else {//已买入，只能卖出
+                if (prices[i - 1] > prices[i]) {
+                    //卖出
+                    ret += prices[i - 1] - prices[buy];
+                    buy = -1;
+                }
+            }
+            //特殊情况：最后一天
+            if (i == prices.length - 1 && buy != -1) {
+                ret += prices[i] - prices[buy];
+            }
+
+        }
+        return ret;
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 2. native solution
+     * 穷举每种可能性，用递归法实现。
+     * 2.1. 遍历prices数组
+     * 2.2. i作为买入股票的日期，j作为卖出日期。并记录局部profit
+     * 2.3. 从j+1开始递归。递归返回值更新局部profit
+     * 2.4. 每次遍历更新当前递归层级的全局profit
+     * 3. 在【1.】的基础上增加缓存，优化时间复杂度。
+     *
+     * 验证通过：性能一般
+     * Runtime 1533 ms Beats 6.54%
+     * Memory 45.70 MB Beats 39.38%
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_3(int[] prices) {
+        int[] cache = new int[prices.length];//缓存从i日可以执行买入操作时的最优解
+        for (int i = 0; i < prices.length; i++) {
+            cache[i] = -1;
+        }
+        return helper(prices, 0, cache);
+    }
+
+    private static int helper(int[] prices, int beg, int[] cache) {
+        if (beg >= prices.length) return 0;
+        if (cache[beg] >= 0) return cache[beg];
+        int ret = 0;
+        for (int i = beg; i < prices.length - 1; i++) {
+            //prices[i]为买入日，prices[j]为卖出日
+            for (int j = i + 1; j < prices.length; j++) {
+                int t = prices[j] - prices[i];
+                if (t <= 0) continue;
+                t += helper(prices, j + 1, cache);
+                ret = Math.max(ret, t);
+            }
+        }
+        cache[beg] = ret;
+        return ret;
     }
 
     /**
