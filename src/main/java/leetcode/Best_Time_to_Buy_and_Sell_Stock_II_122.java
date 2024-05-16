@@ -40,11 +40,12 @@ public class Best_Time_to_Buy_and_Sell_Stock_II_122 {
      * Score[3] Lower is harder
      *
      * Thinking：
-     * 1. naive solution 低买高卖
-     * 1.1. 买入是从i开始的极小值buy（递减到递增的拐点），卖出是买入buy之后极大值（递增到递减的拐点）
+     * 1. naive solution 低买高卖+先买后卖
+     * 1.1. 低买高卖。买入是从i开始的极小值buy（递减到递增的拐点），卖出是买入buy之后极大值（递增到递减的拐点）
      * 1.2. 买入后才能卖出
      *
      * maxProfit_3()是递归实现
+     * maxProfit_2()更简洁直观
      *
      * 验证通过：
      * Runtime 1 ms Beats 92.40%
