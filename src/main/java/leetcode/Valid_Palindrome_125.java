@@ -31,7 +31,32 @@ package leetcode;
  */
 public class Valid_Palindrome_125 {
     public static boolean isPalindrome(String s) {
-        return isPalindrome_3(s);
+        return isPalindrome_4(s);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * non-alphanumeric的意思是非数字和字母
+     *
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isPalindrome_4(String s) {
+        if (s == null) return false;
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            while (l < r && !Character.isLetterOrDigit(s.charAt(l))) l++;
+            while (l < r && !Character.isLetterOrDigit(s.charAt(r))) r--;
+            if (l < r && (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))))
+                return false;
+            l++;
+            r--;
+        }
+        return true;
     }
 
     /**
@@ -136,7 +161,9 @@ public class Valid_Palindrome_125 {
         do_func(null, false);
         do_func("zxcxz", true);
         do_func("1221", true);
+        do_func("0p", false);
 
+        System.out.println("------- THE END -------");
     }
 
     private static void do_func(String s, boolean expected) {
