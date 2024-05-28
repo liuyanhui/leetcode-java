@@ -36,7 +36,7 @@ public class Valid_Palindrome_125 {
 
     /**
      * round 3
-     * Score[3] Lower is harder
+     * Score[4] Lower is harder
      *
      * non-alphanumeric的意思是非数字和字母
      *

@@ -45,7 +45,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_II_122 {
      * 1.2. 买入后才能卖出
      *
      * maxProfit_3()是递归实现
-     * maxProfit_2()更简洁直观
+     * review maxProfit_2()更简洁直观，更好的提炼和抽象了思路。
      *
      * 验证通过：
      * Runtime 1 ms Beats 92.40%
@@ -188,6 +188,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_II_122 {
         do_func(new int[]{7, 1, 5, 3, 6, 4}, 7);
         do_func(new int[]{1, 2, 3, 4, 5}, 4);
         do_func(new int[]{7, 6, 4, 3, 1}, 0);
+        System.out.println("------- THE END -------");
 
     }
 
