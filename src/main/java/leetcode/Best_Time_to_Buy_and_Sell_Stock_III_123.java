@@ -45,7 +45,77 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
      * @return
      */
     public static int maxProfit(int[] prices) {
-        return maxProfit_6(prices);
+        return maxProfit_r3_1(prices);
+    }
+
+    /**
+     *
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * 分别计算恰好买卖0次、恰好买卖1次和恰好买卖2次的情况，然后得到最大值。
+     * 计算恰好买卖2次时，由于必须"you must sell the stock before you buy again"的约束，计算第2次买卖时，可以使用恰好买卖1次的算法。第2次买卖的起点在第1次卖出的下一个。
+     * 2. 把输入区间划分为2部分，分别对应买卖2次的输入。
+     * 第1次买卖区间为[0:i]
+     * 第2次买卖区间为[i+1:~]
+     * i=0或i=len(prices)-1 时表示买卖1次
+     * 0<i<len(prices)-1 时表示买卖2次
+     * 其余为买卖0次
+     * 2.1. 只需要计算出[0:i]区间和[i+1:~]区间买卖1次的全部解，然后再找出最优的i就是恰好买卖2次的最优解
+     * 2.2. 再与恰好买卖1次的最优解进行比较，取较大值
+     * 2.3. 再与恰好买卖0次的解进行比较，取较大值
+     * 2.4. 设dp1[i]为[0:i]区间买卖1次的最大收益，dp2[j]为[i+1:~]区间买卖1次的最大收益
+     * 2.5. max(dp1[i]+dp2[i+1])记为所求
+     * 3. 最多交易4次，日期分别为b1,s1,b2,s2，并且b1<s1<b2<s2。
+     * 3.1. 在b1,s1,b2,s2都有值的情况下，表示已经计算的区间经过了1次和2次买卖的最优解计算。
+     * 3.1.1
+     * 当p[s2]<p[i]时，s2=i，计算局部最优解，并判断是否更新全局最优解。
+     * 当p[i]<p[s2]时，表示在[i:~]将开展第2次买卖，需要重新计算[0:i]为一次买卖的最优解。从 p[s1]-p[b1]，p[s2]-p[b2]，p[s2]-p[b1] 中选最大值作为第1次买卖的买卖日期组合。并设置b2=i，s2=-1。
+     *
+     * 采用【2.】的方案
+     *
+     * 验证通过:
+     * Runtime 3 ms Beats 86.44%
+     * Memory 60.76 MB Beats 71.76%
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit_r3_1(int[] prices) {
+        int ret = 0;
+        //计算[0:i]恰好买卖1次的最优解
+        int[] dp1 = new int[prices.length];
+        int buy = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[buy] < prices[i]) {//只能卖或者不卖，不能买
+                dp1[i] = Math.max(dp1[i - 1], prices[i] - prices[buy]);
+            } else {//只能买，不能卖
+                buy = i;
+                dp1[i] = dp1[i - 1];//总收益不变
+            }
+            ret = Math.max(ret, dp1[i]);
+        }
+        //计算[i:~]恰好买卖1次的最优解
+        int[] dp2 = new int[prices.length];
+        int sell = prices.length - 1;
+        for (int i = prices.length - 2; i > 0; i--) {
+            if (prices[i] < prices[sell]) {//只能买，不能卖
+                dp2[i] = Math.max(dp2[i + 1], prices[sell] - prices[i]);
+            } else {//只能卖，不能买
+                sell = i;
+                dp2[i] = dp2[i + 1];//总收益不变
+            }
+            ret = Math.max(ret, dp2[i]);
+        }
+
+        //组合dp1和dp2
+        for (int i = 1; i < prices.length - 1; i++) {
+            ret = Math.max(ret, dp1[i] + dp2[i + 1]);
+        }
+
+        return ret;
     }
 
     /**
@@ -260,6 +330,8 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
         do_func(new int[]{3, 3, 5, 0, 0, 3, 1, 4}, 6);
         do_func(new int[]{1, 2, 3, 4, 5}, 4);
         do_func(new int[]{7, 6, 4, 3, 1}, 0);
+        do_func(new int[]{2, 1, 2, 1, 0, 0, 1}, 2);
+        System.out.println("------- THE END -------");
 
     }
 
