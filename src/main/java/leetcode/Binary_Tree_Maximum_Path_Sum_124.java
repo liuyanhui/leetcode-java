@@ -28,7 +28,50 @@ public class Binary_Tree_Maximum_Path_Sum_124 {
     static int maxSum = Integer.MIN_VALUE;
 
     public static int maxPathSum(TreeNode root) {
-        return maxPathSum_2(root);
+        return maxPathSum_r3_1(root);
+    }
+
+    /**
+     *
+     * Thinking：
+     * 1. 貌似是图的问题，但其实不是，因为图是无序的，树是有序的（只能从上到下遍历）。
+     * 2. 某个node的计算结果分为4种情况：
+     * 2.1. 仅node ，需返回给父节点
+     * 2.2. node+node.left ，需返回给父节点
+     * 2.3. node+node.right ，需返回给父节点
+     * 2.4. node.left+node+node.right ，无需返回给父节点。直接比较/更新全局最优解。
+     * 2.5. 不包含node，无法返回给父节点。maxPathSum仅在子孙节点中。
+     * 3. 某个node是否被其父节点采用分为2种情况：
+     * 3.1. 被丢弃，path<0
+     * 3.2. 被采用，path>0
+     * 4. 采用递归思路实现
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 44.04 MB Beats 70.25%
+     *
+     * @param root
+     * @return
+     */
+    public static int maxPathSum_r3_1(TreeNode root) {
+        maxSum = Integer.MIN_VALUE;
+        helper(root);
+        return maxSum;
+    }
+
+    private static int helper(TreeNode node) {
+        if (node == null) return 0;
+        //先单独计算当前节点
+        maxSum = Math.max(maxSum, node.val);
+        //再计算子节点
+        int left = helper(node.left);
+        int right = helper(node.right);
+        //比较node+左节点+右节点
+        maxSum = Math.max(maxSum, node.val + left + right);
+        //node+node.left 或 node+node.right
+        int oneSide = Math.max(left, right) + node.val;
+        maxSum = Math.max(maxSum, oneSide);
+        return oneSide > 0 ? oneSide : 0;//小于等于0时，返回0。简化父节点的运算逻辑
     }
 
     /**

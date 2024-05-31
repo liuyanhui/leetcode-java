@@ -68,13 +68,11 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
      * 2.3. 再与恰好买卖0次的解进行比较，取较大值
      * 2.4. 设dp1[i]为[0:i]区间买卖1次的最大收益，dp2[j]为[i+1:~]区间买卖1次的最大收益
      * 2.5. max(dp1[i]+dp2[i+1])记为所求
-     * 3. 最多交易4次，日期分别为b1,s1,b2,s2，并且b1<s1<b2<s2。
-     * 3.1. 在b1,s1,b2,s2都有值的情况下，表示已经计算的区间经过了1次和2次买卖的最优解计算。
-     * 3.1.1
-     * 当p[s2]<p[i]时，s2=i，计算局部最优解，并判断是否更新全局最优解。
-     * 当p[i]<p[s2]时，表示在[i:~]将开展第2次买卖，需要重新计算[0:i]为一次买卖的最优解。从 p[s1]-p[b1]，p[s2]-p[b2]，p[s2]-p[b1] 中选最大值作为第1次买卖的买卖日期组合。并设置b2=i，s2=-1。
      *
      * 采用【2.】的方案
+     * 与maxProfit_1()的方案相同
+     *
+     * maxProfit_5()更简洁
      *
      * 验证通过:
      * Runtime 3 ms Beats 86.44%
@@ -124,6 +122,8 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
      * 参考思路：
      * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution
      *
+     * round 3 : 在循环中分别计算了在i天买1、卖1、买2、卖2的交易情况。
+     *
      * 验证通过：
      * Runtime: 1 ms, faster than 100.00% of Java
      * Memory Usage: 58.6 MB, less than 83.70% of Java
@@ -135,8 +135,8 @@ public class Best_Time_to_Buy_and_Sell_Stock_III_123 {
         int buy1 = prices[0], buy2 = prices[0];
         int sell1 = 0, sell2 = 0;
         for (int i = 1; i < prices.length; i++) {
-            buy1 = Math.min(buy1, prices[i]);
-            sell1 = Math.max(sell1, prices[i] - buy1);
+            buy1 = Math.min(buy1, prices[i]);//低价才买入
+            sell1 = Math.max(sell1, prices[i] - buy1);//高价才卖出
             //这里是关键的地方
             //prices[i] - sell1表示把第一次获得的收益合并到第2次买入的价格中。
             //对应maxProfit_5()中的第7行代码："min[k] = Math.min(min[k], prices[i] - dp[k - 1]);"
