@@ -34,8 +34,72 @@ import java.util.*;
  */
 public class Word_Ladder_127 {
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        return ladderLength_2(beginWord, endWord, wordList);
+        return ladderLength_r3_1(beginWord, endWord, wordList);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * 1.1. 可以转换成图的遍历问题。先在可以进行transformation的输入参数之间建立连接，得到一个无向图；再遍历图找到从顶点 beginWord 到顶点 endWord 的最短路径。
+     * 1.2. 用邻接表存储图；用BFS或DFS法计算最短路径。
+     *
+     * 验证通过：性能一般
+     * Runtime 914 ms Beats 11.94%
+     * Memory 50.10 MB Beats 18.04%
+     *
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public static int ladderLength_r3_1(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.stream().anyMatch(endWord::equals)) return 0;
+        int ret = 0;
+        //生成邻接表
+        Map<String, Set<String>> adjacencies = new HashMap<>();
+        List<String> list = new ArrayList<>(wordList);
+        list.add(beginWord);
+//        list.add(endWord);//review endWord 不能加入list
+        for (String key : list) {
+            adjacencies.putIfAbsent(key, new HashSet<>());
+            list.stream().filter(s -> checkAjacent(s, key)).forEach(s -> adjacencies.get(key).add(s));
+        }
+        //遍历找到最短路径
+        Set<String> appeared = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        while (!queue.isEmpty()) {
+            ret++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String key = queue.poll();
+                appeared.add(key);
+                if (key.equals(endWord)) return ret;
+                for (String value : adjacencies.get(key)) {
+                    if (appeared.contains(value)) continue;
+                    queue.offer(value);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static boolean checkAjacent(String s1, String s2) {
+        if (s1 == null || s1.length() == 0 || s2 == null || s2.length() == 0
+                || s1.length() != s2.length())
+            return false;
+        int cnt = 0;
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i))
+                cnt++;
+            if (cnt > 1) return false;
+        }
+        return cnt == 1;
+    }
+
 
     /**
      * ladderLength_1()的优化版
@@ -198,6 +262,7 @@ public class Word_Ladder_127 {
         do_func("hit", "cog", new String[]{"hot", "dot", "dog", "lot", "log"}, 0);
         do_func("hit", "cog", new String[]{"hot", "dot", "dog", "lot", "log", "cog", "cig", "cit"}, 4);
         do_func("hit", "hat", new String[]{"hot", "hit", "hat", "lot", "log", "cog"}, 2);
+        System.out.println("------- THE END -------");
     }
 
     private static void do_func(String beginWord, String endWord, String[] wordList, int expected) {
