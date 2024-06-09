@@ -45,6 +45,9 @@ public class Word_Ladder_127 {
      * 1. naive solution
      * 1.1. 可以转换成图的遍历问题。先在可以进行transformation的输入参数之间建立连接，得到一个无向图；再遍历图找到从顶点 beginWord 到顶点 endWord 的最短路径。
      * 1.2. 用邻接表存储图；用BFS或DFS法计算最短路径。
+     * 2. 优化的点
+     * 2.1. 计算邻接表时，避免双向重复计算。计算一次同时写入key和value中。
+     * 2.2. 使用延迟计算的方式可以优化【1.】的时间复杂度。即不用提前计算邻接表，从begWord开始计算，计算的同时判断是否adjacent，每计算完一个word就移除它。
      *
      * 验证通过：性能一般
      * Runtime 914 ms Beats 11.94%
