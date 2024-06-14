@@ -41,6 +41,19 @@ public class Word_Ladder_II_126 {
     }
 
     /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     *
+     * 1.findLadders_1()是一种思路。但是超时。
+     * 2.是另一种思路。链接如下：
+     * https://leetcode.com/problems/word-ladder-ii/solutions/40475/my-concise-java-solution-based-on-bfs-and-dfs/
+     * 2.1. 先用bfs计算出图中顶点之间的距离；再用dfs查找出最短距离的集合
+     * 2.2. 用到了Word_Ladder_127的思路。
+     *
+     */
+
+    /**
      * Thinking：
      * 1. 与问题Word_Ladder_127类似，可以转换为图的最短路径问题。
      * 2. 先转化为邻接表，然后使用DFS方式遍历图，并计算最短路径。
