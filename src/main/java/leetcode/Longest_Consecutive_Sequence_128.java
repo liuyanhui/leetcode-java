@@ -28,6 +28,14 @@ public class Longest_Consecutive_Sequence_128 {
     }
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * longestConsecutive_1()的思路比较简单
+     *
+     */
+
+    /**
      * review R2 20220328
      * 思考过程：
      * 思路1：
