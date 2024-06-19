@@ -9,7 +9,8 @@ import java.util.Queue;
  * ----------------
  * You are given the root of a binary tree containing digits from 0 to 9 only.
  * Each root-to-leaf path in the tree represents a number.
- * For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
+ *  - For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
+ *
  * Return the total sum of all root-to-leaf numbers. Test cases are generated so that the answer will fit in a 32-bit integer.
  * A leaf node is a node with no children.
  *
@@ -37,7 +38,74 @@ import java.util.Queue;
  */
 public class Sum_Root_to_Leaf_Numbers_129 {
     public static int sumNumbers(TreeNode root) {
-        return sumNumbers_bfs_2(root);
+        return sumNumbers_r3_2(root);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * BFS 思路
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 41.08 MB Beats 44.13%
+     *
+     * @param root
+     * @return
+     */
+    public static int sumNumbers_r3_2(TreeNode root) {
+        if (root == null) return 0;
+        int ret = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    ret += node.val;
+                } else {
+                    if (node.left != null) {
+                        node.left.val += node.val * 10;
+                        queue.offer(node.left);
+                    }
+                    if (node.right != null) {
+                        node.right.val += node.val * 10;
+                        queue.offer(node.right);
+                    }
+                }
+            }
+
+        }
+
+        return ret;
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * preorder+DFS思路
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 41.22 MB Beats 26.08%
+     *
+     * @param root
+     * @return
+     */
+    public static int sumNumbers_r3_1(TreeNode root) {
+        if (root == null) return 0;
+        return helper_r3_1(root, 0);
+    }
+
+    private static int helper_r3_1(TreeNode node, int sum) {
+        if (node == null) return 0;
+        if (node.left == null && node.right == null) return sum * 10 + node.val;
+        int left = helper_r3_1(node.left, sum * 10 + node.val);
+        int right = helper_r3_1(node.right, sum * 10 + node.val);
+        return left + right;
     }
 
     /**
