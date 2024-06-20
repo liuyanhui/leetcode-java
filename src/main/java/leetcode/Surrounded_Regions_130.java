@@ -6,13 +6,18 @@ import java.util.Arrays;
  * 130. Surrounded Regions
  * Medium
  * --------------
- * Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'.
- * A region is captured by flipping all 'O's into 'X's in that surrounded region.
+ * You are given an m x n matrix board containing letters 'X' and 'O', capture regions that are surrounded:
+ *  - Connect: A cell is connected to adjacent cells horizontally or vertically.
+ *  - Region: To form a region connect every 'O' cell.
+ *  - Surround: The region is surrounded with 'X' cells if you can connect the region with 'X' cells and none of the region cells are on the edge of the board.
+ *
+ * A surrounded region is captured by replacing all 'O's with 'X's in the input matrix board.
  *
  * Example 1:
  * Input: board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
  * Output: [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
- * Explanation: Surrounded regions should not be on the border, which means that any 'O' on the border of the board are not flipped to 'X'. Any 'O' that is not on the border and it is not connected to an 'O' on the border will be flipped to 'X'. Two cells are connected if they are adjacent cells connected horizontally or vertically.
+ * Explanation:
+ * In the above diagram, the bottom region is not captured because it is on the edge of the board and cannot be surrounded.
  *
  * Example 2:
  * Input: board = [["X"]]
@@ -29,7 +34,58 @@ public class Surrounded_Regions_130 {
      * review R2 20220402
      */
     public static void solve(char[][] board) {
-        solve_1(board);
+        solve_r3_1(board);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1.分两步。先标记，再修改。
+     * 1.1. 依次对4个边界上的'O'单元进行DFS计算，把并把满足条件的单元标记为'A'。
+     * 1.2. 遍历board把'A'改为'O'，其余单元改为'X'
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 85.12%
+     * Memory 45.85 MB Beats 11.22%
+     *
+     * @param board
+     */
+    public static void solve_r3_1(char[][] board) {
+        for (int j = 0; j < board[0].length; j++) {
+            //计算第0行，并标记
+            helper_r3_1(board, 0, j);
+            //计算第m行，并标记
+            helper_r3_1(board, board.length - 1, j);
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            //计算第0列，并标记
+            helper_r3_1(board, i, 0);
+            //计算第n列，并标记
+            helper_r3_1(board, i, board[0].length - 1);
+        }
+
+        //修改
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 'A') board[i][j] = 'O';
+                else board[i][j] = 'X';
+            }
+        }
+    }
+
+    private static void helper_r3_1(char[][] board, int r, int c) {
+        if (0 > r || r >= board.length) return;
+        if (0 > c || c >= board[0].length) return;
+        if (board[r][c] == 'O') {
+            board[r][c] = 'A';
+            helper_r3_1(board, r - 1, c);
+            helper_r3_1(board, r, c + 1);
+            helper_r3_1(board, r + 1, c);
+            helper_r3_1(board, r, c - 1);
+        }
     }
 
     /**
