@@ -35,7 +35,7 @@ public class Palindrome_Partitioning_131 {
 
     /**
      * round 3
-     * Score[3] Lower is harder
+     * Score[2] Lower is harder
      *
      * Thinking：
      * 1. naive solution
@@ -50,6 +50,9 @@ public class Palindrome_Partitioning_131 {
      * 2. DP思路。在【1.】的基础上。
      * 设dp[i]为s[i:n]的结果集集合
      * dp[i]={IF s[i:j] is a palindrome THEN s[i:j]*dp[j]},0<i<j<n
+     *
+     * review 直接用传统的dfs性能更优，参考如下：
+     * https://leetcode.com/problems/palindrome-partitioning/solutions/182307/java-backtracking-template-general-approach/
      *
      * 验证通过：性能一般
      * Runtime 20 ms Beats 5.68%
