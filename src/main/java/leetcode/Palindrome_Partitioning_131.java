@@ -23,22 +23,77 @@ import java.util.List;
  * s contains only lowercase English letters.
  */
 public class Palindrome_Partitioning_131 {
+
     /**
      * review R2
      * @param s
      * @return
      */
     public static List<List<String>> partition(String s) {
-        return partition_1(s);
+        return partition_R3_1(s);
     }
 
-    private static boolean check(String s, int beg, int end) {
-        if (beg > end) return false;
-        while (beg < end) {
-            if (s.charAt(beg++) != s.charAt(end--)) return false;
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * 遍历+递归。任务分解为如下步骤：
+     * IF s[0:1] is a palindrome THEN return [s[0:1] * partition(s[1:])]
+     * IF s[0:2] is a palindrome THEN return [s[0:2] * partition(s[2:])]
+     * IF s[0:3] is a palindrome THEN return [s[0:3] * partition(s[3:])]
+     * ...
+     * IF s[0:n] is a palindrome THEN return [s[0:n]]
+     *
+     * Time Complexity:O(n!)
+     * 2. DP思路。在【1.】的基础上。
+     * 设dp[i]为s[i:n]的结果集集合
+     * dp[i]={IF s[i:j] is a palindrome THEN s[i:j]*dp[j]},0<i<j<n
+     *
+     * 验证通过：性能一般
+     * Runtime 20 ms Beats 5.68%
+     * Memory 55.81 MB Beats 94.68%
+     *
+     * @param s
+     * @return
+     */
+    public static List<List<String>> partition_R3_1(String s) {
+        List<List<String>>[] dp = new List[s.length() + 1];
+        for (int i = s.length(); i >= 0; i--) {
+            dp[i] = new ArrayList<>();
+            for (int j = i; j < s.length(); j++) {
+                if (isPalindrome_R3_1(s, i, j)) {
+                    //前半部分palindrome字符串和后半部分的palindrome列表合并组合
+                    String s_t = s.substring(i, j + 1);
+                    if (j + 1 == s.length()) {//处理最后一个元素
+                        List<String> t = new ArrayList<>();
+                        t.add(s_t);
+                        dp[i].add(t);
+                    } else {
+                        //deep copy
+                        for (int k = 0; k < dp[j + 1].size(); k++) {
+                            List<String> t = new ArrayList<>();
+                            t.add(s_t);
+                            t.addAll(new ArrayList<>(dp[j + 1].get(k)));
+                            dp[i].add(t);
+                        }
+                    }
+                }
+            }
+        }
+        return dp[0];
+    }
+
+    private static boolean isPalindrome_R3_1(String s, int i, int j) {
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j)) return false;
+            i++;
+            j--;
         }
         return true;
     }
+
 
     /**
      * DP+递归

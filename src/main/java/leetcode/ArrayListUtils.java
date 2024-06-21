@@ -51,7 +51,7 @@ public class ArrayListUtils {
     public static boolean isSame(List<List<String>> list, String[][] arr) {
         boolean same = true;
         if (list != null && arr.length == list.size()) {
-            for (int i = 0; i > arr.length; i++) {
+            for (int i = 0; i < arr.length; i++) {
                 if (!Arrays.equals(arr[i], list.get(i).toArray())) {
                     same = false;
                     break;
