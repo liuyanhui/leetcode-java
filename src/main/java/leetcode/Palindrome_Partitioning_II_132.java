@@ -30,7 +30,12 @@ public class Palindrome_Partitioning_II_132 {
     }
 
     /**
-     * minCut_r3_1() 的耗时优化版，
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * minCut_r3_1() 的耗时优化版，但是没有优化
+     *
+     * minCut_2()和minCut_3()的实现更优
      *
      * 验证通过：性能和minCut_r3_1()差别不大
      *
@@ -43,10 +48,10 @@ public class Palindrome_Partitioning_II_132 {
         int dp[] = new int[s.length() + 1];
         dp[s.length()] = -1;
         for (int i = s.length() - 2; i >= 0; i--) {
-            dp[i] = Integer.MAX_VALUE;
+            dp[i] = Integer.MAX_VALUE;//review 可以优化为：初始化为i-1
             for (int j = s.length() - 1; j >= i; j--) {
                 if (palindrome_cache[i][j] == -1) continue;
-                if (palindrome_cache[i][j] == 1 || isPalindrome_r3_1(s, i, j)) {
+                if (palindrome_cache[i][j] == 1 || isPalindrome_r3_1(s, i, j)) {//review 这里可以优化 minCut_2()
                     palindrome_cache[i][j] = 1;
                     dp[i] = Math.min(dp[i], 1 + dp[j + 1]);
                 } else {
@@ -59,7 +64,7 @@ public class Palindrome_Partitioning_II_132 {
 
     /**
      * round 3
-     * Score[3] Lower is harder
+     * Score[2] Lower is harder
      *
      * Thinking:
      * 1. DFS+递归+缓存。
@@ -85,7 +90,7 @@ public class Palindrome_Partitioning_II_132 {
         if (beg >= s.length()) return -1;//如果已经到了末尾，回退cut
         if (cache[beg] >= 0) return cache[beg];
 
-        int ret = Integer.MAX_VALUE;
+        int ret = Integer.MAX_VALUE;//review 可以优化为：初始化为i-1
         for (int i = beg; i < s.length(); i++) {
             if (isPalindrome_r3_1(s, beg, i)) {//遇到palindrome,cut加1；末尾是特殊情况
                 ret = Math.min(ret, 1 + helper_r3_1(s, cache, i + 1));
@@ -162,7 +167,7 @@ public class Palindrome_Partitioning_II_132 {
      */
     public static int minCut_2(String s) {
         int[] dp = new int[s.length()];
-        boolean[][] pal = new boolean[s.length()][s.length()];
+        boolean[][] pal = new boolean[s.length()][s.length()];//review 保存是否两两元素是否为palindrome
         for (int i = 0; i < s.length(); i++) {
             dp[i] = i;
             int min = i;
