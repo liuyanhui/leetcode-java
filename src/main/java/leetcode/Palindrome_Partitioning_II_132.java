@@ -26,12 +26,54 @@ package leetcode;
  */
 public class Palindrome_Partitioning_II_132 {
     public static int minCut(String s) {
-        return minCut_r3_2(s);
+        return minCut_r3_3(s);
     }
 
     /**
      * round 3
      * Score[2] Lower is harder
+     *
+     * 本方法是minCut_2()的思路
+     *
+     * 验证通过：
+     * Runtime 25 ms Beats 92.72%
+     * Memory 46.77 MB Beats 29.92%
+     *
+     * @param s
+     * @return
+     */
+    public static int minCut_r3_3(String s) {
+        if (s == null || s.length() <= 1) return 0;
+        int[] dp = new int[s.length() + 1];
+        for (int i = 0; i <= s.length(); i++) {
+            dp[i] = i - 1;
+        }
+        boolean[][] pal = new boolean[s.length()][s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 0; j <= i; j++) {
+                if (s.charAt(j) == s.charAt(i) && (j + 1 >= i - 1 || pal[j + 1][i - 1])) {
+                    pal[j][i] = true;
+                    dp[i + 1] = Math.min(dp[i + 1], dp[j] + 1);
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. DFS+递归+缓存。
+     * 2. DP。递归是自顶向下，DP是自底向上。
+     * dp[i]是s[i:~]的最优解
+     * dp[i]= 算法如下：
+     * BEG
+     * set n = len(s)
+     * FOR j = [i to n]:
+     * 	IF s[i:j] is palindrome THEN dp[i]=min(dp[i],1+dp[j+1])
+     * END
      *
      * minCut_r3_1() 的耗时优化版，但是没有优化
      *
