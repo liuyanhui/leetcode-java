@@ -16,9 +16,7 @@ import java.util.*;
  *
  * Test case format:
  * For simplicity sake, each node's value is the same as the node's index (1-indexed). For example, the first node with val = 1, the second node with val = 2, and so on. The graph is represented in the test case using an adjacency list.
- *
  * Adjacency list is a collection of unordered lists used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.
- *
  * The given node will always be the first node with val = 1. You must return the copy of the given node as a reference to the cloned graph.
  *
  * Example 1:
@@ -53,8 +51,54 @@ import java.util.*;
  */
 public class Clone_Graph_133 {
     public Node cloneGraph(Node node) {
-        return cloneGraph_1(node);
+        return cloneGraph_r3_1(node);
     }
+
+    /**
+     *
+     * round 3
+     * Score[2] Lower is harder
+     *
+     *
+     * Thinking：
+     * 1. Graph problems 的一般方法为DFS或BFS。为了防止无法终止，把已经计算过的node保存在缓存中。
+     * 1.1. 对于edge来说，每个node有两种情况：node作为起点，node作为终点。为了防止无法结束整个计算，要么在起点查重，要么在终点查重。对于邻接表来说，以终点查重较难实现。
+     * 2. 转化成数组再clone
+     * 3. Gragh由顶点node和边egde组成，所以clone时需要同时clone 顶点和边。边的clone要稍复杂一些：边必须有两个顶点；边可能有方向。
+     * 3.1. two round 法：先clone 顶点，再clone 边。把顶点保存在集合中(Map或List)，只需要遍历集合即可，这样就无需担心死循环了。
+     * 3.2. 遍历和复制隔离（解耦）法。把遍历图和复制图解耦；把复制的顶点保存在HashMap中，这样在只需要遍历源图即可，无需遍历复制图。
+     * 3.2.1. 充分利用了node.val唯一的特性。
+     *
+     * 本方法采用DFS，同时实现遍历和复制。
+     * cloneGraph_1()实现更简单
+     *
+     * 验证通过:
+     * Runtime 27 ms Beats 43.26%
+     * Memory 42.53 MB Beats 62.57%
+     *
+     * @param node
+     * @return
+     */
+    public Node cloneGraph_r3_1(Node node) {
+        if (node == null) return null;
+        Set<Integer> existed = new HashSet<Integer>();
+        Map<Integer, Node> copiedNodes = new HashMap<Integer, Node>();
+        Node ret = new Node(node.val);
+        copiedNodes.put(ret.val, ret);
+        helper_r3_1(ret, node, existed, copiedNodes);
+        return ret;
+    }
+
+    private void helper_r3_1(Node copy, Node raw, Set<Integer> existed, Map<Integer, Node> copiedNodes) {
+        if (existed.contains(raw.val)) return;
+        existed.add(raw.val);
+        for (Node n : raw.neighbors) {
+            Node c = copiedNodes.computeIfAbsent(n.val, v -> new Node(n.val));
+            copy.neighbors.add(c);
+            helper_r3_1(c, n, existed, copiedNodes);
+        }
+    }
+
 
     /**
      * round 2
@@ -252,7 +296,17 @@ public class Clone_Graph_133 {
         return ret;
     }
 
-    class Node {
+    public static void main(String[] args) {
+        Clone_Graph_133 solution = new Clone_Graph_133();
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        n1.neighbors.add(n2);
+        n2.neighbors.add(n1);
+        Node expect = solution.cloneGraph(n1);
+        System.out.println("---------done----------");
+    }
+
+    static class Node {
         public int val;
         public List<Node> neighbors;
 
