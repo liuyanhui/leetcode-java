@@ -41,7 +41,41 @@ package leetcode;
 public class Gas_Station_134 {
 
     public static int canCompleteCircuit(int[] gas, int[] cost) {
-        return canCompleteCircuit_3(gas, cost);
+        return canCompleteCircuit_r3_1(gas, cost);
+    }
+
+    /**
+     *
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking：
+     * 1. tank有两个动作：加油和耗油
+     * 2. 结果有两步：能否走完一圈；从哪个station开始出发。
+     * 3. 把gas和cost合并成一个数组（设为A[]），使用类似滑动窗口的思路。窗口之和大于等于0时，从右侧扩大窗口；小于0时，从左侧缩小窗口。
+     *
+     * 验证通过：性能一般
+     * Runtime 6 ms Beats 12.58%
+     * Memory 56.42 MB Beats 90.18%
+     *
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public static int canCompleteCircuit_r3_1(int[] gas, int[] cost) {
+        int i = 0, j = 0;
+        int remain = 0;
+        int n = gas.length;
+        while (i < n) {
+            remain += (gas[j % n] - cost[j % n]);
+            while (remain < 0 && i <= j % n) {
+                remain -= (gas[i] - cost[i]);
+                i++;
+            }
+            j++;//review j可以一直累加，通过mod运算符将其转换成0~n-1的数字
+            if (i == j % n && i < j && remain >= 0) break;
+        }
+        return i == n ? -1 : i;
     }
 
     /**
@@ -65,7 +99,7 @@ public class Gas_Station_134 {
      *
      * 可以看出sum(left[])<0时，无解，直接返回-1；
      * 问题转化为在一维数组中寻找某个满足条件的数字的问题。
-     * 转化后的问题描述：在一个收尾连接的一维数组中，找到一个数，从这个数开始沿顺时针方向向前累加，当再次抵达这个数时，和大于等于0。
+     * 转化后的问题描述：在一个首尾连接的一维数组中，找到一个数，从这个数开始沿顺时针方向向前累加，当再次抵达这个数时，和大于等于0。
      *
      * 算法：
      * 1.数组为num[],双指针为slow，fast
@@ -170,6 +204,7 @@ public class Gas_Station_134 {
     public static void main(String[] args) {
         do_func(new int[]{1, 2, 3, 4, 5}, new int[]{3, 4, 5, 1, 2}, 3);
         do_func(new int[]{2, 3, 4}, new int[]{3, 4, 3}, -1);
+        do_func(new int[]{5, 1, 2, 3, 4}, new int[]{4, 4, 1, 5, 1}, 4);
     }
 
     private static void do_func(int[] gas, int[] cost, int expected) {
