@@ -46,7 +46,7 @@ public class Candy_135 {
      * 2. 先找到极小值，并置candy为1；从极小值开始向两边扩散，如果大于上一个的rating置candy加1，如果等于上一个的rating置candy为1，如果小于上一个的rating跳过。
      * 2.1. 先找到极小值，从极小值开始进行双向递增扩散，趋势递减时退出该极小值的计算。
      *
-     * candy_1()的方法更优
+     * candy_1()的方法更优，更简洁。论思路的重要性。
      *
      * 验证通过：性能一般
      * Runtime 7 ms Beats 17.73%
@@ -78,7 +78,7 @@ public class Candy_135 {
                 } else {//连续相等的ratings，candy为1
                     cnt = 1;
                 }
-                candies[j] = Math.max(candies[j], cnt);
+                candies[j] = Math.max(candies[j], cnt);//注意边界，边界(极大值)可能已经计算过了。
             }
             //向右扩散，并设置candy，直到极大值的拐点
             cnt = 1;
@@ -98,6 +98,8 @@ public class Candy_135 {
     }
 
     /**
+     * review 巧妙的思路
+     *
      * 参考思路：
      * https://leetcode.com/problems/candy/discuss/42769/A-simple-solution
      *
