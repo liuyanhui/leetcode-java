@@ -39,6 +39,17 @@ public class Single_Number_136 {
         return singleNumber_2(nums);
     }
 
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * 1. Bit Manipulate
+     * 2. 先排序在检索
+     * 3. 先HashMap统计，再查找
+     *
+     */
+
     /**
      * Bit Manipulate
      *
