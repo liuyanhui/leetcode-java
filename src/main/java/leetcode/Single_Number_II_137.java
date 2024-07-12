@@ -33,7 +33,39 @@ public class Single_Number_II_137 {
      * @return
      */
     public static int singleNumber(int[] nums) {
-        return singleNumber_1(nums);
+        return singleNumber_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * Thinking:
+     * 1. HashTable 计数，查找法
+     * 2. 先排序在查找
+     * 3. Bit Manipulate 法
+     * 4. 3进制不进位加法。（异或^是2进制的不进位加法，即只保留个位舍弃十位）
+     *
+     * 本方法是Bit Manipulate 法
+     *
+     * 验证通过：
+     *
+     */
+    public static int singleNumber_r3_1(int[] nums) {
+        int[] arr = new int[32];
+        for (int n : nums) {
+            for (int i = 0; i < 32; i++) {
+                arr[i] += (n >> i & 1);
+            }
+        }
+        int ret = 0;
+        for (int i = 0; i < 32; i++) {
+            if (arr[i] % 3 == 1) {
+//                ret += (int) Math.pow(2, i);//无法通过结果为负数的用例
+                ret = (ret | 1 << i);
+            }
+        }
+        return ret;
     }
 
 
@@ -89,6 +121,9 @@ public class Single_Number_II_137 {
     public static void main(String[] args) {
         do_func(new int[]{2, 2, 3, 2}, 3);
         do_func(new int[]{0, 1, 0, 1, 0, 1, 99}, 99);
+        do_func(new int[]{-2, -2, 1, 1, 4, 1, 4, 4, -4, -2}, -4);
+        do_func(new int[]{-2, -2, 1, 1, 4, 1, 4, 4, 6, -2}, 6);
+        do_func(new int[]{2, 2, -3, 2}, -3);
     }
 
     private static void do_func(int[] nums, int expected) {
