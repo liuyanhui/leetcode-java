@@ -39,6 +39,28 @@ import java.util.Map;
  * Node.random is null or is pointing to some node in the linked list.
  */
 public class Copy_List_with_Random_Pointer_138 {
+
+    /**
+     *
+     * Thinking：
+     * 1. naive solution
+     * 先复制链表，再依次遍历复制random属性。
+     * 时间复杂度：O(N*N)
+     * 2. 先复制next，再复制random。缓存链表的index。
+     * 2.1. 把原始Node按顺序转化成数组arr1
+     * 2.2. 用map1缓存Node在原始链表中的顺序.Map<Node,Integer>key为Node对象，value为顺序。
+     * 2.3. 根据arr1复制arr2，并生成new_node
+     * 2.4. 根据map1的value和arr1，复制new_node的random属性。
+     * 3. 复制Node时同时复制next和random。无法做到，因为next和random没有关联，在复制当下需要有顺序指明后操作的属性指向的位置。
+     *
+     *
+     * @param head
+     * @return
+     */
+    public Node copyRandomList_r3_1(Node head) {
+        return  null;
+    }
+
     /**
      * 参考思路：
      * https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43491/A-solution-with-constant-space-complexity-O(1)-and-linear-time-complexity-O(N)
