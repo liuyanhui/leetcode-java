@@ -42,6 +42,9 @@ public class Copy_List_with_Random_Pointer_138 {
 
     /**
      *
+     * round 3
+     * Score[2] Lower is harder
+     *
      * Thinking：
      * 1. naive solution
      * 先复制链表，再依次遍历复制random属性。
@@ -51,8 +54,9 @@ public class Copy_List_with_Random_Pointer_138 {
      * 2.2. 用map1缓存Node在原始链表中的顺序.Map<Node,Integer>key为Node对象，value为顺序。
      * 2.3. 根据arr1复制arr2，并生成new_node
      * 2.4. 根据map1的value和arr1，复制new_node的random属性。
-     * 3. 复制Node时同时复制next和random。无法做到，因为next和random没有关联，在复制当下需要有顺序指明后操作的属性指向的位置。
-     *
+     * 3. 复制Node时同时复制next和random。，因为next和random没有关联，在复制当下需要有顺序指明后操作的属性指向的位置。
+     * 3.1. copyRandomList_1() 巧妙的方法
+     * 4. copyRandomList_2() 巧妙的方法
      *
      * @param head
      * @return
