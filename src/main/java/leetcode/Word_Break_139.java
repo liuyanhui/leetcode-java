@@ -35,7 +35,53 @@ import java.util.*;
 public class Word_Break_139 {
 
     public static boolean wordBreak(String s, List<String> wordDict) {
-        return wordBreak_5(s, wordDict);
+        return wordBreak_r3_1(s, wordDict);
+    }
+
+    /**
+     *
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * 穷举匹配
+     * 从s[0]开始，从wordDict中查询匹配单词；匹配成功后，从s[i]开始，从wordDict中查询匹配单词；如果可以到达s的末尾返回true。
+     * 2. 预计算，在查找匹配
+     * 2.1. 计算s[i]，在wordDict中是否存在匹配的单词，并记录单词长度，保存在step中。其中step=int[][]，保存所有匹配的单词的长度。
+     * 2.2. 如果len(step[i])>0，那么s[i]存在匹配单词
+     * 2.2.1. 遍历step[i][~]，依次计算下一个s的字母，记为k，k=i+step[i][j]
+     * 2.2.2. 递归【2.2.】
+     *
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public static boolean wordBreak_r3_1(String s, List<String> wordDict) {
+        //预处理数据，记录每个字母所匹配单词的长度
+        List<List<Integer>> cache = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            List<Integer> tmpList = new ArrayList<>();
+            String tmpStr = s.substring(i);
+            for (String w : wordDict) {
+                if (tmpStr.indexOf(w) == 0) {
+                    tmpList.add(w.length());
+                }
+            }
+            cache.add(tmpList);
+        }
+        //计算s是否可以有wordDict切割
+        return helper(s, 0, cache);
+    }
+
+    private static boolean helper(String s, int beg, List<List<Integer>> cache) {
+        for (int i = 0; i < cache.get(beg).size(); i++) {
+            int next = beg + cache.get(beg).get(i);
+            if (next == s.length() || helper(s, next, cache)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static Map<String, Boolean> map = new HashMap<>();
@@ -68,7 +114,7 @@ public class Word_Break_139 {
                 }
                 if (i + 1 == c.length()) {
                     map.put(s, true);
-                    if(wordBreak(s.substring(i + 1), wordDict)){
+                    if (wordBreak(s.substring(i + 1), wordDict)) {
                         return true;
                     }
                 }
