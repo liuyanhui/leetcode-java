@@ -52,6 +52,9 @@ public class Word_Break_139 {
      * 2.2. 如果len(step[i])>0，那么s[i]存在匹配单词
      * 2.2.1. 遍历step[i][~]，依次计算下一个s的字母，记为k，k=i+step[i][j]
      * 2.2.2. 递归【2.2.】
+     * 3. 增加缓存存储中间计算结果后，通过验证。
+     *
+     * 验证通过：
      *
      * @param s
      * @param wordDict
@@ -59,7 +62,7 @@ public class Word_Break_139 {
      */
     public static boolean wordBreak_r3_1(String s, List<String> wordDict) {
         //预处理数据，记录每个字母所匹配单词的长度
-        List<List<Integer>> cache = new ArrayList<>();
+        List<List<Integer>> preCalcList = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
             List<Integer> tmpList = new ArrayList<>();
             String tmpStr = s.substring(i);
@@ -68,19 +71,23 @@ public class Word_Break_139 {
                     tmpList.add(w.length());
                 }
             }
-            cache.add(tmpList);
+            preCalcList.add(tmpList);
         }
         //计算s是否可以有wordDict切割
-        return helper(s, 0, cache);
+        Map<Integer, Boolean> existed = new HashMap<>();
+        return helper(s, 0, preCalcList, existed);
     }
 
-    private static boolean helper(String s, int beg, List<List<Integer>> cache) {
-        for (int i = 0; i < cache.get(beg).size(); i++) {
-            int next = beg + cache.get(beg).get(i);
-            if (next == s.length() || helper(s, next, cache)) {
+    private static boolean helper(String s, int beg, List<List<Integer>> preCalcList, Map<Integer, Boolean> existed) {
+        if (existed.containsKey(beg)) return existed.get(beg);
+        for (int i = 0; i < preCalcList.get(beg).size(); i++) {
+            int next = beg + preCalcList.get(beg).get(i);
+            if (next == s.length() || helper(s, next, preCalcList, existed)) {
+                existed.put(beg, true);
                 return true;
             }
         }
+        existed.put(beg, false);
         return false;
     }
 
@@ -258,7 +265,7 @@ public class Word_Break_139 {
         do_func("aaaaaaa", new String[]{"aaaa", "aaa"}, true);
         do_func("a", new String[]{"b"}, false);
         do_func("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", new String[]{"a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa"}, false);
-
+        System.out.println("-------Done-------");
     }
 
     private static void do_func(String s, String[] wordDict, boolean expected) {
