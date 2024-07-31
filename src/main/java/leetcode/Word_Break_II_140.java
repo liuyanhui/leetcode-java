@@ -29,6 +29,7 @@ import java.util.*;
  * 1 <= wordDict[i].length <= 10
  * s and wordDict[i] consist of only lowercase English letters.
  * All the strings of wordDict are unique.
+ * Input is generated in a way that the length of the answer doesn't exceed 10^5.
  */
 public class Word_Break_II_140 {
     /**

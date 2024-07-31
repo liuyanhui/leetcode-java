@@ -55,6 +55,8 @@ public class Word_Break_139 {
      * 3. 增加缓存存储中间计算结果后，通过验证。
      *
      * 验证通过：
+     * Runtime 6 ms Beats 61.07%
+     * Memory 42.19 MB Beats 78.09%
      *
      * @param s
      * @param wordDict
