@@ -54,6 +54,8 @@ public class Word_Break_139 {
      * 2.2.2. 递归【2.2.】
      * 3. 增加缓存存储中间计算结果后，通过验证。
      *
+     * wordBreak_3()的DP思路非常简洁
+     *
      * 验证通过：
      * Runtime 6 ms Beats 61.07%
      * Memory 42.19 MB Beats 78.09%

@@ -32,6 +32,56 @@ import java.util.*;
  * Input is generated in a way that the length of the answer doesn't exceed 10^5.
  */
 public class Word_Break_II_140 {
+    public static List<String> wordBreak(String s, List<String> wordDict) {
+        return wordBreak_r3_1(s, wordDict);
+    }
+
+    /**
+     *
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. 用space分割单词，表明计算过程的有序性。即s从左向右依次匹配即可。
+     * 2. 递归方案
+     * 2.1. 递归函数F(String s,List<String> tmp_ret,List<String> ret)
+     * IF s==null THEN ret.add(tmp_ret.join(" "))
+     * i=j=0
+     * WHILE j<s.length()
+     * 	IF s[i:j] 包含在 wordDict 中 THEN tmp_ret.add(s[i:j]), F(s[j+1:],tmp_ret), tmp_ret.add(s[i:j])
+     * 	j++
+     *
+     * Runtime 1 ms Beats 93.62%
+     * Memory 41.56 MB Beats 70.91%
+     *
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public static List<String> wordBreak_r3_1(String s, List<String> wordDict) {
+        Set<String> wordSet = new HashSet<>(wordDict);
+        List<String> ret = new ArrayList<>();
+        helper(s, wordSet, new ArrayList<>(), ret);
+        return ret;
+    }
+
+    private static void helper(String s, Set<String> wordSet, List<String> tmp_ret, List<String> ret) {
+        if (s == null || s.length() == 0) {
+            ret.add(String.join(" ", tmp_ret));
+            return;
+        }
+        int i = 1;
+        while (i <= s.length()) {
+            String t = s.substring(0, i);
+            if (wordSet.contains(t)) {
+                tmp_ret.add(t);
+                helper(s.substring(i), wordSet, tmp_ret, ret);
+                tmp_ret.remove(tmp_ret.size() - 1);
+            }
+            i++;
+        }
+    }
+
     /**
      * 思路过程：
      * 1.通过space分割s，表示是有序的，无需考虑结果集的乱序问题。
@@ -47,7 +97,7 @@ public class Word_Break_II_140 {
      * 3.2 如果s[0:i]不在wordDict中，当前结果加入总结果集
      * 4 i++
      *
-     * 参考了Word_Break_139中的大神解法。在此基础之上，本题虽然是hard，实际缺失medium。
+     * 参考了Word_Break_139中的大神解法。在此基础之上，本题虽然是hard，实际却是medium。
      *
      * 验证通过：
      * Runtime: 1 ms, faster than 97.66% of Java online submissions for Word Break II.
@@ -56,7 +106,7 @@ public class Word_Break_II_140 {
      * @param wordDict
      * @return
      */
-    public static List<String> wordBreak(String s, List<String> wordDict) {
+    public static List<String> wordBreak_1(String s, List<String> wordDict) {
         List<String> retList = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordDict);
         hepler(s, wordSet, new ArrayList<String>(), retList);
