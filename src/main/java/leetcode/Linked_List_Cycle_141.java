@@ -33,6 +33,35 @@ package leetcode;
  * Follow up: Can you solve it using O(1) (i.e. constant) memory?
  */
 public class Linked_List_Cycle_141 {
+    public static boolean hasCycle(ListNode head) {
+        return hasCycle_r3_1(head);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * Hashtable 缓存已经遍历过的结果。如果hashtable中已经存在某个节点，表示存在环。
+     * 2. 快慢指针法
+     *
+     * 验证通过：
+     *
+     * @param head
+     * @return
+     */
+    public static boolean hasCycle_r3_1(ListNode head) {
+        if (head == null) return false;
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            if (fast == slow || fast.next == slow) return true;
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        return false;
+    }
 
     /**
      * round 2
@@ -65,7 +94,7 @@ public class Linked_List_Cycle_141 {
      * @param head
      * @return
      */
-    public static boolean hasCycle(ListNode head) {
+    public static boolean hasCycle_1(ListNode head) {
         if (head == null) return false;
         ListNode fast = head.next, slow = head;
         while (fast != null && fast.next != null) {
