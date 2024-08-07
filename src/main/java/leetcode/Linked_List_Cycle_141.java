@@ -53,7 +53,8 @@ public class Linked_List_Cycle_141 {
      */
     public static boolean hasCycle_r3_1(ListNode head) {
         if (head == null) return false;
-        ListNode slow = head, fast = head.next;
+        ListNode slow = head;
+        ListNode fast = head.next;//review 这里比较关键
         while (fast != null && fast.next != null) {
             if (fast == slow || fast.next == slow) return true;
             fast = fast.next.next;

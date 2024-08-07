@@ -35,6 +35,43 @@ package leetcode;
 public class Linked_List_Cycle_II_142 {
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. naive solution
+     * 使用Hashtable存储已经遍历过的节点，当新遍历的节点已经在Hashtable中时，就是环的起点。
+     * 2. 快慢指针法。
+     * 2.1. 先找到slow和fast的相遇节点，记为joint。如果没有相遇节点，表示不存在环。
+     * 2.2. 从head和fast开始，每次前进一个节点，直到再次相遇。再次相遇的节点就是所求。
+     *
+     *
+     * 验证通过：性能不错
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode detectCycle(ListNode head) {
+        if (head == null) return null;
+        ListNode slow = head;
+        ListNode fast = head.next;//review 这里比较关键。
+        //查找slow和fast的相遇节点
+        while (fast != null && fast.next != null) {
+            if (fast == slow) break;//review 这里可以参考detectCycle_2()，先移动在判断是否相遇
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        if (fast == null || fast.next == null) return null;
+        //查找环的起点
+        fast = fast.next;//review 这里可以参考detectCycle_2()，先移动在判断是否相遇
+        while (head != fast) {
+            head = head.next;
+            fast = fast.next;
+        }
+        return fast;
+    }
+
+    /**
      * round 2:review
      * FIXME：相遇的条件是，每轮slow和fast都移动后才能进行比较。类似一个时间片都执行完毕之后再进行比较。
      * FIXME：fast移动第一步或fast移动2步但slow未移动时，不可以进行比较。
