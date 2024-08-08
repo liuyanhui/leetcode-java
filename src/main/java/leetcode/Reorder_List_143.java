@@ -28,6 +28,57 @@ public class Reorder_List_143 {
     }
 
     /**
+     * Thinking：
+     * 1. naive solution
+     * 把ListNode转化为数组，根据数组重新构造链表。
+     * Time Complexity:O(N)
+     * Space Complexity:O(N)
+     * 2. 三步法
+     * 先把链表分成两部分，分别是List-1st-half和List-2nd-half；把List-2nd-half反转；合并List-1st-half和反转后的List-2nd-half。
+     * Time Complexity:O(N)
+     * Space Complexity:O(1)
+     *
+     * 还有一种递归的思路，无需反转操作，性能更优。思路为：利用快慢指针，由中间部分到边缘部分逐步递归计算。
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 83.21%
+     * Memory 48.63 MB Beats 8.30%
+     *
+     * @param head
+     */
+    public static void reorderList_r3_1(ListNode head) {
+        //step1:把链表对半分割成前后两个部分
+        ListNode dumb = new ListNode();
+        dumb.next = head;
+        ListNode slow = dumb;
+        ListNode fast = dumb;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode first = head;
+        //step2:反转后半部分
+        ListNode second = null;
+        ListNode cur = slow.next;
+        while (cur != null) {
+            ListNode t = cur.next;
+            cur.next = second;
+            second = cur;
+            cur = t;
+        }
+        //断开前半部分和后半部分
+        slow.next = null;
+        //step3:合并前半部分和反转后的后半部分
+        while (first != null && second != null) {
+            ListNode t = second.next;
+            second.next = first.next;
+            first.next = second;
+            first = second.next;
+            second = t;
+        }
+    }
+
+    /**
      * 算法：
      * 1.把list平均分割成前后两部分，分别为first,second
      * 2.把second从后向前反转
@@ -40,7 +91,7 @@ public class Reorder_List_143 {
      * @param head
      */
     public static void reorderList_2(ListNode head) {
-        if(head==null) return;
+        if (head == null) return;
         ListNode first = head, second = head;
         //list平均分成前后两部分
         while (second.next != null && second.next.next != null) {
