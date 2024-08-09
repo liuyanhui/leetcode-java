@@ -28,6 +28,10 @@ public class Reorder_List_143 {
     }
 
     /**
+     *
+     * round 3
+     * Score[3] Lower is harder
+     *
      * Thinking：
      * 1. naive solution
      * 把ListNode转化为数组，根据数组重新构造链表。
