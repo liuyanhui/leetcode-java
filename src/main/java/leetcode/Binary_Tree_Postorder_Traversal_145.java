@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 145. Binary Tree Postorder Traversal
@@ -32,6 +30,109 @@ public class Binary_Tree_Postorder_Traversal_145 {
     public List<Integer> postorderTraversal(TreeNode root) {
         return null;
     }
+
+    /**
+     *
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking:
+     * 1. 递归法很简单
+     * 2. 迭代法比较复杂，用到了多个数据结果，Stack和Deque
+     *
+     */
+    public static List<Integer> postorderTraversal_r3_1(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        if (root == null) return ret;
+        if (root.left != null)
+            ret.addAll(postorderTraversal_r3_1(root.left));
+        if (root.right != null)
+            ret.addAll(postorderTraversal_r3_1(root.right));
+        ret.add(root.val);
+        return ret;
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * review 
+     * Thinking：
+     * 1. PostInorder
+     * 节点可分可以分为2种类型和3种情况：
+     * 仅被访问1次：叶子节点，直接处理该节点。
+     * 被访问2次：第一次，右子节点入栈（不计入该节点的访问次数），当前节点入栈（计入访问次数），左子节点入栈（不计入该节点的访问次数）；第二次，处理该节点。
+     *
+     * 把访问访问0次的节点和访问1次的节点分开存储即可。使用两个Stack，Stack1保存访问0次的节点（访问1次的节点用null代替，用来表示需要从Stack2中获取数据），Stack2保存访问1次的节点。
+     * 或者使用Deque，头部保存访问1次的节点，尾部保存访问0次的节点（尾部节点为null时，表示需要从头部获取该节点）。
+     *
+     * postorderTraversal_r3_2()和postorderTraversal_r3_3()是相同的实现思路
+     *
+     * 验证通过：
+     *
+     * @param root
+     * @return
+     */
+    public static List<Integer> postorderTraversal_r3_2(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        if (root == null) return ret;
+        Stack<TreeNode> stack0 = new Stack<>();
+        Stack<TreeNode> stack1 = new Stack<>();
+        stack0.push(root);
+        while (!stack0.empty()) {
+            TreeNode t = stack0.pop();
+            //第2次访问
+            if (t == null) {
+                ret.add(stack1.pop().val);//从stack2中获取并直接处理当前节点
+            } else {//第1次访问
+                if (t.left == null && t.right == null) {//叶子节点
+                    ret.add(t.val);
+                    continue;
+                }
+                //当前节点第1次访问后入栈
+                stack0.push(null);
+                stack1.push(t);
+                //入栈右子节点
+                if (t.right != null) {
+                    stack0.push(t.right);
+                }
+                //入栈左子节点
+                if (t.left != null) {
+                    stack0.push(t.left);
+                }
+            }
+        }
+        return ret;
+    }
+
+    public static List<Integer> postorderTraversal_r3_3(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        if (root == null) return ret;
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode t = stack.pop();
+            if (t == null) {
+                ret.add(stack.pollFirst().val);
+            } else {
+                if (t.left == null && t.right == null) {
+                    ret.add(t.val);
+                    continue;
+                }
+                stack.addFirst(t);
+                stack.addLast(null);
+                if (t.right != null) {
+                    stack.push(t.right);
+                }
+                if (t.left != null) {
+                    stack.push(t.left);
+                }
+            }
+        }
+        return ret;
+    }
+
+
     /**
      * review
      * 非递归思路，迭代思路
