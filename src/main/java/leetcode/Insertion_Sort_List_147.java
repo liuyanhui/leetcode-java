@@ -27,8 +27,48 @@ package leetcode;
  */
 public class Insertion_Sort_List_147 {
     public static ListNode insertionSortList(ListNode head) {
-        return insertionSortList_2(head);
+        return insertionSortList_r3_1(head);
     }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * AC的提交记录中有个递归+合并排序的性能最好（先把链表分为前后两部分；然后分别排序这两部分；最后合并排序），只需要0ms即可通过全部案例。
+     *
+     * 验证通过：
+     * Runtime 19 ms Beats 52.19%
+     * Memory 44.56 MB Beats 29.24%
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode insertionSortList_r3_1(ListNode head) {
+        if (head == null) return null;
+        //链表分成已排序和未排序两部分
+        ListNode dumb = new ListNode(0, head);
+        ListNode unsortHead = head.next;
+        head.next = null;//已排序和未排序断开连接
+        while (unsortHead != null) {
+            //从已排序的链表中查找待插入的位置
+            ListNode cur = dumb;
+            while (cur.next != null) {
+                if (cur.next.val >= unsortHead.val) {
+                    break;
+                }
+                cur = cur.next;
+            }
+            //插入待排序节点
+            ListNode t = cur.next;
+            ListNode nextUnsortHead = unsortHead.next;
+            cur.next = unsortHead;
+            unsortHead.next = t;
+            //未排序链表Head后移
+            unsortHead = nextUnsortHead;
+        }
+        return dumb.next;
+    }
+
     /**
      * round 2
      *
