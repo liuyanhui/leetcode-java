@@ -26,7 +26,61 @@ package leetcode;
  */
 public class Sort_List_148 {
     public static ListNode sortList(ListNode head) {
-        return sortList_2(head);
+        return sortList_r3_1(head);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * 与Insertion_Sort_List_147的解法类似。
+     * Space Complexity:O(N)
+     *
+     * sortList_2()的实现空间复杂度满足要求，但是太过于复杂
+     *
+     * 验证通过：
+     * Runtime 8 ms Beats 98.81%
+     * Memory 57.46 MB Beats 9.57%
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode sortList_r3_1(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) return head;
+        //切割为前后两部分，定位待切割的节点
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        //断开前后两部分
+        ListNode secondHalf = slow.next;
+        slow.next = null;
+        //分别排序
+        ListNode first = sortList(head);
+        ListNode second = sortList(secondHalf);
+        // 合并排序
+        ListNode dumb = new ListNode();
+        ListNode tail = dumb;
+        while (first != null && second != null) {
+            if (first.val < second.val) {
+                tail.next = first;
+                first = first.next;
+            } else {
+                tail.next = second;
+                second = second.next;
+            }
+            tail = tail.next;
+        }
+        if (first != null) {
+            tail.next = first;
+        }
+        if (second != null) {
+            tail.next = second;
+        }
+        return dumb.next;
     }
 
     /**
