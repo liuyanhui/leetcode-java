@@ -6,10 +6,17 @@ import java.util.Stack;
  * 150. Evaluate Reverse Polish Notation
  * Medium
  * -------------------------
- * Evaluate the value of an arithmetic expression in Reverse Polish Notation.
- * Valid operators are +, -, *, and /. Each operand may be an integer or another expression.
- * Note that division between two integers should truncate toward zero.
- * It is guaranteed that the given RPN expression is always valid. That means the expression would always evaluate to a result, and there will not be any division by zero operation.
+ * You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
+ *
+ * Evaluate the expression. Return an integer that represents the value of the expression.
+ *
+ * Note that:
+ *  - The valid operators are '+', '-', '*', and '/'.
+ *  - Each operand may be an integer or another expression.
+ *  - The division between two integers always truncates toward zero.
+ *  - There will not be any division by zero.
+ *  - The input represents a valid arithmetic expression in a reverse polish notation.
+ *  - The answer and all the intermediate calculations can be represented in a 32-bit integer.
  *
  * Example 1:
  * Input: tokens = ["2","1","+","3","*"]
@@ -38,7 +45,41 @@ import java.util.Stack;
  */
 public class Evaluate_Reverse_Polish_Notation_150 {
     public static int evalRPN(String[] tokens) {
-        return evalRPN_2(tokens);
+        return evalRPN_r3_1(tokens);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     * Thinking：
+     * 1. 利用Stack。遇到计算符，出栈两个数，并通过计算符计算，计算结果入栈。
+     *
+     * 验证通过：
+     * Runtime 5 ms Beats 97.75%
+     * Memory 44.62 MB Beats 37.71%
+     *
+     * @param tokens
+     * @return
+     */
+    public static int evalRPN_r3_1(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+        for (String s : tokens) {
+            if (s.equals("+")) {
+                stack.push(stack.pop() + stack.pop());
+            } else if (s.equals("-")) {
+                int a = stack.pop(), b = stack.pop();
+                stack.push(b - a);
+            } else if (s.equals("*")) {
+                stack.push(stack.pop() * stack.pop());
+            } else if (s.equals("/")) {
+                int a = stack.pop(), b = stack.pop();
+                stack.push(b / a);
+            } else {
+                stack.push(Integer.valueOf(s));
+            }
+        }
+        return stack.peek();
     }
 
     /**
