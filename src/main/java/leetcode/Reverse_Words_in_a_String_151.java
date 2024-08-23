@@ -108,6 +108,7 @@ public class Reverse_Words_in_a_String_151 {
             cur++;
         }
         //结尾有多个space的特殊情况处理
+        // review 在上一步中从两边同时删除可以优化算法，并易于理解和实现。
         if (end > 0 && arr[end - 1] == ' ') {
             end -= 1;
         }
