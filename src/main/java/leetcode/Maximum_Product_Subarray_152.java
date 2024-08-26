@@ -25,7 +25,38 @@ package leetcode;
  */
 public class Maximum_Product_Subarray_152 {
     public static int maxProduct(int[] nums) {
-        return maxProduct_2(nums);
+        return maxProduct_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Kadane's Algorithm是解决连续子序列和最大值的问题的最优解。
+     *
+     * 验证通过：性能一般，耗时3ms
+     *
+     */
+    public static int maxProduct_r3_1(int[] nums) {
+        int[] maxarr = new int[nums.length + 1];
+        int[] minarr = new int[nums.length + 1];
+        maxarr[0] = 1;
+        minarr[0] = 1;
+        int ret = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int max_t = maxarr[i] * nums[i];
+            int min_t = minarr[i] * nums[i];
+
+            maxarr[i + 1] = Math.max(nums[i], max_t);
+            maxarr[i + 1] = Math.max(maxarr[i + 1], min_t);
+
+            minarr[i + 1] = Math.min(nums[i], max_t);
+            minarr[i + 1] = Math.min(minarr[i + 1], min_t);
+
+            ret = Math.max(ret, maxarr[i + 1]);
+        }
+
+        return ret;
     }
 
     /**
