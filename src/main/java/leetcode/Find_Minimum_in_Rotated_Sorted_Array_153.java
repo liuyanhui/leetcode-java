@@ -37,7 +37,50 @@ package leetcode;
  */
 public class Find_Minimum_in_Rotated_Sorted_Array_153 {
     public static int findMin(int[] nums) {
-        return findMin_2(nums);
+        return findMin_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking：
+     * 1. Binary Search
+     * 输入即有可能rotated也有可能是not rotated，需要同时考虑。
+     * IF nums is rotated THEN return nums[0]
+     * ELSE use the binary search algorithm
+     * 2. rotated+binary search条件下
+     * 2.1. 最小值的判断条件为：nums[i-1]>nums[i] AND nums[i]<nums[i+1]
+     * 2.2. 二分查找分割后的数组中，最小值一定在非单调部分（注意边界值：切割点）。
+     * 2.3. 判断是否单调的算法需要仔细评估。
+     * mid=(left+right)/2;
+     * IF nums[left]<nums[mid] AND nums[mid]>nums[right] THEN left=mid+1
+     * ELSE right = mid
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 41.90 MB Beats 43.06%
+     *
+     * @param nums
+     * @return
+     */
+    public static int findMin_r3_1(int[] nums) {
+        int ret = 0;
+        //是否单调 review 这里可以省略 删除
+//        if (nums[0] <= nums[nums.length - 1]) {
+//            return nums[0];
+//        }
+        //binary search
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (nums[l] <= nums[mid] && nums[mid] > nums[r]) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return nums[r];
     }
 
     /**
