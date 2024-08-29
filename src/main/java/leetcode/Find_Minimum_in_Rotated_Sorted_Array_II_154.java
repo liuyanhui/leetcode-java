@@ -30,7 +30,44 @@ package leetcode;
  */
 public class Find_Minimum_in_Rotated_Sorted_Array_II_154 {
     public static int findMin(int[] nums) {
-        return findMin_1(nums);
+        return findMin_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking：
+     * 1. 采用binary search时，某些场景下nums[l]=nums[mid]=nums[r]，无法进行下一步计算。所以在binary search之前，先从两端跳过相等的数字，再进行binary search。
+     *
+     * 参考Find_Minimum_in_Rotated_Sorted_Array_153的方案，在此基础上增加了两边跳过相等数的逻辑。
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 42.72 MB Beats 87.88%
+     *
+     * @param nums
+     * @return
+     */
+    public static int findMin_r3_1(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            //跳过左侧相等的数字
+            while (l < r && nums[l] == nums[l + 1]) {
+                l++;
+            }
+            //跳过右侧相等的数字
+            while (l < r && nums[r - 1] == nums[r]) {
+                r--;
+            }
+            int mid = (l + r) / 2;
+            if (nums[mid] > nums[r]) {//review 这里的选择很重要
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return nums[r];
     }
 
     /**
