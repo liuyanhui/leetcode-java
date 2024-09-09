@@ -8,39 +8,39 @@ import java.util.List;
  * Medium
  * ----------------
  * Given two version numbers, version1 and version2, compare them.
- *
+ * <p>
  * Version numbers consist of one or more revisions joined by a dot '.'. Each revision consists of digits and may contain leading zeros. Every revision contains at least one character. Revisions are 0-indexed from left to right, with the leftmost revision being revision 0, the next revision being revision 1, and so on. For example 2.5.33 and 0.1 are valid version numbers.
- *
+ * <p>
  * To compare version numbers, compare their revisions in left-to-right order. Revisions are compared using their integer value ignoring any leading zeros. This means that revisions 1 and 001 are considered equal. If a version number does not specify a revision at an index, then treat the revision as 0. For example, version 1.0 is less than version 1.1 because their revision 0s are the same, but their revision 1s are 0 and 1 respectively, and 0 < 1.
- *
+ * <p>
  * Return the following:
  * If version1 < version2, return -1.
  * If version1 > version2, return 1.
  * Otherwise, return 0.
- *
+ * <p>
  * Example 1:
  * Input: version1 = "1.01", version2 = "1.001"
  * Output: 0
  * Explanation: Ignoring leading zeroes, both "01" and "001" represent the same integer "1".
- *
+ * <p>
  * Example 2:
  * Input: version1 = "1.0", version2 = "1.0.0"
  * Output: 0
  * Explanation: version1 does not specify revision 2, which means it is treated as "0".
- *
+ * <p>
  * Example 3:
  * Input: version1 = "0.1", version2 = "1.1"
  * Output: -1
  * Explanation: version1's revision 0 is "0", while version2's revision 0 is "1". 0 < 1, so version1 < version2.
- *
+ * <p>
  * Example 4:
  * Input: version1 = "1.0.1", version2 = "1"
  * Output: 1
- *
+ * <p>
  * Example 5:
  * Input: version1 = "7.5.2.4", version2 = "7.5.3"
  * Output: -1
- *
+ * <p>
  * Constraints:
  * 1 <= version1.length, version2.length <= 500
  * version1 and version2 only contain digits and '.'.
@@ -49,17 +49,57 @@ import java.util.List;
  */
 public class Compare_Version_Numbers_165 {
     public static int compareVersion(String version1, String version2) {
-        return compareVersion_3(version1, version2);
+        return compareVersion_r3_1(version1, version2);
     }
 
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking
+     * 1. naive solution
+     * 先按'.'把字符串切割并转化成整数数组，再比较。在比较前，可以在较短的数组末尾补零，使得两个数组长度相等。
+     *
+     * 验证通过：
+     * Runtime 1 ms Beats 76.56%
+     * Memory 41.49 MB Beats 52.58%
+     *
+     * @param version1
+     * @param version2
+     * @return
+     */
+    public static int compareVersion_r3_1(String version1, String version2) {
+        //切割
+        String[] strarr1 = version1.split("\\.");
+        String[] strarr2 = version2.split("\\.");
+        //转化成整数数组，并在最后面补零
+        int len = Math.max(strarr1.length, strarr2.length);
+        int[] intarr1 = new int[len];
+        int[] intarr2 = new int[len];
+        for (int i = 0; i < strarr1.length; i++) {
+            intarr1[i] = Integer.valueOf(strarr1[i]);
+        }
+        for (int i = 0; i < strarr2.length; i++) {
+            intarr2[i] = Integer.valueOf(strarr2[i]);
+        }
+        //比较
+        for (int i = 0; i < len; i++) {
+            if (intarr1[i] < intarr2[i]) {
+                return -1;
+            } else if (intarr1[i] > intarr2[i]) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 
     /**
      * round 2
-     *
+     * <p>
      * 直觉思路intuition：
      * 1.split成整形数组，要注意数组中元素对应version中的顺序（大版本号在高位，小版本号在低位）
      * 2.从大版本号到小版本号比较数组，数组长度不够时按0处理
-     *
+     * <p>
      * 算法：
      * 1.输入转化成整数数组arr1[]和arr2[]，大版本在高位，小版本在低位，数组长度分别记为len1和len2。
      * 2.从高位到低位依次比较两个数组
@@ -69,9 +109,9 @@ public class Compare_Version_Numbers_165 {
      * 2.4 如果n1<n2，那么 返回-1
      * 2.5 如果n1==n2，那么 比较下一组数字
      * 2.6 i--
-     *
+     * <p>
      * fixme split()之后的数组顺序
-     *
+     * <p>
      * 验证通过:
      * Runtime: 1 ms, faster than 89.06% of Java online submissions for Compare Version Numbers.
      * Memory Usage: 41.8 MB, less than 66.06% of Java online submissions for Compare Version Numbers.
@@ -123,10 +163,11 @@ public class Compare_Version_Numbers_165 {
 
     /**
      * 转换成列表，然后遍历并判断
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 89.51% of Java online submissions for Compare Version Numbers.
      * Memory Usage: 36.9 MB, less than 93.54% of Java online submissions for Compare Version Numbers.
+     *
      * @param version1
      * @param version2
      * @return
@@ -168,6 +209,7 @@ public class Compare_Version_Numbers_165 {
     }
 
     public static void main(String[] args) {
+        do_func("1.2", "1.10", -1);
         do_func("0.0.0", "0.00", 0);
         do_func("1.01", "1.001", 0);
         do_func("1.0", "1.0.0", 0);
