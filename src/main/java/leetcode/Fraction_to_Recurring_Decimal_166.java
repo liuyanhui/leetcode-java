@@ -11,44 +11,98 @@ import java.util.Map;
  * If the fractional part is repeating, enclose the repeating part in parentheses.
  * If multiple answers are possible, return any of them.
  * It is guaranteed that the length of the answer string is less than 104 for all the given inputs.
- *
+ * <p>
  * Example 1:
  * Input: numerator = 1, denominator = 2
  * Output: "0.5"
- *
+ * <p>
  * Example 2:
  * Input: numerator = 2, denominator = 1
  * Output: "2"
- *
+ * <p>
  * Example 3:
  * Input: numerator = 2, denominator = 3
  * Output: "0.(6)"
- *
+ * <p>
  * Example 4:
  * Input: numerator = 4, denominator = 333
  * Output: "0.(012)"
- *
+ * <p>
  * Example 5:
  * Input: numerator = 1, denominator = 5
  * Output: "0.2"
- *
+ * <p>
  * Constraints:
  * -2^31 <= numerator, denominator <= 2^31 - 1
  * denominator != 0
  */
 public class Fraction_to_Recurring_Decimal_166 {
     public static String fractionToDecimal(int numerator, int denominator) {
-        return fractionToDecimal_3(numerator, denominator);
+        return fractionToDecimal_r3_1(numerator, denominator);
     }
 
     /**
-     * round 2
+     * Thinking
+     * 1. 只有小数部分存在无限循环的可能。整数部分不会无线循环。
+     * 2. 递归法。先计算整数部分，然后递归计算小数部分。递归时记录被除数，用来判断是否无限循环。
      *
+     * fractionToDecimal_3()等都是非递归迭代法。思路一样，迭代法更优。
+     *
+     * 验证通过：
+     * Runtime 8 ms Beats 7.72%
+     * Memory 41.32 MB Beats 14.25%
+     *
+     * @param numerator
+     * @param denominator
+     * @return
+     */
+    public static String fractionToDecimal_r3_1(int numerator, int denominator) {
+        StringBuilder ret = new StringBuilder();
+        //处理符号
+        if ((numerator > 0 && denominator < 0) || (numerator < 0 && denominator > 0)) {
+            ret.append("-");
+        }
+        long n = Math.abs((long) numerator);
+        long d = Math.abs((long) denominator);
+        //先计算整数部分
+        ret.append(n / d);
+        //计算小数点
+        if (n % d != 0) {
+            ret.append(".");
+            Map<Long, Integer> appeared = new HashMap<>();
+            ret.append(helper_r3_1(n % d, d, "", appeared));
+        }
+        return ret.toString();
+    }
+
+    private static String helper_r3_1(long numerator, long denominator, String prev, Map<Long, Integer> appeared) {
+        if (appeared.containsKey(numerator)) {
+            //表明是无限不循环小数，补全parentheses
+            String ret = prev.substring(0, appeared.get(numerator));
+            ret = ret + "(" + prev.substring(appeared.get(numerator)) + ")";
+            return ret;
+        }
+        long n = numerator * 10;
+        if (n % denominator == 0) {
+            String t = prev + String.valueOf(n / denominator);
+            appeared.put(numerator, prev.length());
+            return t;
+        } else {
+            String t = prev + String.valueOf(n / denominator);
+            appeared.put(numerator, prev.length());
+            return helper_r3_1(n % denominator, denominator, t, appeared);
+        }
+    }
+
+
+    /**
+     * round 2
+     * <p>
      * 思路：
      * 1.先计算出整数部分，公式为 n/d
      * 2.再计算小数部分，公式为 n-n/d
      * 3.小数部分字符串判断是否是循环小数，或者根据被除数是否重复判断
-     *
+     * <p>
      * 算法：
      * 0. cached=Map<Integer,Integer> 用来缓存被除数和对应的商的起始位置
      * 1. 计算商的整数部分 integer=n/d
@@ -63,7 +117,7 @@ public class Fraction_to_Recurring_Decimal_166 {
      * 3.3.2 t追加到返回结果集字符串中
      * 3.3.3 n和t加入到cached中
      * 3.3.4 重新计算n n=n-t*d
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 100.00% of Java online submissions for Fraction to Recurring Decimal.
      * Memory Usage: 39.9 MB, less than 87.23% of Java online submissions for Fraction to Recurring Decimal.
@@ -117,6 +171,7 @@ public class Fraction_to_Recurring_Decimal_166 {
      * 验证通过，性能一般：
      * Runtime: 8 ms, faster than 14.70% of Java online submissions for Fraction to Recurring Decimal.
      * Memory Usage: 38.7 MB, less than 8.30% of Java online submissions for Fraction to Recurring Decimal.
+     *
      * @param numerator
      * @param denominator
      * @return
@@ -164,6 +219,7 @@ public class Fraction_to_Recurring_Decimal_166 {
      * 整数部分：a/b是整数部分,a=a%b是小数部分的numerator
      * 小数部分：(a*10)/b 是当前小数位的数字，a=(a*10)%b 就是计算下一位小数的numerator
      * 循环判断：只要a在小数部分出现过，就表示循环出现。用map记录循环出现的位置
+     *
      * @param numerator
      * @param denominator
      * @return
@@ -203,27 +259,27 @@ public class Fraction_to_Recurring_Decimal_166 {
     }
 
     public static void main(String[] args) {
-        do_func(0, 2, "0");
-        do_func(1, 2, "0.5");
-        do_func(-1, 2, "-0.5");
-        do_func(-1, -2, "0.5");
-        do_func(1, -2, "-0.5");
-        do_func(2, 2, "1");
-        do_func(2, 3, "0.(6)");
-        do_func(4, 333, "0.(012)");
-        do_func(1, 5, "0.2");
-        do_func(10, 3, "3.(3)");
-        do_func(1000, 3, "333.(3)");
-        do_func(200, 3, "66.(6)");
-        do_func(1, 9999999, "0.(0000001)");
-        do_func(2147483647, 2147483647, "1");
-        do_func(-2147483648, -2147483648, "1");
-        do_func(-10, 1, "-10");
-        do_func(-1, 10, "-0.1");
+//        do_func(0, 2, "0");
+//        do_func(1, 2, "0.5");
+//        do_func(-1, 2, "-0.5");
+//        do_func(-1, -2, "0.5");
+//        do_func(1, -2, "-0.5");
+//        do_func(2, 2, "1");
+//        do_func(2, 3, "0.(6)");
+//        do_func(4, 333, "0.(012)");
+//        do_func(1, 5, "0.2");
+//        do_func(10, 3, "3.(3)");
+//        do_func(1000, 3, "333.(3)");
+//        do_func(200, 3, "66.(6)");
+//        do_func(1, 9999999, "0.(0000001)");
+//        do_func(2147483647, 2147483647, "1");
+//        do_func(-2147483648, -2147483648, "1");
+//        do_func(-10, 1, "-10");
+//        do_func(-1, 10, "-0.1");
 
         //TODO 计算过程中超过了int的最大长度，导致错误。是否可以转换为long?
         //TODO 用long进行计算后，这条用例通过了
-        do_func(-1, -2147483648, "0.0000000004656612873077392578125");
+//        do_func(-1, -2147483648, "0.0000000004656612873077392578125");
         //todo fractionToDecimal_2()下面的用例会无限循环
         do_func(-1, -2147483600, "0.0000000004656612873077392578125");
 
