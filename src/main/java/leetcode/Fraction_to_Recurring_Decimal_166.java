@@ -42,12 +42,15 @@ public class Fraction_to_Recurring_Decimal_166 {
     }
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
      * Thinking
      * 1. 只有小数部分存在无限循环的可能。整数部分不会无线循环。
      * 2. 递归法。先计算整数部分，然后递归计算小数部分。递归时记录被除数，用来判断是否无限循环。
-     *
+     * <p>
      * fractionToDecimal_3()等都是非递归迭代法。思路一样，迭代法更优。
-     *
+     * <p>
      * 验证通过：
      * Runtime 8 ms Beats 7.72%
      * Memory 41.32 MB Beats 14.25%

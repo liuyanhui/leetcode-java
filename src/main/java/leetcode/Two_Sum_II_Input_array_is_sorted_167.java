@@ -41,7 +41,43 @@ import java.util.Map;
  */
 public class Two_Sum_II_Input_array_is_sorted_167 {
     public static int[] twoSum(int[] numbers, int target) {
-        return twoSum_2(numbers, target);
+        return twoSum_r3_1(numbers, target);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking
+     * 1. 左右夹逼法。
+     * WHILE left<right THEN
+     * IF nums[left]+nums[right]==target THEN return [left,right]
+     * ELSE IF nums[left]+nums[right]<target THEN left++
+     * ELSE IF nums[left]+nums[right]>target THEN right--
+     *
+     * 验证通过：
+     * Runtime 2 ms Beats 91.05%
+     * Memory 47.31 MB Beats 20.42%
+     *
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public static int[] twoSum_r3_1(int[] numbers, int target) {
+        int[] ret=new int[2];
+        int l=0,r=numbers.length-1;
+        while(l<r){
+            if(numbers[l]+numbers[r]==target){
+                ret[0]=l+1;
+                ret[1]=r+1;
+                break;
+            }else if(numbers[l]+numbers[r]>target){
+                r--;
+            }else{
+                l++;
+            }
+        }
+        return ret;
     }
 
     /**
@@ -144,7 +180,7 @@ public class Two_Sum_II_Input_array_is_sorted_167 {
 
     private static void do_func(int[] nums, int target, int[] expected) {
         int[] ret = twoSum(nums, target);
-        System.out.println(ret);
+        ArrayUtils.printlnIntArray(ret);
         System.out.println(Arrays.equals(ret, expected));
         System.out.println("--------------");
     }
