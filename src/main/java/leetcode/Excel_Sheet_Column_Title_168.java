@@ -6,47 +6,77 @@ package leetcode;
  * -----------------
  * Given a positive integer, return its corresponding column title as appear in an Excel sheet.
  * For example:
- *     1 -> A
- *     2 -> B
- *     3 -> C
- *     ...
- *     26 -> Z
- *     27 -> AA
- *     28 -> AB
- *     ...
- *
+ * 1 -> A
+ * 2 -> B
+ * 3 -> C
+ * ...
+ * 26 -> Z
+ * 27 -> AA
+ * 28 -> AB
+ * ...
+ * <p>
  * Example 1:
  * Input: 1
  * Output: "A"
- *
+ * <p>
  * Example 2:
  * Input: 28
  * Output: "AB"
- *
+ * <p>
  * Example 3:
  * Input: 701
  * Output: "ZY"
- *
+ * <p>
  * Constraints:
  * 1 <= columnNumber <= 2^31 - 1
  */
 public class Excel_Sheet_Column_Title_168 {
     public static String convertToTitle(int n) {
-        return convertToTitle_4(n);
+        return convertToTitle_r3_1(n);
     }
 
     /**
-     * review round 2
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 没有数字0。类似26或27进制的加法。
+     * WHILE n>0 THEN
+     *     n%26时当前最高位的数字
+     *     n=n/26
+     * <p>
+     * 递归法更直观
+     * <p>
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 40.88 MB Beats 42.22%
      *
+     * @param columnNumber
+     * @return
+     */
+    public static String convertToTitle_r3_1(int columnNumber) {
+        String[] values = new String[]{"Z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"};
+        StringBuilder ret = new StringBuilder();
+        while (columnNumber > 0) {
+            ret.append(values[columnNumber % 26]);
+            columnNumber = (columnNumber - 1) / 26;
+        }
+        return ret.reverse().toString();
+    }
+
+
+    /**
+     * review round 2
+     * <p>
      * 思考过程：
      * 1.是不是数字问题。如果是数字问题，需要用加减法，还要考虑进位/借位。
      * 2.26进制？27进制？
      * 3.没有0，27=AA而不是27=A0。类似10进制中没有10只有11。
      * 4.没有0，能不能把A看成0，这样就是26进制数学问题了。因为10进制有10个数字0~9，0可以代表10。那么A~Z代表0~25。
-     *   从输入来看1~26代表A~Z，跟前面的推论有偏差。然而n-1之后就没有偏差了。
-     *
+     * 从输入来看1~26代表A~Z，跟前面的推论有偏差。然而n-1之后就没有偏差了。
+     * <p>
      * 公式为F(n)=F((n-1)/26)+[(n-1)%26]，其中[0..25]=[A,B,C,..,Y,Z]
-     *
+     * <p>
      * 推导举例：
      * n=1
      * (1-1)/26=0 => Empty
@@ -66,7 +96,7 @@ public class Excel_Sheet_Column_Title_168 {
      * n=701 => ZY
      * (701-1)/26=26 => F(26)=Z => Z
      * (701-1)%26=24 => Y
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 35.45% of Java online submissions for Excel Sheet Column Title.
      * Memory Usage: 41.7 MB, less than 33.51% of Java online submissions for Excel Sheet Column Title.
@@ -94,7 +124,7 @@ public class Excel_Sheet_Column_Title_168 {
 
     /**
      * 非递归迭代法
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Excel Sheet Column Title.
      * Memory Usage: 35.6 MB, less than 99.37% of Java online submissions for Excel Sheet Column Title.
@@ -122,12 +152,12 @@ public class Excel_Sheet_Column_Title_168 {
      * F(n) = F(n/26) + [n%26] , [n%26]={"Z", "A".."Y"}
      * 需要注意的是边界条件，本题不是严格意义上的26进制转换问题，它没有0.
      * 如：52->AZ
-     *
+     * <p>
      * tip：看过高手的解决方案后，发现可以n--再进行计算，省去了"n % 26 == 0"的判断逻辑
-     *
+     * <p>
      * 具体分析如下：
      * https://leetcode.com/problems/excel-sheet-column-title/discuss/441430/Detailed-Explanation-Here's-why-we-need-n-at-first-of-every-loop-(JavaPythonC%2B%2B)
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Excel Sheet Column Title.
      * Memory Usage: 35.8 MB, less than 97.61% of Java online submissions for Excel Sheet Column Title.
