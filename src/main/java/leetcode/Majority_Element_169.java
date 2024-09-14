@@ -11,38 +11,82 @@ import java.util.Map;
  * ---------------------
  * Given an array nums of size n, return the majority element.
  * The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
- *
+ * <p>
  * Example 1:
  * Input: nums = [3,2,3]
  * Output: 3
- *
+ * <p>
  * Example 2:
  * Input: nums = [2,2,1,1,1,2,2]
  * Output: 2
- *
+ * <p>
  * Constraints:
  * n == nums.length
  * 1 <= n <= 5 * 10^4
  * -2^31 <= nums[i] <= 2^31 - 1
- *
+ * <p>
  * Follow-up: Could you solve the problem in linear time and in O(1) space?
  */
 public class Majority_Element_169 {
     public static int majorityElement(int[] nums) {
-        return majorityElement_4(nums);
+        return majorityElement_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 先排序再查找
+     * 2. 利用HashMap保存出现次数，再根据次数判断。
+     * 3. 双指针法。思路：选择两个数，如果一样就留下这两个数，否则就删除这两个数，最后剩下的就是majority。
+     * 算法如下：
+     * 双指针 fast=0,slow=0
+     * WHILE fast<len(nums)
+     *     IF nums[slow]==DEL THEN slow++
+     *     IF nums[fast]==nums[slow] THEN fast++
+     *     ELSE nums[fast]=DEL,slow++,fast++
+     * while(nums[slow]==DEL) slow++;
+     * return nums[slow];
+     * <p>
+     *     review 最巧妙的是 majorityElement_3() ，采用了Moore Voting Algorithm
+     * </p>
+     * <p>
+     * 验证通过：
+     * Runtime 2 ms Beats 76.40%
+     * Memory 53.17 MB Beats 30.15%
+     *
+     * @param nums
+     * @return
+     */
+    public static int majorityElement_r3_1(int[] nums) {
+        int f = 0, s = 0;
+        int DEL = Integer.MIN_VALUE;
+        while (f < nums.length) {
+            while (nums[s] == DEL) s++;
+            if (nums[s] != nums[f]) {
+                nums[f] = DEL;
+                s++;
+            }
+            f++;
+        }
+        while (s < nums.length && nums[s] == DEL) s++;
+        return nums[s];
     }
 
     /**
      * 直觉思路：
      * 把每个数字出现的次数保存在哈希表中，key是数字，value是出现次数。
      * 时间复杂度：O(N)，空间复杂度O(N)
-     *
+     * <p>
      * 排序思路：
      * 先排序再查找
      * 时间复杂度：O(NlogN)，空间复杂度O(1)
-     *
+     * <p>
      * 本方法是一种更巧妙的实现。基本思想是如果两个数不相等那么这两个数都从集合中去掉，最后集合中留下就是所求。
-     *
+     * <p>
      * round 2
      * 验证通过：
      * Runtime: 2 ms, faster than 86.80% of Java online submissions for Majority Element.
@@ -66,11 +110,11 @@ public class Majority_Element_169 {
     }
 
     /**
-     * 金矿
+     * review 金矿
      * 两个元素不同，删除两个元素；两个元素相等，删除一个元素。
      * 参考思路：
      * https://leetcode.com/problems/majority-element/solution/ 之Approach 6: Boyer-Moore Voting Algorithm
-     *
+     * <p>
      * 时间复杂度为O(n)，空间复杂度为O(1)
      *
      * @param nums
@@ -88,7 +132,7 @@ public class Majority_Element_169 {
 
     /**
      * 使用hashmap
-     *
+     * <p>
      * 验证通过：
      * Runtime: 9 ms, faster than 35.09% of Java online submissions for Majority Element.
      * Memory Usage: 44.6 MB, less than 28.65% of Java online submissions for Majority Element.
@@ -113,6 +157,7 @@ public class Majority_Element_169 {
 
     /**
      * 先排序，再统计
+     *
      * @param nums
      * @return
      */
@@ -144,6 +189,7 @@ public class Majority_Element_169 {
     public static void main(String[] args) {
         do_func(new int[]{3, 2, 3}, 3);
         do_func(new int[]{2, 2, 1, 1, 1, 2, 2}, 2);
+        do_func(new int[]{2, 2, 2, 2, 2, 2, 3, 3, 3, 1, 3, 3, 1, 3, 3, 1, 3, 3, 1, 3, 3, 3, 1}, 3);
     }
 
     private static void do_func(int[] nums, int expected) {
