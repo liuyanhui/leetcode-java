@@ -6,23 +6,23 @@ package leetcode;
  * Easy
  * ------------------
  * Given an integer n, return the number of trailing zeroes in n!.
- *
+ * <p>
  * Follow up: Could you write a solution that works in logarithmic time complexity?
- *
+ * <p>
  * Example 1:
  * Input: n = 3
  * Output: 0
  * Explanation: 3! = 6, no trailing zero.
- *
+ * <p>
  * Example 2:
  * Input: n = 5
  * Output: 1
  * Explanation: 5! = 120, one trailing zero.
- *
+ * <p>
  * Example 3:
  * Input: n = 0
  * Output: 0
- *
+ * <p>
  * Constraints:
  * 0 <= n <= 10000
  */
@@ -31,16 +31,24 @@ public class Factorial_Trailing_Zeroes_172 {
         return trailingZeroes_3(n);
     }
 
+    /*
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     *
+     * 参见trailingZeroes_3()
+     */
+
     /**
      * review round 2
-     *
+     * <p>
      * 跟乘数中5的数量有关，乘数分解后结果中含有?个5，结果中就多?个0。
      * 如：
      * 5=1*4->1个0
      * 10=2*5->1个0
      * 25=5*5->2个0
      * 50=2*5*5->2个0
-     *
+     * <p>
      * 有两种方案：递归法和迭代法
      * 递归法参考资料：
      * https://leetcode.com/problems/factorial-trailing-zeroes/discuss/52371/My-one-line-solutions-in-3-languages
@@ -65,10 +73,11 @@ public class Factorial_Trailing_Zeroes_172 {
      * 参考思路：
      * https://leetcode.com/problems/factorial-trailing-zeroes/discuss/52373/Simple-CC%2B%2B-Solution-(with-detailed-explaination)
      * https://leetcode.com/problems/factorial-trailing-zeroes/discuss/52371/My-one-line-solutions-in-3-languages
-     *
+     * <p>
      * 验证通过：
      * Runtime: 4 ms, faster than 15.82% of Java online submissions for Factorial Trailing Zeroes.
      * Memory Usage: 35.4 MB, less than 97.34% of Java online submissions for Factorial Trailing Zeroes.
+     *
      * @param n
      * @return
      */
@@ -87,13 +96,14 @@ public class Factorial_Trailing_Zeroes_172 {
     /**
      * 思路错误，无法当i=25时，上一次乘积结果保留一位是时本次乘积为6*25=150。然而如果上一次乘积保留2位时，本次乘积为96*25=2400。
      * 所以尾数为0的个数，只跟因子5的个数有关。
-     *
+     * <p>
      * 只需要考虑个位数的乘积,所以只保留乘数的非零个位数即可。
      * 1.遍历n
      * 2.f(n) = f(n-1) * n,计算f(n)的从个位开始连续的是0的个数，f(n)修改为f(n)的最低位非0数字。
      * 3.所有f(n)的地位是0的个数总和即为所求
-     *
+     * <p>
      * Time Complexity:O(n)
+     *
      * @param n
      * @return
      */
