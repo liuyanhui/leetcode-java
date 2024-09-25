@@ -5,26 +5,21 @@ package leetcode;
  * Hard
  * ---------------------------------
  * The demons had captured the princess and imprisoned her in the bottom-right corner of a dungeon. The dungeon consists of m x n rooms laid out in a 2D grid. Our valiant knight was initially positioned in the top-left room and must fight his way through dungeon to rescue the princess.
- *
  * The knight has an initial health point represented by a positive integer. If at any point his health point drops to 0 or below, he dies immediately.
- *
  * Some of the rooms are guarded by demons (represented by negative integers), so the knight loses health upon entering these rooms; other rooms are either empty (represented as 0) or contain magic orbs that increase the knight's health (represented by positive integers).
- *
  * To reach the princess as quickly as possible, the knight decides to move only rightward or downward in each step.
- *
  * Return the knight's minimum initial health so that he can rescue the princess.
- *
  * Note that any room can contain threats or power-ups, even the first room the knight enters and the bottom-right room where the princess is imprisoned.
- *
+ * <p>
  * Example 1:
  * Input: dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]]
  * Output: 7
  * Explanation: The initial health of the knight must be at least 7 if he follows the optimal path: RIGHT-> RIGHT -> DOWN -> DOWN.
- *
+ * <p>
  * Example 2:
  * Input: dungeon = [[0]]
  * Output: 1
- *
+ * <p>
  * Constraints:
  * m == dungeon.length
  * n == dungeon[i].length
@@ -37,15 +32,22 @@ public class Dungeon_Game_174 {
     }
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     *
+     */
+
+    /**
      * 参考思路：
      * https://leetcode.com/problems/dungeon-game/discuss/52774/C%2B%2B-DP-solution
      * https://leetcode.com/problems/dungeon-game/discuss/745340/post-Dedicated-to-beginners-of-DP-or-have-no-clue-how-to-start
-     *
+     * <p>
      * DP思路
      * dp[i,j]表示[i,j]的最小必须血量，所以dp[i,j]永远大于0。血量小于0，hero就挂了。
      * 从右下到左上的方向计算。
      * 这个方案不会存在全局最优解被局部最优解误伤的情况。因为dungeon[i,j]的前导元素dungeon[i+1,j]和dungeon[i,j+1]是已经确认的到终点的最优解。所以[i,j]在[i+1,j]和[i,j+1]基础上二选一，也必然是最优解。
-     * 
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 97.71% of Java online submissions for Dungeon Game.
      * Memory Usage: 44.7 MB, less than 12.95% of Java online submissions for Dungeon Game.
@@ -77,7 +79,7 @@ public class Dungeon_Game_174 {
 
     /**
      * 这是错误的办法，没有解决局部最优解覆盖全局最优解的情况。
-     *
+     * <p>
      * DP思路：
      * 需要两个二维数组，分别记录移动到该房间时最优血量v[][]和移动到该房间时的最优解m[][]
      * 1.以从左上到右下的方向计算
