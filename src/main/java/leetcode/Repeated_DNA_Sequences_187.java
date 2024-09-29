@@ -31,6 +31,15 @@ public class Repeated_DNA_Sequences_187 {
         return findRepeatedDnaSequences_r3_1(s);
     }
 
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
     public static List<String> findRepeatedDnaSequences_r3_1(String s) {
         List<String> ret = new ArrayList<>();
         if (s == null || s.length() < 10) return ret;
