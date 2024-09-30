@@ -36,6 +36,28 @@ public class Rotate_Array_189 {
         rotate_r3_1(nums, k);
     }
 
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     *
+     * Thinking
+     * 1. 方案1
+     * 把末尾的k个数字缓存，把开头的n-k个数字移到末尾，把缓存的数字复制到开头。
+     * 2. 方案2
+     * 优化空间复杂度。每次从末尾移动一个到开头，且把前n-1个数字右移。
+     * 3. 方案3
+     * 先分别反转[0:k-1]和[k:n]为[k-1:0]和[n:k]，反转后的数组为[k-1,k-2,..,0,n,..,k]；再将数组整体反转
+     * 过程示意如下：
+     * [0,..,k-1,k,..,n] -> [k-1,k-2,..,0,n,..,k] -> [k,..n,,0,..,k-2,k-1]
+     * 4. 方案4
+     * 先复制到一个临时数组中，再把临时数组复制回输入数组
+     *
+     * 验证通过：
+     *
+     * @param nums
+     * @param k
+     */
     public static void rotate_r3_1(int[] nums, int k) {
         k = k % nums.length;
         reverse(nums, 0, nums.length - 1 - k);
