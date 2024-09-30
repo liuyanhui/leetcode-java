@@ -6,7 +6,7 @@ package leetcode;
  * Medium
  * ----------------------------
  * Given an array, rotate the array to the right by k steps, where k is non-negative.
- *
+ * <p>
  * Example 1:
  * Input: nums = [1,2,3,4,5,6,7], k = 3
  * Output: [5,6,7,1,2,3,4]
@@ -14,31 +14,48 @@ package leetcode;
  * rotate 1 steps to the right: [7,1,2,3,4,5,6]
  * rotate 2 steps to the right: [6,7,1,2,3,4,5]
  * rotate 3 steps to the right: [5,6,7,1,2,3,4]
- *
+ * <p>
  * Example 2:
  * Input: nums = [-1,-100,3,99], k = 2
  * Output: [3,99,-1,-100]
  * Explanation:
  * rotate 1 steps to the right: [99,-1,-100,3]
  * rotate 2 steps to the right: [3,99,-1,-100]
- *
+ * <p>
  * Constraints:
  * 1 <= nums.length <= 10^5
  * -2^31 <= nums[i] <= 2^31 - 1
  * 0 <= k <= 10^5
- *
+ * <p>
  * Follow up:
  * Try to come up with as many solutions as you can. There are at least three different ways to solve this problem.
  * Could you do it in-place with O(1) extra space?
  */
 public class Rotate_Array_189 {
     public static void rotate(int[] nums, int k) {
-        rotate_4(nums, k);
+        rotate_r3_1(nums, k);
+    }
+
+    public static void rotate_r3_1(int[] nums, int k) {
+        k = k % nums.length;
+        reverse(nums, 0, nums.length - 1 - k);
+        reverse(nums, nums.length - k, nums.length - 1);
+        reverse(nums, 0, nums.length - 1);
+    }
+
+    private static void reverse(int[] nums, int i, int j) {
+        while (i < j) {
+            int t = nums[i];
+            nums[i] = nums[j];
+            nums[j] = t;
+            i++;
+            j--;
+        }
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 更加简介明了的实现
      *
      * @param nums
@@ -53,25 +70,25 @@ public class Rotate_Array_189 {
 
     /**
      * round 2
-     *
+     * <p>
      * 全部复制思路
      * 1.把nums复制到新建数组中，再根据rotate规则将数组复制回nums。
      * 时间复杂度O(N)，空间复杂度O(N)
-     *
+     * <p>
      * 部分复制思路
      * 1.把需要rotate的数字从nums中移动到一个临时数组中
      * 2.nums中剩下的数字已到数组的末尾
      * 3.把临时数组中的数字移动到nums的头部
      * 时间复杂度O(N)，空间复杂度O(N)
-     *
+     * <p>
      * 套路思路
      * 1.前半部分反转，不需要rotate的部分
      * 2.后半部分反转，需要rotate的部分
      * 3.整体反转
      * 时间复杂度O(N)，空间复杂度O(1)
-     *
+     * <p>
      * 本题为套路思路
-     *
+     * <p>
      * 验证通过：
      * Runtime: 3 ms, faster than 26.36% of Java online submissions for Rotate Array.
      * Memory Usage: 64.4 MB, less than 53.77% of Java online submissions for Rotate Array.
@@ -108,7 +125,7 @@ public class Rotate_Array_189 {
      * Space Complexity:O(1) in-place的方案
      * 1.把nums的[0,k)和[k:]分别反转
      * 2.把nums反转
-     *
+     * <p>
      * 验证通过:
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Rotate Array.
      * Memory Usage: 56.4 MB, less than 5.23% of Java online submissions for Rotate Array.
@@ -146,9 +163,10 @@ public class Rotate_Array_189 {
      * 验证成功：
      * Runtime: 1 ms, faster than 47.83% of Java online submissions for Rotate Array.
      * Memory Usage: 56.2 MB, less than 12.39% of Java online submissions for Rotate Array.
-     *
+     * <p>
      * Time Complexity:O(n)
      * Space Complexity:O(k)
+     *
      * @param nums
      * @param k
      */

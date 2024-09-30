@@ -172,7 +172,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_IV_188 {
                 for (int ii = 0; ii < i; ii++) {
                     t = Math.max(t, dp[ii][j - 1] - prices[ii]);
                 }
-                dp[i][j] = Math.max(dp[i - 1][j], prices[i - 1] + t);
+                dp[i][j] = Math.max(dp[i - 1][j], prices[i - 1] + t);//review：把"prices[i - 1]+"放回到循环中方便理解，更直观一些
             }
         }
         return dp[prices.length][k];
