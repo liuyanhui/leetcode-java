@@ -27,9 +27,39 @@ package leetcode;
 public class House_Robber_198 {
 
     public static int rob(int[] nums) {
-        return rob_4(nums);
+        return rob_r3_1(nums);
     }
 
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 穷举所有可能性。Time Complexity:O(N^N)
+     * 抢了i，就不能抢i+1，且只能在i+2和i+3中选择一个。
+     * 穷举+递归。
+     * 递归公式：
+     * F(i)=max(F(i+2),F(i+3))
+     * F(0)和F(1)的最大值就是所求。
+     * 2. DP法
+     * dp[i]为从 0 开始 直到 第 i 个house被抢的最大值
+     * dp[i]=max(dp[i-1],dp[i-2]+nums[i])
+     * <p>
+     *     review: dp数组可以优化为两个变量。
+     * <p>
+     *     验证通过
+     *
+     * @param nums
+     * @return
+     */
+    public static int rob_r3_1(int[] nums) {
+        int[] dp= new int[nums.length+2];
+        for(int i=0;i<nums.length;i++){
+            dp[i+2]=Math.max(dp[i+1],nums[i]+dp[i]);
+        }
+        return dp[nums.length+1];
+    }
     /**
      * rob_3()的空间复杂度优化版
      *
