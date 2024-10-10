@@ -35,6 +35,16 @@ public class Number_of_Islands_200 {
     public static int numIslands(char[][] grid) {
         return numIslands_1(grid);
     }
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 先找出每个island，并编号；再根据编号计算出island数量。
+     * 采用dfs思路找出island。
+     * 
+     * 参考numIslands_1()
+     */
 
     /**
      * 1.先查找再统计
