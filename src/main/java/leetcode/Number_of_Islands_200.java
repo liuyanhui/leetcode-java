@@ -42,7 +42,7 @@ public class Number_of_Islands_200 {
      * Thinking
      * 1. 先找出每个island，并编号；再根据编号计算出island数量。
      * 采用dfs思路找出island。
-     * 
+     *
      * 参考numIslands_1()
      */
 
