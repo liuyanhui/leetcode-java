@@ -12,9 +12,9 @@ import java.util.Set;
  * 1.Starting with any positive integer, replace the number by the sum of the squares of its digits.
  * 2.Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
  * 3.Those numbers for which this process ends in 1 are happy.
- *
+ * <p>
  * Return true if n is a happy number, and false if not.
- *
+ * <p>
  * Example 1:
  * Input: n = 19
  * Output: true
@@ -23,24 +23,54 @@ import java.util.Set;
  * 8**2 + 2**2 = 68
  * 6**2 + 8**2 = 100
  * 1**2 + 0**2 + 0**2 = 1
- *
+ * <p>
  * Example 2:
  * Input: n = 2
  * Output: false
- *
+ * <p>
  * Constraints:
  * 1 <= n <= 2^31 - 1
  */
 public class Happy_Number_202 {
     public static boolean isHappy(int n) {
-        return isHappy_3(n);
+        return isHappy_r3_1(n);
     }
 
     /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     *
+     * Thinking
+     * 1. 在计算过程中，需要把过程结果缓存下来，用来判断是否已经进入循环重复计算
+     *
+     * 验证通过：
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isHappy_r3_1(int n) {
+        Set<Integer> seen = new HashSet<>();
+        while (n != 1) {
+            int res = 0;
+            int t = n;
+            while (t != 0) {
+                res += (t % 10) * (t % 10);
+                t = t / 10;
+            }
+            n = res;
+            if (seen.contains(res)) break;
+            seen.add(res);
+        }
+        return n == 1;
+    }
+
+
+    /**
      * round 2
-     *
+     * <p>
      * isHappy_2()的方法更有意思。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 3 ms, faster than 45.75% of Java online submissions for Happy Number.
      * Memory Usage: 41.6 MB, less than 25.94% of Java online submissions for Happy Number.
@@ -65,11 +95,11 @@ public class Happy_Number_202 {
 
     /**
      * O(1) 空间复杂度的思路，问题可以转化为Floyd Cycle Detection问题，用快慢指针发
-     *
+     * <p>
      * 参考思路：
      * https://leetcode.com/problems/happy-number/discuss/56917/My-solution-in-C(-O(1)-space-and-no-magic-math-property-involved-)
      * https://leetcode.com/problems/happy-number/discuss/56917/My-solution-in-C(-O(1)-space-and-no-magic-math-property-involved-)
-     *
+     * <p>
      * for example:
      * 1^2 + 1^2 = 2
      * 2^2 = 4 ------> notice that from here we are starting with 4
@@ -97,7 +127,6 @@ public class Happy_Number_202 {
     }
 
     /**
-     *
      * 验证通过：
      * Runtime: 1 ms, faster than 85.74% of Java online submissions for Happy Number.
      * Memory Usage: 35.7 MB, less than 89.37% of Java online submissions for Happy Number.
