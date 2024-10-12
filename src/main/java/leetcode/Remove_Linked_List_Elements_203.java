@@ -5,19 +5,19 @@ package leetcode;
  * Easy
  * ------------------
  * Given the head of a linked list and an integer val, remove all the nodes of the linked list that has Node.val == val, and return the new head.
- *
+ * <p>
  * Example 1:
  * Input: head = [1,2,6,3,4,5,6], val = 6
  * Output: [1,2,3,4,5]
- *
+ * <p>
  * Example 2:
  * Input: head = [], val = 1
  * Output: []
- *
+ * <p>
  * Example 3:
  * Input: head = [7,7,7,7], val = 7
  * Output: []
- *
+ * <p>
  * Constraints:
  * The number of nodes in the list is in the range [0, 10^4].
  * 1 <= Node.val <= 50
@@ -26,8 +26,34 @@ package leetcode;
 public class Remove_Linked_List_Elements_203 {
 
     /**
-     * round 2
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 因为要删除当前节点，使用dummy节点指向当前节点的上一个节点。
      *
+     * 验证通过：
+     *
+     * @param head
+     * @param val
+     * @return
+     */
+    public static ListNode removeElements_r3_1(ListNode head, int val) {
+        ListNode dummy = new ListNode(0, head);
+        ListNode res = dummy;
+        while (dummy.next != null) {
+            if (dummy.next.val == val) {
+                dummy.next = dummy.next.next;
+            } else {
+                dummy = dummy.next;
+            }
+        }
+        return res.next;
+    }
+
+    /**
+     * round 2
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 99.08% of Java online submissions for Remove Linked List Elements.
      * Memory Usage: 43.1 MB, less than 93.52% of Java online submissions for Remove Linked List Elements.
