@@ -56,7 +56,7 @@ public class Count_Primes_204 {
         for (int i = 2; i < n; i++) {
             if (i > 3 && (i % 2 == 0 || i % 3 == 0)) continue;//跳过2和3
             int tmp = i;
-            if (seen.parallelStream().allMatch(t -> tmp % t != 0)) {
+            if (seen.parallelStream().allMatch(t -> tmp % t != 0)) {//review 这里会发生重复计算，countPrimes_2()就避免了重复计算。
                 seen.add(i);
             }
         }

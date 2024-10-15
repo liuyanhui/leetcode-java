@@ -32,10 +32,45 @@ import java.util.Map;
  */
 public class Isomorphic_Strings_205 {
     public static boolean isIsomorphic(String s, String t) {
-        return isIsomorphic_4(s, t);
+        return isIsomorphic_r3_1(s, t);
     }
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 采用字母映射，把s和t中字母进行映射。当不满足映射条件时，返回false。
+     * 映射采用HashMap或int[256]
+     *
+     * review : isIsomorphic_4()时另一种思路
+     *
+     * 验证通过：
+     * Runtime 11 ms Beats 61.67%
+     * Memory 42.16 MB Beats 85.09%
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isIsomorphic_r3_1(String s, String t) {
+        if(s==null || t==null || s.length()!=t.length())
+            return false;
+        Map<Character,Character> map = new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char c_s = s.charAt(i);
+            char t_s = t.charAt(i);
+            if(map.containsKey(c_s)){
+                if(!map.get(c_s).equals(t_s)) return false;
+            }else {
+                if(map.values().contains(t_s)) return false;//这里要注意
+                map.put(c_s,t_s);
+            }
+        }
+        return true;
+    }
+    /**
+     * review
      * 更巧妙的方案。
      *
      * 参考思路：
