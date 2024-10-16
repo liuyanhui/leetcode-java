@@ -5,39 +5,54 @@ package leetcode;
  * Easy
  * ----------------------
  * Given the head of a singly linked list, reverse the list, and return the reversed list.
- *
+ * <p>
  * Example 1:
  * Input: head = [1,2,3,4,5]
  * Output: [5,4,3,2,1]
- *
+ * <p>
  * Example 2:
  * Input: head = [1,2]
  * Output: [2,1]
- *
+ * <p>
  * Example 3:
  * Input: head = []
  * Output: []
- *
+ * <p>
  * Constraints:
  * The number of nodes in the list is the range [0, 5000].
  * -5000 <= Node.val <= 5000
+ * <p>
+ * Follow up: A linked list can be reversed either iteratively or recursively. Could you implement both?
  */
 public class Reverse_Linked_List_206 {
     public static ListNode reverseList(ListNode head) {
-        return reverseList_3(head);
+        return reverseList_r3_1(head);
     }
 
     /**
-     * 1.链表分为两部分：已经反转的和未反转的。每次把未反转的头节点作为已反转的头结点。
-     * 2.无需使用dumb节点
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     *
+     * 递归思路1
+     * 还存在递归思路2 reverseList_2() 和 迭代思路 reverseList_3()
      *
      * 验证通过：
-     * Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Linked List.
-     * Memory Usage: 41.6 MB, less than 98.97% of Java online submissions for Reverse Linked List.
+     * Runtime 0 ms Beats 100.00%
+     * Memory 42.58 MB Beats 29.51%
      *
      * @param head
      * @return
      */
+    public static ListNode reverseList_r3_1(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) return head;
+        ListNode res = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;//review 打断死循环
+        return res;
+    }
+
     public static ListNode reverseList_3(ListNode head) {
         ListNode last = null;
         while (head != null) {
@@ -71,7 +86,7 @@ public class Reverse_Linked_List_206 {
 
     /**
      * 迭代思路
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Linked List.
      * Memory Usage: 38.5 MB, less than 86.48% of Java online submissions for Reverse Linked List.
