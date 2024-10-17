@@ -32,7 +32,57 @@ import java.util.*;
  */
 public class Course_Schedule_207 {
     public static boolean canFinish(int numCourses, int[][] prerequisites) {
-        return canFinish_r3_1(numCourses, prerequisites);
+        return canFinish_r3_2(numCourses, prerequisites);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     *     
+     *  bfs canFinish_2()思路
+     * 验证通过：
+     *
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public static boolean canFinish_r3_2(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        //定义邻接表
+        Set<Integer>[] neighbours = new HashSet[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            neighbours[i] = new HashSet<Integer>();
+        }
+        //初始化邻接表和indegree[]
+        for (int i = 0; i < prerequisites.length; i++) {
+            neighbours[prerequisites[i][0]].add(prerequisites[i][1]);
+            indegree[prerequisites[i][1]]++;
+        }
+        //初始化indegree==0的队列
+        List<Integer> zeroIndegreeList = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) zeroIndegreeList.add(i);
+        }
+        //从indegree==0开始
+        while (zeroIndegreeList.size() > 0) {
+            List<Integer> nextList = new ArrayList<>();
+            for (int prev : zeroIndegreeList) {
+                for (int next : neighbours[prev]) {
+                    indegree[next]--;
+                    if(indegree[next]==0){
+                        nextList.add(next);
+                    }
+                }
+            }
+            //重置indegree==0的队列队列
+            zeroIndegreeList = nextList;
+        }
+        //统计结果
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] > 0) return false;
+        }
+        return true;
     }
 
     /**
@@ -42,7 +92,7 @@ public class Course_Schedule_207 {
      * Thinking
      * 1. 貌似是图的问题，判断有向图是否为无环有向图。
      * 使用邻接表存储有向图，然后使用dfs或bfs遍历。
-     *
+     * <p>
      * 验证失败：原因见下面的review。dfs canFinish_1() 或者 bfs canFinish_2()才是正确方案。
      *
      * @param numCourses
