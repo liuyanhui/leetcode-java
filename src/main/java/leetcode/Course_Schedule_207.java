@@ -39,7 +39,7 @@ public class Course_Schedule_207 {
      * round 3
      * Score[2] Lower is harder
      * <p>
-     *     
+     *
      *  bfs canFinish_2()思路
      * 验证通过：
      *
