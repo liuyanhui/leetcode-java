@@ -35,7 +35,7 @@ public class Minimum_Size_Subarray_Sum_209 {
      * round 3
      * Score[3] Lower is harder
      * <p>
-     *     
+     *
      * Thinking
      * 1. 分为两部分：找到大于等于target的子数组; 找出最短长度的子数组.
      * 2. 说明：A subarray is a contiguous non-empty sequence of elements within an array. 连续非空子序列。
