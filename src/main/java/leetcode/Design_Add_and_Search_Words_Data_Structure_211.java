@@ -6,20 +6,19 @@ package leetcode;
  * Medium
  * ----------------------------
  * Design a data structure that supports adding new words and finding if a string matches any previously added string.
- *
+ * <p>
  * Implement the WordDictionary class:
- *
- * WordDictionary() Initializes the object.
- * void addWord(word) Adds word to the data structure, it can be matched later.
- * bool search(word) Returns true if there is any string in the data structure that matches word or false otherwise. word may contain dots '.' where dots can be matched with any letter.
- *
+ * - WordDictionary() Initializes the object.
+ * - void addWord(word) Adds word to the data structure, it can be matched later.
+ * - bool search(word) Returns true if there is any string in the data structure that matches word or false otherwise. word may contain dots '.' where dots can be matched with any letter.
+ * <p>
  * Example:
  * Input
  * ["WordDictionary","addWord","addWord","addWord","search","search","search","search"]
  * [[],["bad"],["dad"],["mad"],["pad"],["bad"],[".ad"],["b.."]]
  * Output
  * [null,null,null,null,false,true,true,true]
- *
+ * <p>
  * Explanation
  * WordDictionary wordDictionary = new WordDictionary();
  * wordDictionary.addWord("bad");
@@ -29,24 +28,79 @@ package leetcode;
  * wordDictionary.search("bad"); // return True
  * wordDictionary.search(".ad"); // return True
  * wordDictionary.search("b.."); // return True
- *
+ * <p>
  * Constraints:
  * 1 <= word.length <= 25
  * word in addWord consists of lowercase English letters.
  * word in search consist of '.' or lowercase English letters.
- * There will be at most 3 dots in word for search queries.
+ * There will be at most 2 dots in word for search queries.
  * At most 10^4 calls will be made to addWord and search.
  */
 public class Design_Add_and_Search_Words_Data_Structure_211 {
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 使用Trie 存储word，然后查找。遇到字符'.'需要遍历该层所有的字母。
+     * 2. 使用Hashtable存储word。search时替换'.'为字母，每个'.'共有26种可能。最多有两个'.'的情况下，最多有26*26种情况需要计算。
+     *
+     * 验证通过：
+     * Runtime 203 ms Beats 47.95%
+     * Memory 87.88 MB Beats 88.36%
+     *
+     */
+    static class WordDictionary {
+        boolean isWord;
+        WordDictionary[] successors;
+        public WordDictionary() {
+            successors = new WordDictionary[26];
+        }
+
+        public void addWord(String word) {
+            WordDictionary cur = this;
+            for (int i = 0; i < word.length(); i++) {
+                int idx = word.charAt(i) - 'a';
+                if (cur.successors[idx] == null) {
+                    cur.successors[idx] = new WordDictionary();
+                }
+                if (i == word.length() - 1) {
+                    cur.successors[idx].isWord = true;
+                }
+                cur = cur.successors[idx];
+            }
+        }
+
+        public boolean search(String word) {
+            return match(word, 0, this);
+        }
+
+        private boolean match(String word, int beg, WordDictionary dict) {
+            if (beg > word.length()) return false;
+            if (beg == word.length()) return dict.isWord;
+            if (word.charAt(beg) == '.') {//模糊匹配
+                for (int i = 0; i < dict.successors.length; i++) {
+                    if (dict.successors[i] == null) continue;
+                    if (match(word, beg + 1, dict.successors[i])) return true;
+                }
+            } else {
+                int idx = word.charAt(beg) - 'a';
+                if (dict.successors[idx] == null) return false;
+                if (match(word, beg + 1, dict.successors[idx])) return true;
+            }
+            return false;
+        }
+    }
+
     /**
      * 思考：
      * 1.Trie Tree + 模糊查找
      * 2.如果Trie Tree的节点不为空，就可以跳过该节点的匹配
-     *
+     * <p>
      * 验证通过：
      * Runtime: 483 ms, faster than 94.12% of Java online submissions for Design Add and Search Words Data Structure.
      * Memory Usage: 104.7 MB, less than 83.71% of Java online submissions for Design Add and Search Words Data Structure.
-     *
      */
     static class WordDictionary_2 {
         private WordDictionary_2[] successor = new WordDictionary_2[26];
@@ -96,13 +150,12 @@ public class Design_Add_and_Search_Words_Data_Structure_211 {
     /**
      * 参考思路：
      * https://leetcode.com/problems/design-add-and-search-words-data-structure/discuss/59554/My-simple-and-clean-Java-code
-     *
+     * <p>
      * 验证通过：
      * Runtime: 36 ms, faster than 93.75% of Java online submissions for Design Add and Search Words Data Structure.
      * Memory Usage: 49.8 MB, less than 57.31% of Java online submissions for Design Add and Search Words Data Structure.
-     *
      */
-    static class WordDictionary {
+    static class WordDictionary_1 {
         class TrieNode {
             TrieNode[] children = new TrieNode[26];
             boolean isWord = false;
@@ -165,7 +218,7 @@ public class Design_Add_and_Search_Words_Data_Structure_211 {
     }
 
     private static void test1() {
-        WordDictionary_2 wordDictionary = new WordDictionary_2();
+        WordDictionary wordDictionary = new WordDictionary();
         wordDictionary.addWord("bad");
         wordDictionary.addWord("dad");
         wordDictionary.addWord("mad");
@@ -177,7 +230,7 @@ public class Design_Add_and_Search_Words_Data_Structure_211 {
     }
 
     private static void test2() {
-        WordDictionary_2 wordDictionary = new WordDictionary_2();
+        WordDictionary wordDictionary = new WordDictionary();
         wordDictionary.addWord("a");
         wordDictionary.addWord("a");
         System.out.println(wordDictionary.search(".") == true);
