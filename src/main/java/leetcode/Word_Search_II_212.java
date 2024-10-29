@@ -7,17 +7,17 @@ import java.util.*;
  * Hard
  * -------------------------
  * Given an m x n board of characters and a list of strings words, return all words on the board.
- *
+ * <p>
  * Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
- *
+ * <p>
  * Example 1:
  * Input: board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"]
  * Output: ["eat","oath"]
- *
+ * <p>
  * Example 2:
  * Input: board = [["a","b"],["c","d"]], words = ["abcb"]
  * Output: []
- *
+ * <p>
  * Constraints:
  * m == board.length
  * n == board[i].length
@@ -30,14 +30,168 @@ import java.util.*;
  */
 public class Word_Search_II_212 {
     public static List<String> findWords(char[][] board, String[] words) {
-        return findWords_2(board, words);
+        return findWords_r3_2(board, words);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * 
+     * Thinking
+     * 1. 依次在board中查找每个word。采用dfs+递归的方式。缓存已经在路径中的cell，防止重复选择cell。
+     * Time Complexity:O(N*(N^4)*M)
+     * 2. 利用Trie。先根据words建立一个Trie，然后依次从board中的每个item开始遍历（顺时针方向）。
+     *
+     * 验证通过：
+     * Runtime 234 ms Beats 58.45% Memory 44.65  MB Beats 83.74%
+     * @param board
+     * @param words
+     * @return
+     */
+    public static List<String> findWords_r3_2(char[][] board, String[] words) {
+        //初始化Trie
+        Trie_r3_1 trie = new Trie_r3_1();
+        for(String w:words){
+            trie.build(w);
+        }
+        Set<String> res = new HashSet<>();
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[i].length;j++){
+                search(trie, board,i,j,res);
+            }
+        }
+        return new ArrayList<>(res);
+    }
+
+    private static void search(Trie_r3_1 trie,char[][] board,int row,int col,Set<String> matched){
+        if(row<0 || board.length<=row
+                || col<0 || board[0].length<=col
+                || board[row][col]=='#'
+                || trie==null){
+            return ;
+        }
+
+        Trie_r3_1 cur = trie.matchThenReturn(board[row][col]);
+        if(cur==null) return;//不匹配直接跳出查找
+        if(cur.isWord){
+            matched.add(cur.word);//查找到word，先加入结果集
+        }
+        char t = board[row][col];
+        board[row][col]='#';//目的：跳过已经访问过的item
+        //clockwise
+        search(cur,board,row-1,col,matched);
+        search(cur,board,row,col+1,matched);
+        search(cur,board,row+1,col,matched);
+        search(cur,board,row,col-1,matched);
+        board[row][col]=t;//目的：恢复已经访问过的item
+    }
+
+    static class Trie_r3_1{
+        boolean isWord;
+        String word;
+        Trie_r3_1[] sucessors;
+        public Trie_r3_1(){
+            word = null;
+            isWord = false;
+            sucessors = new Trie_r3_1[26];
+        }
+
+        public void build(String word){
+            if(word==null || word.length()==0) return ;
+            Trie_r3_1 cur = this;
+            for(int i=0;i<word.length();i++){
+                int idx = word.charAt(i)-'a';
+                if(cur.sucessors[idx]==null) cur.sucessors[idx]=new Trie_r3_1();
+                cur = cur.sucessors[idx];
+                if(i==word.length()-1) {
+                    cur.isWord=true;
+                    cur.word = word;
+                }
+            }
+        }
+
+        public boolean match(String word){
+            if(word==null || word.length()==0) return false;
+            Trie_r3_1 cur = this;
+            for(int i=0;i<word.length();i++){
+                int idx = word.charAt(i)-'a';
+                if(cur.sucessors[idx]==null) return false;
+                cur = cur.sucessors[idx];
+            }
+            return true;
+        }
+
+        public Trie_r3_1 matchThenReturn(char c){
+            Trie_r3_1 cur = this;
+            return cur.sucessors[c-'a'];
+        }
+
+        public boolean search(String word){
+            if(word==null || word.length()==0) return false;
+            Trie_r3_1 cur = this;
+            for(int i=0;i<word.length();i++){
+                int idx = word.charAt(i)-'a';
+                if(cur.sucessors[idx]==null) return false;
+                cur = cur.sucessors[idx];
+            }
+            return cur.isWord;
+        }
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 依次在board中查找每个word。采用dfs+递归的方式。缓存已经在路径中的cell，防止重复选择cell。
+     *
+     * 验证失败：Time Limit Exceed。逻辑正确。
+     *
+     * findWords_2()是AC的方案
+     *
+     * @param board
+     * @param words
+     * @return
+     */
+    public static List<String> findWords_r3_1(char[][] board, String[] words) {
+        List<String> res = new ArrayList<>();
+        for (String word : words) {
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length; j++) {
+                    if (dfs(board, i, j, word, 0, new HashSet<>())) {
+                        res.add(word);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private static boolean dfs(char[][] board, int row, int col, String word, int beg, Set<String> seen) {
+        if (row < 0 || board.length <= row || col < 0 || board[0].length <= col) {
+            return false;
+        }
+        String key = row + "." + col;
+        if (seen.contains(key)) return false;
+        if (board[row][col] != word.charAt(beg)) return false;
+        if (board[row][col] == word.charAt(beg) && beg == word.length() - 1) return true;
+
+        boolean res = false;
+        seen.add(key);
+        //clockwise
+        res = dfs(board, row - 1, col, word, beg + 1, seen)
+                || dfs(board, row, col + 1, word, beg + 1, seen)
+                || dfs(board, row + 1, col, word, beg + 1, seen)
+                || dfs(board, row, col - 1, word, beg + 1, seen);
+        seen.remove(key);
+        return res;
     }
 
     /**
      * Trie+dfs思路
      * 参考文档：
      * https://leetcode.com/problems/word-search-ii/discuss/59780/Java-15ms-Easiest-Solution-(100.00)
-     *
+     * <p>
      * review 20220810：
      * 1.递归函数一般由两种形式：
      *  a.有返回值
@@ -47,7 +201,7 @@ public class Word_Search_II_212 {
      * 2.递归过程是否缓存存储递归过程（或已经被递归查找过的变量）
      *  a.如果被查找的是数组或列表，有时候需要类似hashmap的变量标识已经递归过的数据，防止重复递归。
      *  b.如果被查找的数组，有时候不需要变量标识已经递归过的数据，可以直接原地修改数组标识已经被递归过。即：先修改数组中马上被递归的值，然后执行递归函数，再把被修改的值还原。下面的方式就是这种例子。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 265 ms, faster than 57.22% of Java online submissions for Word Search II.
      * Memory Usage: 43.9 MB, less than 81.45% of Java online submissions for Word Search II.
@@ -115,11 +269,11 @@ public class Word_Search_II_212 {
      * 思考：
      * 1.暴力法。依次把words中的单词在board里面进行匹配。时间复杂度：O(m*n*p*q)，m和n为board的行列数，p和q为words的单词数量和单词平均长度。
      * 2.貌似无法使用BUD进行优化。分析如下：p*q是无法优化的，必然要根据words中的每个字符进行匹配；
-     *
+     * <p>
      * 思路：
      * 1.遍历words，把word在board中进行匹配。匹配的顺序为顺时针，并且记录匹配路径，防止重复使用已匹配的字母。
      * 2.模块化设计：定义子函数，查找word是否在board中。所有的中间值都是局部变量，避免了手动重置缓存。
-     *
+     * <p>
      * 验证失败：Time Limit Exceeded.  42/63 test cases passed.
      *
      * @param board
