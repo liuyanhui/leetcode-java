@@ -25,6 +25,24 @@ public class Shortest_Palindrome_214 {
         return shortestPalindrome_2(s);
     }
 
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * Thinking
+     * 1. navie solution
+     * 从最右的字母开始，依次取最右侧的子串s[i:~]，i从len(s)-1开始递减，反转s[i:~]后加到最左侧，然后判断新字符串是否为palindrome。
+     * 时间复杂度O(N*N)
+     * 2. 至少有三种思路
+     * 2.1. 反转输入为r；如果s.startswith(r[i:])那么返回 r[:i]+s ，r从0开始。
+     * https://leetcode.com/problems/shortest-palindrome/solutions/60099/ac-in-288-ms-simple-brute-force/
+     * 2.2. 递归法。先从后向前找出s中必然不在回文串中部分，设为s[i:]；递归执行：reverse(s[i:])+F(s[0:i])+s[i:]，F为递归函数
+     * https://leetcode.com/problems/shortest-palindrome/solutions/60098/my-7-lines-recursive-java-solution/
+     * 2.3. 采用KMP方法找出s[0]开头的最长回文子串
+     * https://leetcode.com/problems/shortest-palindrome/solutions/60113/clean-kmp-solution-with-super-detailed-explanation/
+     * https://leetcode.com/problems/shortest-palindrome/editorial/
+     */
+
     //KMP算法也可以解决该问题。介于KMP较复杂，暂且不考虑。
 
     /**
