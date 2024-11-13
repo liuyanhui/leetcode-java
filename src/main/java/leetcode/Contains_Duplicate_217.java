@@ -30,6 +30,7 @@ public class Contains_Duplicate_217 {
     /**
      * round 3
      * Score[5] Lower is harder
+     *
      * Thinking
      * 1. 先排序再查找思路。
      * Time Complexity:O(NlogN)
@@ -37,7 +38,7 @@ public class Contains_Duplicate_217 {
      * 2. Hashtable保存计算过的数字的思路。
      * Time Complexity:O(N)
      * Space Complexity:O(N)
-     * 
+     *
      */
 
     /**
