@@ -52,10 +52,18 @@ public class Kth_Largest_Element_in_an_Array_215 {
      * 4. 属于求kth分位数的问题。
      * 6. 堆排序。大小为k的heap。
      * 7. 基于 quick sort partion 的 Selection sort。此方案时间复杂度可以达到O(N)，为了避免最坏情况，可以对nums执行shuffle操作。
+     * partion(l,r,k)为快速排序的一次partion
+     * l=0,r=nums.length-1
+     * WHILE l<r THEN
+     *     m = partion(l,r,k)
+     *     IF m==k THEN return nums[k]
+     *     ELSE IF m>k THEN l=m+1
+     *     ELSE IF m<k THEN r=m-1
      * 5. 参考
      * https://leetcode.com/problems/kth-largest-element-in-an-array/solutions/60294/solution-explained/
      */
     public static int findKthLargest_r3_2(int[] nums, int k) {
+//        shuffle(nums);
         int l = 0, r = nums.length - 1;
         k = nums.length-k;
         int m = 0;
