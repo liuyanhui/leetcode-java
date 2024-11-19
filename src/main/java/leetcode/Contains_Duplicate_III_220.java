@@ -9,25 +9,33 @@ import java.util.TreeSet;
  * 220. Contains Duplicate III
  * Medium
  * -----------------------
- * Given an integer array nums and two integers k and t, return true if there are two distinct indices i and j in the array such that abs(nums[i] - nums[j]) <= t and abs(i - j) <= k.
- *
+ * You are given an integer array nums and two integers indexDiff and valueDiff.
+ * <p>
+ * Find a pair of indices (i, j) such that:
+ * - i != j,
+ * - abs(i - j) <= indexDiff.
+ * - abs(nums[i] - nums[j]) <= valueDiff, and
+ * Return true if such pair exists or false otherwise.
+ * <p>
  * Example 1:
- * Input: nums = [1,2,3,1], k = 3, t = 0
+ * Input: nums = [1,2,3,1], indexDiff = 3, valueDiff = 0
  * Output: true
- *
+ * Explanation: We can choose (i, j) = (0, 3).
+ * We satisfy the three conditions:
+ * i != j --> 0 != 3
+ * abs(i - j) <= indexDiff --> abs(0 - 3) <= 3
+ * abs(nums[i] - nums[j]) <= valueDiff --> abs(1 - 1) <= 0
+ * <p>
  * Example 2:
- * Input: nums = [1,0,1,1], k = 1, t = 2
- * Output: true
- *
- * Example 3:
- * Input: nums = [1,5,9,1,5,9], k = 2, t = 3
+ * Input: nums = [1,5,9,1,5,9], indexDiff = 2, valueDiff = 3
  * Output: false
- *
+ * Explanation: After trying all the possible pairs (i, j), we cannot satisfy the three conditions, so we return false.
+ * <p>
  * Constraints:
- * 0 <= nums.length <= 2 * 10^4
- * -2^31 <= nums[i] <= 2^31 - 1
- * 0 <= k <= 10^4
- * 0 <= t <= 2^31 - 1
+ * 2 <= nums.length <= 10^5
+ * -10^9 <= nums[i] <= 10^9
+ * 1 <= indexDiff <= nums.length
+ * 0 <= valueDiff <= 10^9
  */
 public class Contains_Duplicate_III_220 {
     public static boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
@@ -35,15 +43,33 @@ public class Contains_Duplicate_III_220 {
     }
 
     /**
+     * round 3
+     * Score[1] Lower is harder
+     *
+     * Thinking
+     * 1. naive solution
+     * 问题转化为在固定的窗口内nums[i,j]（窗口最大为indexDiff），是否存在两个数的差小于等于valueDiff。
+     * 计算窗口nums[i,j]是否满足条件，然后窗口向后移动为[i+1,j+1]直到末尾。
+     * 计算每个窗口时，可以采用先排序再查找的方案。
+     * Time Complexity:O((N-K)*K*logK)，K=indexDiff
+     * 2. 思考：如何利用滑动窗口这个特性。
+     * 利用TreeMap保存窗口内的数，同时保证删除最早数字和新加入数字时的有序性。
+     * 设新加入的数字为nums[i]，在Treemap中查找最接近nums[i]的数字（1个或2个），再用这些数字与nums[i]进行比较，判断差是否小于等于valueDiff。
+     * containsNearbyAlmostDuplicate_3()
+     * 3. Bucket Sort方案。containsNearbyAlmostDuplicate_4()
+     *
+     */
+
+    /**
      * round 1 & round 2
      * review
-     *
+     * <p>
      * bucket排序思路
      * 金矿：用整数除法实现桶排序
      * 参考思路：
      * https://leetcode.com/problems/contains-duplicate-iii/discuss/61645/AC-O(N)-solution-in-Java-using-buckets-with-explanation
      * https://leetcode.com/problems/contains-duplicate-iii/discuss/61639/JavaPython-one-pass-solution-O(n)-time-O(n)-space-using-buckets
-     *
+     * <p>
      * 验证通过：
      * Runtime: 18 ms, faster than 82.33% of Java online submissions for Contains Duplicate III.
      * Memory Usage: 42.1 MB, less than 32.03% of Java online submissions for Contains Duplicate III.
@@ -82,10 +108,10 @@ public class Contains_Duplicate_III_220 {
     /**
      * 参考思路：
      * https://leetcode.com/problems/contains-duplicate-iii/discuss/61655/Java-O(N-lg-K)-solution
-     *
+     * <p>
      * 类似滑动窗口的思路，但是使用了TreeMap管理窗口内的数据
      * 算是containsNearbyAlmostDuplicate_1的优化版本
-     *
+     * <p>
      * 验证通过：
      * Runtime: 40 ms, faster than 34.57% of Java online submissions for Contains Duplicate III.
      * Memory Usage: 40.1 MB, less than 86.51% of Java online submissions for Contains Duplicate III.
@@ -119,10 +145,10 @@ public class Contains_Duplicate_III_220 {
 
     /**
      * 滑动窗口思路，每次去掉窗口内最早的数字后，新加入窗口的数字从前向后比较
-     *
+     * <p>
      * 验证失败：Time Limit Exceeded
      * 逻辑正确，超时了
-     *
+     * <p>
      * Time Complexity:O(k*n)
      *
      * @param nums
@@ -188,13 +214,13 @@ public class Contains_Duplicate_III_220 {
     }
 
     public static void main(String[] args) {
-//        do_func(new int[]{1, 2, 3, 1}, 3, 0, true);
-//        do_func(new int[]{1, 0, 1, 1}, 1, 2, true);
-//        do_func(new int[]{1, 0, 1, 1}, 10, 2, true);
+        do_func(new int[]{1, 2, 3, 1}, 3, 0, true);
+        do_func(new int[]{1, 0, 1, 1}, 1, 2, true);
+        do_func(new int[]{1, 0, 1, 1}, 10, 2, true);
         do_func(new int[]{1, 5, 9, 1, 5, 9}, 2, 3, false);
-//        do_func(new int[]{1, 5, 9, 1, 5, 9}, 22, 3, true);
-//        do_func(new int[]{-2147483648, 2147483647}, 1, 1, false);
-//        do_func(new int[]{1, 2}, 0, 1, false);
+        do_func(new int[]{1, 5, 9, 1, 5, 9}, 22, 3, true);
+        do_func(new int[]{-2147483648, 2147483647}, 1, 1, false);
+        do_func(new int[]{1, 2}, 0, 1, false);
 
     }
 
