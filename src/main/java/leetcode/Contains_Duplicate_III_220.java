@@ -44,7 +44,7 @@ public class Contains_Duplicate_III_220 {
 
     /**
      * round 3
-     * Score[1] Lower is harder
+     * Score[2] Lower is harder
      *
      * Thinking
      * 1. naive solution
@@ -53,10 +53,12 @@ public class Contains_Duplicate_III_220 {
      * 计算每个窗口时，可以采用先排序再查找的方案。
      * Time Complexity:O((N-K)*K*logK)，K=indexDiff
      * 2. 思考：如何利用滑动窗口这个特性。
-     * 利用TreeMap保存窗口内的数，同时保证删除最早数字和新加入数字时的有序性。
-     * 设新加入的数字为nums[i]，在Treemap中查找最接近nums[i]的数字（1个或2个），再用这些数字与nums[i]进行比较，判断差是否小于等于valueDiff。
+     * 利用 TreeSet 保存窗口内的数，同时保证删除最早数字和新加入数字时的有序性。
+     * 设新加入的数字为nums[i]，在 TreeSet 中查找最接近nums[i]的数字（1个或2个），再用这些数字与nums[i]进行比较，判断差是否小于等于valueDiff。
      * containsNearbyAlmostDuplicate_3()
-     * 3. Bucket Sort方案。containsNearbyAlmostDuplicate_4()
+     * 3. Sliding Window + Bucket Sort方案。在窗口内进行bucket sort。属于【2.】的改进版。
+     * review : bucket sort 可以用来快速执行范围和区间相关的计算
+     * containsNearbyAlmostDuplicate_4()
      *
      */
 
@@ -81,7 +83,7 @@ public class Contains_Duplicate_III_220 {
      */
     public static boolean containsNearbyAlmostDuplicate_4(int[] nums, int k, int t) {
         if (k < 1 || t < 0) return false;
-        Map<Long, Long> map = new HashMap<>();
+        Map<Long, Long> map = new HashMap<>();//value是long而不是List<Long>。因为不需要，如果出现相同的数，已经满足条件可以执行"return true"了。并且这个map是保存 bucket sort 结果的。
         for (int i = 0; i < nums.length; i++) {
             //这里需要转换成long，否则会出错
             long resizedNum = (long) nums[i] - Integer.MIN_VALUE;//转换成正数
@@ -137,7 +139,7 @@ public class Contains_Duplicate_III_220 {
             treeSet.add(nums[i]);
             //最早加入的数字从窗口删除
             if (i >= k) {
-                treeSet.remove(nums[i - k]);
+                treeSet.remove(nums[i - k]);//review 如果存在重复的相同的数，是否会影响结果？不会。如果已经存在相同的数，在上面的"if"语句中就返回true了。
             }
         }
         return false;
