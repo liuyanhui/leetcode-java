@@ -31,7 +31,7 @@ public class Rectangle_Area_223 {
     }
 
     /**
-     * review 
+     * review
      * round 3
      * Score[2] Lower is harder
      * <p>

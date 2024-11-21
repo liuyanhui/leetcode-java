@@ -5,19 +5,19 @@ package leetcode;
  * Medium
  * -----------------------
  * Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
- *
+ * <p>
  * Example 1:
  * Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
  * Output: 4
- *
+ * <p>
  * Example 2:
  * Input: matrix = [["0","1"],["1","0"]]
  * Output: 1
- *
+ * <p>
  * Example 3:
  * Input: matrix = [["0"]]
  * Output: 0
- *
+ * <p>
  * Constraints:
  * m == matrix.length
  * n == matrix[i].length
@@ -26,23 +26,81 @@ package leetcode;
  */
 public class Maximal_Square_221 {
     public static int maximalSquare(char[][] matrix) {
-        return maximalSquare_4(matrix);
+        return maximalSquare_r3_1(matrix);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 依次遍历每个cell，以该cell作为左上顶点开始查找最大square。
+     * Time Complexity : O(N^4)
+     * <p>
+     * 2. 基于【1.】进行优化。
+     * 【1.】中，当计算每行的连续1的长度时，存在重复计算。
+     * 2.1. 预先计算每个cell的从左向右的bar的长度，并保存为bar[][]。bar[i][j]为matrix[i][j]开始向右的连续1的最大长度。
+     * 采用DP方案，计算bar[][]的时间复杂度O(N*N)
+     * 2.2. 根据bar的二维数组，依次计算 matrix[i][j] 的 max square 。
+     * 需要从bar[i][j]开始向下查找并计算得到 matrix[i][j] 的 max square 。
+     * Time Complexity : O(N^3)
+     *
+     * review maximalSquare_2()的方案更优
+     *
+     * <p>
+     * 验证通过：
+     * Runtime 79 ms Beats 5.56%
+     * Memory 60.91 MB Beats 5.84%
+     *
+     * @param matrix
+     * @return
+     */
+    public static int maximalSquare_r3_1(char[][] matrix) {
+        int res = 0;
+        int m = matrix.length, n = matrix[0].length;
+        //计算bar数组
+        int[][] bar = new int[m][n + 1];
+        for (int i = 0; i < m; i++) {
+            //从右向左
+            for (int j = n - 1; j >= 0; j--) {
+                if (matrix[i][j] == '1') {
+                    bar[i][j] = bar[i][j + 1] + 1;
+                }
+            }
+        }
+        //查找计算 max square
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                //根据 bar 查找 max square
+                int min_bar = n;
+                for (int k = i; k < m; k++) {
+                    if (bar[k][j] == 0) break;//跳出不必要的计算
+                    min_bar = Math.min(min_bar, bar[k][j]);
+                    int side_len = Math.min(min_bar, k - i + 1);
+                    res = Math.max(res, side_len * side_len);
+                    //跳出不必要的计算
+                    if (min_bar <= 1) break;
+                }
+            }
+        }
+        return res;
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 思考：
      * 1.暴力法。遍历整个matrix，依次计算以[i,j]作为左上角顶点的square的面积，最后取最大值。Time Complexity:O(M*N*M*N)
      * 2.正方形由右下的实心小正方形+左上部分的厂形组成。可用DP思路。
-     *
+     * <p>
      * DB思路
      * 1.从左下到右上遍历整个矩阵
      * 2.DP公式为：
      * 2.1.dp[i,j]=1+min(dp[i-1,j],dp[i,j-1],dp[i-1,j-1]) 当[i,j]==1时
      * 2.2.dp[i,j]=0 当[i,j]==0时
      * 3.max(dp)*max(dp)就是所求
-     *
+     * <p>
      * 验证通过：
      * Runtime: 6 ms, faster than 89.04% of Java online submissions for Maximal Square.
      * Memory Usage: 57.6 MB, less than 70.48% of Java online submissions for Maximal Square.
@@ -68,6 +126,7 @@ public class Maximal_Square_221 {
      * maximalSquare_2()的简化版
      * 参考思路：
      * https://leetcode.com/problems/maximal-square/solution/
+     *
      * @param matrix
      * @return
      */
@@ -92,7 +151,7 @@ public class Maximal_Square_221 {
      * dp[i][j]表示[i,j]作为右下角的最大正方形面积
      * t=min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])
      * dp[i][j] = (Math.sqrt(t)+1)^2
-     *
+     * <p>
      * 验证通过：
      * Runtime: 3 ms, faster than 98.15% of Java online submissions for Maximal Square.
      * Memory Usage: 42 MB, less than 68.80% of Java online submissions for Maximal Square.
@@ -128,13 +187,14 @@ public class Maximal_Square_221 {
      * 思路如下：
      * 1.从[0,0]开始依次遍历每个元素。
      * 2.采用递归的方式，每次递归分为三步：向右扩展一列；向下扩展一行；斜向下扩展一格
-     *
+     * <p>
      * Time Complexity:O(n^3)
      * Space Complexity:O(n)
-     *
+     * <p>
      * 验证通过：
      * Runtime: 11 ms, faster than 10.20% of Java online submissions for Maximal Square.
      * Memory Usage: 42.6 MB, less than 14.97% of Java online submissions for Maximal Square.
+     *
      * @param matrix
      * @return
      */
