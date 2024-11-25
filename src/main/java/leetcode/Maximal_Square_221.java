@@ -46,7 +46,7 @@ public class Maximal_Square_221 {
      * 需要从bar[i][j]开始向下查找并计算得到 matrix[i][j] 的 max square 。
      * Time Complexity : O(N^3)
      *
-     * review maximalSquare_2()的方案更优
+     * review maximalSquare_4()的方案更优。DP思路是可行的。
      *
      * <p>
      * 验证通过：
@@ -94,7 +94,7 @@ public class Maximal_Square_221 {
      * 1.暴力法。遍历整个matrix，依次计算以[i,j]作为左上角顶点的square的面积，最后取最大值。Time Complexity:O(M*N*M*N)
      * 2.正方形由右下的实心小正方形+左上部分的厂形组成。可用DP思路。
      * <p>
-     * DB思路
+     * review DP思路
      * 1.从左下到右上遍历整个矩阵
      * 2.DP公式为：
      * 2.1.dp[i,j]=1+min(dp[i-1,j],dp[i,j-1],dp[i-1,j-1]) 当[i,j]==1时
