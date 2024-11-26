@@ -7,46 +7,113 @@ import java.util.Stack;
  * 224. Basic Calculator
  * Hard
  * --------------------
- * Given a string s representing an expression, implement a basic calculator to evaluate it.
- *
+ * Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+ * Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval().
+ * <p>
  * Example 1:
  * Input: s = "1 + 1"
  * Output: 2
- *
+ * <p>
  * Example 2:
  * Input: s = " 2-1 + 2 "
  * Output: 3
- *
+ * <p>
  * Example 3:
  * Input: s = "(1+(4+5+2)-3)+(6+8)"
  * Output: 23
- *
- *  Constraints:
- * 1 <= s.length <= 3 * 10^5
- * s consists of digits, '+', '-', '(', ')', and ' '.
- * s represents a valid expression.
+ * <p>
+ * Constraints:
+ * - 1 <= s.length <= 3 * 10^5
+ * - s consists of digits, '+', '-', '(', ')', and ' '.
+ * - s represents a valid expression.
+ * - '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
+ * - '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
+ * - There will be no two consecutive operators in the input.
+ * - Every number and running calculation will fit in a signed 32-bit integer.
  */
 public class Basic_Calculator_224 {
     public static int calculate(String s) {
-        return calculate_5(s);
+        return calculate_r3_1(s);
+    }
+
+    /**
+     * review
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 典型的逻辑题。采用直观的数学计算法。
+     * 由最内层括号开始计算，逐步向外层扩展计算。
+     * 遍历 s 为 s[i]
+     * IF s[i] == digit THEN n = n*10+(s[i]-'0');
+     * IF s[i] == '+' THEN stack.push(n);stack.push(s[i]);
+     * IF s[i] == '-' THEN stack.push(n);stack.push(s[i]);
+     * IF s[i] == '(' THEN stack.push(n);stack.push(s[i-1]);stack.push(s[i]);
+     * IF s[i] == ')' THEN n={计算stack中的值，直到stack.pop()=='('}
+     * 遍历s结束后，res = {计算stack中的值，直到stack.empty()}
+     * <p>
+     * 验证通过：
+     * Runtime 27 ms Beats 9.88%
+     * Memory 49.38 MB Beats 6.18%
+     */
+    public static int calculate_r3_1(String s) {
+        if (s == null || s.length() == 0) return 0;
+        Stack<String> stack = new Stack<>();
+        int n = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == ' ') continue;
+            if ('0' <= c && c <= '9') {
+                n = n * 10 + c - '0';
+            } else if (c == '+' || c == '-') {
+                stack.push(String.valueOf(n));
+                n = 0;
+                stack.push(String.valueOf(c));
+            } else if (c == '(') {
+                stack.push(String.valueOf(c));
+            } else if (c == ')') {
+                stack.push(String.valueOf(n));
+                n = calc_stack_r3_1(stack);
+            }
+        }
+        if (n != 0) stack.push(String.valueOf(n));
+        return calc_stack_r3_1(stack);
+    }
+
+    private static int calc_stack_r3_1(Stack<String> stack) {
+        int res = 0;
+        int n = 0;
+        while (!stack.empty() && stack.peek() != "(") {
+            String s = stack.pop();
+            if (s.equals("(")) break;
+            if (s.equals("+")) {
+                res += n;
+            } else if (s.equals("-")) {
+                res -= n;
+            } else {
+                n = Integer.valueOf(s);
+            }
+        }
+        res += n;
+        return res;
     }
 
     /**
      * round2
      * review
      * 参考：calculate_3()
-     *
+     * <p>
      * 思路：
      * 1.参考OS关于线程栈帧相关的思路。把当前函数的栈帧压入栈，然后初始化另一个函数调用并执行逻辑。
      * 2.能算则算，这样就无需再入栈，也无需后续的出栈并计算。那么在只有一层()的情况下，()中的结果无需入栈。这样，因为嵌套()而利用栈时，出栈计算急需要考虑栈顶的2个元素，其中第1个是signal，第2个是+/-()前的数字。对于第1个元素signal使用乘法，对于第2个元素使用加法。
-     *
+     * <p>
      * 具体算法如下：
      * 1.如果是+、-，那么计算n(n=n*signal)，修改signal，n累加到res中
      * 2.如果是数字，那么计算n
      * 3.如果是(，那么先后入栈res和signal入栈，重置res，重置signal
      * 4.如果是)，那么计算res=res+n*signal，n入栈，栈顶出栈s=stack.pop()，栈顶出栈表示sum=stack.pop()，sum=sum+res*s，res=sum
      * 5.如果抵达字符串表达式末尾，那么res=res+n*signal
-     *
+     * <p>
      * 验证通过：
      * Runtime: 10 ms, faster than 77.30% of Java online submissions for Basic Calculator.
      * Memory Usage: 44.6 MB, less than 40.51% of Java online submissions for Basic Calculator.
@@ -92,7 +159,7 @@ public class Basic_Calculator_224 {
     /**
      * review
      * round 2
-     *
+     * <p>
      * 递归法：
      * 0.两步法：先计算()内的部分，去掉()，再用常规算法计算没有()的部分
      * 1.去除()
@@ -102,7 +169,7 @@ public class Basic_Calculator_224 {
      * 1.4.遇到空格，continue
      * 1.5.遇到数字，数字计算n=n*10+c-'0'
      * 2.计算stack
-     *
+     * <p>
      * AC的结果中有使用递归方法的更巧妙简单的解决方案。如：
      * 1.如果是(，那么递归
      * 2.如果是数字，计算数字
@@ -110,7 +177,7 @@ public class Basic_Calculator_224 {
      * 3.1.计算res，
      * 3.2.重置现场。
      * 3.3.如果是)，那么返回res
-     *
+     * <p>
      * 验证通过：
      * Runtime: 354 ms, faster than 5.03% of Java online submissions for Basic Calculator.
      * Memory Usage: 111.7 MB, less than 5.00% of Java online submissions for Basic Calculator.
@@ -169,7 +236,7 @@ public class Basic_Calculator_224 {
 
     /**
      * round 2 : review
-     *
+     * <p>
      * 与227类似的思路：
      * 1.利用stack进行计算，使用sign保存上一个操作符。根据不同类型的字符执行不同的逻辑。
      * 2.digit: it should be one digit from the current number
@@ -177,10 +244,10 @@ public class Basic_Calculator_224 {
      * 4.'-': same as above
      * 5.'(': push the previous result and the sign into the stack, set result to 0, just calculate the new result within the parenthesis.
      * 6.')': pop out the top two numbers from stack, first one is the sign before this pair of parenthesis, second is the temporary result before this pair of parenthesis. We add them together.
-     *
+     * <p>
      * 参考思路：
      * https://leetcode.com/problems/basic-calculator/discuss/62361/Iterative-Java-solution-with-stack
-     *
+     * <p>
      * 验证通过：
      * Runtime: 4 ms, faster than 92.04% of Java online submissions for Basic Calculator.
      * Memory Usage: 38.9 MB, less than 76.16% of Java online submissions for Basic Calculator.
@@ -231,12 +298,12 @@ public class Basic_Calculator_224 {
     /**
      * 参考思路：
      * https://leetcode.com/problems/basic-calculator/solution/
-     *
+     * <p>
      * 解释如下：
      * 0.本质上还是两步法，第一步去掉括号，第二步计算无括号的stack
      * 1.从后向前入栈，忽略空格
      * 2.如果遇到"(",出栈并计算。直到出栈的字符为")"，并将计算结果入栈
-     *
+     * <p>
      * 思路比较清晰，但是验证失败：
      * 无法通过用例："-2+ 1","1-(+1+1)" 等
      * 从后向前计算时，较难处理负数
@@ -289,10 +356,11 @@ public class Basic_Calculator_224 {
 
     /**
      * 参考227的方案
-     *
+     * <p>
      * 验证通过，性能一般：
      * Runtime: 176 ms, faster than 6.42% of Java online submissions for Basic Calculator.
      * Memory Usage: 107.3 MB, less than 5.01% of Java online submissions for Basic Calculator.
+     *
      * @param s
      * @return
      */
@@ -361,6 +429,7 @@ public class Basic_Calculator_224 {
     }
 
     private static void do_func(String s, int expected) {
+        System.out.println("input = {" + s + "}");
         int ret = calculate(s);
         System.out.println(ret);
         System.out.println(ret == expected);
