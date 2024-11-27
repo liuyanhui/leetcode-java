@@ -33,7 +33,7 @@ import java.util.Stack;
  */
 public class Basic_Calculator_224 {
     public static int calculate(String s) {
-        return calculate_r3_1(s);
+        return calculate_r3_2(s);
     }
 
     /**
@@ -51,6 +51,74 @@ public class Basic_Calculator_224 {
      * IF s[i] == '(' THEN stack.push(n);stack.push(s[i-1]);stack.push(s[i]);
      * IF s[i] == ')' THEN n={计算stack中的值，直到stack.pop()=='('}
      * 遍历s结束后，res = {计算stack中的值，直到stack.empty()}
+     * <p>
+     * 2. 性能更好的方案。
+     * https://leetcode.com/problems/basic-calculator/solutions/62361/iterative-java-solution-with-stack/
+     * 遍历s中的每个字符，设为s[i]
+     * 共分为5种情况：
+     * s[i] is digit : 是当前数cur_num的一部分，{cur_num=cur_num*10+s[i]-'0'}。
+     * s[i]=='+' : 表示数字已经结束，{res = res +last_sign*cur_num},?为上一个计算符号，更新{last_sign=1,cur_num=0}
+     * s[i]=='-' : 同 s[i]=='+',区别是{last_sign=-1}
+     * s[i]=='(' : 把 last_sign 和 res 按照固定顺序入栈，重置res和last_sign,{res=0,last_sign=1}
+     * s[i]==')' : 表示数字已经结束，计算res；栈顶的2个元素出栈（分别是计算符号和入栈前的res）,{res=stack.pop()+stack.pop()*res}
+     * <p>
+     * 3. 遇到'('就递归。
+     *
+     *
+     * 验证通过：
+     * Runtime 9 ms 62.72%
+     * Memory 43.78 MB Beats 47.96%
+     *
+     * @param s
+     * @return
+     */
+    public static int calculate_r3_2(String s) {
+        int res = 0;
+        int sign = 1;
+        int num = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            } else if (c == '+' || c == '-') {//num已经结束可以计算了
+                res = res + sign * num;
+                num = 0;
+                sign = c == '+' ? 1 : -1;
+            } else if (c == '(') {//sign和res按顺序入栈，
+                stack.push(sign);
+                stack.push(res);
+                res = 0;
+                sign = 1;
+            } else if (c == ')') {//先计算当前括号内的res；再出栈2个元素，计算上一层括号的值
+                res = res + sign * num;
+                res = stack.pop() + stack.pop() * res;
+                sign = 1;
+                num = 0;
+            }
+        }
+        res = res + sign * num;
+        return res;
+    }
+
+    /**
+     * review
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 典型的逻辑题。采用直观的数学计算法。
+     * 由最内层括号开始计算，逐步向外层扩展计算。
+     * 遍历 s 为 s[i]
+     * IF s[i] == digit THEN n = n*10+(s[i]-'0');
+     * IF s[i] == '+' THEN stack.push(n);stack.push(s[i]);
+     * IF s[i] == '-' THEN stack.push(n);stack.push(s[i]);
+     * IF s[i] == '(' THEN stack.push(n);stack.push(s[i-1]);stack.push(s[i]);
+     * IF s[i] == ')' THEN n={计算stack中的值，直到stack.pop()=='('}
+     * 遍历s结束后，res = {计算stack中的值，直到stack.empty()}
+     * <p>
+     * calculate_3() 和 calculate_5()很巧妙，性能更好
+     *
      * <p>
      * 验证通过：
      * Runtime 27 ms Beats 9.88%
