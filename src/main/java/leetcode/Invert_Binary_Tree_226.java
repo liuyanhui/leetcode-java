@@ -10,19 +10,19 @@ import java.util.Queue;
  * Easy
  * ---------------------
  * Given the root of a binary tree, invert the tree, and return its root.
- *
+ * <p>
  * Example 1:
  * Input: root = [4,2,7,1,3,6,9]
  * Output: [4,7,2,9,6,3,1]
- *
+ * <p>
  * Example 2:
  * Input: root = [2,1,3]
  * Output: [2,3,1]
- *
+ * <p>
  * Example 3:
  * Input: root = []
  * Output: []
- *
+ * <p>
  * Constraints:
  * The number of nodes in the tree is in the range [0, 100].
  * -100 <= Node.val <= 100
@@ -33,9 +33,19 @@ public class Invert_Binary_Tree_226 {
     }
 
     /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * Thinking
+     * 1. DFS+pre-order
+     * 2. BFS+Queue
+     *
+     */
+    
+    /**
      * round 2
      * invertTree_bfs_2()更简洁
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 10.45% of Java online submissions for Invert Binary Tree.
      * Memory Usage: 41.7 MB, less than 41.16% of Java online submissions for Invert Binary Tree.
@@ -68,7 +78,7 @@ public class Invert_Binary_Tree_226 {
      * 思考：
      * 1.递归法。先互换左右子节点，然后对左右子节点分别递归。
      * 2.要注意子节点为空的情况。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Invert Binary Tree.
      * Memory Usage: 41.8 MB, less than 41.16% of Java online submissions for Invert Binary Tree.
@@ -87,14 +97,15 @@ public class Invert_Binary_Tree_226 {
     }
 
     /**
-     * 金矿：很多场景下只用一个queue就可以实现bfs方案
-     *
+     * review 金矿：很多场景下只用一个queue就可以实现bfs方案
+     * <p>
      * 参考思路：Approach 2
      * https://leetcode.com/problems/invert-binary-tree/solution/
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Invert Binary Tree.
      * Memory Usage: 36.5 MB, less than 42.41% of Java online submissions for Invert Binary Tree.
+     *
      * @param root
      * @return
      */
@@ -118,13 +129,14 @@ public class Invert_Binary_Tree_226 {
 
     /**
      * 绝大多数Binary Tree的问题都可以用dfs方式解决。
-     *
+     * <p>
      * 参考思路：Approach 1
      * https://leetcode.com/problems/invert-binary-tree/solution/
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Invert Binary Tree.
      * Memory Usage: 36.3 MB, less than 74.50% of Java online submissions for Invert Binary Tree.
+     *
      * @param root
      * @return
      */
@@ -143,10 +155,11 @@ public class Invert_Binary_Tree_226 {
 
     /**
      * bfs思路，代码太复杂，可以优化
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Invert Binary Tree.
      * Memory Usage: 36.4 MB, less than 42.00% of Java online submissions for Invert Binary Tree.
+     *
      * @param root
      * @return
      */

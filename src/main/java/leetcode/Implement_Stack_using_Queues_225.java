@@ -10,17 +10,17 @@ import java.util.Queue;
  * Easy
  * ----------------------
  * Implement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (push, top, pop, and empty).
- *
+ * <p>
  * Implement the MyStack class:
- * void push(int x) Pushes element x to the top of the stack.
- * int pop() Removes the element on the top of the stack and returns it.
- * int top() Returns the element on the top of the stack.
- * boolean empty() Returns true if the stack is empty, false otherwise.
- *
+ * - void push(int x) Pushes element x to the top of the stack.
+ * - int pop() Removes the element on the top of the stack and returns it.
+ * - int top() Returns the element on the top of the stack.
+ * - boolean empty() Returns true if the stack is empty, false otherwise.
+ * <p>
  * Notes:
- * You must use only standard operations of a queue, which means that only push to back, peek/pop from front, size and is empty operations are valid.
- * Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue's standard operations.
- *
+ * - You must use only standard operations of a queue, which means that only push to back, peek/pop from front, size and is empty operations are valid.
+ * - Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue's standard operations.
+ * <p>
  * Example 1:
  * Input
  * ["MyStack", "push", "push", "top", "pop", "empty"]
@@ -34,15 +34,21 @@ import java.util.Queue;
  * myStack.top(); // return 2
  * myStack.pop(); // return 2
  * myStack.empty(); // return False
- *
+ * <p>
  * Constraints:
  * 1 <= x <= 9
  * At most 100 calls will be made to push, pop, top, and empty.
  * All the calls to pop and top are valid.
- *
+ * <p>
  * Follow-up: Can you implement the stack using only one queue?
  */
 public class Implement_Stack_using_Queues_225 {
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * review MyStack_5() 和 MyStack_2()都是巧妙的方案
+     */
 
     /**
      * review
@@ -58,6 +64,8 @@ public class Implement_Stack_using_Queues_225 {
 
         /**
          * 这里很巧妙，它把入栈的元素的顺序反转了。
+         * round 3 : 所有元素顺时针旋转了。
+         *
          * @param x
          */
         public void push(int x) {
@@ -84,18 +92,17 @@ public class Implement_Stack_using_Queues_225 {
 
     /**
      * round 2
-     *
+     * <p>
      * 仅使用一个queue的思路：
      * 1.元素新增或删除时，需要重建queue。即每次pop或push时，在queue1上重新调整。
      * 2.永远保证queue的队头是栈顶元素。
      * 3.push时，把队头追加到队尾恢复顺序，再追加新元素，最后依次把size-1个元素出队并追加到队尾(保证满足步骤2)。
      * 4.pop时，重建queue。把size-1个元素依次出队并追加到队尾(保证满足步骤2)。
      * 5.top时，队头不出队，直接返回队头的值。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 34.10% of Java online submissions for Implement Stack using Queues.
      * Memory Usage: 42 MB, less than 27.20% of Java online submissions for Implement Stack using Queues.
-     *
      */
     class MyStack_4 {
 
@@ -137,18 +144,17 @@ public class Implement_Stack_using_Queues_225 {
 
     /**
      * round 2
-     *
+     * <p>
      * 使用两个queue的思路:
      * 1.queue1按入栈顺序保存数据，queue2按出栈顺序保存数据。这样是行不通的，因为queue2的数据无法按要求存储。
      * 2.因为栈每次只能pop出一个元素，那么把queue1除了最后一个元素之外全部复制到queue2。出栈只操作queue2即可。queue2永远都只存储一个元素，栈顶元素。push和pop时都需要重新计算queue2。top时直接读取queue。
      * 3.push时，追加到queue2，重建queue1和queue2，重建后queue2只存储一个（栈顶）元素。
      * 4.pop时，queue2队头出队，重建queue1和queue2，重建后queue2只存储一个（栈顶）元素。
      * 5.top时，从queue队头获取。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 34.10% of Java online submissions for Implement Stack using Queues.
      * Memory Usage: 42 MB, less than 36.45% of Java online submissions for Implement Stack using Queues.
-     *
      */
     class MyStack_3 {
 
@@ -204,12 +210,16 @@ public class Implement_Stack_using_Queues_225 {
     class MyStack_2 {
         Queue<Integer> queue = new LinkedList<>();
 
-        /** Initialize your data structure here. */
+        /**
+         * Initialize your data structure here.
+         */
         public MyStack_2() {
 
         }
 
-        /** Push element x onto stack. */
+        /**
+         * Push element x onto stack.
+         */
         public void push(int x) {
             Queue<Integer> tq = new LinkedList<>();
             tq.offer(x);
@@ -219,17 +229,23 @@ public class Implement_Stack_using_Queues_225 {
             queue = tq;
         }
 
-        /** Removes the element on top of the stack and returns that element. */
+        /**
+         * Removes the element on top of the stack and returns that element.
+         */
         public int pop() {
             return queue.poll();
         }
 
-        /** Get the top element. */
+        /**
+         * Get the top element.
+         */
         public int top() {
             return queue.peek();
         }
 
-        /** Returns whether the stack is empty. */
+        /**
+         * Returns whether the stack is empty.
+         */
         public boolean empty() {
             return queue.size() == 0;
         }
@@ -242,31 +258,39 @@ public class Implement_Stack_using_Queues_225 {
      */
     class MyStack {
         List<Integer> list = new ArrayList<>();
-        Queue<Integer> queue = new LinkedList<>();
-
-        /** Initialize your data structure here. */
+        /**
+         * Initialize your data structure here.
+         */
         public MyStack() {
 
         }
 
-        /** Push element x onto stack. */
+        /**
+         * Push element x onto stack.
+         */
         public void push(int x) {
             list.add(x);
         }
 
-        /** Removes the element on top of the stack and returns that element. */
+        /**
+         * Removes the element on top of the stack and returns that element.
+         */
         public int pop() {
             int t = list.get(list.size() - 1);
             list.remove(list.size() - 1);
             return t;
         }
 
-        /** Get the top element. */
+        /**
+         * Get the top element.
+         */
         public int top() {
             return list.get(list.size() - 1);
         }
 
-        /** Returns whether the stack is empty. */
+        /**
+         * Returns whether the stack is empty.
+         */
         public boolean empty() {
             return list.size() == 0;
         }
