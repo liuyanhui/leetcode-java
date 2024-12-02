@@ -41,7 +41,7 @@ public class Invert_Binary_Tree_226 {
      * 2. BFS+Queue
      *
      */
-    
+
     /**
      * round 2
      * invertTree_bfs_2()更简洁

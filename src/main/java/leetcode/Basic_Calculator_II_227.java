@@ -10,22 +10,22 @@ import java.util.Stack;
  * Medium
  * -----------------------
  * Given a string s which represents an expression, evaluate this expression and return its value.
- *
+ * <p>
  * The integer division should truncate toward zero.
- *
+ * <p>
  * Example 1:
  * Input: s = "3+2*2"
  * Output: 7
- *
+ * <p>
  * Example 2:
  * Input: s = " 3/2 "
  * Output: 1
- *
+ * <p>
  * Example 3:
  * Input: s = " 3+5 / 2 "
  * Output: 5
- *
- *  Constraints:
+ * <p>
+ * Constraints:
  * 1 <= s.length <= 3 * 10^5
  * s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
  * s represents a valid expression.
@@ -34,14 +34,85 @@ import java.util.Stack;
  */
 public class Basic_Calculator_II_227 {
     public static int calculate(String s) {
-        return calculate_3(s);
+        return calculate_r3_1(s);
+    }
+
+    /**
+     * review
+     * round 3
+     * Score[2] Lower is harder
+     * 字符串计算结果家族 Basic_Calculator_224
+     * <p>
+     * Thinking
+     * 1. two pass 方案。由于没有圆括号(parenthesis)，所以可以用two pass法：先计算乘除，再计算加减。
+     * 2. one pass 方案。
+     * 利用栈。
+     * 通过当前计算符号和上一个出现的计算符号的组合情况来决定计算规则。
+     * <p>
+     * 验证通过：
+     * Runtime 24 ms Beats 45.49%
+     * Memory 45.76 MB Beats 67.98%
+     *
+     * @param s
+     * @return
+     * @see Basic_Calculator_224
+     */
+    public static int calculate_r3_1(String s) {
+        int res = 0;
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        char last = '+';
+        int sign = 1;
+        int num = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            } else if (c == '+' || c == '-') {
+                if (last == '*') {
+                    stack.push(sign * stack.pop() * num);
+                } else if (last == '/') {
+                    stack.push(sign * stack.pop() / num);
+                } else if (last == '+' || last == '-') {
+                    stack.push(stack.pop() + sign * num);
+                }
+                sign = c == '-' ? -1 : 1;
+                num = 0;
+                last = c;
+            } else if (c == '*' || c == '/') {
+                if (last == '*') {
+                    stack.push(stack.pop() * sign * num);
+                } else if (last == '/') {
+                    stack.push(sign * stack.pop() / num);
+                } else if (last == '+' || last == '-') {
+                    stack.push(sign * num);
+                }
+                sign = 1;
+                num = 0;
+                last = c;
+            }
+
+            if (i == s.length() - 1) {
+                if (last == '*') {
+                    stack.push(sign * stack.pop() * num);
+                } else if (last == '/') {
+                    stack.push(sign * stack.pop() / num);
+                } else if (last == '+' || last == '-') {
+                    stack.push(stack.pop() + sign * num);
+                }
+            }
+        }
+        while (stack.size() > 0) {
+            res += stack.pop();
+        }
+        return res;
     }
 
     /**
      * review
      * 参考思路：
      * https://leetcode.com/problems/basic-calculator-ii/solution/ 之 Approach2
-     *
+     * <p>
      * 思考：
      * 1.如果操作符是+和-，由于后续的操作符可能是"*和/"或"+和-"，那么这样就不能直接计算，需要引入中间值。
      * 2.本质上还是先计算乘除，再计算加减。
@@ -87,14 +158,14 @@ public class Basic_Calculator_II_227 {
     /**
      * round 2
      * review
-     *
+     * <p>
      * 思路：
      * 1.两步法。第一步先计算*和/，第二步再计算+和-。可以把-转化成+。
      * 2.遇到第二个操作符才根据第一个操作符计算前面的两个数字，所以需要缓存前两个数字和操作符。
-     *
+     * <p>
      * 本方法使用了stack。AC和Solution的方案中有不适用stack的实现，太厉害了。它们本质上还是先计算乘除，再计算加减。
      * stack方案的代码优化版本见calculate_2()。其核心思路严格按照上述的思路执行。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 17 ms, faster than 72.23% of Java online submissions for Basic Calculator II.
      * Memory Usage: 44.8 MB, less than 54.24% of Java online submissions for Basic Calculator II.
@@ -149,12 +220,13 @@ public class Basic_Calculator_II_227 {
      * review
      * 参考思路：
      * https://leetcode.com/problems/basic-calculator-ii/discuss/63003/Share-my-java-solution
-     *
+     * <p>
      * 利用stack进行计算，使用sign保存上一个操作符
-     *
+     * <p>
      * 验证通过：
      * Runtime: 9 ms, faster than 67.50% of Java online submissions for Basic Calculator II.
      * Memory Usage: 38.5 MB, less than 99.69% of Java online submissions for Basic Calculator II.
+     *
      * @param s
      * @return
      */
@@ -199,10 +271,11 @@ public class Basic_Calculator_II_227 {
      * 两步法：
      * 1.计算*和/
      * 2.计算+和-
-     *
+     * <p>
      * 验证通过:
      * Runtime: 9 ms, faster than 67.50% of Java online submissions for Basic Calculator II.
      * Memory Usage: 40.4 MB, less than 25.12% of Java online submissions for Basic Calculator II.
+     *
      * @param s
      * @return
      */
@@ -255,23 +328,25 @@ public class Basic_Calculator_II_227 {
 
     public static void main(String[] args) {
         do_func("3+2*2", 7);
-//        do_func("3/2", 1);
-//        do_func("3+5/2", 5);
-//        do_func("3+5 / 2", 5);
-//        do_func("0 / 2", 0);
-//        do_func("323+244*222", 54491);
-//        do_func("334+545 / 29", 352);
-//        do_func("0-111", -111);
-//        do_func("0-2147483647", -2147483647);
-//        do_func("0-2147483646", -2147483646);
-//        do_func("1-1+1", 1);
-//        do_func("2*3+4", 10);
-//        do_func("2*30+4", 64);
-//        do_func(" 3/2 ", 1);
+        do_func("3/2", 1);
+        do_func("3+5/2", 5);
+        do_func("3+5 / 2", 5);
+        do_func("0 / 2", 0);
+        do_func("323+244*222", 54491);
+        do_func("334+545 / 29", 352);
+        do_func("0-111", -111);
+        do_func("0-2147483647", -2147483647);
+        do_func("0-2147483646", -2147483646);
+        do_func("1-1+1", 1);
+        do_func("2*3+4", 10);
+        do_func("2*30+4", 64);
+        do_func(" 3/2 ", 1);
+        do_func("2*3*4", 24);
 
     }
 
     private static void do_func(String s, int expected) {
+        System.out.println("input = {" + s + "}");
         int ret = calculate(s);
         System.out.println(ret);
         System.out.println(ret == expected);
