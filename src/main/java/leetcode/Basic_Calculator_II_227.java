@@ -34,20 +34,59 @@ import java.util.Stack;
  */
 public class Basic_Calculator_II_227 {
     public static int calculate(String s) {
-        return calculate_r3_1(s);
+        return calculate_r3_2(s);
     }
 
     /**
      * review
      * round 3
      * Score[2] Lower is harder
-     * 字符串计算结果家族 Basic_Calculator_224
+     * [Group] Basic_Calculator_224
      * <p>
      * Thinking
      * 1. two pass 方案。由于没有圆括号(parenthesis)，所以可以用two pass法：先计算乘除，再计算加减。
      * 2. one pass 方案。
      * 利用栈。
      * 通过当前计算符号和上一个出现的计算符号的组合情况来决定计算规则。
+     * <p>
+     * review : 因为本题不涉及到多重递归的情况，可以再栈中最多有两个元素的情况下实现。所以可以不使用栈，<b>只用2个临时变量模拟栈即可</b>。
+     * 此类eval(str)的题目，分类两种类型：存在多重递归和不存在多重递归。
+     * Basic_Calculator_224 由于括号(parenthesis)可能嵌套，所以存在多重递归的情况。
+     * 多重递归需要使用栈（如：多个括号嵌套）。如果可以简单优化后不存在多重递归，可以不使用栈。
+     * <p>
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
+    public static int calculate_r3_2(String s) {
+        if (s == null || s.length() == 0) return 0;
+        int res = 0, last = 0, cur = 0;
+        char lastOps = '+';
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                cur = cur * 10 + (c - '0');
+            }
+            if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == s.length() - 1) {
+                if (lastOps == '+' || lastOps == '-') {
+                    res += last;
+                    last = lastOps == '-' ? -cur : cur;
+                } else if (lastOps == '*') {
+                    last *= cur;
+                } else if (lastOps == '/') {
+                    last /= cur;
+                }
+                cur = 0;
+                lastOps = c;
+            }
+        }
+        res += last;
+        return res;
+    }
+
+    /**
+     * 见 calculate_r3_2()
      * <p>
      * 验证通过：
      * Runtime 24 ms Beats 45.49%
