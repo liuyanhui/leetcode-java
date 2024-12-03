@@ -9,15 +9,15 @@ import java.util.List;
  * Easy
  * ----------------------
  * You are given a sorted unique integer array nums.
- *
+ * <p>
  * A range [a,b] is the set of all integers from a to b (inclusive).
- *
+ * <p>
  * Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
- *
+ * <p>
  * Each range [a,b] in the list should be output as:
  * "a->b" if a != b
  * "a" if a == b
- *
+ * <p>
  * Example 1:
  * Input: nums = [0,1,2,4,5,7]
  * Output: ["0->2","4->5","7"]
@@ -25,7 +25,7 @@ import java.util.List;
  * [0,2] --> "0->2"
  * [4,5] --> "4->5"
  * [7,7] --> "7"
- *
+ * <p>
  * Example 2:
  * Input: nums = [0,2,3,4,6,8,9]
  * Output: ["0","2->4","6","8->9"]
@@ -34,7 +34,7 @@ import java.util.List;
  * [2,4] --> "2->4"
  * [6,6] --> "6"
  * [8,9] --> "8->9"
- *
+ * <p>
  * Constraints:
  * 0 <= nums.length <= 20
  * -2^31 <= nums[i] <= 2^31 - 1
@@ -43,19 +43,53 @@ import java.util.List;
  */
 public class Summary_Ranges_228 {
     public static List<String> summaryRanges(int[] nums) {
-        return summaryRanges_3(nums);
+        return summaryRanges_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * Thinking
+     * 1. one pass 方案
+     * l=r=0
+     * 遍历nums
+     * IF nums[r]+1==nums[i+1] THEN r++;i++
+     * IF nums[r]+1!=nums[i+1] THEN res.add("{l}->{r}") or res.add("{l}");r=i+1;l=r;i++;
+     * <p>
+     * 验证通过：
+     * Runtime 5 ms Beats 75.74%
+     * Memory 41.60 MB Beats 70.02%
+     *
+     * @param nums
+     * @return
+     */
+    public static List<String> summaryRanges_r3_1(int[] nums) {
+        List<String> res = new ArrayList<>();
+        int l = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i == nums.length - 1 || nums[i] + 1 != nums[i + 1]) {
+                if (l < i) {
+                    res.add(nums[l] + "->" + nums[i]);
+                } else {
+                    res.add(String.valueOf(nums[l]));
+                }
+                l = i + 1;
+            }
+        }
+        return res;
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 思考:
      * 1.只有知道后一个数字才能决定前一个数字的处理方式
      * 2.设[a,b]为某段输出。a=[0],b=[0]。
      * 3.遍历nums
      * 3.1.如果b==i-1，那么b=i
      * 3.2.其他，"a->b"加入结果集，b=i，a=i
-     *
+     * <p>
      * 验证通过：
      * Runtime: 8 ms, faster than 68.12% of Java online submissions for Summary Ranges.
      * Memory Usage: 42.3 MB, less than 52.58% of Java online submissions for Summary Ranges.
@@ -88,10 +122,10 @@ public class Summary_Ranges_228 {
 
     /**
      * 精简版方案
-     *
+     * <p>
      * 参考思路：
      * https://leetcode.com/problems/summary-ranges/discuss/63219/Accepted-JAVA-solution-easy-to-understand
-     *
+     * <p>
      * 验证通过：
      * Runtime: 6 ms, faster than 69.56% of Java online submissions for Summary Ranges.
      * Memory Usage: 37.1 MB, less than 90.14% of Java online submissions for Summary Ranges.
@@ -119,10 +153,10 @@ public class Summary_Ranges_228 {
     }
 
     /**
-     *
      * 验证通过：
      * Runtime: 7 ms, faster than 28.37% of Java online submissions for Summary Ranges.
      * Memory Usage: 37.7 MB, less than 21.06% of Java online submissions for Summary Ranges.
+     *
      * @param nums
      * @return
      */
