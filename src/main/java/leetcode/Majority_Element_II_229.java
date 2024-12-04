@@ -11,24 +11,31 @@ import java.util.List;
  * ----------------------
  * Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
  * Follow-up: Could you solve the problem in linear time and in O(1) space?
- *
+ * <p>
  * Example 1:
  * Input: nums = [3,2,3]
  * Output: [3]
- *
+ * <p>
  * Example 2:
  * Input: nums = [1]
  * Output: [1]
- *
+ * <p>
  * Example 3:
  * Input: nums = [1,2]
  * Output: [1,2]
- *
+ * <p>
  * Constraints:
  * 1 <= nums.length <= 5 * 10^4
  * -10^9 <= nums[i] <= 10^9
  */
 public class Majority_Element_II_229 {
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * [group] Majority_Element_169
+     *
+     * 未实现
+     */
 
     /**
      * round 2
@@ -45,15 +52,16 @@ public class Majority_Element_II_229 {
 
     /**
      * review
-     *
+     * <p>
      * 参考思路：
      * https://leetcode.com/problems/majority-element-ii/discuss/63520/Boyer-Moore-Majority-Vote-algorithm-and-my-elaboration
-     *
+     * <p>
      * 金矿：与Majority_Element的思路时一致的，只是复杂了一些
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 99.76% of Java online submissions for Majority Element II.
      * Memory Usage: 42.8 MB, less than 49.39% of Java online submissions for Majority Element II.
+     *
      * @param nums
      * @return
      */
@@ -75,6 +83,7 @@ public class Majority_Element_II_229 {
                 count2++;
             } else {
                 //当n1,n2和n 三个数不同时，同时去掉这三个数。跟majority element的同时去掉两个数的思路时一致的。
+                //review round3 相当于把数组分为三部分：多数1集合，多数2集合，非多数集合；然后针对[多数1集合，非多数集合/2]和[多数2集合，非多数集合/2]采用Boyer-Morre-Majority Vote algorithm
                 count1--;
                 count2--;
             }
@@ -100,6 +109,7 @@ public class Majority_Element_II_229 {
         do_func(new int[]{1}, new Integer[]{1});
         do_func(new int[]{1, 2}, new Integer[]{1, 2});
         do_func(new int[]{2, 2, 1, 1, 1, 2, 2}, new Integer[]{1, 2});
+        do_func(new int[]{1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8}, new Integer[]{1});
     }
 
     private static void do_func(int[] nums, Integer[] expected) {

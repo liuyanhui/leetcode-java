@@ -35,6 +35,7 @@ public class Majority_Element_169 {
     /**
      * round 3
      * Score[2] Lower is harder
+     * [group] Majority_Element_II_229
      *
      * <p>
      * Thinking
@@ -45,9 +46,9 @@ public class Majority_Element_169 {
      * 算法如下：
      * 双指针 fast=0,slow=0
      * WHILE fast<len(nums)
-     *     IF nums[slow]==DEL THEN slow++
-     *     IF nums[fast]==nums[slow] THEN fast++
-     *     ELSE nums[fast]=DEL,slow++,fast++
+     * IF nums[slow]==DEL THEN slow++
+     * IF nums[fast]==nums[slow] THEN fast++
+     * ELSE nums[fast]=DEL,slow++,fast++
      * while(nums[slow]==DEL) slow++;
      * return nums[slow];
      * <p>
