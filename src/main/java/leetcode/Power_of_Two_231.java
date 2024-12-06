@@ -5,39 +5,62 @@ package leetcode;
  * Easy
  * ----------------
  * Given an integer n, return true if it is a power of two. Otherwise, return false.
- *
+ * <p>
  * An integer n is a power of two, if there exists an integer x such that n == 2^x.
- *
+ * <p>
  * Example 1:
  * Input: n = 1
  * Output: true
  * Explanation: 2^0 = 1
- *
+ * <p>
  * Example 2:
  * Input: n = 16
  * Output: true
  * Explanation: 2^4 = 16
- *
+ * <p>
  * Example 3:
  * Input: n = 3
  * Output: false
- *
+ * <p>
  * Example 4:
  * Input: n = 4
  * Output: true
- *
+ * <p>
  * Example 5:
  * Input: n = 5
  * Output: false
- *
+ * <p>
  * Constraints:
  * -2^31 <= n <= 2^31 - 1
- *
+ * <p>
  * Follow up: Could you solve it without loops/recursion?
  */
 public class Power_of_Two_231 {
     public static boolean isPowerOfTwo(int n) {
-        return isPowerOfTwo_4(n);
+        return isPowerOfTwo_r3_1(n);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 数学计算法。
+     * 2. Bit Manipulation
+     * review isPowerOfTwo_2()
+     * <p>
+     * 验证通过：
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isPowerOfTwo_r3_1(int n) {
+        if (n <= 0) return false;
+        if (n == 1) return true;
+        for (int i = 0; i < 32; i++) {
+            if (2 << i == n) return true;
+        }
+        return false;
     }
 
     /**
@@ -55,7 +78,6 @@ public class Power_of_Two_231 {
     }
 
     /**
-     *
      * 验证通过：
      * Runtime: 2 ms, faster than 71.39% of Java online submissions for Power of Two.
      * Memory Usage: 41.2 MB, less than 66.41% of Java online submissions for Power of Two.
@@ -88,7 +110,7 @@ public class Power_of_Two_231 {
      * Bit Manipulation
      * 2的幂的二进制为100000...，用bit运算即可
      * 如：二进制运算：1000-1=111 ，那么1000&111=0
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 99.97% of Java online submissions for Power of Two.
      * Memory Usage: 36.1 MB, less than 30.82% of Java online submissions for Power of Two.
@@ -103,7 +125,7 @@ public class Power_of_Two_231 {
 
     /**
      * 迭代法
-     *
+     * <p>
      * 验证通过：
      * Runtime: 2 ms, faster than 8.88% of Java online submissions for Power of Two.
      * Memory Usage: 36.2 MB, less than 30.82% of Java online submissions for Power of Two.
