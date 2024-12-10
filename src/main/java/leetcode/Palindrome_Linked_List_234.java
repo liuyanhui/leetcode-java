@@ -5,24 +5,73 @@ package leetcode;
  * Easy
  * -----------------------
  * Given the head of a singly linked list, return true if it is a palindrome.
- *
+ * <p>
  * Example 1:
  * Input: head = [1,2,2,1]
  * Output: true
- *
+ * <p>
  * Example 2:
  * Input: head = [1,2]
  * Output: false
- *
+ * <p>
  * Constraints:
  * The number of nodes in the list is in the range [1, 10^5].
  * 0 <= Node.val <= 9
- *
+ * <p>
  * Follow up: Could you do it in O(n) time and O(1) space?
  */
 public class Palindrome_Linked_List_234 {
     public static boolean isPalindrome(ListNode head) {
-        return isPalindrome_2(head);
+        return isPalindrome_r3_1(head);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 链表转化成数组，然后判断是否为palindrome
+     * Time Complexity: O(N)
+     * Space Complexity: O(N)
+     * 2. 反转链表的后半部分，然后判断是否为palindrome
+     * Time Complexity: O(N)
+     * Space Complexity: O(1)
+     * <p>
+     * 验证通过：
+     * Runtime 4 ms Beats 83.57%
+     * Memory 69.05 MB Beats 14.66%
+     *
+     * @param head
+     * @return
+     */
+    public static boolean isPalindrome_r3_1(ListNode head) {
+        //定位中间节点
+        ListNode slow = new ListNode(0, head);
+        ListNode fast = new ListNode(0, head);
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //断开前后连部分
+        ListNode cur = slow.next;
+        slow.next = null;
+        //反转后半部分
+        ListNode h2 = new ListNode();
+        while (cur != null) {
+            ListNode t = cur;
+            cur = cur.next;
+            t.next = h2.next;
+            h2.next = t;
+        }
+        //判断是否为palindrome
+        h2 = h2.next;
+        while (head != null && h2 != null) {
+            if (head.val != h2.val) return false;
+            head = head.next;
+            h2 = h2.next;
+        }
+        return true;
     }
 
     /**
