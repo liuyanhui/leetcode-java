@@ -39,6 +39,7 @@ public class Lowest_Common_Ancestor_of_a_Binary_Search_Tree_235 {
     /**
      * round 3
      * Score[3] Lower is harder
+     * [group] LowestCommon_Ancestor_of_a_Binary_Tree_236
      * <p>
      * Thinking
      * 1. 方案1：先找到root->p的路径，再找到root->q的路径，比较两个路径得到LCA
