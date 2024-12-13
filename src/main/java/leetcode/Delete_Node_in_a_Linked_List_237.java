@@ -50,7 +50,7 @@ public class Delete_Node_in_a_Linked_List_237 {
      * 不要被过完的套路禁锢思想
      *
      */
-    
+
     /**
      * round 2
      * 思考：
