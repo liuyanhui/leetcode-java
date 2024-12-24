@@ -9,31 +9,66 @@ import java.util.List;
  * -------------------------
  * Given the root of a binary tree, return all root-to-leaf paths in any order.
  * A leaf is a node with no children.
- *
+ * <p>
  * Example 1:
  * Input: root = [1,2,3,null,5]
  * Output: ["1->2->5","1->3"]
- *
+ * <p>
  * Example 2:
  * Input: root = [1]
  * Output: ["1"]
- *
+ * <p>
  * Constraints:
  * The number of nodes in the tree is in the range [1, 100].
  * -100 <= Node.val <= 100
  */
 public class Binary_Tree_Paths_257 {
     public List<String> binaryTreePaths(TreeNode root) {
-        return binaryTreePaths_1(root);
+        return binaryTreePaths_r3_1(root);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * 验证通过：
+     * Runtime 2 ms Beats 79.17%
+     * Memory 42.66 MB Beats 52.05%
+     *
+     * @param root
+     * @return
+     */
+    public static List<String> binaryTreePaths_r3_1(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        preorder_r3_1(root, "", res);
+        return res;
+    }
+
+    private static void preorder_r3_1(TreeNode node, String path, List<String> res) {
+        if (node == null) {
+            return;
+        }
+        String newPath = null;
+        if (path == null || path.length() == 0) {
+            newPath = String.valueOf(node.val);
+        } else {
+            newPath = path + "->" + String.valueOf(node.val);
+        }
+        if (node.left == null && node.right == null) {
+            res.add(newPath);
+            return;
+        }
+        preorder_r3_1(node.left, newPath, res);
+        preorder_r3_1(node.right, newPath, res);
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 思考：
      * 1.一般来说，Tree的问题无非是DFS或BFS。DFS有三种：preorder,inorder,postorder。
      * 2.本题采用DFS更合理。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 2 ms, faster than 94.57% of Java online submissions for Binary Tree Paths.
      * Memory Usage: 42.7 MB, less than 86.64% of Java online submissions for Binary Tree Paths.
@@ -71,6 +106,7 @@ public class Binary_Tree_Paths_257 {
      * 验证通过：
      * Runtime: 10 ms, faster than 9.74% of Java online submissions for Binary Tree Paths.
      * Memory Usage: 39.1 MB, less than 69.02% of Java online submissions for Binary Tree Paths.
+     *
      * @param root
      * @return
      */
