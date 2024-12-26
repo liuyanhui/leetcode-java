@@ -153,6 +153,7 @@ public class Add_Digits_258 {
         do_func(5, 5);
         do_func(10, 1);
         do_func(19, 1);
+        System.out.println("==================");
     }
 
     private static void do_func(int num, int expected) {
