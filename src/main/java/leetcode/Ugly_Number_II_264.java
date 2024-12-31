@@ -6,32 +6,69 @@ package leetcode;
  * --------------------------
  * An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
  * Given an integer n, return the nth ugly number.
- *
+ * <p>
  * Example 1:
  * Input: n = 10
  * Output: 12
  * Explanation: [1, 2, 3, 4, 5, 6, 8, 9, 10, 12] is the sequence of the first 10 ugly numbers.
- *
+ * <p>
  * Example 2:
  * Input: n = 1
  * Output: 1
  * Explanation: 1 has no prime factors, therefore all of its prime factors are limited to 2, 3, and 5.
- *
+ * <p>
  * Constraints:
  * 1 <= n <= 1690
  */
 public class Ugly_Number_II_264 {
     public static int nthUglyNumber(int n) {
-        return nthUglyNumber_3(n);
+        return nthUglyNumber_r3_1(n);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking：
+     * 公式为  F(n)=f(i,j,k) = 2^i * 3^j * 5^k
+     * 然后i, j, k的变化不是独立的，当{2，3，5}中的一个或多个是F(n)的因子的时候，{i,j,k}中对应的项需要加1。
+     * 如：
+     * F(n)=2时，i=i+1
+     * F(n)=6时，i=i+1,j=j+1
+     * F(n)=10时，i=i+1,k=k+1
+     * F(n)=30时，i=i+1,j=j+1,k=k+1
+     * <p>
+     * 任一F(n)都是从 F(i)*2 or F(j)*3 or F(k)*5 而来，其中i<n，F(0)=1。
+     * 即 F(n) = min(F(i)*2 , F(j)*3 , F(k)*5)
+     * 任意一个F(n)都会分别与2,3,5进行乘法计算，计算结果成为后续的某个F(x) ，n<x。并且 F(i)*2 ， F(j)*3 ， F(k)*5 只能计算一次。
+     * 当每个F(i)*2被使用过，就无法再次参与计算（只能计算一次），下次就是F(n+1)*2参与计算。同理F(j)*3 和 F(k)*5。
+     * 通过(i,j,k)分别保存f(n)是否被2，nthUglyNumber_r3_13，5计算过.
+     * 需要注意F(n)重复出现的情况。
+     * <p>
+     * 验证通过：
+     * Runtime 2 ms Beats 98.35%
+     * Memory 41.37 MB Beats 92.71%
+     */
+    public static int nthUglyNumber_r3_1(int n) {
+        int[] dp = new int[n];
+        dp[0] = 1;
+        int idx2 = 0, idx3 = 0, idx5 = 0;
+        for (int i = 1; i < n; i++) {
+            dp[i] = Math.min(dp[idx2] * 2, Math.min(dp[idx3] * 3, dp[idx5] * 5));
+            if (dp[i] % 2 == 0) idx2++;
+            if (dp[i] % 3 == 0) idx3++;
+            if (dp[i] % 5 == 0) idx5++;
+        }
+        return dp[n - 1];
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 参考思路：
      * https://leetcode.com/problems/ugly-number-ii/discuss/69364/My-16ms-C%2B%2B-DP-solution-with-short-explanation
      * https://leetcode.com/problems/ugly-number-ii/discuss/69362/O(n)-Java-solution
-     *
+     * <p>
      * 思考：
      * 1.有三个因子影响结果。如果能把三个因子通过公式一维化。公式最好是递增的。
      * 2.公式：n=i+j+k+1，F(n)=f(i,j,k) = 2^i * 3^j * 5^k ，初始时：i=j=k=0。然而，通过用例可以发现i,j,k与F(n)的关系不是线性的。
@@ -40,7 +77,7 @@ public class Ugly_Number_II_264 {
      * 5.本题中"merge k sorted list"中共有3个sorted list，分别为{F(a)*2}，{F(b)*3}，{F(c)*5}。
      * 6.本题的合并排序是要去重的。所以当sorted list中的数字重复出现时，要忽略。如数字6时，2和3的sorted list都要从list中去除。
      * 6.问题分为3部分：1.构建3个sorted list；2.合并排序这3个sorted list；3.去重。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 7 ms, faster than 43.89% of Java online submissions for Ugly Number II.
      * Memory Usage: 41.9 MB, less than 71.18% of Java online submissions for Ugly Number II.
@@ -66,19 +103,19 @@ public class Ugly_Number_II_264 {
 
     /**
      * 问题转换为：min(2^i * 3^j * 5^k), i+j+k<n。每次计算后i,j,k有条件的加1
-     *
+     * <p>
      * DP思路：
-     *  We have an array k of first n ugly number. We only know, at the beginning, the first one, which is 1. Then
+     * We have an array k of first n ugly number. We only know, at the beginning, the first one, which is 1. Then
      * k[1] = min( k[0]x2, k[0]x3, k[0]x5). The answer is k[0]x2. So we move 2's pointer to 1. Then we test:
      * k[2] = min( k[1]x2, k[0]x3, k[0]x5). And so on.
      * Be careful about the cases such as 6, in which we need to forward both pointers of 2 and 3.
      * x here is multiplication.
-     *
+     * <p>
      * 参考思路：
      * https://leetcode.com/problems/ugly-number-ii/discuss/69364/My-16ms-C%2B%2B-DP-solution-with-short-explanation
      * 详细解释见，是一个k sorted list 问题：
      * https://leetcode.com/problems/super-ugly-number/discuss/277313/My-view-of-this-question-hope-it-can-help-you-understand!!!
-     *
+     * <p>
      * 验证通过：
      * Runtime: 3 ms, faster than 53.95% of Java online submissions for Ugly Number II.
      * Memory Usage: 38 MB, less than 72.40% of Java online submissions for Ugly Number II.
@@ -101,6 +138,7 @@ public class Ugly_Number_II_264 {
 
     /**
      * 验证失败：Time Limit Exceeded
+     *
      * @param n
      * @return
      */
@@ -132,6 +170,7 @@ public class Ugly_Number_II_264 {
         do_func(11, 15);
         do_func(100, 1536);
         do_func(1352, 402653184);
+        System.out.println("==================");
     }
 
     private static void do_func(int n, int expected) {
