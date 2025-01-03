@@ -48,7 +48,7 @@ public class H_Index_274 {
      * <p>
      * 排序后的引用   citations=[0,1,3,5,6]
      * 对应的论文数量 paper_cnt=[5,4 3 2 1]
-     * h-index=[0,1,3,2,1]
+     *                h-index=[0,1,3,2,1]
      * 公式为：
      * h-index[i]=min(citations[i],paper_cnt[i])
      * max(h-index[])为所求
@@ -61,14 +61,14 @@ public class H_Index_274 {
      * @return
      */
     public static int hIndex_r3_1(int[] citations) {
-        Arrays.sort(citations);
+        Arrays.sort(citations);//review 这里可以采用hIndex_2()的bucket sort的思路
         int res = 0;
         int paperCnt = 0;
         int h_index = 0;
         for (int i = 0; i < citations.length; i++) {
             paperCnt = citations.length - i;
             h_index = Math.min(paperCnt, citations[i]);
-            res = Math.max(res, h_index);
+            res = Math.max(res, h_index);//review 这里可以优化，提前结束计算。
         }
         return res;
     }
@@ -115,8 +115,8 @@ public class H_Index_274 {
      *
      * @param citations
      * @return
-     */
-    public static int hIndex_2(int[] citations) {
+     */hIndex_2
+    public static int (int[] citations) {
         int[] bucket = new int[citations.length + 1];
         for (int c : citations) {
             if (c > citations.length) {
