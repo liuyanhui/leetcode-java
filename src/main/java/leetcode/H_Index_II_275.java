@@ -92,7 +92,7 @@ public class H_Index_II_275 {
     }
 
     /**
-     * review round 2
+     * review round 2 通过 binary search 找到一个合适的i，并返回 n-i 。
      * 参考思路：
      * https://leetcode.com/problems/h-index-ii/discuss/71063/Standard-binary-search
      * https://leetcode.com/problems/h-index-ii/discuss/71124/Java-binary-search-simple-and-clean
