@@ -33,6 +33,7 @@ public class H_Index_274 {
     /**
      * round 3
      * Score[2] Lower is harder
+     * [group] 275. H-Index II
      * <p>
      * Thinking
      * 1. naive solution
@@ -48,7 +49,7 @@ public class H_Index_274 {
      * <p>
      * 排序后的引用   citations=[0,1,3,5,6]
      * 对应的论文数量 paper_cnt=[5,4 3 2 1]
-     *                h-index=[0,1,3,2,1]
+     * h-index=[0,1,3,2,1]
      * 公式为：
      * h-index[i]=min(citations[i],paper_cnt[i])
      * max(h-index[])为所求
@@ -115,8 +116,8 @@ public class H_Index_274 {
      *
      * @param citations
      * @return
-     */hIndex_2
-    public static int (int[] citations) {
+     */
+    public static int hIndex_2(int[] citations) {
         int[] bucket = new int[citations.length + 1];
         for (int c : citations) {
             if (c > citations.length) {
