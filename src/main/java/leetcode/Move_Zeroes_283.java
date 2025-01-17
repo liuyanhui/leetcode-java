@@ -6,37 +6,72 @@ package leetcode;
  * --------------------
  * Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
  * Note that you must do this in-place without making a copy of the array.
- *
+ * <p>
  * Example 1:
  * Input: nums = [0,1,0,3,12]
  * Output: [1,3,12,0,0]
- *
+ * <p>
  * Example 2:
  * Input: nums = [0]
  * Output: [0]
- *
+ * <p>
  * Constraints:
  * 1 <= nums.length <= 10^4
  * -2^31 <= nums[i] <= 2^31 - 1
- *
+ * <p>
  * Follow up: Could you minimize the total number of operations done?
  */
 public class Move_Zeroes_283 {
     public static void moveZeroes(int[] nums) {
-        moveZeroes_2(nums);
+        moveZeroes_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[5] Lower is harder
+     * <p>
+     * Thinking
+     * 1. copy-on-write 法
+     * 把输入复制到另一个数组中，复制过程中忽略0；最后再补全0。
+     * 不满足 in-place 的要求。
+     * 2. 双指针法
+     * end为新数组的有边界下标+1，cur为当前遍历的下标
+     * <pre>
+     * {@code
+     * 初始化 end=0, cur=0
+     * 遍历输入数组
+     *     IF nums[cur]!=0 THEN nums[end]=nums[cur],end++
+     *     cur++
+     * }
+     * </pre>
+     * 验证通过：
+     *
+     * @param nums
+     */
+    public static void moveZeroes_r3_1(int[] nums) {
+        int end = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[end] = nums[i];
+                end++;
+            }
+        }
+        for (int i = end; i < nums.length; i++) {
+            nums[i] = 0;
+        }
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 算法：
      * 计算过程中数组分为三部分：[0,left]已经计算好的非零数字部分；(left,right]是全部为0的部分；(right,~]未计算部分。
      * left=0,right=0
      * while (right <= nums.length){
-     *     IF nums[right]==0 THEN right++
-     *     ELSE swap(nums[left],nums[right]);left++
+     * IF nums[right]==0 THEN right++
+     * ELSE swap(nums[left],nums[right]);left++
      * }
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Move Zeroes.
      * Memory Usage: 43.1 MB, less than 17.65% of Java online submissions for Move Zeroes.
@@ -63,7 +98,7 @@ public class Move_Zeroes_283 {
      * 初始i=j=0;
      * if nums[j]==0 then j++
      * else swap(i,j), i++,j++
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Move Zeroes.
      * Memory Usage: 39.2 MB, less than 46.85% of Java online submissions for Move Zeroes.
