@@ -78,6 +78,10 @@ public class Expression_Add_Operators_282 {
      * 根据BUD优化思路，【1.】 中存在重复的表达式计算，这些计算是可以优化的。
      * 求解的搜索空间过大为(3^N)个需要缩小搜索空间。target 是否可以使用？
      * (3^N) 的复杂度很难优化，只能优化计算字符串的部分。
+     *
+     * addOperators_2()更简单，性能更好。利用数学方法替代采用Stack计算表达式。思路如下：
+     * a+b*c 从左向右计算。 n=a+b => a+b*c = n-b+b*c
+     *
      * <p>
      * 验证通过：
      * Runtime 388 ms Beats 5.02%
