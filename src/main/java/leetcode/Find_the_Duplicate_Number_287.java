@@ -47,8 +47,10 @@ public class Find_the_Duplicate_Number_287 {
      * round 3
      * Score[2] Lower is harder
      *
+     * 主要有两个思路：binary search 和 Linked List Cycle Detection 。
+     * 这里简单说明一下Linked List Cycle Detection。数组也可以看作Linked List，当循环执行 slow=nums[slow]时，如果数组中没有重复时，每个slow都是不同的；反之，如果数组存在重复数时，slow必然会重复出现。所以可以用快慢指针法判断是否存在环。
      */
-    
+
     /**
      * round 2.5
      * review
