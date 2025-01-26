@@ -9,23 +9,23 @@ import java.util.Map;
  * ---------------
  * Given a pattern and a string s, find if s follows the same pattern.
  * Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s.
- *
+ * <p>
  * Example 1:
  * Input: pattern = "abba", s = "dog cat cat dog"
  * Output: true
- *
+ * <p>
  * Example 2:s
  * Input: pattern = "abba", s = "dog cat cat fish"
  * Output: false
- *
+ * <p>
  * Example 3:
  * Input: pattern = "aaaa", s = "dog cat cat dog"
  * Output: false
- *
+ * <p>
  * Example 4:
  * Input: pattern = "abba", s = "dog dog dog dog"
  * Output: false
- *
+ * <p>
  * Constraints:
  * 1 <= pattern.length <= 300
  * pattern contains only lower-case English letters.
@@ -37,12 +37,45 @@ import java.util.Map;
 public class Word_Pattern_290 {
 
     public static boolean wordPattern(String pattern, String s) {
-        return wordPattern_3(pattern, s);
+        return wordPattern_r3_1(pattern, s);
+    }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * 验证通过：
+     *
+     * @param pattern
+     * @param s
+     * @return
+     */
+    public static boolean wordPattern_r3_1(String pattern, String s) {
+        if (pattern == null || s == null) return false;
+        Map<String, Character> word2Char = new HashMap<>();
+        Map<Character, String> char2Word = new HashMap<>();
+        String[] arr = s.split(" ");
+        if (pattern.length() != arr.length) return false;
+        for (int i = 0; i < pattern.length(); i++) {
+            char c = pattern.charAt(i);
+            String w = arr[i];
+            if (!word2Char.containsKey(w) && !char2Word.containsKey(c)) {
+                word2Char.put(w, c);
+                char2Word.put(c, w);
+            } else if (word2Char.containsKey(w) && char2Word.containsKey(c)) {
+                if (!word2Char.get(w).equals(c) || !char2Word.get(c).equals(w)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
      * round 2
-     *
+     * <p>
      * 思路：
      * 1.s分解成数组
      * 2.使用Map，分别缓存pattern中字母代表的单词和s中单词代表的字母
@@ -73,7 +106,7 @@ public class Word_Pattern_290 {
     /**
      * 精简版代码，参考思路：
      * https://leetcode.com/problems/word-pattern/discuss/73402/8-lines-simple-Java
-     *
+     * <p>
      * 1.map中同时保存pattern:index和word:index，使用map.put()的返回值进行判断
      * 2.两次map.put()操作的结果相同表示匹配，不同表示不匹配
      *
@@ -96,7 +129,7 @@ public class Word_Pattern_290 {
 
     /**
      * 采用map缓存，key:pattern中的字符; value:s中的单词
-     *
+     * <p>
      * 验证通过：
      * Runtime: 1 ms, faster than 81.53% of Java online submissions for Word Pattern.
      * Memory Usage: 38.9 MB, less than 5.36% of Java online submissions for Word Pattern.
