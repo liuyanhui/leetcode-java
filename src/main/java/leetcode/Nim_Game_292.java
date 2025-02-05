@@ -5,10 +5,10 @@ package leetcode;
  * Easy
  * --------------------------------------
  * You are playing the following Nim Game with your friend:
- * Initially, there is a heap of stones on the table.
- * You and your friend will alternate taking turns, and you go first.
- * On each turn, the person whose turn it is will remove 1 to 3 stones from the heap.
- * The one who removes the last stone is the winner.
+ *  - Initially, there is a heap of stones on the table.
+ *  - You and your friend will alternate taking turns, and you go first.
+ *  - On each turn, the person whose turn it is will remove 1 to 3 stones from the heap.
+ *  - The one who removes the last stone is the winner.
  *
  * Given n, the number of stones in the heap, return true if you can win the game assuming both you and your friend play optimally, otherwise return false.
  *
@@ -37,6 +37,13 @@ public class Nim_Game_292 {
         return canWinNim_4(n);
     }
 
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * 虽然DP思路可以实现，但是 "return n % 4 != 0" 是最优方案。这里的思路很巧妙。
+     *
+     */
     /**
      * round 2
      * @param n
