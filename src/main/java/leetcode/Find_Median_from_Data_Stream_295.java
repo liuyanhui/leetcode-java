@@ -10,13 +10,13 @@ import java.util.Queue;
  * Hard
  * -----------------
  * The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value and the median is the mean of the two middle values.
- * For example, for arr = [2,3,4], the median is 3.
- * For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+ *  - For example, for arr = [2,3,4], the median is 3.
+ *  - For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
  *
  * Implement the MedianFinder class:
- * MedianFinder() initializes the MedianFinder object.
- * void addNum(int num) adds the integer num from the data stream to the data structure.
- * double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+ *  - MedianFinder() initializes the MedianFinder object.
+ *  - void addNum(int num) adds the integer num from the data stream to the data structure.
+ *  - double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
  *
  * Example 1:
  * Input
@@ -42,6 +42,24 @@ import java.util.Queue;
  * If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
  */
 public class Find_Median_from_Data_Stream_295 {
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * Thinking
+     * 1. 维护一个 List 用来保存输入的数，采用 binary search 定位并插入新的数，利用 List 支持随机访问的特性获取 median 。
+     * 这种方式再插入 List 时性能较差，因为要移动较多元素。
+     * 2. 采用 Heap 存储输入的数，并实时计算median。
+     * add(num)
+     * IF num < median THEN median = {binary search heap中小于median的最大值}
+     * ELSE IF num > median THEN median = {binary search heap中大于median的最小值}
+     * ELSE IF num == median THEN do nothing
+     * 此方案需要自己实现支持重复数据的 TreeSet .
+     * 3. 采用两个 heap ，分别保存较大的一半和较小的一半，这个方案更有可行性。
+     *
+     *
+     */
 
     /**
      * review
