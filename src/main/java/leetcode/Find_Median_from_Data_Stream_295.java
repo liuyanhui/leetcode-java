@@ -56,8 +56,8 @@ public class Find_Median_from_Data_Stream_295 {
      * ELSE IF num > median THEN median = {binary search heap中大于median的最小值}
      * ELSE IF num == median THEN do nothing
      * 此方案需要自己实现支持重复数据的 TreeSet .
-     * 3. 采用两个 heap ，分别保存较大的一半和较小的一半，这个方案更有可行性。
-     *
+     * 3. 采用两个 heap ，分别保存较大的一半（min heap）和较小的一半（max heap），这个方案更有可行性。
+     * 即解决了排序问题，又优化了随机读取数据计算median的性能问题。
      *
      */
 
