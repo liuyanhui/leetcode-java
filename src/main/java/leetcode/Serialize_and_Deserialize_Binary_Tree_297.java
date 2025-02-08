@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * 297. Serialize and Deserialize Binary Tree
@@ -30,6 +27,67 @@ import java.util.Queue;
 public class Serialize_and_Deserialize_Binary_Tree_297 {
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * REVIEW : This is the recursive solution, very interesting. deserialize() is smart. Use iterator or Queue is really smart.
+     * When you use queue or iterator, you do not need to save the current position of the data, queue or iterator can do itself.
+     * But if you choose array or list ,you have to do it. That is difficult for this problem.
+     * <p>
+     * REVIEW : 迭代器和队列这两种数据结构在遍历时，无需存储当前位置信息。对于本题的deserialize()来说非常适用。
+     * REVIEW : 当在数组或列表方式存储的数据结构中无法跟踪位置，但是又需要遍历时，Iterator和Queue是很好的工具。
+     * <p>
+     * Queue Solution : https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/74259/recursive-preorder-python-and-c-o-n/
+     * Iterator Solution : https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/74259/recursive-preorder-python-and-c-o-n/
+     * <p>
+     * 验证通过：
+     * Runtime 12 ms Beats 71.84%
+     * Memory 45.58 MB Beats 85.08%
+     *
+     * @see Codec_r3_1
+     */
+    static class Codec_r3_2 {
+        String SPLITER = ",";
+        String NULL = "X";
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            StringBuilder res = new StringBuilder();
+            if (root == null) {
+                res.append(NULL).append(SPLITER);
+            } else {
+                res.append(root.val).append(SPLITER);
+                res.append(serialize(root.left));
+                res.append(serialize(root.right));
+            }
+            return res.toString();
+        }
+
+        public TreeNode deserialize(String data) {
+            if (data == null || data.length() == 0) {
+                return null;
+            }
+            Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(SPLITER)));
+            return deserHelper(queue);
+        }
+
+        private TreeNode deserHelper(Queue<String> queue) {
+            if (queue == null || queue.size() == 0) return null;
+            String item = queue.poll();
+            if (item.equals(NULL)) {
+                return null;
+            }
+            TreeNode node = new TreeNode(Integer.valueOf(item));
+            node.left = deserHelper(queue);
+            node.right = deserHelper(queue);
+            return node;
+        }
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
      * Thinking
      * 1. Serailize 分析
      * 1.1. 单独使用三种 DFS 算法 pre-order,post-order,in-order 都无法在 deserialize 时正确还原 Binary Tree 。
@@ -37,18 +95,20 @@ public class Serialize_and_Deserialize_Binary_Tree_297 {
      * 使用两个 que_cur ， que_next 分别存储当前层的节点和下一层的节点
      * 算法伪代码如下：
      * WHILE que_cur is not empty:
-     *     node = que_cur.poll()
-     *     res.append(node==null?"null":node.val)
-     *     IF node != null THEN
-     *         que_next.offer(node.left)
-     *         que_next.offer(node.right)
-     *     IF que_cur is empty THEN
-     *         que_cur = que_next
+     * node = que_cur.poll()
+     * res.append(node==null?"null":node.val)
+     * IF node != null THEN
+     * que_next.offer(node.left)
+     * que_next.offer(node.right)
+     * IF que_cur is empty THEN
+     * que_cur = que_next
      * 2. Deserialize 分析
      * BFS思路
      * 3. 递归法更简单
-     * review 递归法更简单
+     * review 递归法更简单,重点是pre-order可以实现serialize
+     * https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/74253/easy-to-understand-java-solution/
      *
+     * <p>
      * 验证通过：
      * Runtime 15 ms Beats 57.30%
      * Memory 46.55 MB Beats 17.92%
@@ -173,16 +233,17 @@ public class Serialize_and_Deserialize_Binary_Tree_297 {
     }
 
     public static void main(String[] args) {
-        do_func("1,2,3,null,null,4,5,null,null,null,null");
-        do_func("1,2,3,null,null,4,5");
-        do_func("1,2,3,null,null,4,5,6,7");
+//        do_func("1,2,3,null,null,4,5,null,null,null,null");
+//        do_func("1,2,3,null,null,4,5");
+//        do_func("1,2,3,null,null,4,5,6,7");
         System.out.println("====================");
+        do_func_r3_2();
     }
 
     private static void do_func(String inputStr) {
-        System.out.println("input is : "+inputStr);
+        System.out.println("input is : " + inputStr);
 //        Codec ser = new Codec();
-        Codec_r3_1 ser = new Codec_r3_1();
+        Codec_r3_2 ser = new Codec_r3_2();
 //        TreeNode inputTree = new TreeNode(1);
 //        inputTree.left = new TreeNode(2);
 //        inputTree.right = new TreeNode(3);
@@ -200,6 +261,26 @@ public class Serialize_and_Deserialize_Binary_Tree_297 {
         String recover_str = ser.serialize(ser.deserialize(inputStr));
         System.out.println(recover_str);
         System.out.println(inputStr.equals(recover_str));
+
+        System.out.println(">>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<");
+    }
+
+    private static void do_func_r3_2() {
+        Codec_r3_2 ser = new Codec_r3_2();
+        TreeNode inputTree = new TreeNode(1);
+        inputTree.left = new TreeNode(2);
+        inputTree.right = new TreeNode(3);
+        inputTree.right.left = new TreeNode(4);
+        inputTree.right.right = new TreeNode(5);
+
+        String out1 = ser.serialize(inputTree);
+        System.out.println("----------serialize----------");
+        System.out.println("out1=" + out1);
+        System.out.println("----------deserialize----------");
+        TreeNode node = ser.deserialize(out1);
+        String out2 = ser.serialize(node);
+        System.out.println("out2=" + out2);
+        System.out.println(out2.equals(out1));
 
         System.out.println(">>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<");
     }
