@@ -36,6 +36,7 @@ public class Serialize_and_Deserialize_Binary_Tree_297 {
      * <p>
      * REVIEW : 迭代器和队列这两种数据结构在遍历时，无需存储当前位置信息。对于本题的deserialize()来说非常适用。
      * REVIEW : 当在数组或列表方式存储的数据结构中无法跟踪位置，但是又需要遍历时，Iterator和Queue是很好的工具。
+     * REVIEW : 这也算是高内聚设计的典范了吧。隐藏内部细节，有利有弊。
      * <p>
      * Queue Solution : https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/74259/recursive-preorder-python-and-c-o-n/
      * Iterator Solution : https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/74259/recursive-preorder-python-and-c-o-n/
