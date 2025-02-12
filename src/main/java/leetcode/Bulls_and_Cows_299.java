@@ -8,40 +8,40 @@ import java.util.Map;
  * Medium
  * ------------------
  * You are playing the Bulls and Cows game with your friend.
- *
+ * <p>
  * You write down a secret number and ask your friend to guess what the number is. When your friend makes a guess, you provide a hint with the following info:
- * The number of "bulls", which are digits in the guess that are in the correct position.
- * The number of "cows", which are digits in the guess that are in your secret number but are located in the wrong position. Specifically, the non-bull digits in the guess that could be rearranged such that they become bulls.
- *
+ * - The number of "bulls", which are digits in the guess that are in the correct position.
+ * - The number of "cows", which are digits in the guess that are in your secret number but are located in the wrong position. Specifically, the non-bull digits in the guess that could be rearranged such that they become bulls.
+ * <p>
  * Given the secret number secret and your friend's guess guess, return the hint for your friend's guess.
- *
+ * <p>
  * The hint should be formatted as "xAyB", where x is the number of bulls and y is the number of cows. Note that both secret and guess may contain duplicate digits.
- *
+ * <p>
  * Example 1:
  * Input: secret = "1807", guess = "7810"
  * Output: "1A3B"
  * Explanation: Bulls are connected with a '|' and cows are underlined:
  * "1807"
- *   |
+ * |
  * "7810"
- *
+ * <p>
  * Example 2:
  * Input: secret = "1123", guess = "0111"
  * Output: "1A1B"
  * Explanation: Bulls are connected with a '|' and cows are underlined:
  * "1123"        "1123"
- *   |      or     |
+ * |      or     |
  * "0111"        "0111"
  * Note that only one of the two unmatched 1s is counted as a cow since the non-bull digits can only be rearranged to allow one 1 to be a bull.
- *
+ * <p>
  * Example 3:
  * Input: secret = "1", guess = "0"
  * Output: "0A0B"
- *
+ * <p>
  * Example 4:
  * Input: secret = "1", guess = "1"
  * Output: "1A0B"
- *
+ * <p>
  * Constraints:
  * 1 <= secret.length, guess.length <= 1000
  * secret.length == guess.length
@@ -49,13 +49,51 @@ import java.util.Map;
  */
 public class Bulls_and_Cows_299 {
     public static String getHint(String secret, String guess) {
-        return getHint_5(secret, guess);
+        return getHint_r3_1(secret, guess);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 计数器思路
+     * 分别用两个 Hashtable 保存 secret 和 guess 每个数字出现的次数，过滤掉 "Bulls" 之后，剩余的次数总和就是"cows"
+     * <p>
+     * 验证通过：
+     * Runtime 5 ms Beats 87.66%
+     * Memory 42.43 MB Beats 57.17%
+     *
+     * @param secret
+     * @param guess
+     * @return
+     */
+    public static String getHint_r3_1(String secret, String guess) {
+        int bulls = 0, cows = 0;
+        int[] cnt_sec = new int[10];
+        int[] cnt_gus = new int[10];
+        //统计和过滤
+        for (int i = 0; i < secret.length(); i++) {
+            int s = secret.charAt(i) - '0';
+            int c = guess.charAt(i) - '0';
+            if (s == c) {
+                bulls++;//计算bulls
+            } else {
+                cnt_sec[secret.charAt(i) - '0']++;
+                cnt_gus[guess.charAt(i) - '0']++;
+            }
+        }
+        //计算cows
+        for (int i = 0; i < 10; i++) {
+            cows += Math.min(cnt_sec[i], cnt_gus[i]);
+        }
+        return bulls + "A" + cows + "B";
     }
 
     /**
      * round2
      * getHint_4()的优化，把map替换为array
-     *
+     * <p>
      * 验证通过：
      * Runtime 11 ms Beats 46.40%
      * Memory 43 MB Beats 50.45%
@@ -95,13 +133,13 @@ public class Bulls_and_Cows_299 {
 
     /**
      * round 2
-     *
+     * <p>
      * 思考：
      * 1.需要求解两个值，所以先求bulls再计算cows。
      * 2.计算bulls。遍历secret和guess，统计bulls，记录bulls出现的位置。
      * 3.计算cows。计算时先过滤bulls出现的位置。
      * 4.合并2.3.，一次遍历，先计算bulls再计算cows。
-     *
+     * <p>
      * 验证通过：
      * Runtime 17 ms Beats 26.78%
      * Memory 43.3 MB Beats 22.88%
@@ -146,7 +184,7 @@ public class Bulls_and_Cows_299 {
      * 有点套路
      * 参考思路：
      * https://leetcode.com/problems/bulls-and-cows/discuss/74621/One-pass-Java-solution
-     *
+     * <p>
      * 验证通过：
      * Runtime: 10 ms, faster than 28.38% of Java online submissions for Bulls and Cows.
      * Memory Usage: 39.7 MB, less than 11.26% of Java online submissions for Bulls and Cows.
@@ -178,6 +216,7 @@ public class Bulls_and_Cows_299 {
      * 验证通过：
      * Runtime: 7 ms, faster than 47.74% of Java online submissions for Bulls and Cows.
      * Memory Usage: 39.8 MB, less than 8.89% of Java online submissions for Bulls and Cows.
+     *
      * @param secret
      * @param guess
      * @return
@@ -209,7 +248,6 @@ public class Bulls_and_Cows_299 {
     }
 
     /**
-     *
      * 验证通过：
      * Runtime: 16 ms, faster than 6.15% of Java online submissions for Bulls and Cows.
      * Memory Usage: 40.1 MB, less than 5.57% of Java online submissions for Bulls and Cows.
@@ -253,6 +291,7 @@ public class Bulls_and_Cows_299 {
         do_func("1123", "0111", "1A1B");
         do_func("1", "0", "0A0B");
         do_func("1", "1", "1A0B");
+        System.out.println("====================");
     }
 
     private static void do_func(String secret, String guess, String expected) {
