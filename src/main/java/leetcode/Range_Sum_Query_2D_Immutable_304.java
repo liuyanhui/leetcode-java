@@ -6,26 +6,26 @@ package leetcode;
  * ---------------------------
  * Given a 2D matrix matrix, handle multiple queries of the following type:
  * Calculate the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
- *
+ * <p>
  * Implement the NumMatrix class:
  * NumMatrix(int[][] matrix) Initializes the object with the integer matrix matrix.
  * int sumRegion(int row1, int col1, int row2, int col2) Returns the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
- *
+ * <p>
  * You must design an algorithm where sumRegion works on O(1) time complexity.
- *
+ * <p>
  * Example 1:
  * Input
  * ["NumMatrix", "sumRegion", "sumRegion", "sumRegion"]
  * [[[[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]], [2, 1, 4, 3], [1, 1, 2, 2], [1, 2, 2, 4]]
  * Output
  * [null, 8, 11, 12]
- *
+ * <p>
  * Explanation
  * NumMatrix numMatrix = new NumMatrix([[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]);
  * numMatrix.sumRegion(2, 1, 4, 3); // return 8 (i.e sum of the red rectangle)
  * numMatrix.sumRegion(1, 1, 2, 2); // return 11 (i.e sum of the green rectangle)
  * numMatrix.sumRegion(1, 2, 2, 4); // return 12 (i.e sum of the blue rectangle)
- *
+ * <p>
  * Constraints:
  * m == matrix.length
  * n == matrix[i].length
@@ -36,6 +36,37 @@ package leetcode;
  * At most 10^4 calls will be made to sumRegion.
  */
 public class Range_Sum_Query_2D_Immutable_304 {
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * Thinking:
+     * 1. 类似多个矩形面积计算问题。
+     * 设 dp[i,j] 为从[0,0]到[i,j]的元素之和。
+     * dp[i+1][j+1]=matrix[i][j]+dp[i-1][j]+dp[i][j-1]-dp[i-1][j-1]
+     * 结果的计算公式为
+     * sumRegion(r1,c1,r2,c2)=dp[r2,c2]-dp[r1-1,c2]-dp[r2,c1-1]+dp[r1-1,c1-1]
+     * <p>
+     * 验证通过：
+     * Runtime 98 ms Beats 87.18%
+     * Memory 69.96 MB Beats 63.72%
+     */
+    class NumMatrix_r3_1 {
+        int[][] dp;
+
+        public NumMatrix_r3_1(int[][] matrix) {
+            dp = new int[matrix.length + 1][matrix[0].length + 1];
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    dp[i + 1][j + 1] = matrix[i][j] + dp[i][j + 1] + dp[i + 1][j] - dp[i][j];
+                }
+            }
+        }
+
+        public int sumRegion(int r1, int c1, int r2, int c2) {
+            return dp[r2 + 1][c2 + 1] - dp[r1][c2 + 1] - dp[r2 + 1][c1] + dp[r1][c1];
+        }
+    }
 
     /**
      * round 2
@@ -43,9 +74,9 @@ public class Range_Sum_Query_2D_Immutable_304 {
      * 思路：
      * 1.采用几何面积计算法
      * 用二维数组sum[i,j]记录从[0,0]到[i,j]的所有元素和，那么公式为sumRegion[r1,c1,r2,c2]=sum[r2,c2]-sum[r1-1,c2]-sum[r2,c1-1]+sum[r1-1,c1-1]
-     *
+     * <p>
      * 更优方案见：NumMatrix_2
-     *
+     * <p>
      * 验证通过：
      * Runtime 208 ms Beats 64.29%
      * Memory 65.9 MB Beats 86.71%
@@ -81,14 +112,14 @@ public class Range_Sum_Query_2D_Immutable_304 {
      * 有点套路
      * 参考思路
      * https://leetcode.com/problems/range-sum-query-2d-immutable/solution/ 之 Approach 4
-     *
+     * <p>
      * Time Complexity:O(mn)
      * Space Complexity:O(1)
-     *
+     * <p>
      * 验证通过：
      * Runtime: 80 ms, faster than 19.30% of Java online submissions for Range Sum Query 2D - Immutable.
      * Memory Usage: 97.5 MB, less than 5.12% of Java online submissions for Range Sum Query 2D - Immutable.
-     *
+     * <p>
      * round2
      * 验证通过：
      * Runtime 123 ms Beats 98.19%
@@ -114,10 +145,10 @@ public class Range_Sum_Query_2D_Immutable_304 {
 
     /**
      * 与Range_Sum_Query_Immutable_303中的NumArray_2方法的思路是一致的
-     *
+     * <p>
      * Time Complexity:O(mn)
      * Space Complexity:O(m)
-     *
+     * <p>
      * 验证通过：
      * Runtime: 72 ms, faster than 20.07% of Java online submissions for Range Sum Query 2D - Immutable.
      * Memory Usage: 64.5 MB, less than 5.77% of Java online submissions for Range Sum Query 2D - Immutable.

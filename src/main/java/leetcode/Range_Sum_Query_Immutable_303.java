@@ -35,7 +35,7 @@ public class Range_Sum_Query_Immutable_303 {
      * Score[4] Lower is harder
      *
      */
-    
+
     /**
      * round 2
      * 提前计算好[0:i]的和，并保存在数组sum里。计算sumRange()时，只需要计算sum[right]-sum[left-1]即可
