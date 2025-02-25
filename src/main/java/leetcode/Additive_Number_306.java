@@ -8,19 +8,19 @@ package leetcode;
  * A valid additive sequence should contain at least three numbers. Except for the first two numbers, each subsequent number in the sequence must be the sum of the preceding two.
  * Given a string containing only digits '0'-'9', write a function to determine if it's an additive number.
  * Note: Numbers in the additive sequence cannot have leading zeros, so sequence 1, 2, 03 or 1, 02, 3 is invalid.
- *
+ * <p>
  * Example 1:
  * Input: "112358"
  * Output: true
  * Explanation: The digits can form an additive sequence: 1, 1, 2, 3, 5, 8.
- *              1 + 1 = 2, 1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8
- *
+ * 1 + 1 = 2, 1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8
+ * <p>
  * Example 2:
  * Input: "199100199"
  * Output: true
  * Explanation: The additive sequence is: 1, 99, 100, 199.
- *              1 + 99 = 100, 99 + 100 = 199
- *
+ * 1 + 99 = 100, 99 + 100 = 199
+ * <p>
  * Constraints:
  * num consists only of digits '0'-'9'.
  * 1 <= num.length <= 35
@@ -29,7 +29,83 @@ package leetcode;
  */
 public class Additive_Number_306 {
     public static boolean isAdditiveNumber(String num) {
-        return isAdditiveNumber_2(num);
+        return isAdditiveNumber_r3_1(num);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking:
+     * 1. naive solution
+     * 穷举法+递归。
+     * 输入字符串被划分成4部分：calced|a|b|uncalc ，其中: a+b=uncalc[0:i]
+     * 递归函数为：
+     * f(a,b,num)
+     * <p>
+     * 验证通过：
+     * Runtime 1 ms Beats 76.17%
+     * Memory 41.97 MB Beats 27.98%
+     */
+    public static boolean isAdditiveNumber_r3_1(String num) {
+        for (int i = 1; i <= num.length() / 2; i++) {
+            //计算a
+            String a = num.substring(0, i);
+            if (a.startsWith("0") && a.length() > 1) break;
+            for (int j = i + 1; j < num.length(); j++) {
+                //计算b
+                String b = num.substring(i, j);
+                if (b.startsWith("0") && b.length() > 1) break;
+                //计算和
+                String c = add_r3_1(a, b);
+                String rest = num.substring(j);
+                //比较和，递归计算
+                if (rest.startsWith(c) && check_r3_1(b, c, rest.substring(c.length()))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean check_r3_1(String a, String b, String num) {
+        if (num == null || num.length() == 0) return true;
+        if (a.startsWith("0") && a.length() > 1) return false;
+        if (b.startsWith("0") && b.length() > 1) return false;
+        String c = add_r3_1(a, b);
+        if (num.startsWith(c) && check_r3_1(b, c, num.substring(c.length()))) {
+            return true;
+        }
+        return false;
+    }
+
+    private static String add_r3_1(String a, String b) {
+        StringBuilder res = new StringBuilder();
+        int carry = 0;
+        int i = a.length() - 1, j = b.length() - 1;
+        while (i >= 0 && j >= 0) {
+            int t = (a.charAt(i) - '0') + (b.charAt(j) - '0') + carry;
+            res.append(String.valueOf(t % 10));
+            carry = t / 10;
+            i--;
+            j--;
+        }
+        while (i >= 0) {
+            int t = (a.charAt(i) - '0') + carry;
+            res.append(String.valueOf(t % 10));
+            carry = t / 10;
+            i--;
+        }
+        while (j >= 0) {
+            int t = (b.charAt(j) - '0') + carry;
+            res.append(String.valueOf(t % 10));
+            carry = t / 10;
+            j--;
+        }
+        if (carry > 0) {
+            res.append(carry);
+        }
+        return res.reverse().toString();
     }
 
     /**
@@ -38,17 +114,18 @@ public class Additive_Number_306 {
      * 1.先分割，再计算
      * 2.分析输入"12358"、"123581321349"和"199100199"、"199100200"可以发现，只要不满足条件，那么就必须退回到最开通的两个数相加，重新开始查找和计算。即如果子序列为{a,b,c,d,e,f}被验证为失败，那么必须从重新选择a和b开始从头计算。那么问题就转化为：先修改b，再修改a，即先增加b，如果仍然失败，那么再增加a。可以使用递归法，F(a,b,remain_str)
      * 3.递归算法。
-     *
+     * <p>
      * 递归算法：
      * 1.设递归函数为F(a,b,num)。
      * 2.如果a+b==int(num)，那么返回true；如果a+b==c存在且remain_str不为空，那么F(b,c,remain_str)；如果a+b==c不存在，返回false。
      * 3.在函数主入口，通过组合不同的a和b，然后调用F(a,b,num)
-     *
+     * <p>
      * 改进思路：把int改成long进行比较和计算
-     *
+     * <p>
      * 验证通过：
      * Runtime 2 ms Beats 65.19%
      * Memory 41.9 MB Beats 56.10%
+     *
      * @param num
      * @return
      */
@@ -113,7 +190,7 @@ public class Additive_Number_306 {
      * https://leetcode.com/problems/additive-number/discuss/75576/0ms-concise-C%2B%2B-solution-(perfectly-handles-the-follow-up-and-leading-0s)
      * https://leetcode.com/problems/additive-number/discuss/75572/*Java*-very-straightforward-solution-with-detailed-explanation
      * https://leetcode.com/problems/additive-number/discuss/75567/Java-Recursive-and-Iterative-Solutions
-     *
+     * <p>
      * 验证通过：
      * Runtime: 6 ms, faster than 9.58% of Java online submissions for Additive Number.
      * Memory Usage: 38.9 MB, less than 10.54% of Java online submissions for Additive Number.
