@@ -39,7 +39,7 @@ public class Range_Sum_Query_Mutable_307 {
     /**
      * round 3
      * Score[2] Lower is harder
-     *
+     * <p>
      * review NumArray_1() 和 NumArray_2() 两种算法都很巧妙。
      * NumArray_2()中，奇数数组输入时，虽然构造的tree有点奇怪但是不影响使用。即使偶数数组输入时，在构造tree时也会有奇数节点的层。
      * NumArray_r3_2 是 NumArray_2的思路实现
@@ -69,6 +69,7 @@ public class Range_Sum_Query_Mutable_307 {
                 i /= 2;
             }
         }
+
         public int sumRange(int left, int right) {
             int res = 0;
             left += n;
@@ -82,6 +83,56 @@ public class Range_Sum_Query_Mutable_307 {
                 }
                 left /= 2;
                 right /= 2;
+            }
+            return res;
+        }
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     */
+    static class NumArray_r3_1 implements NumArray {
+        int[] buckets;
+        int buck_size;
+        int[] values;
+
+        public NumArray_r3_1(int[] nums) {
+            values = nums;
+            buck_size = (int) (Math.sqrt(nums.length)) + 1;
+            buckets = new int[(int) (Math.sqrt(nums.length)) + 1];
+            for (int i = 0; i < nums.length; i++) {
+                //要注意是以buckets的长度计算还是以每个bucket的大小计算
+                int idx = i / buck_size;
+                buckets[idx] = buckets[idx] + values[i];
+            }
+        }
+
+        public void update(int index, int val) {
+            //更新buckets
+            int idx = index / buck_size;
+            buckets[idx] -= values[index];
+            buckets[idx] += val;
+            //更新原始数组
+            values[index] = val;
+        }
+
+        public int sumRange(int left, int right) {
+            int res = 0;
+            //计算头部，包含某个bucket的一部分
+            if (left % buck_size != 0) {
+                while (left < ((left / buck_size + 1) * buck_size) && left <= right) {
+                    res += values[left++];
+                }
+            }
+            //计算中间整块bucket的部分
+            while (left + buck_size <= right) {
+                res += buckets[left / buck_size];
+                left += buck_size;
+            }
+            //计算尾部，包含某个bucket的一部分
+            while (left <= right) {
+                res += values[left++];
             }
             return res;
         }
@@ -186,6 +237,7 @@ public class Range_Sum_Query_Mutable_307 {
             }
         }
 
+
         public void update(int index, int val) {
             //TIP：注意下面的代码与"bucket[index / bucketLength] -=  values[index] + val"的执行结果不同
             bucket[index / bucketLength] = bucket[index / bucketLength] - values[index] + val;
@@ -229,10 +281,10 @@ public class Range_Sum_Query_Mutable_307 {
      * int param_2 = obj.sumRange(left,right);
      */
     public static void main(String[] args) {
-        NumArray numArray1 = new NumArray_r3_2(new int[]{1, 3, 5});
+        NumArray numArray1 = new NumArray_r3_1(new int[]{1, 3, 5});
         do_func_1(numArray1);
 
-        NumArray numArray2 = new NumArray_r3_2(new int[]{-1});
+        NumArray numArray2 = new NumArray_r3_1(new int[]{-1});
         do_func_2(numArray2);
     }
 
