@@ -40,9 +40,13 @@ public class Range_Sum_Query_Mutable_307 {
      * round 3
      * Score[2] Lower is harder
      * <p>
-     * review NumArray_1() 和 NumArray_2() 两种算法都很巧妙。
+     * review NumArray_1() 和 NumArray_2() 两种算法都很巧妙。NumArray_1()超时了，验证失败 。
      * NumArray_2()中，奇数数组输入时，虽然构造的tree有点奇怪但是不影响使用。即使偶数数组输入时，在构造tree时也会有奇数节点的层。
      * NumArray_r3_2 是 NumArray_2的思路实现
+     * <p>
+     * 验证通过 ：
+     * Runtime 83 ms Beats 71.44%
+     * Memory 75.77 MB Beats 67.78%
      */
     static class NumArray_r3_2 implements NumArray {
         int[] tree;
@@ -91,6 +95,9 @@ public class Range_Sum_Query_Mutable_307 {
     /**
      * round 3
      * Score[2] Lower is harder
+     * <p>
+     * bucket思路
+     * 验证失败，Time Limit Exceed
      */
     static class NumArray_r3_1 implements NumArray {
         int[] buckets;
