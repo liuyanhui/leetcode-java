@@ -31,7 +31,68 @@ import java.util.Map;
  */
 public class Burst_Balloons_312 {
     public static int maxCoins(int[] nums) {
-        return maxCoins_r3_1(nums);
+        return maxCoins_r3_2(nums);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * review 沿对角线的平行线遍历矩阵的 SAP
+     * <p>
+     * Thinking
+     * 1. brute force
+     * 穷举遍历每种可能。
+     * 时间复杂度为: O(N!)
+     * 2. 递归+Cache
+     * 先计算 nums[i], 后计算剩余的，最后比较并获取最大值
+     * 递归算法如下：
+     * for i in len(nums):
+     * t = nums[i-1]*nums[i]*nums[i+1]
+     * new_nums = cat(nums[0:i],nums[i+1:])
+     * t = t + maxCoins(new_nums)
+     * res = max(res,t)
+     * return res
+     * 时间复杂度为: O(N!)
+     * 3. 递归+分治法
+     * 【2.】是先计算 nums[i]，再计算其他部分。
+     * 【3.】是先计算其他部分，再计算 nums[i] 。
+     * 3.1. 把数组分为5部分：nums[0,a-1],nums[a:i-1],nums[i],nums[i+1:b],nums[b+1:]
+     * 3.2. 先分别计算 nums[a:i-1] 和 nums[i+1:b]，再计算nums[a-1]*nums[i]*nums[b+1]。 因为 nums[i] 是后参加计算，表示 nums[a,i-1] 和 nums[i+1,b] 已经参加过计算，所以nums[a-1]和nums[b+1]参加和 nums[i] 的 计算。
+     * 3.3. 可以用递归或者DP算法。
+     * <p>
+     * 验证通过：
+     * Runtime 38 ms Beats 77.91%
+     * Memory 42.60 MB Beats 80.51%
+     *
+     * @param nums
+     * @return
+     */
+    public static int maxCoins_r3_2(int[] nums) {
+        //扩充nums
+        int[] newNums = new int[nums.length + 2];
+        newNums[0] = 1;
+        newNums[newNums.length - 1] = 1;
+        for (int i = 0; i < nums.length; i++) {
+            newNums[i + 1] = nums[i];
+        }
+        //定义并初始化dp数组
+        int[][] dp = new int[nums.length + 2][nums.length + 2];
+        //计算
+        //review 沿对角线的平行线遍历矩阵的 SAP
+        //window size, 从1逐渐增大
+        for (int window = 1; window <= nums.length; window++) {
+            //left pointer
+            for (int left = 1; left <= nums.length - window + 1; left++) {
+                //right pointer, can not recurse out of the window
+                int right = left + window - 1;
+                //pick up point
+                for (int j = left; j <= right; j++) {
+                    int t = dp[left][j - 1] + dp[j + 1][right] + newNums[left - 1] * newNums[j] * newNums[right + 1];
+                    dp[left][right] = Math.max(dp[left][right], t);
+                }
+            }
+        }
+        return dp[1][nums.length];
     }
 
     /**
