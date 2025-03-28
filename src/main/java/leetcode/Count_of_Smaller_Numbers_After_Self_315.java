@@ -36,6 +36,22 @@ public class Count_of_Smaller_Numbers_After_Self_315 {
         return countSmaller_1(nums);
     }
 
+    /**
+     * round 3
+     * Score[1] Lower is harder
+     * ----------------
+     * Thinking
+     * 1. naive solution
+     * brute force
+     * 依次计算每个元素
+     * Time Complexity: O(N*N)
+     * 2.从后向前遍历+排序
+     * 从后向前遍历，遍历时对nums[i]排序，再根据排序后的下标计算结果
+     * Time Complexity: O(N*logN)
+     *
+     * [20250328] It might be cost a lot of time to finish this problem. So I give up solving it .
+     */
+
     static class ArrayWithOriginalIdx {
         int val;
         int orginalIdx;
