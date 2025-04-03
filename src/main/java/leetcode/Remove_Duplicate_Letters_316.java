@@ -26,8 +26,16 @@ import java.util.Stack;
  */
 public class Remove_Duplicate_Letters_316 {
     public static String removeDuplicateLetters(String s) {
-        return removeDuplicateLetters_3(s);
+        return removeDuplicateLetters_r3_1(s);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     *
+     * removeDuplicateLetters_3 和 removeDuplicateLetters_1
+     *
+     */
 
     /**
      * review round 2
