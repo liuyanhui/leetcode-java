@@ -27,6 +27,8 @@ public class Smallest_Subsequence_of_Distinct_Characters_1081 {
      * 单调栈系列问题。316，321，402，1081是相同的方案。
      * 栈中的元素已经是局部最优解，即已经是去处重复字母后满足字典序中的最小值。
      *
+     * [group] 与 Smallest_Subsequence_of_Distinct_Characters_1081 一毛一样
+     *
      * 验证通过：
      * Runtime: 2 ms, faster than 92.69% .
      * Memory Usage: 37 MB, less than 82.11% .

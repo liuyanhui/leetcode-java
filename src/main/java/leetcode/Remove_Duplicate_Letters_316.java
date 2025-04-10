@@ -32,6 +32,8 @@ public class Remove_Duplicate_Letters_316 {
     /**
      * round 3
      * Score[2] Lower is harder
+     * [group] 与 Smallest_Subsequence_of_Distinct_Characters_1081 一毛一样
+     * https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/description/
      * <p>
      * 参考：
      * removeDuplicateLetters_3 和 removeDuplicateLetters_1
