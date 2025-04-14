@@ -7,7 +7,7 @@ package leetcode;
  * There are n bulbs that are initially off. You first turn on all the bulbs, then you turn off every second bulb.
  * On the third round, you toggle every third bulb (turning on if it's off or turning off if it's on). For the ith round, you toggle every i bulb. For the nth round, you only toggle the last bulb.
  * Return the number of bulbs that are on after n rounds.
- *
+ * <p>
  * Example 1:
  * Input: n = 3
  * Output: 1
@@ -16,26 +16,56 @@ package leetcode;
  * After the second round, the three bulbs are [on, off, on].
  * After the third round, the three bulbs are [on, off, off].
  * So you should return 1 because there is only one bulb is on.
- *
+ * <p>
  * Example 2:
  * Input: n = 0
  * Output: 0
- *
+ * <p>
  * Example 3:
  * Input: n = 1
  * Output: 1
- *
+ * <p>
  * Constraints:
  * 0 <= n <= 10^9
  */
 public class Bulb_Switcher_319 {
     /**
      * 这题做的酣畅淋漓，虽然耗时稍长，但是能够体现出整个思考过程。从bulbSwitch_1到bulbSwitch_3中的注释就是思考过程。
+     *
      * @param n
      * @return
      */
     public static int bulbSwitch(int n) {
-        return bulbSwitch_4(n);
+        return bulbSwitch_r3_1(n);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 题目没有说明返回所有灯的状态，只是要求返回亮灯的数量，所以计算上应该会简单一些。
+     * 2. 分析规律。
+     * 某个灯被操作奇数次时，灯的状态是on；偶数次时，灯的状态是off。
+     * 某个数的因数个数(包含1)是偶数时，状态是off；因数个数(包含1)是奇数时，状态是on。
+     * 大多数数都有偶数个因数，除了它是偶次幂的情况。
+     * 特殊情况：n是某个数的偶次幂时，n的因数个数是奇数(分别是: 1,因数,n)，所以n的状态是off
+     * 所以只需要计算n为某个数的偶次幂时，n为off；否则，n为on
+     * 3. 1~n中，偶次幂的数的个数就是所求
+     * <p>
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 40.63 MB Beats 26.53%
+     *
+     * @param n
+     * @return
+     */
+    public static int bulbSwitch_r3_1(int n) {
+        int res = 0;
+        for (int i = 1; i * i <= n; i++) {
+            res++;
+        }
+        return res;
     }
     /**
      * review round 2
@@ -63,7 +93,7 @@ public class Bulb_Switcher_319 {
 
     /**
      * bulbSwitch_2()的改进版。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Bulb Switcher.
      * Memory Usage: 35.6 MB, less than 61.17% of Java online submissions for Bulb Switcher.
@@ -87,7 +117,7 @@ public class Bulb_Switcher_319 {
      * 4.进一步，质数的约数个数是偶数。所以质数灯灭。
      * 5.进一步，合数的约数个数时偶数，除了4/16这些能被开方的数。这些灯灭。
      * 6.结论，只有1和能被开方的灯亮。因为约数是成对出现的，除了能被开方的数。
-     *
+     * <p>
      * n=1000000000的用例执行结果正确，但是Time Limit Exceeded。
      *
      * @param n
@@ -108,9 +138,9 @@ public class Bulb_Switcher_319 {
      * 思路如下：
      * 从1~n遍历，用数组保存bulb状态
      * 每次遍历公式：while(i*t<=n){改变bulb状态;t++;}。0<i<=n,t从1开始每次加*
-     *
+     * <p>
      * 逻辑正确，但是n=1000000000的用例报错了，java.lang.OutOfMemoryError: Java heap space。
-     *
+     * <p>
      * 需要优化bulb数组，降低空间复杂度。
      * 有以下几种思路：
      * 1.可以使用bitmap代替数组，空间复杂度降低32倍。（不知能否通过测试）
