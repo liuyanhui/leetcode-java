@@ -10,28 +10,20 @@ import java.util.List;
  * You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
  * Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
  * You may assume that you have an infinite number of each kind of coin.
- *
+ * <p>
  * Example 1:
  * Input: coins = [1,2,5], amount = 11
  * Output: 3
  * Explanation: 11 = 5 + 5 + 1
- *
+ * <p>
  * Example 2:
  * Input: coins = [2], amount = 3
  * Output: -1
- *
+ * <p>
  * Example 3:
  * Input: coins = [1], amount = 0
  * Output: 0
- *
- * Example 4:
- * Input: coins = [1], amount = 1
- * Output: 1
- *
- * Example 5:
- * Input: coins = [1], amount = 2
- * Output: 2
- *
+ * <p>
  * Constraints:
  * 1 <= coins.length <= 12
  * 1 <= coins[i] <= 2^31 - 1
@@ -40,8 +32,48 @@ import java.util.List;
 public class Coin_Change_322 {
 
     public static int coinChange(int[] coins, int amount) {
-        return coinChange_1(coins, amount);
+        return coinChange_r3_1(coins, amount);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 穷举法
+     * 先计算出每种coin的最大上限，然后再穷举所有组合，得到结果。
+     * 2. 题目转化为:
+     * 等式 amount=coins[1]*cnt[1]+coins[2]*cnt[2]+coins[3]*cnt[3]+... 成立时，求 sum(cnt[]) 的最小值。
+     * 2.1. 方案一：递归+穷举。
+     * 2.2. 方案二：逆向思考，sum(cnt[])从小到大。从sum(cnt[])=1开始，计算每种可能的组合的总和。如果总和=amount，返回；如果不等于，sum(cnt[])+1，继续计算。时间复杂度为O(N^N)。
+     * 2.3. 方案三：逆向思考，amount从小到大。把amount从小到大，然后计算。采用dp思路。参考coinChange_1()
+     * <p>
+     * 参考coinChange_1()
+     *
+     * <p>
+     * 验证通过：
+     * Runtime 11 ms Beats 94.45%
+     * Memory 44.39 MB Beats 71.67%
+     *
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public static int coinChange_r3_1(int[] coins, int amount) {
+        if (amount <= 0) return 0;
+        int[] dp = new int[amount + 1];
+        for (int i = 1; i <= amount; i++) {
+            int t = amount + 1;//review 参考coinChange_1()
+            for (int j = 0; j < coins.length; j++) {
+                if (i - coins[j] >= 0)
+                    t = Math.min(t, dp[i - coins[j]] + 1);
+            }
+            dp[i] = t;
+        }
+        return dp[amount] < amount + 1 ? dp[amount] : -1;
+    }
+
 
     /**
      * review
@@ -68,10 +100,10 @@ public class Coin_Change_322 {
     /**
      * dp思路，dp[i]是amount=i时的最优解
      * dp[i]=min(dp[i-coins[j]])
-     *
+     * <p>
      * 参考：
      * https://leetcode.com/problems/coin-change/discuss/77360/C%2B%2B-O(n*amount)-time-O(amount)-space-DP-solution
-     *
+     * <p>
      * 验证通过：
      * Runtime: 11 ms, faster than 93.99% of Java online submissions for Coin Change.
      * Memory Usage: 38.1 MB, less than 85.25% of Java online submissions for Coin Change.
