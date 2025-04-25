@@ -6,32 +6,54 @@ package leetcode;
  * ------------------------
  * Given an integer n, return true if it is a power of three. Otherwise, return false.
  * An integer n is a power of three, if there exists an integer x such that n == 3^x.
- *
+ * <p>
  * Example 1:
  * Input: n = 27
  * Output: true
- *
+ * Explanation: 27 = 3^3
+ * <p>
  * Example 2:
  * Input: n = 0
  * Output: false
- *
+ * Explanation: There is no x where 3^x = 0.
+ * <p>
  * Example 3:
- * Input: n = 9
- * Output: true
- *
- * Example 4:
- * Input: n = 45
+ * Input: n = -1
  * Output: false
- *
+ * Explanation: There is no x where 3^x = (-1).
+ * <p>
  * Constraints:
  * -2^31 <= n <= 2^31 - 1
- *
+ * <p>
  * Follow up: Could you solve it without loops/recursion?
  */
 public class Power_of_Three_326 {
 
     public static boolean isPowerOfThree(int n) {
-        return isPowerOfThree_3(n);
+        return isPowerOfThree_r3_2(n);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * 1. isPowerOfThree_1()是循环方案
+     * 2. 本方法是递归方案
+     * 3. isPowerOfThree_r3_2()是数学方案
+     * 验证通过：
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isPowerOfThree_r3_1(int n) {
+        if (n == 1) return true;
+        if (n <= 0 || n % 3 != 0) return false;
+        return isPowerOfThree(n / 3);
+    }
+
+    public static boolean isPowerOfThree_r3_2(int n) {
+        int t = (int) Math.pow(3, 19);
+        return n > 0 && t % n == 0;
     }
 
     /**
@@ -42,6 +64,7 @@ public class Power_of_Three_326 {
     /**
      * 还有几个通过数学方式的方案：
      * https://leetcode.com/problems/power-of-three/solution/
+     *
      * @param n
      * @return
      */
@@ -61,7 +84,6 @@ public class Power_of_Three_326 {
     }
 
     /**
-     *
      * 验证通过：
      * Runtime: 11 ms, faster than 65.13% of Java online submissions for Power of Three.
      * Memory Usage: 39 MB, less than 33.19% of Java online submissions for Power of Three.
