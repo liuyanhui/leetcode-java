@@ -30,6 +30,26 @@ public class Count_of_Range_Sum_327 {
     }
 
     /**
+     * round 3
+     * Score[1] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 穷举所有的 range sum ,然后再与 lower 和 upper 比较。
+     * Timt Complexity: O(N*N*N)
+     * 2. 利用缓存减少 range sum 的损耗。
+     * DP思路。
+     * dp[i][j] 为从 i 到 j 的 range sum,
+     * dp[i][i] = nums[i]
+     * dp[i][j] = dp[i][j-1]+nums[j]
+     * 实际计算时，range 是从 1 到 n 的顺序
+     * Timt Complexity: O(N*N)
+     *
+     * countRangeSum_1()才是可以通过的方案
+     *
+     */
+
+    /**
      * review
      * 变态题，有点绕。
      *
