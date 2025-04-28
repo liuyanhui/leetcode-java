@@ -5,40 +5,75 @@ package leetcode;
  * Medium
  * ----------------------------
  * Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list.
- *
+ * <p>
  * The first node is considered odd, and the second node is even, and so on.
- *
+ * <p>
  * Note that the relative order inside both the even and odd groups should remain as it was in the input.
- *
+ * <p>
  * You must solve the problem in O(1) extra space complexity and O(n) time complexity.
- *
+ * <p>
  * Example 1:
  * Input: head = [1,2,3,4,5]
  * Output: [1,3,5,2,4]
- *
+ * <p>
  * Example 2:
  * Input: head = [2,1,3,5,6,4,7]
  * Output: [2,3,6,7,1,5,4]
- *
+ * <p>
  * Constraints:
- * n == number of nodes in the linked list
- * 0 <= n <= 10^4
+ * The number of nodes in the linked list is in the range [0, 10^4].
  * -10^6 <= Node.val <= 10^6
  */
 public class Odd_Even_Linked_List_328 {
     public static ListNode oddEvenList(ListNode head) {
-        return oddEvenList_4(head);
+        return oddEvenList_r3_1(head);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * review oddEvenList_3()的思路很巧妙
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100%
+     * Memory 45.10 MB Beats 9.59%
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode oddEvenList_r3_1(ListNode head) {
+        if (head == null) return null;
+        ListNode evenHead = null;
+        ListNode oddTail = new ListNode();
+        ListNode evenTail = new ListNode();
+        ListNode cur = head;
+        while (cur != null) {
+            if (evenHead == null) evenHead = cur.next;
+            oddTail.next = cur;
+            oddTail = oddTail.next;
+            evenTail.next = cur.next;
+            evenTail = evenTail.next;
+            if (cur.next != null) {
+                cur = cur.next.next;
+            } else {
+                cur = null;
+            }
+        }
+        oddTail.next = evenHead;
+
+        return head;
     }
 
     /**
      * round 2
-     *
+     * <p>
      * Thinking：
      * 1.思路1：分别把odd和even节点单独提取出来，然后把even链表追加到odd链表后面.
      * 2.思路2：在源链表上直接修改。把odd节点按顺序移动到链表前半部分即可，无需考虑even节点。需要记录odd节点的尾部节点和当前处理的节点。
-     *
+     * <p>
      * 与oddEvenList_2()类似。但是不如oddEvenList_3()精妙
-     *
+     * <p>
      * 验证通过：
      * Runtime 0 ms Beats 100%
      * Memory 42.2 MB Beats 50.38%
@@ -67,7 +102,7 @@ public class Odd_Even_Linked_List_328 {
      * review round 2
      * 金矿
      * 奇偶互为next
-     *
+     * <p>
      * 更简单的方案：
      * https://leetcode.com/problems/odd-even-linked-list/solution/
      *
@@ -91,7 +126,7 @@ public class Odd_Even_Linked_List_328 {
 
     /**
      * oddEvenList_1()的简化版
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Odd Even Linked List.
      * Memory Usage: 38.7 MB, less than 54.16% of Java online submissions for Odd Even Linked List.
@@ -118,7 +153,7 @@ public class Odd_Even_Linked_List_328 {
 
     /**
      * 代码略显复杂
-     *
+     * <p>
      * 验证通过：
      * Runtime: 0 ms, faster than 100.00% of Java online submissions for Odd Even Linked List.
      * Memory Usage: 38.5 MB, less than 66.94% of Java online submissions for Odd Even Linked List.
