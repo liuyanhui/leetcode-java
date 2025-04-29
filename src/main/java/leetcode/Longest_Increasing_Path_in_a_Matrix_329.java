@@ -5,23 +5,23 @@ package leetcode;
  * Hard
  * ---------------------------
  * Given an m x n integers matrix, return the length of the longest increasing path in matrix.
- *
+ * <p>
  * From each cell, you can either move in four directions: left, right, up, or down. You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed).
- *
+ * <p>
  * Example 1:
  * Input: matrix = [[9,9,4],[6,6,8],[2,1,1]]
  * Output: 4
  * Explanation: The longest increasing path is [1, 2, 6, 9].
- *
+ * <p>
  * Example 2:
  * Input: matrix = [[3,4,5],[3,2,6],[2,2,1]]
  * Output: 4
  * Explanation: The longest increasing path is [3, 4, 5, 6]. Moving diagonally is not allowed.
- *
+ * <p>
  * Example 3:
  * Input: matrix = [[1]]
  * Output: 1
- *
+ * <p>
  * Constraints:
  * m == matrix.length
  * n == matrix[i].length
@@ -30,8 +30,16 @@ package leetcode;
  */
 public class Longest_Increasing_Path_in_a_Matrix_329 {
     public static int longestIncreasingPath(int[][] matrix) {
-        return longestIncreasingPath_1(matrix);
+        return longestIncreasingPath_r3_1(matrix);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * 想多了，其实很简单。见longestIncreasingPath_1()
+     *
+     */
 
     /**
      * Thinking:
@@ -40,11 +48,11 @@ public class Longest_Increasing_Path_in_a_Matrix_329 {
      * 时间复杂度：O(N!)
      * 2.从matrix[i,j]开始的计算结果是确定不变的，可以用在其他数字matrix[p,q]计算过程中复用。因为结果是递增的，所以局部最优解链路不会出现交叉的情况。
      * 3.二维数组的问题，一般由两种思路：BFS或DFS。
-     *
+     * <p>
      * 验证通过：
      * Runtime 7 ms Beats 99.52%
      * Memory 42.9 MB Beats 42.26%
-     *
+     * <p>
      * 这个最多是Medium难度
      *
      * @param matrix
