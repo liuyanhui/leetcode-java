@@ -30,7 +30,7 @@ package leetcode;
  */
 public class Longest_Increasing_Path_in_a_Matrix_329 {
     public static int longestIncreasingPath(int[][] matrix) {
-        return longestIncreasingPath_r3_1(matrix);
+        return longestIncreasingPath_1(matrix);
     }
 
     /**
