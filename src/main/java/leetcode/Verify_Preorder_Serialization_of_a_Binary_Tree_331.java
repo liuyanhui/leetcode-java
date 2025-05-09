@@ -10,42 +10,50 @@ import java.util.Stack;
  * For example, the above binary tree can be serialized to the string "9,3,4,#,#,1,#,#,2,#,6,#,#", where '#' represents a null node.
  * Given a string of comma-separated values preorder, return true if it is a correct preorder traversal serialization of a binary tree.
  * It is guaranteed that each comma-separated value in the string must be either an integer or a character '#' representing null pointer.
- *
+ * <p>
  * You may assume that the input format is always valid.
- *
+ * <p>
  * For example, it could never contain two consecutive commas, such as "1,,3".
  * Note: You are not allowed to reconstruct the tree.
- *
+ * <p>
  * Example 1:
  * Input: preorder = "9,3,4,#,#,1,#,#,2,#,6,#,#"
  * Output: true
- *
+ * <p>
  * Example 2:
  * Input: preorder = "1,#"
  * Output: false
- *
+ * <p>
  * Example 3:
  * Input: preorder = "9,#,#,1"
  * Output: false
- *
+ * <p>
  * Constraints:
  * 1 <= preorder.length <= 10^4
  * preoder consist of integers in the range [0, 100] and '#' separated by commas ','.
  */
 public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
     public static boolean isValidSerialization(String preorder) {
-        return isValidSerialization_3(preorder);
+        return isValidSerialization_2(preorder);
     }
 
     /**
-     * round 2
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * isValidSerialization_3() 和 isValidSerialization_2()
      *
+     */
+
+    /**
+     * round 2
+     * <p>
      * Thinking：
      * 1.使用Stack模拟preorder，如果最后stack不为空表示不是Binary Tree
      * 2.有两个主要变量：stack和当前下标
-     *
+     * <p>
      * isValidSerialization_2()的方法更巧妙。没有要求输出Binary Tree所以可以用这个巧妙的办法。
-     *
+     * <p>
      * 验证通过：
      * Runtime 7 ms Beats 20.25%
      * Memory 42.1 MB Beats 78.52%
@@ -77,7 +85,7 @@ public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
 
     /**
      * review round2 It is a smart resolution.
-     *
+     * <p>
      * 验证通过：
      * Runtime: 3 ms, faster than 91.45% of Java.
      * Memory Usage: 39.1 MB, less than 50.84% of Java.
@@ -103,7 +111,7 @@ public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
      * 规律是：
      * 1.使用计数器count表示#出现次数，遇到根节点count=2,之后遇到数字-1+2，遇到#-1，最终count=0返回true
      * 2.因为一个节点表示有两个#，当存在左子节点时#的数量先-1再+2.
-     *
+     * <p>
      * 验证通过：
      * Runtime: 2 ms, faster than 93.89% of Java .
      * Memory Usage: 37.4 MB, less than 94.96% of Java.

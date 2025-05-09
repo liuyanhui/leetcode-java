@@ -52,6 +52,7 @@ public class Patching_Array_330 {
      * 1.3. While nums[i]<max，那么max=max+nums[i];i++
      *
      * 代码可以优化为minPatches_1()的实现
+     * 逻辑思维的典型问题
      *
      * 验证通过：
      * Runtime 0  ms Beats 100.00%
