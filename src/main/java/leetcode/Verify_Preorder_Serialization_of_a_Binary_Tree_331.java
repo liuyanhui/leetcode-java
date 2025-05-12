@@ -34,19 +34,24 @@ import java.util.Stack;
  */
 public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
     public static boolean isValidSerialization(String preorder) {
-        return isValidSerialization_2(preorder);
+        return isValidSerialization_r3_1(preorder);
     }
 
     /**
      * round 3
      * Score[2] Lower is harder
      * <p>
-     * isValidSerialization_3() 和 isValidSerialization_2()
+     * Think:
+     * 1. review 假设输入字符串是二叉树的正确序列化结果。基于这个假设去计算，而不是考虑各种不正确的情况。
+     * review 用假设输入时正确的计算，而不是考虑所有正确和错误的可能。只要输入时正确的，那么最终的结果是：数组遍历完成，栈为空，并且两者同时达成。
+     * isValidSerialization_3()的思路（注释）错误，但是结果正确
+     * review : 非常巧妙的思路 isValidSerialization_2()
      *
      */
 
     /**
      * round 2
+     * 错误的思路（注释），但是结果确实正确的。
      * <p>
      * Thinking：
      * 1.使用Stack模拟preorder，如果最后stack不为空表示不是Binary Tree
@@ -71,9 +76,9 @@ public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
             String t = stack.pop();
             if (t.equals("#")) continue;
             if (i + 1 < arr.length) {
-                //右子树先入栈
+                //右子树先入栈 review 这里的注释或者思路是错误的
                 stack.push(arr[i + 1]);
-                //左子树后入栈
+                //左子树后入栈 review 这里的注释或者思路是错误的
                 stack.push(arr[i]);
                 i += 2;
             } else {
@@ -155,6 +160,7 @@ public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
         do_func("9,#,92,#,#", true);
         do_func("9,3,0,6,#,#,5,#,4,#,2,#,#,6,0,#,#,#,#", true);
         do_func("1", false);
+        do_func("9,3,0,6,5,4,2,6,0,#,#,#,#,#,#,#,#,#,#", true);
     }
 
     private static void do_func(String preorder, boolean expected) {
