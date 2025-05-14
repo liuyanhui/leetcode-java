@@ -34,7 +34,7 @@ import java.util.Stack;
  */
 public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
     public static boolean isValidSerialization(String preorder) {
-        return isValidSerialization_r3_1(preorder);
+        return isValidSerialization_2(preorder);
     }
 
     /**
@@ -46,6 +46,8 @@ public class Verify_Preorder_Serialization_of_a_Binary_Tree_331 {
      * review 用假设输入时正确的计算，而不是考虑所有正确和错误的可能。只要输入时正确的，那么最终的结果是：数组遍历完成，栈为空，并且两者同时达成。
      * isValidSerialization_3()的思路（注释）错误，但是结果正确
      * review : 非常巧妙的思路 isValidSerialization_2()
+     *
+     * review 引申问题：How to deserialize a tree from a string?
      *
      */
 

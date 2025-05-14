@@ -8,22 +8,22 @@ import java.util.*;
  * Hard（Change To Hard level Since Round 2）
  * -----------------------
  * You are given a list of airline tickets where tickets[i] = [fromi, toi] represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.
- *
+ * <p>
  * All of the tickets belong to a man who departs from "JFK", thus, the itinerary must begin with "JFK". If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string.
- *
+ * <p>
  * For example, the itinerary ["JFK", "LGA"] has a smaller lexical order than ["JFK", "LGB"].
- *
+ * <p>
  * You may assume all tickets form at least one valid itinerary. You must use all the tickets once and only once.
- *
+ * <p>
  * Example 1:
  * Input: tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
  * Output: ["JFK","MUC","LHR","SFO","SJC"]
- *
+ * <p>
  * Example 2:
  * Input: tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
  * Output: ["JFK","ATL","JFK","SFO","ATL","SFO"]
  * Explanation: Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"] but it is larger in lexical order.
- *
+ * <p>
  * Constraints:
  * 1 <= tickets.length <= 300
  * tickets[i].length == 2
@@ -35,8 +35,21 @@ import java.util.*;
 public class Reconstruct_Itinerary_332 {
 
     public static List<String> findItinerary(List<List<String>> tickets) {
-        return findItinerary_3(tickets);
+        return findItinerary_r3_2(tickets);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * review 一笔画问题 和 逆序入栈
+     * 递归和遍历两种实现，https://leetcode.com/problems/reconstruct-itinerary/solutions/78768/short-ruby-python-java-c/
+     * 简要思路如下：
+     * 1. 邻接表存储数据，邻接表中根据字母序排序
+     * 2. 优先找到被卡住无法继续进行查找计算的节点，这个点一定是结果集中最后被访问的节点。
+     * 3. 当抵达被卡住的节点时，按原路退回的顺序把节点加入结果集。
+     *
+     */
 
     /**
      * review round 2
@@ -50,7 +63,7 @@ public class Reconstruct_Itinerary_332 {
      * 参考思路：
      * https://leetcode-cn.com/problems/reconstruct-itinerary/solution/zhong-xin-an-pai-xing-cheng-by-leetcode-solution/
      * https://leetcode.com/problems/reconstruct-itinerary/discuss/78768/Short-Ruby-Python-Java-C%2B%2B
-     *
+     * <p>
      * 验证通过：
      * Runtime: 7 ms, faster than 44.49% of Java online submissions for Reconstruct Itinerary.
      * Memory Usage: 39.6 MB, less than 70.37% of Java online submissions for Reconstruct Itinerary.
@@ -73,18 +86,18 @@ public class Reconstruct_Itinerary_332 {
     }
 
     private static void dfs(Map<String, PriorityQueue<String>> targets, String cur, Stack<String> path) {
-        //round 2 : 逆序入栈。所以这里先从lexical最大的开始遍历。这样就避免了PriorityQueue.remove()操作中重复数据删除的问题。见findItinerary_2()。从一边删除有问题时，那就转变思路从另一边开始删除。
+        //round 2 : 逆序入栈。这样就避免了PriorityQueue.remove()操作中重复数据删除的问题。见findItinerary_2()。从一边删除有问题时，那就转变思路从另一边开始删除。
         while (targets.containsKey(cur) && targets.get(cur).size() > 0) {
             dfs(targets, targets.get(cur).poll(), path);
         }
-        //round 2 : 逆序入栈
+        //review round 2 : 逆序入栈
         path.push(cur);
     }
 
     /**
      * findItinerary_2的改进版
      * 没有使用PriorityQueue；而是直接使用List，并自己实现排序算法。
-     *
+     * <p>
      * 验证通过：
      * Runtime: 10 ms, faster than 22.07% of Java online submissions for Reconstruct Itinerary.
      * Memory Usage: 46.7 MB, less than 16.85% of Java online submissions for Reconstruct Itinerary.
@@ -151,13 +164,12 @@ public class Reconstruct_Itinerary_332 {
      * 2.当路径中节点数==tc+1时，返回该结果
      * 3.当路径中节点数<tc+1且遍历结束时，回退并按照次小字母序生成新路径
      * 4.当路径中节点数<tc+1且遍历未结束时，递归调用
-     *
+     * <p>
      * review round2 这个坑round2又踩了，说明这种方式有个很大的问题。PriorityQueue中存在重复数据时，删除操作无法精准操作。
-     *
+     * <p>
      * 验证失败，有用例未通过。26 / 80 test cases passed.
      * 问题出现在递归方法中PriorityQueue遍历的部分。具体原因见代码注释。findItinerary_4的方法通过了验证。
-     *
-     * */
+     */
     public static List<String> findItinerary_2(List<List<String>> tickets) {
         //用邻接表保存图，并按字母序排序
         Map<String, PriorityQueue<String>> adjacentMap = new HashMap<>();
