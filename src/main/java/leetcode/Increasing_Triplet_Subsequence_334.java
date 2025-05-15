@@ -1,35 +1,75 @@
 package leetcode;
 
+import java.util.Stack;
+
 /**
  * 334. Increasing Triplet Subsequence
  * Medium
  * -----------------------
  * Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false.
- *
+ * <p>
  * Example 1:
  * Input: nums = [1,2,3,4,5]
  * Output: true
  * Explanation: Any triplet where i < j < k is valid.
- *
+ * <p>
  * Example 2:
  * Input: nums = [5,4,3,2,1]
  * Output: false
  * Explanation: No triplet exists.
- *
+ * <p>
  * Example 3:
  * Input: nums = [2,1,5,0,4,6]
  * Output: true
  * Explanation: The triplet (3, 4, 5) is valid because nums[3] == 0 < nums[4] == 4 < nums[5] == 6.
- *
+ * <p>
  * Constraints:
  * 1 <= nums.length <= 5 * 10^5
  * -2^31 <= nums[i] <= 2^31 - 1
- *
+ * <p>
  * Follow up: Could you implement a solution that runs in O(n) time complexity and O(1) space complexity?
  */
 public class Increasing_Triplet_Subsequence_334 {
     public static boolean increasingTriplet(int[] nums) {
-        return increasingTriplet_2(nums);
+        return increasingTriplet_r3_1(nums);
+    }
+
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. brute force
+     * 遍历nums[]，设nums[i]为第一个元素，然后向后查找比nums[i]大的两个数.
+     * Time Complexity: O(N*N)
+     * Space Complexity: O(1)
+     * 2. 单调栈方案
+     * 无法通过用例 {0, 4, 1, -1, 2}
+     * 3. range方案
+     * 假设已经计算好i和j，满足i<j 且 nums[i]<nums[j]。
+     * 对于新数num[k]只有三种情况，（其中i<j<k）分别如下：
+     * nums[i]<num[k] 且 nums[i]<num[k] ==> 三者中num[k]最大 ==> 返回true
+     * nums[i]<num[k] 且 nums[j]>num[k] ==> 三者中num[k]在中间 ==> j=k
+     * nums[i]>num[k] 且 nums[j]>num[k] ==> 三者中num[k]最小 ==> i=k
+     * <p>
+     * increasingTriplet_2()的方案更优
+     * <p>
+     * 验证通过：
+     * Runtime 3 ms Beats 18.05%
+     * Memory 134.30 MB Beats 20.21%
+     */
+    public static boolean increasingTriplet_r3_1(int[] nums) {
+        if (nums == null || nums.length < 3) return false;
+        int i = Integer.MAX_VALUE, j = Integer.MAX_VALUE;
+        for (int k : nums) {
+            if (i < k && j < k) return true;
+            else if (i < k && j > k) {
+                j = k;
+            } else if (i > k && j > k) {
+                i = k;
+            }
+        }
+        return false;
     }
 
     /**
@@ -48,7 +88,7 @@ public class Increasing_Triplet_Subsequence_334 {
      * 金矿。运用数学推导思路，减少影响因素，降低复杂度
      * 参考思路：
      * https://leetcode.com/problems/increasing-triplet-subsequence/discuss/79004/Concise-Java-solution-with-comments.
-     *
+     * <p>
      * 验证通过：
      * Runtime: 2 ms, faster than 55.47% of Java .
      * Memory Usage: 80.6 MB, less than 51.22% of Java
@@ -75,14 +115,14 @@ public class Increasing_Triplet_Subsequence_334 {
     /**
      * 1.先找到i和j，再查找k
      * 2.如果同时发现更小的n[i']和n[j']，替换原有的i和j，继续找k
-     *
+     * <p>
      * 假设 i<j<x，且n[i]<n[j]，i'和j'存储中间状态的i和j
      * 1.if n[i]<n[x]<n[j] then j=x
      * 2.if n[i]<n[j]<n[x] then k=x,返回true
      * 3.if n[x]<n[i]<n[j] then
-     * 		if n[i']<n[x] then i=i',j=x
-     * 		else i'=x
-     *
+     * if n[i']<n[x] then i=i',j=x
+     * else i'=x
+     * <p>
      * 验证失败，大概思路对路，实现细节有问题
      *
      * @param nums
@@ -137,7 +177,7 @@ public class Increasing_Triplet_Subsequence_334 {
         do_func(new int[]{4, 6, 4, 5, 6}, true);
         do_func(new int[]{0, 4, 1, -1, 2}, true);
         do_func(new int[]{5, 1, 6}, false);
-        do_func(new int[]{1, 1, 6}, true);
+        do_func(new int[]{1, 1, 6}, false);
     }
 
     private static void do_func(int[] nums, boolean expected) {

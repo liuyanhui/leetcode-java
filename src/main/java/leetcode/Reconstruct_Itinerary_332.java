@@ -35,7 +35,7 @@ import java.util.*;
 public class Reconstruct_Itinerary_332 {
 
     public static List<String> findItinerary(List<List<String>> tickets) {
-        return findItinerary_r3_2(tickets);
+        return findItinerary_3(tickets);
     }
 
     /**
