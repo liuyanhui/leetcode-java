@@ -62,6 +62,7 @@ public class Increasing_Triplet_Subsequence_334 {
         if (nums == null || nums.length < 3) return false;
         int i = Integer.MAX_VALUE, j = Integer.MAX_VALUE;
         for (int k : nums) {
+            //review 由于i<j的前提，下面的条件语句可以优化为跟一个数字进行比较
             if (i < k && j < k) return true;
             else if (i < k && j > k) {
                 j = k;
@@ -85,7 +86,7 @@ public class Increasing_Triplet_Subsequence_334 {
      */
 
     /**
-     * 金矿。运用数学推导思路，减少影响因素，降低复杂度
+     * review 金矿。运用数学推导思路，减少影响因素，降低复杂度
      * 参考思路：
      * https://leetcode.com/problems/increasing-triplet-subsequence/discuss/79004/Concise-Java-solution-with-comments.
      * <p>

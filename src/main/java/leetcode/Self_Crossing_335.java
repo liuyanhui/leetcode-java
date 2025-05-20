@@ -31,8 +31,28 @@ package leetcode;
  */
 public class Self_Crossing_335 {
     public static boolean isSelfCrossing(int[] distance) {
-        return isSelfCrossing_1(distance);
+        return isSelfCrossing_r3_1(distance);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     *
+     * Thinking
+     * 1. navie thinking
+     * 分为两个子问题：move和crossing check
+     * move的结果会产生一系列的线段（两类线段，类内平行但类间垂直的线段）；check基于当前已有的线段进行计算
+     * 先计算出所有线段，再计算是否相交；依次计算每个线段的同时，计算是否相交。
+     * 难点：如何存储线段，并计算是否相交是关键。
+     * 水平的线段单独存储，并按照纵坐标排序；垂直的线段单独存储，按照横坐标排序。
+     * 当有两个交叉点时，返回false
+     * 2. 分析特征
+     * review [0] 采用严密的逻辑思考方式，类似DP思路，即f[i]与f[i-1]~f[i-k]等几个有限的前序状态有关系，此时穷举这几种可能就会得到解决方案。
+     * review [0] 如本题：当i由小到大时，f[i]是否为true只与f[i-3],f[i-4],f[i-5]有关。因为f[i]是建立在f[i-1]为true的基础上的，以此类推。
+     * 计算是否交叉时，用长度计算代替使用坐标计算。
+     *
+     */
 
     /**
      * review
@@ -81,7 +101,9 @@ public class Self_Crossing_335 {
         do_func(new int[]{1}, false);
         do_func(new int[]{1, 2}, false);
         do_func(new int[]{1, 2, 3}, false);
-        do_func(new int[]{1,1,2,1,1}, true);
+        do_func(new int[]{1, 1, 2, 1, 1}, true);
+        do_func(new int[]{1, 1, 2, 2, 1, 1}, true);
+        do_func(new int[]{3, 3, 3, 2, 1, 1}, false);
     }
 
     private static void do_func(int[] data, boolean expected) {
