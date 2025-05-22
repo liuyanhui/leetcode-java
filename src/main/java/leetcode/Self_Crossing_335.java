@@ -31,7 +31,7 @@ package leetcode;
  */
 public class Self_Crossing_335 {
     public static boolean isSelfCrossing(int[] distance) {
-        return isSelfCrossing_r3_1(distance);
+        return isSelfCrossing_1(distance);
     }
 
     /**

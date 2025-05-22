@@ -10,29 +10,30 @@ import java.util.Map;
  * Hard
  * -------------------------------
  * You are given a 0-indexed array of unique strings words.
- *
+ * <p>
  * A palindrome pair is a pair of integers (i, j) such that:
- *  0 <= i, j < words.length,
- *  i != j, and
- *  words[i] + words[j] (the concatenation of the two strings) is a palindrome.
- *
+ * - 0 <= i, j < words.length,
+ * - i != j, and
+ * - words[i] + words[j] (the concatenation of the two strings) is a palindrome.
+ * <p>
  * Return an array of all the palindrome pairs of words.
- *
+ * You must write an algorithm with O(sum of words[i].length) runtime complexity.
+ * <p>
  * Example 1:
  * Input: words = ["abcd","dcba","lls","s","sssll"]
  * Output: [[0,1}, {1,0}, {3,2}, {2,4]]
  * Explanation: The palindromes are ["abcddcba","dcbaabcd","slls","llssssll"]
- *
+ * <p>
  * Example 2:
  * Input: words = ["bat","tab","cat"]
  * Output: [[0,1}, {1,0]]
  * Explanation: The palindromes are ["battab","tabbat"]
- *
+ * <p>
  * Example 3:
  * Input: words = ["a",""]
  * Output: [[0,1}, {1,0]]
  * Explanation: The palindromes are ["a","a"]
- *
+ * <p>
  * Constraints:
  * 1 <= words.length <= 5000
  * 0 <= words[i].length <= 300
@@ -42,6 +43,20 @@ public class Palindrome_Pairs_336 {
     public static List<List<Integer>> palindromePairs(String[] words) {
         return palindromePairs_1(words);
     }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 穷举，计算每对word是否palindrome，每对需要正反计算。
+     * 时间复杂度:O(N*N*len(word[i]))
+     * 2. Tri Tree 或 Hashtable法
+     * 计算str1和str2是否为palindrome的算法为：
+     * 如果str[0:i]是palindrome，那么当str2==reverse(str1[i:])时，str1+str2为palindrome
+     * 所以，需要把words保存在hashtable或Tri Tree中，加速上面【str2==reverse(str1[i:])】的计算过程。
+     */
 
     /**
      * review
@@ -54,14 +69,13 @@ public class Palindrome_Pairs_336 {
      */
 
     /**
-     *
      * 1.字符串截取、反转、hashtable比较思路
      * https://leetcode.com/problems/palindrome-pairs/solutions/79199/150-ms-45-lines-java-solution/
-     *
+     * <p>
      * 1.采用hashtable保存：key为反转后的word；value为word的index，便于后续的查找。
      * 2.遍历words中的每个word。
      * 3.针对每个word分割成两部分，word[:i]和word[i:]。如果word[:i]是palindrome，且word[i:]在hashtable中存在，那么表示存在一个满足条件的结果；如果如果word[i:]是palindrome，且word[:i]在hashtable中存在，那么表示存在一个满足条件的结果
-     *
+     * <p>
      * 验证通过：
      * Runtime 1598 ms Beats 43.61%
      * Memory 59.1 MB Beats 33.4%
@@ -90,7 +104,7 @@ public class Palindrome_Pairs_336 {
                     t.add(i);
                     res.add(t);
                 }
-                //tailHalf.length() != 0 是为了防止重复计算
+                //review tailHalf.length() != 0 是为了防止重复计算
                 if (isPalindrome(tailHalf) && tailHalf.length() != 0
                         && reverseMap.containsKey(headHalf) && i != reverseMap.get(headHalf)) {
                     List<Integer> t = new ArrayList<>();
@@ -100,7 +114,6 @@ public class Palindrome_Pairs_336 {
                 }
             }
         }
-
         return res;
     }
 
