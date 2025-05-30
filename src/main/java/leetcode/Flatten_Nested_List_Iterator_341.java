@@ -54,6 +54,19 @@ public class Flatten_Nested_List_Iterator_341 {
     }
 
     /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * 1. 初始化时，把输入转化成list，然后遍历。NestedIterator_3()
+     * 2. 直接遍历。采用Stack。如果下一个时List那么把List中的所有元素依次入栈。每次出栈，并判断是否为Integer即可。
+     * 3. 直接遍历。采用Deque。如果下一个时List那么把List中的所有元素依次加入队列头。每次出出队，并判断是否为Integer即可。
+     *
+     * review 1.较为明显的递归类问题。切记。而递归类问题，又可以采用Stack或Deque方案。
+     * 2.很像设计模式中的组合模式，既有单个类对象，又有该类的集合对象。
+     * 3.如果用树型结构示意的话，会更加明显。
+     */
+
+    /**
      * review
      * NestedIterator_2()中的Thinking中的第一种思路。属于递归法
      * 创建对象时就实现了flat操作，next()和hashNext()只需要遍历链表即可
@@ -131,7 +144,7 @@ public class Flatten_Nested_List_Iterator_341 {
                 for (int i = t.getList().size() - 1; i >= 0; i--) {
                     stack.push(t.getList().get(i));
                 }
-                return hasNext();//递归判断
+                return hasNext();//review 递归判断。这里很关键也很巧妙。It's the magic of RECURSIVE!
             }
             return true;
         }
