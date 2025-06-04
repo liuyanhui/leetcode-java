@@ -22,6 +22,12 @@ package leetcode;
  */
 public class Reverse_String_344 {
     /**
+     * round 3
+     * Score[5] Lower is harder
+     *
+     */
+
+    /**
      * 验证通过：
      * Runtime: 1 ms, faster than 95.68% of Java online submissions for Reverse String.
      * Memory Usage: 46.1 MB, less than 40.45% of Java online submissions for Reverse String.

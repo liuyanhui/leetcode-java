@@ -24,9 +24,41 @@ import java.util.Set;
  */
 public class Reverse_Vowels_of_a_String_345 {
     public static String reverseVowels(String s) {
-        return reverseVowels_2(s);
+        return reverseVowels_r3_1(s);
     }
 
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     *
+     * 验证通过：
+     *
+     * @param s
+     * @return
+     */
+    public static String reverseVowels_r3_1(String s) {
+        int[] masks = new int[256];
+        char[] vowels = {'a', 'e', 'o', 'i', 'u', 'A', 'E', 'O', 'I', 'U'};
+        for (char c : vowels) {
+            masks[c] = 1;
+        }
+        char[] res = s.toCharArray();
+        int l = 0, r = res.length - 1;
+        while (l < r) {
+            if (masks[res[l]] == 0) {
+                l++;
+            } else if (masks[res[r]] == 0) {
+                r--;
+            } else {
+                char t = res[l];
+                res[l] = res[r];
+                res[r] = t;
+                l++;
+                r--;
+            }
+        }
+        return String.valueOf(res);
+    }
     /**
      * round 2
      *
