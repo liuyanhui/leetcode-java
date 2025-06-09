@@ -18,6 +18,7 @@ import java.util.*;
  *
  * Constraints:
  * 1 <= nums.length <= 10^5
+ * -10^4 <= nums[i] <= 10^4
  * k is in the range [1, the number of unique elements in the array].
  * It is guaranteed that the answer is unique.
  *
@@ -25,9 +26,55 @@ import java.util.*;
  */
 public class Top_K_Frequent_Elements_347 {
     public static int[] topKFrequent(int[] nums, int k) {
-        return topKFrequent_3(nums, k);
+        return topKFrequent_r3_1(nums, k);
     }
 
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     *
+     * Thinking
+     * 1. naive solution
+     * 先统计每个数的出现次数，再根据出现次数排序，最后返回结果。
+     * Time Complexity: O(NlogN)
+     * Space Complexity: O(N)
+     * 2. 当k较小时，无需排序，执行k*N次查找即可。
+     * 3. 先统计，再使用bucket sort
+     *
+     * 验证通过：
+     * Runtime 14 ms Beats 58.76%
+     * Memory 48.48 MB Beats 71.55%
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int[] topKFrequent_r3_1(int[] nums, int k) {
+        //统计次数
+        Map<Integer,Integer> frequencyMap = new HashMap<>();
+        for(int n:nums){
+            frequencyMap.computeIfAbsent(n,v->0);
+            frequencyMap.put(n,frequencyMap.get(n)+1);
+        }
+        //bucket sort
+        List<Integer>[] buckets = new List[nums.length+1];
+        for(int key : frequencyMap.keySet()){
+            if(buckets[frequencyMap.get(key)]==null){
+                buckets[frequencyMap.get(key)] = new ArrayList<>();
+            }
+            buckets[frequencyMap.get(key)].add(key);
+        }
+        //提起top k
+        int[] res = new int[k];
+        int m = 0;
+        for(int i=buckets.length-1;i>=0 && m<k;i--){
+            if(buckets[i]==null) continue;
+            for(int j = 0;j<buckets[i].size();j++){
+                res[m++]=buckets[i].get(j);
+            }
+        }
+        return res;
+    }
     /**
      * review round 2
      *
