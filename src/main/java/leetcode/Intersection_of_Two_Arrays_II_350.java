@@ -28,8 +28,45 @@ import java.util.*;
  */
 public class Intersection_of_Two_Arrays_II_350 {
     public static int[] intersect(int[] nums1, int[] nums2) {
-        return intersect_3(nums1, nums2);
+        return intersect_r3_1(nums1, nums2);
     }
+
+    /**
+     * round 3
+     * Score[4] Lower is harder
+     * <p>
+     * 验证通过：
+     * Runtime 1 ms Beats 98.43%
+     * Memory 43.33 MB Beats 59.05%
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public static int[] intersect_r3_1(int[] nums1, int[] nums2) {
+        List<Integer> list = new ArrayList<>();
+        //把长度小的数组放在前面，作为基准，计算hash。节省内存空间。
+        if (nums1.length > nums2.length) {
+            int[] t = nums1;
+            nums1 = nums2;
+            nums2 = t;
+        }
+        int[] hash = new int[1000];//review 变量的命名很优雅
+        for (int n : nums1) {
+            hash[n]++;
+        }
+        for (int n : nums2) {
+            if (hash[n] > 0) {
+                list.add(n);
+                hash[n]--;
+            }
+        }
+        int[] res = new int[list.size()];
+        for (int k = 0; k < res.length; k++)
+            res[k] = list.get(k);
+        return res;
+    }
+
 
     /**
      * round 2
