@@ -23,9 +23,37 @@ import java.util.*;
  */
 public class Intersection_of_Two_Arrays_349 {
     public static int[] intersection(int[] nums1, int[] nums2) {
-        return intersection_2(nums1, nums2);
+        return intersection_r3_1(nums1, nums2);
     }
 
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * review 一定要先做350
+     *
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 42.99 MB Beats 94.67%
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public static int[] intersection_r3_1(int[] nums1, int[] nums2) {
+        int[] hash = new int[1001];//review 变量的命名很优雅
+        for (int n: nums1){
+            hash[n]=1;
+        }
+        int index = 0;
+        for(int n: nums2){
+            if(hash[n]==1){
+                nums1[index++]=n;
+                hash[n]=0;
+            }
+        }
+        return Arrays.copyOf(nums1,index);//review 变量的命名很优雅
+    }
     /**
      * round 2
      * review 一定要先做350
@@ -97,7 +125,7 @@ public class Intersection_of_Two_Arrays_349 {
 
     private static void do_func(int[] nums1, int[] nums2, int[] expected) {
         int[] ret = intersection(nums1, nums2);
-        ArrayUtils.printIntArray(ret);
+        ArrayUtils.printlnIntArray(ret);
         ArrayUtils.isSameThenPrintln(ret, expected);
         System.out.println("--------------");
     }
