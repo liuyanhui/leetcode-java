@@ -42,6 +42,15 @@ import java.util.*;
 public class Data_Stream_as_Disjoint_Intervals_352 {
 
     /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. 思路1：插入时排序，查询时合并；思路2：插入时合并，合并后排序,持续合并和排序，查询时直接输出。
+     * SummaryRanges_2()时思路1.
+     */
+
+    /**
      * SummaryRanges()自研
      * SummaryRanges_2()标准答案，更简单
      */
