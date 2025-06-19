@@ -31,7 +31,64 @@ import java.util.Comparator;
  */
 public class Russian_Doll_Envelopes_354 {
     public static int maxEnvelopes(int[][] envelopes) {
-        return maxEnvelopes_1(envelopes);
+        return maxEnvelopes_r3_1(envelopes);
+    }
+
+    /**
+     * round 3
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. think deeply
+     * 满足Russian Doll时的约束：wi<wj AND hi<hj
+     * 根据wi和hi排序，再查找。查找时采用greedy算法，每次获取最小的满足条件的envelope。即查找最小的大于wi的元素集合，再查找大于hi的最小元素，这一过程貌似需要对穷举递归每种可能。
+     * 排序时，先根据w排序，再根据h排序。数据结构为sorted[w][h]，每一行为w相等的集合，并按h从小到大排序。
+     * 递归时，采用缓存保存中间结果。
+     * 2. 几乎所有的递归问题都可以采用DP思路。
+     * 2.1. 分别根据w和h排序，数据结构为数据结构为sorted[w][h]。
+     * dp[i][j]为sorted[i][j]最为最外层Russian Doll的最优解。
+     * FOR k from 0 to len(sorted[i])
+     *     IF sorted[i-1][k] < sorted[i][j]
+     *     THEN dp[i][j]=max(dp[i][j],d[i][k]+1)
+     * 返回 max(dp[-1][-1])
+     * 2.2. dp的长度不是二位数组，而是二维列表。类似List<List<int>>
+     * 3. 直接在envolope上排序，并查找，使用一维dp数组。
+     *
+     * 验证失败：Time Limit Exceeded, 逻辑正确。需要优化查找部分的逻辑。如maxEnvelopes_1()
+     *
+     * @param envelopes
+     * @return
+     */
+    public static int maxEnvelopes_r3_1(int[][] envelopes){
+        //先排序
+        Arrays.sort(envelopes, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] == o2[0]) {
+                    return o1[1] - o2[1];
+                } else {
+                    return o1[0] - o2[0];
+                }
+            }
+        });
+        int[] dp = new int[envelopes.length];
+        for (int i = 0; i < envelopes.length; i++) {
+            if (dp[i] == 0) dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (envelopes[j][0] < envelopes[i][0]) {
+                    if (envelopes[j][1] < envelopes[i][1]) {
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        int res = 1;
+        for (int t : dp) {
+            res = Math.max(res, t);
+        }
+        return res;
     }
 
     /**
