@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Arrays;
+
 /**
  * 300. Longest Increasing Subsequence
  * Medium
@@ -28,6 +30,39 @@ package leetcode;
 public class Longest_Increasing_Subsequence_300 {
     public static int lengthOfLIS(int[] nums) {
         return lengthOfLIS_2(nums);
+    }
+
+    /**
+     * round 3.5
+     * Score[2] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 穷举+递归。依次以nums[i]作为起点计算。
+     * Time Complexity: O(N!)
+     * 2. DP思路
+     * 递归和DP可以互相转换，但是DP性能更好
+     * Time Complexity: O(N*N)
+     * 3. Greedy + Binary Search
+     * Time Complexity: O(N*logN)
+     * 
+     */
+    public static int lengthOfLIS_r35_1(int[] nums) {
+        //nums[0:i] 的最优解
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        int res = 1;
+        for (int t : dp) {
+            res = Math.max(res, t);
+        }
+        return res;
     }
 
     /**
