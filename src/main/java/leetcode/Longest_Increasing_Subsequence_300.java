@@ -29,7 +29,7 @@ import java.util.Arrays;
  */
 public class Longest_Increasing_Subsequence_300 {
     public static int lengthOfLIS(int[] nums) {
-        return lengthOfLIS_2(nums);
+        return lengthOfLIS_r35_2(nums);
     }
 
     /**
@@ -45,7 +45,41 @@ public class Longest_Increasing_Subsequence_300 {
      * Time Complexity: O(N*N)
      * 3. Greedy + Binary Search
      * Time Complexity: O(N*logN)
-     * 
+     *
+     * 【3.】方案
+     * 验证通过：
+     */
+    public static int lengthOfLIS_r35_2(int[] nums) {
+        int[] piles = new int[nums.length];
+        int tail = -1;
+        for (int n : nums) {
+            if (tail < 0 || piles[tail] < n) {
+                piles[++tail] = n;
+            } else {
+                //Using binary search to find the first number piles[t] that is larger than n in array nums. And then update num[t]=n.
+                int l = 0, r = tail;
+                while (l <= r) {
+                    int mid = (l + r) / 2;
+                    if (piles[mid] < n) {
+                        l = mid + 1;
+                    } else {
+                        r = mid - 1;
+                    }
+                }
+                //update piles[]
+                piles[l] = n;// review 这一行可以跟下面的一行互换
+//                piles[r + 1] = n;// 这一行可以跟上面的一行互换
+            }
+        }
+        return tail + 1;
+    }
+
+    /**
+     * round 3.5
+     * Score[2] Lower is harder
+     * <p>
+     * DP思路。
+     * 验证通过：
      */
     public static int lengthOfLIS_r35_1(int[] nums) {
         //nums[0:i] 的最优解
