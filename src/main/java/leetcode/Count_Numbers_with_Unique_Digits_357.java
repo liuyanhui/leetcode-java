@@ -21,9 +21,46 @@ package leetcode;
 public class Count_Numbers_with_Unique_Digits_357 {
 
     public static int countNumbersWithUniqueDigits(int n) {
-        return countNumbersWithUniqueDigits_2(n);
+        return countNumbersWithUniqueDigits_r3_1(n);
     }
 
+    /**
+     * round 3
+     * Score[3] Lower is harder
+     * <p>
+     * Thinking
+     * 1. naive solution
+     * 穷举+递归。穷举每个数字，并计算该数字是否有重复digit。
+     * 递归过程中增加缓存可以优化时间复杂度。
+     * Time Complexity: O(N)
+     * 2. 数学分析法
+     * 采用排列组合中的组合，但是要考虑特殊情况（前导0）。
+     * 公式为：
+     * f(0)=1
+     * f(1)=9+f(0)=10
+     * f(2)=9*9+f(1)=91
+     * f(3)=9*9*8+f(2)=739
+     * f(n)=9*9*8*7*6... + f(n-1)
+     * <p>
+     * 验证通过：
+     * Runtime 0 ms Beats 100.00%
+     * Memory 40.24 MB Beats 79.96%
+     *
+     * @param n
+     * @return
+     */
+    public static int countNumbersWithUniqueDigits_r3_1(int n) {
+        int[] arr = new int[n + 1];
+        arr[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            arr[i] = 9;
+            for (int j = 1; j < i; j++) {
+                arr[i] *= (10 - j);
+            }
+            arr[i] += arr[i - 1];
+        }
+        return arr[n];
+    }
     /**
      * round 2
      *
