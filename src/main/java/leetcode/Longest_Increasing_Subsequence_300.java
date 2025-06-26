@@ -50,11 +50,11 @@ public class Longest_Increasing_Subsequence_300 {
      * 验证通过：
      */
     public static int lengthOfLIS_r35_2(int[] nums) {
-        int[] piles = new int[nums.length];
+        int[] piles = new int[nums.length];//review 这个变量很关键。记录了当前数得局部最优解和全局最优解。可以咨询LLM深入理解piles数组的作用和原理。
         int tail = -1;
         for (int n : nums) {
             if (tail < 0 || piles[tail] < n) {
-                piles[++tail] = n;
+                piles[++tail] = n;//review 更新全局最优解
             } else {
                 //Using binary search to find the first number piles[t] that is larger than n in array nums. And then update num[t]=n.
                 int l = 0, r = tail;
@@ -66,6 +66,7 @@ public class Longest_Increasing_Subsequence_300 {
                         r = mid - 1;
                     }
                 }
+                // 更新当前数据得局部最优解
                 //update piles[]
                 piles[l] = n;// review 这一行可以跟下面的一行互换
 //                piles[r + 1] = n;// 这一行可以跟上面的一行互换
